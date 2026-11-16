@@ -168,18 +168,7 @@ Open your browser at:
 
 ---
 
-### 6. Test Accounts & Demo Credentials
 
-| Role | Voter ID | Name | House / Access |
-| :--- | :--- | :--- | :--- |
-| **Universal Demo Voter** | `0000` | Demo User | Eligible in all 7 booths (testing account) |
-| **Faculty / Teachers** | `6001` - `6087` | Ravi Chandra, etc. | Eligible in all 6 house booths + School Cabinet |
-| **Bheeshma Student** | `10001`, `10004` | Aaradhya Kammari, etc. | Bheeshma House only |
-| **Gurudrona Student** | `10003`, `10006` | Akshara Bandari, etc. | Gurudrona House only |
-| **Hanuman Student** | `10005`, `10017` | Anvitha, etc. | Hanuman House only |
-| **Karna Student** | `10011`, `10014` | Bhavya Sri, etc. | Karna House only |
-| **Vasistha Student** | `10002`, `10008` | Adwitha Reddy, etc. | Vasistha House only |
-| **Vishwamithra Student**| `10009`, `10016` | Charan Teja, etc. | Vishwamithra House only |
 
 ---
 
