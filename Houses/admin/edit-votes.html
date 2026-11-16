@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit &amp; Manage Votes — School House Elections 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css?v=985" />
+  <script src="./admin-auth.js?v=6"></script>
+</head>
+
+<body>
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+      <a href="./index.html" class="back-link">← All Houses</a>
+
+      <div class="sidebar-house-header">
+        <div class="sidebar-eyebrow">Ballot Control</div>
+        <h1 class="sidebar-house-title">Edit Votes</h1>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Edit votes navigation">
+        <button type="button" id="nav-btn-ballots" class="nav-btn is-active" data-edit-view="ballots">📋 All Cast
+          Ballots</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span class="badge badge-muted">Live Ballot Control</span>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">Ballot Administration &amp; Adjustments <span class="live-pulse-badge"
+              title="Live Auto-Sync: Updates automatically every 2 seconds without refreshing"><span
+                class="pulse-dot"></span> Live Sync (2s)</span></div>
+          <h2 class="page-title">Edit &amp; Manage Student Votes</h2>
+          <p class="page-sub">Inspect verification photos, cast times, to whom students voted, adjust candidate choices,
+            cancel votes, or delete &amp; reset ballots.</p>
+        </div>
+        <div class="topbar-actions">
+          <a href="./index.html" class="btn btn-secondary">← All Houses Overview</a>
+          <a href="./results.html" class="btn btn-secondary">Results &amp; Winners</a>
+          <button type="button" id="refresh-btn" class="btn btn-primary">Refresh Now</button>
+        </div>
+      </header>
+
+      <div id="sb-offline-banner" class="sb-offline-banner" role="alert" hidden>
+        <div>
+          <strong>Supabase Not Connected</strong> — <span id="sb-offline-msg">Ballot edits are saved strictly to
+            Supabase. Open <a href="./index.html" style="color:inherit;text-decoration:underline;font-weight:700;">All
+              Houses Admin</a> to connect.</span>
+        </div>
+      </div>
+
+      <!-- Quick KPI summary row (Clickable to switch view and filter) -->
+      <section class="stats-grid" style="margin-bottom: 1.5rem;" aria-label="Ballots summary">
+        <button type="button" class="stat-card stat-card-btn is-active" data-ballot-kpi="accepted">
+          <span class="stat-label">Total Accepted Ballots</span>
+          <span id="kpi-accepted-ballots" class="stat-value">0</span>
+          <span id="kpi-voters-count" class="stat-note">0 unique voters · Filter list →</span>
+        </button>
+        <button type="button" class="stat-card stat-card-btn" data-ballot-kpi="cancelled">
+          <span class="stat-label">Cancelled Ballots</span>
+          <span id="kpi-cancelled-ballots" class="stat-value">0</span>
+          <span class="stat-note">Excluded · View cancelled →</span>
+        </button>
+        <button type="button" class="stat-card stat-card-btn" data-ballot-kpi="eligible">
+          <span class="stat-label">Eligible Master Roster</span>
+          <span id="kpi-eligible-roster" class="stat-value">0</span>
+          <span class="stat-note">Active registered students →</span>
+        </button>
+        <button type="button" class="stat-card stat-card-btn" data-ballot-kpi="remaining">
+          <span class="stat-label">Remaining Not Voted</span>
+          <span id="kpi-remaining-roster" class="stat-value">0</span>
+          <span class="stat-note">Pending students to vote →</span>
+        </button>
+      </section>
+
+      <!-- View 1: All Cast Ballots Table View (Accepted + Cancelled) -->
+      <section id="view-ballots" class="panel-card" style="margin-bottom: 2rem;">
+        <div class="panel-head-row">
+          <div>
+            <h3 id="ballots-panel-heading" class="panel-heading">All Cast Ballots Master Register</h3>
+            <p id="ballots-panel-caption" class="panel-caption">Review verification photos, cast timestamps, cancel
+              votes, or delete student ballots.</p>
+          </div>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+            <button type="button" id="btn-open-add-candidate" class="btn btn-primary"
+              style="background:#059669; border-color:#059669; font-weight:700;">➕ Add Candidate to Participate</button>
+          </div>
+        </div>
+
+        <div class="filters-bar" style="margin-top: 1rem; margin-bottom: 1.25rem;">
+          <input id="ballot-search" type="search" class="form-control"
+            placeholder="Search ID, voter, or candidate..." />
+          <select id="ballot-house-filter" class="form-control" aria-label="Filter by House">
+            <option value="">All Houses</option>
+            <option value="CENTRAL">School Cabinet</option>
+            <option value="BHEESHMA">Bheeshma House</option>
+            <option value="GURUDRONA">Gurudrona House</option>
+            <option value="HANUMAN">Hanuman House</option>
+            <option value="KARNA">Karna House</option>
+            <option value="VASISTHA">Vasistha House</option>
+            <option value="VISHWAMITHRA">Vishwamithra House</option>
+          </select>
+          <select id="ballot-class-filter" class="form-control" aria-label="Filter by Class">
+            <option value="">All Classes</option>
+          </select>
+          <select id="ballot-section-filter" class="form-control" aria-label="Filter by Section">
+            <option value="">All Sections</option>
+          </select>
+          <select id="ballot-status-filter" class="form-control" aria-label="Filter by Status">
+            <option value="accepted">Accepted Votes</option>
+            <option value="cancelled">Cancelled Ballots</option>
+            <option value="eligible">All Eligible Students (Master Roster)</option>
+            <option value="remaining">Pending (Not Voted)</option>
+            <option value="all">All Cast Ballots</option>
+          </select>
+        </div>
+
+        <div class="table-container" style="margin-bottom: 0;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 10%;">Voter ID</th>
+                <th style="width: 17%;">Voter Student</th>
+                <th style="width: 13%;">House</th>
+                <th style="width: 17%;">Voted Status</th>
+                <th style="width: 11%;">Photo</th>
+                <th style="width: 10%;">Cast Time</th>
+                <th style="width: 8%;">Status</th>
+                <th style="width: 14%; min-width: 195px;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="ballots-table-tbody"></tbody>
+          </table>
+          <div id="ballots-table-empty" class="empty-state" hidden>
+            <div id="empty-icon" style="font-size: 1.6rem; margin-bottom: 0.35rem;">🗳️</div>
+            <strong id="empty-title"
+              style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.2rem;">No Ballots
+              Found</strong>
+            <span id="empty-subtitle" style="color: var(--text-muted); font-size: 0.82rem;">No cast ballots match the
+              current filters.</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Cancel Vote Modal -->
+  <div id="cancel-modal" class="modal-overlay" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="cancel-modal-title">
+      <h3 id="cancel-modal-title" class="modal-title">Cancel Student Vote</h3>
+      <p id="cancel-modal-desc" class="modal-desc"></p>
+      <p id="cancel-error-text" class="stat-note" style="color: #b91c1c; margin-top: 0.4rem;" hidden></p>
+      <div class="modal-actions">
+        <button type="button" id="cancel-modal-close" class="btn btn-secondary">Close</button>
+        <button type="button" id="confirm-cancel-btn" class="btn btn-danger">Confirm Cancel &amp; Allow Re-vote</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete / Clear Voter Ballots Modal -->
+  <div id="delete-modal" class="modal-overlay" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+      <h3 id="delete-modal-title" class="modal-title">Delete Student Ballots</h3>
+      <p id="delete-modal-desc" class="modal-desc"></p>
+      <p id="delete-error-text" class="stat-note" style="color: #b91c1c; margin-top: 0.4rem;" hidden></p>
+      <div class="modal-actions">
+        <button type="button" id="delete-modal-close" class="btn btn-secondary">Close</button>
+        <button type="button" id="confirm-delete-btn" class="btn btn-solid-danger">Confirm Delete &amp; Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo Inspection Modal -->
+  <div id="photo-modal" class="modal-overlay" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="photo-modal-title">
+      <h3 id="photo-modal-title" class="modal-title">Voter Verification Photo</h3>
+      <p id="photo-modal-meta" class="modal-desc"></p>
+      <img id="photo-modal-img" class="modal-photo-preview" alt="Voter verification capture" />
+      <div class="modal-actions">
+        <button type="button" id="photo-modal-close" class="btn btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Candidate to Participate Modal -->
+  <div id="add-candidate-modal" class="modal-overlay" hidden>
+    <div class="modal-card" style="max-width: 540px;" role="dialog" aria-modal="true"
+      aria-labelledby="add-cand-modal-title">
+      <h3 id="add-cand-modal-title" class="modal-title">➕ Add Candidate to Participate in Election</h3>
+      <p class="modal-desc">Register a student to contest for a leadership role in their House or School Cabinet.</p>
+
+      <form id="add-candidate-form" onsubmit="return false;">
+        <div style="display:flex; flex-direction:column; gap:0.85rem; margin-top:1rem;">
+          <div class="form-group">
+            <label class="form-label" for="new-cand-name"
+              style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Candidate Full Name *</label>
+            <input type="text" id="new-cand-name" class="form-control"
+              placeholder="Enter student full name (e.g. Rahul Sharma)" required autocomplete="off" />
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem;">
+            <div class="form-group">
+              <label class="form-label" for="new-cand-house"
+                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Contesting In *</label>
+              <select id="new-cand-house" class="form-control" required>
+                <option value="BHEESHMA">Bheeshma House</option>
+                <option value="GURUDRONA">Gurudrona House</option>
+                <option value="HANUMAN">Hanuman House</option>
+                <option value="KARNA">Karna House</option>
+                <option value="VASISTHA">Vasistha House</option>
+                <option value="VISHWAMITHRA">Vishwamithra House</option>
+                <option value="CENTRAL">School Cabinet</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="new-cand-position"
+                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Post / Role *</label>
+              <select id="new-cand-position" class="form-control" required></select>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem;">
+            <div class="form-group">
+              <label class="form-label" for="new-cand-class"
+                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Class *</label>
+              <select id="new-cand-class" class="form-control" required>
+                <option value="10">Class 10</option>
+                <option value="9">Class 9</option>
+                <option value="8">Class 8</option>
+                <option value="7">Class 7</option>
+                <option value="6">Class 6</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="new-cand-section"
+                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Section *</label>
+              <input type="text" id="new-cand-section" class="form-control"
+                placeholder="e.g. Ashoka Chakravarthi or 10-A" required autocomplete="off" />
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem;">
+            <div class="form-group">
+              <label class="form-label" for="new-cand-adm"
+                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Voter ID / Admission No</label>
+              <input type="text" id="new-cand-adm" class="form-control"
+                placeholder="e.g. 10045 (or leave blank to auto-generate)" autocomplete="off" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="new-cand-tagline"
+                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Campaign Motto / Tagline</label>
+              <input type="text" id="new-cand-tagline" class="form-control"
+                placeholder="e.g. Leadership through Service" autocomplete="off" />
+            </div>
+          </div>
+        </div>
+
+        <p id="add-cand-error" class="stat-note" style="color: #b91c1c; margin-top: 0.65rem;" hidden></p>
+        <p id="add-cand-success" class="stat-note" style="color: #047857; margin-top: 0.65rem; font-weight: 700;"
+          hidden></p>
+
+        <div class="modal-actions" style="margin-top: 1.25rem;">
+          <button type="button" id="add-cand-modal-close" class="btn btn-secondary">Close</button>
+          <button type="submit" id="add-cand-submit-btn" class="btn btn-primary"
+            style="background:#059669; border-color:#059669; font-weight:700;">➕ Save &amp; Add Candidate</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script defer src="./data.js?v=975"></script>
+  <script defer src="./teachers.js?v=975"></script>
+  <script defer src="./supabase-config.js?v=1000"></script>
+  <script defer src="./edit-votes.js?v=1000"></script>
+</body>
+
+</html>

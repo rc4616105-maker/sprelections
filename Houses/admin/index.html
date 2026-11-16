@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Election Administration — School House Elections 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css?v=985" />
+  <script src="./admin-auth.js?v=6"></script>
+</head>
+<body>
+  <main class="overview-shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">Election Administration <span class="live-pulse-badge" title="Live Auto-Sync: Updates automatically every 2 seconds without refreshing"><span class="pulse-dot"></span> Live Sync (2s)</span></div>
+        <h1 class="page-title">School House Elections 2026</h1>
+        <p class="page-sub">Select a house below to inspect candidate vote comparison graphs, review voter photos, and manage cancellations.</p>
+      </div>
+      <div class="topbar-actions">
+        <a href="../graphs.html?from=admin" class="btn btn-secondary">Graphs</a>
+        <button type="button" id="print-results-btn" class="btn btn-secondary" title="Export complete election results and all candidates votes to Excel (.xlsx)">🖨️ Print Results</button>
+        <button type="button" id="seed-supabase-btn" class="btn btn-secondary">Sync Roster to Supabase</button>
+        <button type="button" id="refresh-btn" class="btn btn-primary">Refresh Now</button>
+      </div>
+    </header>
+
+    <div id="sb-offline-banner" class="sb-offline-banner" role="alert" hidden>
+      <div>
+        <strong>Supabase Not Connected</strong> — <span id="sb-offline-msg">Votes are saved &amp; loaded strictly from Supabase. Click <strong>Connect &amp; Sync Supabase</strong> to connect your project.</span>
+      </div>
+    </div>
+
+    <!-- School-wide KPI Summary (Clickable to inspect full tables) -->
+    <section class="stats-grid" aria-label="School election totals">
+      <button type="button" class="stat-card stat-card-btn" data-kpi-filter="eligible">
+        <span class="stat-label">Total Eligible Voters</span>
+        <span id="kpi-eligible" class="stat-value">0</span>
+        <span class="stat-note">Click to view full list →</span>
+      </button>
+      <button type="button" class="stat-card stat-card-btn" data-kpi-filter="accepted">
+        <span class="stat-label">Active Accepted Votes</span>
+        <span id="kpi-accepted" class="stat-value">0</span>
+        <span id="kpi-turnout" class="stat-note">0% turnout · View table →</span>
+      </button>
+      <button type="button" class="stat-card stat-card-btn" data-kpi-filter="cancelled">
+        <span class="stat-label">Cancelled Ballots</span>
+        <span id="kpi-cancelled" class="stat-value">0</span>
+        <span class="stat-note">Click to view cancelled →</span>
+      </button>
+      <button type="button" class="stat-card stat-card-btn" data-kpi-filter="remaining">
+        <span class="stat-label">Remaining Not Voted</span>
+        <span id="kpi-remaining" class="stat-value">0</span>
+        <span class="stat-note">Click to view pending →</span>
+      </button>
+    </section>
+
+    <!-- Main Live Register: Active Accepted Voters / Drilldown Panel -->
+    <section id="kpi-drilldown-panel" class="panel-card">
+      <div class="panel-head-row">
+        <div>
+          <h2 id="drilldown-title" class="panel-heading">Active Accepted Voters</h2>
+          <p id="drilldown-subtitle" class="panel-caption">All registered students who have submitted active votes across booths. Reviewing photos, cast times, changing candidate choices, or resetting ballots is managed inside Edit Votes.</p>
+        </div>
+        <button type="button" id="close-drilldown-btn" class="btn btn-secondary">Collapse View</button>
+      </div>
+
+      <div class="filters-bar">
+        <input id="drilldown-search" type="search" class="form-control" placeholder="Search Voter ID or Student Name..." />
+        <select id="drilldown-house-filter" class="form-control" aria-label="Filter by House">
+          <option value="">All Houses</option>
+        </select>
+        <select id="drilldown-booth-filter" class="form-control" aria-label="Filter by Polling Booth">
+          <option value="">All Booths</option>
+        </select>
+        <select id="drilldown-class-filter" class="form-control" aria-label="Filter by Class">
+          <option value="">All Classes</option>
+        </select>
+        <select id="drilldown-section-filter" class="form-control" aria-label="Filter by Section">
+          <option value="">All Sections</option>
+        </select>
+      </div>
+
+      <div class="table-container" style="margin-bottom: 0;">
+        <table class="data-table">
+          <thead id="drilldown-thead"></thead>
+          <tbody id="drilldown-tbody"></tbody>
+        </table>
+        <div id="drilldown-empty" class="empty-state" hidden>No matching records found.</div>
+      </div>
+    </section>
+
+    <!-- 6 Clickable House Cards + School Cabinet + Tool Cards -->
+    <section aria-label="Houses">
+      <h2 class="section-heading">Select House for Graphs &amp; Voters</h2>
+      <div id="admin-house-grid" class="admin-house-grid"></div>
+    </section>
+  </main>
+
+  <!-- Cancel Vote Modal -->
+  <div id="cancel-modal" class="modal-overlay" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="cancel-modal-title">
+      <h3 id="cancel-modal-title" class="modal-title">Cancel Student Vote</h3>
+      <p id="cancel-modal-desc" class="modal-desc"></p>
+      <p id="cancel-error-text" class="stat-note" style="color: #b91c1c; margin-top: 0.4rem;" hidden></p>
+      <div class="modal-actions">
+        <button type="button" id="cancel-modal-close" class="btn btn-secondary">Close</button>
+        <button type="button" id="confirm-cancel-btn" class="btn btn-danger">Confirm Cancel &amp; Allow Re-vote</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete / Clear Voter Ballots Modal -->
+  <div id="delete-modal" class="modal-overlay" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+      <h3 id="delete-modal-title" class="modal-title">Delete Student Ballots</h3>
+      <p id="delete-modal-desc" class="modal-desc"></p>
+      <p id="delete-error-text" class="stat-note" style="color: #b91c1c; margin-top: 0.4rem;" hidden></p>
+      <div class="modal-actions">
+        <button type="button" id="delete-modal-close" class="btn btn-secondary">Close</button>
+        <button type="button" id="confirm-delete-btn" class="btn btn-solid-danger">Confirm Delete &amp; Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo Inspection Modal -->
+  <div id="photo-modal" class="modal-overlay" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="photo-modal-title">
+      <h3 id="photo-modal-title" class="modal-title">Voter Verification Photo</h3>
+      <p id="photo-modal-meta" class="modal-desc"></p>
+      <img id="photo-modal-img" class="modal-photo-preview" alt="Voter verification capture" />
+      <div class="modal-actions">
+        <button type="button" id="photo-modal-close" class="btn btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase Connection Modal (only shown when Netlify Env / supabase.local.json not configured) -->
+  <div id="supabase-modal" class="modal-overlay" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="supabase-modal-title">
+      <h3 id="supabase-modal-title" class="modal-title">Connect Supabase &amp; Sync Roster</h3>
+      <p class="modal-desc">
+        Run <code>supabase/schema.sql</code> in Supabase SQL Editor first, then paste your project&apos;s
+        <strong>Publishable (anon) key</strong> below (never paste an <code>sb_secret_</code> key in browser JS; on Netlify set <code>SUPABASE_KEY</code> in Netlify Environment Variables instead).
+      </p>
+      <div style="display:flex; flex-direction:column; gap:0.65rem; margin-top:0.85rem;">
+        <input id="sb-url-input" type="url" class="form-control" placeholder="https://rziptxcknaeuorekxwrl.supabase.co" />
+        <input id="sb-key-input" type="password" class="form-control" autocomplete="off" placeholder="sb_publishable_... or eyJ... (anon public key)" />
+      </div>
+      <p id="sb-modal-error" class="stat-note" style="color: #b91c1c; margin-top: 0.5rem;" hidden></p>
+      <div class="modal-actions">
+        <button type="button" id="sb-modal-close" class="btn btn-secondary">Close</button>
+        <button type="button" id="sb-modal-save" class="btn btn-primary">Connect &amp; Sync 871 Students</button>
+      </div>
+    </div>
+  </div>
+
+  <script defer src="./data.js?v=975"></script>
+  <script defer src="./teachers.js?v=975"></script>
+  <script defer src="./supabase-config.js?v=999"></script>
+  <script defer src="./vendor/xlsx.full.min.js"></script>
+  <script defer src="./export-excel.js?v=975"></script>
+  <script defer src="./app.js?v=999"></script>
+</body>
+</html>

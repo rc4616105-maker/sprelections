@@ -1,0 +1,5 @@
+with open('Houses/admin/app.js', 'r', encoding='utf-8') as f:
+    text = f.read()
+
+idx = text.find('function makePhotoCell(')
+print(text[idx:idx+800])

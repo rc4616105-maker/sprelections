@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" data-house="vishwamithra" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vishwamithra House — School Election 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <a href="#booth-main" class="skip-link">Skip to voting form</a>
+  <div class="ambient-backdrop" aria-hidden="true"></div>
+
+  <div class="page-shell">
+    <header class="booth-header">
+      <div class="brand-cluster">
+        <div class="house-eyebrow">Official House Election</div>
+        <h1 id="house-title-btn" class="house-title" title="Tap to toggle Fullscreen" role="button" tabindex="0" aria-label="Toggle Fullscreen">Vishwamithra House</h1>
+      </div>
+      <div id="local-storage-slot" class="booth-header-actions"></div>
+    </header>
+
+    <main id="booth-main" class="booth-main">
+      <!-- Progress Stepper -->
+      <ol class="stepper" aria-label="Voting steps">
+        <li class="step-pill is-active" data-step-indicator="1">
+          <span class="step-num">1</span>
+          <span class="step-label">Voter ID</span>
+        </li>
+        <li class="step-pill" data-step-indicator="2">
+          <span class="step-num">2</span>
+          <span class="step-label">Verify Info</span>
+        </li>
+        <li class="step-pill" data-step-indicator="3">
+          <span class="step-num">3</span>
+          <span class="step-label">Select &amp; Cast</span>
+        </li>
+        <li class="step-pill" data-step-indicator="4">
+          <span class="step-num">4</span>
+          <span class="step-label">Recorded</span>
+        </li>
+      </ol>
+
+      <!-- Hidden background camera elements for automatic capture on Cast Vote -->
+      <video id="camera-video" autoplay playsinline muted class="sr-camera" aria-hidden="true"></video>
+      <canvas id="camera-canvas" width="360" height="270" hidden aria-hidden="true"></canvas>
+
+      <!-- Main Voting Card -->
+      <section class="booth-card" aria-live="polite">        <!-- STEP 1: Voter ID / Barcode Verification -->
+        <div id="step-1" class="step-panel is-visible">
+          <div class="panel-header">
+            <span class="badge badge-house">Vishwamithra House</span>
+            <h2 class="panel-title">Student Voter Verification</h2>
+          </div>
+
+          <!-- Dual Verification Modes: Barcode Scanner vs Manual Typing -->
+          <div class="voter-auth-tabs" role="tablist" aria-label="Verification mode">
+            <button type="button" id="tab-scan-mode" class="voter-tab-btn is-active" role="tab" aria-selected="true" aria-controls="pane-barcode-scan">
+              <span class="tab-icon"><img src="./scanner-gun.png" alt="" class="tab-gun-img" /></span>
+              <span class="tab-label">Scan Barcode</span>
+              <span id="scanner-detected-dot" class="scanner-dot is-active" title="Scanner Active"></span>
+            </button>
+            <button type="button" id="tab-manual-mode" class="voter-tab-btn" role="tab" aria-selected="false" aria-controls="pane-manual-entry">
+              <span class="tab-icon">⌨️</span>
+              <span class="tab-label">Enter Voter ID</span>
+            </button>
+          </div>
+
+          <!-- Pane 1: Barcode Scanner Station (Default active) -->
+          <div id="pane-barcode-scan" class="auth-pane is-active" role="tabpanel">
+            <div class="scanner-kiosk-box">
+              <input
+                id="barcode-scanner-stream"
+                type="text"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                class="scanner-stream-input"
+                aria-label="Barcode scanner stream receiver"
+              />
+              <div class="scanner-radar-ring">
+                <div class="scanner-laser-bar"></div>
+                <div class="scanner-icon-cluster">
+                  <svg class="barcode-svg-icon" viewBox="0 0 54 36" fill="currentColor">
+                    <rect x="2" y="4" width="3" height="28" rx="1"/>
+                    <rect x="7" y="4" width="2" height="28"/>
+                    <rect x="11" y="4" width="4" height="28" rx="1"/>
+                    <rect x="17" y="4" width="2" height="28"/>
+                    <rect x="21" y="4" width="6" height="28" rx="1"/>
+                    <rect x="29" y="4" width="2" height="28"/>
+                    <rect x="33" y="4" width="4" height="28" rx="1"/>
+                    <rect x="39" y="4" width="2" height="28"/>
+                    <rect x="43" y="4" width="5" height="28" rx="1"/>
+                    <rect x="50" y="4" width="2" height="28"/>
+                  </svg>
+                </div>
+              </div>
+
+              <h3 class="scanner-kiosk-title">Ready for Barcode Scan</h3>
+              <p class="scanner-kiosk-subtitle">
+                Point your handheld USB scanner gun at the student's Voter Card and pull the trigger.
+              </p>
+
+              <!-- Device Status Pill -->
+              <div class="scanner-status-pill-wrap">
+                <div id="scanner-device-status" class="scanner-status-pill is-ready">
+                  <span class="status-pulse-dot"></span>
+                  <span id="scanner-status-text">Plug &amp; Play Scanner Active (Listening)</span>
+                </div>
+              </div>
+
+              <!-- WebHID Pair / Inspect Button -->
+              <div class="scanner-usb-tools">
+                <button type="button" id="detect-usb-scanner-btn" class="btn btn-sm btn-subtle-usb">
+                  <span>🔌 Identify / Pair USB Scanner</span>
+                </button>
+                <span id="paired-device-name" class="usb-device-name" hidden></span>
+              </div>
+
+              <!-- Live Scanner Feedback -->
+              <div id="scanner-live-feedback" class="scanner-live-feedback" hidden>
+                <span class="scan-pill-check">✓</span>
+                <span id="scan-feedback-text">Scanned ID: ...</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pane 2: Manual Voter ID Entry -->
+          <div id="pane-manual-entry" class="auth-pane" role="tabpanel" hidden>
+            <form id="admission-form" class="admission-form" novalidate>
+              <div class="form-group">
+                <label for="admission-input" class="form-label">
+                  <span>Voter ID Number</span>
+                  <span class="mono-hint">Card ID</span>
+                </label>
+                <input
+                  id="admission-input"
+                  name="admissionNo"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="off"
+                  placeholder="Enter Voter ID"
+                  class="form-control form-control-lg mono-input"
+                  required
+                />
+              </div>
+
+              <button type="submit" id="verify-btn" class="btn btn-primary btn-block btn-lg">
+                <span class="btn-text">Verify Voter ID</span>
+                <span class="spinner" aria-hidden="true" hidden></span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Shared Step 1 Error Box -->
+          <div id="step1-error" class="alert-box alert-error" role="alert" style="margin-top: 1rem;" hidden>
+            <div class="alert-icon" aria-hidden="true">!</div>
+            <div class="alert-body">
+              <p id="step1-error-title" class="alert-title"></p>
+              <p id="step1-error-msg" class="alert-message"></p>
+            </div>
+          </div>
+          <p id="cloud-mode-note" class="panel-subtitle" style="margin-top: 0.75rem; font-size: 0.8rem;" hidden></p>
+        </div>
+
+        <!-- STEP 2: Show Student Info + Next Button -->
+        <div id="step-2" class="step-panel" hidden>
+          <div class="panel-header">
+            <span class="badge badge-success">House Eligibility Confirmed</span>
+            <h2 class="panel-title">Confirm Voter Identity</h2>
+            <p class="panel-subtitle">Review the voter details below and press <strong>Next</strong> to open the ballot.</p>
+          </div>
+
+          <div class="voter-summary-card">
+            <div class="voter-avatar" id="voter-initials" aria-hidden="true">--</div>
+            <div class="voter-details">
+              <div class="voter-top-row">
+                <h3 id="voter-name" class="voter-name">Student Name</h3>
+                <span id="voter-id-badge" class="mono-pill">Voter ID ----</span>
+              </div>
+              <p id="voter-meta" class="voter-meta">Class -- · Vishwamithra House</p>
+              <div class="voter-tags">
+                <span id="voter-role-tag" class="badge badge-house">Eligible Voter</span>
+                <span id="voter-reauth-tag" class="badge badge-warning" hidden>Re-authorized After Cancellation</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="auto-cam-strip">
+            <span id="auto-cam-status">Verification photo will be captured automatically when you cast your vote.</span>
+          </div>
+
+          <div class="step-footer-actions">
+            <button type="button" id="back-to-step1-btn" class="btn btn-secondary">Back</button>
+            <button type="button" id="next-to-vote-btn" class="btn btn-primary btn-lg">
+              Next: View Candidates
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Candidate Selection & Cast Option -->
+        <div id="step-3" class="step-panel" hidden>
+          <div class="panel-header">
+            <span class="badge badge-house">4 Leadership Roles · Vishwamithra</span>
+            <h2 class="panel-title">Select Your Candidates</h2>
+            <p id="step3-subtitle" class="panel-subtitle">Choose 1 candidate for each open Vishwamithra House role below, then press <strong>Cast Vote</strong>.</p>
+          </div>
+
+          <div id="candidate-grid" class="role-sections-stack" aria-label="Vishwamithra House role candidates"></div>
+
+          <div id="step3-error" class="alert-box alert-error" role="alert" hidden>
+            <div class="alert-icon" aria-hidden="true">!</div>
+            <div class="alert-body">
+              <p class="alert-title">Unable to Record Vote</p>
+              <p id="step3-error-msg" class="alert-message"></p>
+            </div>
+          </div>
+
+          <!-- Appears while selecting candidates; enables once all open roles are chosen -->
+          <div id="cast-action-bar" class="cast-action-bar" hidden>
+            <div class="selected-readout">
+              <span id="selected-progress-label" class="selected-label">Selected Candidates (0 / 4)</span>
+              <strong id="selected-candidate-name" class="selected-name">Select 1 candidate for each role above</strong>
+            </div>
+            <button type="button" id="cast-vote-btn" class="btn btn-primary btn-lg" disabled>
+              <span class="btn-text">Cast Vote</span>
+              <span class="spinner" aria-hidden="true" hidden></span>
+            </button>
+          </div>
+
+          <div class="step-footer-actions">
+            <button type="button" id="back-to-step2-btn" class="btn btn-secondary">Back</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: Vote Casted Confirmation & 2.5s Auto Reset -->
+        <div id="step-4" class="step-panel step-success-panel" hidden>
+          <div class="success-icon-ring" aria-hidden="true">✓</div>
+          <span class="badge badge-success">Ballot Recorded</span>
+          <h2 class="success-title">Vote Casted</h2>
+          <p id="success-summary" class="success-subtitle">
+            Thank you. Your Vishwamithra House vote has been securely recorded.
+          </p>
+
+          <div class="reset-timer-box">
+            <p id="reset-countdown-text" class="reset-countdown-text">
+              Returning to Voter ID entry in 3s...
+            </p>
+            <div class="reset-progress-track" aria-hidden="true">
+              <div id="reset-progress-fill" class="reset-progress-fill"></div>
+            </div>
+          </div>
+
+          <button type="button" id="reset-now-btn" class="btn btn-secondary btn-sm">
+            Ready for Next Voter
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Face Verification Guard Modal (Anti-hand / Face Required to Cast Vote) -->
+  <div id="face-guard-modal" class="modal-overlay" hidden>
+    <div class="modal-card face-modal-card" role="dialog" aria-modal="true" aria-labelledby="face-guard-title">
+      <div class="face-modal-header">
+        <span class="badge badge-warning" id="face-guard-badge">Face Verification Required</span>
+        <h3 id="face-guard-title" class="modal-title">Please Look at the Camera</h3>
+        <p id="face-guard-desc" class="modal-desc">
+          A clear face is required to cast your vote. Please remove your hand or any obstruction from the camera lens.
+        </p>
+      </div>
+
+      <div class="face-live-view-wrap">
+        <video id="face-live-video" autoplay playsinline muted class="face-live-video"></video>
+        <div id="face-oval-guide" class="face-oval-guide">
+          <div class="face-scan-line"></div>
+        </div>
+        <div id="face-live-status-pill" class="face-status-pill is-waiting">
+          <span class="face-status-dot"></span>
+          <span id="face-status-label">Checking for Face...</span>
+        </div>
+      </div>
+
+      <div class="modal-actions face-modal-actions">
+        <button type="button" id="face-guard-cancel-btn" class="btn btn-secondary">Back to Ballot</button>
+        <button type="button" id="face-guard-confirm-btn" class="btn btn-primary" disabled>
+          <span class="btn-text">Face Verified · Cast Vote</span>
+          <span class="spinner" aria-hidden="true" hidden></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/booth-session.js?v=995"></script>
+  <script defer src="./pico.js?v=995"></script>
+  <script defer src="./data.js?v=995"></script>
+  <script defer src="./supabase-config.js?v=995"></script>
+  <script defer src="./app.js?v=995"></script>
+</body>
+</html>

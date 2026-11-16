@@ -1,0 +1,44 @@
+The **0 values** shown in your screenshot happened because a missing closing bracket in `app.js` temporarily prevented the script from booting in your browser, leaving the HTML fallback numbers (`0`) visible.
+
+This has been **completely resolved and verified**:
+
+---
+
+### What Was Fixed & Updated
+
+1. **Syntax Fix & Immediate 966 Voter Paint**
+   - Fixed the closing brace in [app.js](file:///c:/Users/Abhinav/Documents/Election%20Spr%202026/Houses/admin/app.js) and [house.js](file:///c:/Users/Abhinav/Documents/Election%20Spr%202026/Houses/admin/house.js).
+   - Updated `boot()` and `getSnapshot()` so all **87 teachers** are immediately merged with the 879 students, displaying **966 Total Eligible Voters** right away.
+
+2. **Teachers in School Cabinet & All Houses**
+   - **School Cabinet Filter:** Selecting **School Cabinet** in the Master Register dropdown on [index.html](file:///c:/Users/Abhinav/Documents/Election%20Spr%202026/Houses/admin/index.html) now lists all **87 teachers** (with their subject and faculty designation).
+   - **House Filters:** Since teachers are universally eligible, selecting any house also includes the teaching faculty alongside house students.
+   - **School Cabinet Card:** Shows `0 / 87 voted · Teachers Only`.
+
+3. **"Cancelled By" Display in Cancelled Ballots**
+   - In the **Cancelled Ballots** view on [index.html](file:///c:/Users/Abhinav/Documents/Election%20Spr%202026/Houses/admin/index.html), [house.html](file:///c:/Users/Abhinav/Documents/Election%20Spr%202026/Houses/admin/house.html), and [edit-votes.html](file:///c:/Users/Abhinav/Documents/Election%20Spr%202026/Houses/admin/edit-votes.html), every cancelled ballot shows **Cancelled By** (e.g. `👤 rc4616105@gmail.com`).
+
+4. **➕ Add Candidate Option in Edit & Manage Votes**
+   - Added the **"➕ Add Candidate to Participate"** button in the header of [edit-votes.html](file:///c:/Users/Abhinav/Documents/Election%20Spr%202026/Houses/admin/edit-votes.html).
+   - The modal lets you specify:
+     - **Full Name**
+     - **Contesting In:** Any of the 6 Houses or **School Cabinet**
+     - **Post / Role:** Dynamically populates based on selection (e.g. *Boys Captain, Girls Captain, Vice Captains* for Houses, or *School President, Vice President, Literary Secretary, Sports Secretary, Cultural Secretary* for School Cabinet)
+     - **Class & Section**
+     - **Voter ID / Admission No**
+     - **Campaign Motto / Tagline**
+   - Saves directly to the Supabase `candidates` table and updates live voting screens immediately.
+
+---
+
+### How to Verify
+
+1. **Hard Refresh the Admin Dashboard:**
+   - Go to [http://127.0.0.1:5500/Houses/admin/index.html](http://127.0.0.1:5500/Houses/admin/index.html) and press **Ctrl + Shift + R** (or **F5**).
+   - You will see **966 Total Eligible Voters** and all 6 house cards + School Cabinet card rendered properly.
+   - Switch the House filter dropdown to **School Cabinet** to view all 87 teachers in the Master Register.
+
+2. **Test Adding a Candidate:**
+   - Open [http://127.0.0.1:5500/Houses/admin/edit-votes.html](http://127.0.0.1:5500/Houses/admin/edit-votes.html).
+   - Click the green **➕ Add Candidate to Participate** button in the top right.
+   - Select either a House or School Cabinet and save.

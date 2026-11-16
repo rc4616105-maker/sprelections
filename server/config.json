@@ -1,0 +1,18 @@
+{
+  "smtp": {
+    "host": "smtp.gmail.com",
+    "port": 587,
+    "user": "sprelections@gmail.com",
+    "pass": "tmhspxlaahlxklhm",
+    "sender_name": "SPR School Elections"
+  },
+  "authorized_admins": [
+    {
+      "name": "rc4616105",
+      "email": "rc4616105@gmail.com",
+      "password": "Spr-Elections@rc4616105"
+    }
+  ],
+  "allow_all_verified_emails": false,
+  "otp_expiry_seconds": 300
+}

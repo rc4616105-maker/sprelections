@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>House Administration — School House Elections 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css?v=985" />
+  <script src="./admin-auth.js?v=6"></script>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+      <a href="./index.html" class="back-link">← All Houses</a>
+
+      <div class="sidebar-house-header">
+        <div class="sidebar-eyebrow">House Administration</div>
+        <h1 id="sidebar-house-title" class="sidebar-house-title">House</h1>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="House sections">
+        <button type="button" class="nav-btn is-active" data-view="graphs">Graphs</button>
+        <button type="button" class="nav-btn" data-view="voters">Voters</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span class="badge badge-muted">Supabase Live Only</span>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow" id="page-eyebrow">Live House Election Analytics <span class="live-pulse-badge" title="Live Auto-Sync: Updates automatically every 2 seconds without refreshing"><span class="pulse-dot"></span> Live Sync (2s)</span></div>
+          <h2 id="house-page-title" class="page-title">Participants Vote Comparison</h2>
+          <p id="house-page-sub" class="page-sub">Live candidate vote comparison based on accepted Supabase ballots.</p>
+        </div>
+        <div class="topbar-actions">
+          <button type="button" id="refresh-btn" class="btn btn-primary">Refresh Now</button>
+        </div>
+      </header>
+
+      <div id="sb-offline-banner" class="sb-offline-banner" role="alert" hidden>
+        <div>
+          <strong>Supabase Not Connected</strong> — <span id="sb-offline-msg">House Admin reads votes strictly from Supabase. Open <a href="./index.html" style="color:inherit;text-decoration:underline;font-weight:700;">All Houses Admin</a> to connect &amp; sync.</span>
+        </div>
+      </div>
+
+      <!-- House Summary KPIs (Clickable to inspect detailed table) -->
+      <section class="stats-grid" aria-label="House totals">
+        <button type="button" class="stat-card stat-card-btn" data-hkpi-filter="eligible">
+          <span class="stat-label">Eligible Voters</span>
+          <span id="hkpi-eligible" class="stat-value">0</span>
+          <span class="stat-note">Registered in house · View list →</span>
+        </button>
+        <button type="button" class="stat-card stat-card-btn" data-hkpi-filter="accepted">
+          <span class="stat-label">Accepted Votes</span>
+          <span id="hkpi-accepted" class="stat-value">0</span>
+          <span id="hkpi-turnout" class="stat-note">0% turnout · View table →</span>
+        </button>
+        <button type="button" class="stat-card stat-card-btn" data-hkpi-filter="cancelled">
+          <span class="stat-label">Cancelled Votes</span>
+          <span id="hkpi-cancelled" class="stat-value">0</span>
+          <span class="stat-note">Excluded from tally · View list →</span>
+        </button>
+        <button type="button" class="stat-card stat-card-btn" data-hkpi-filter="remaining">
+          <span class="stat-label">Not Voted Yet</span>
+          <span id="hkpi-remaining" class="stat-value">0</span>
+          <span class="stat-note">Pending voters · View list →</span>
+        </button>
+      </section>
+
+      <!-- Drill-down Table Panel when any House KPI card above is clicked -->
+      <section id="house-drilldown-panel" class="panel-card" style="margin-bottom: 1.5rem;" hidden>
+        <div class="panel-head-row">
+          <div>
+            <h3 id="house-drilldown-title" class="panel-heading">House Student &amp; Ballot List</h3>
+            <p id="house-drilldown-subtitle" class="panel-caption"></p>
+          </div>
+          <button type="button" id="close-house-drilldown-btn" class="btn btn-secondary">Close List</button>
+        </div>
+
+        <div class="filters-bar" style="margin-top: 0.75rem;">
+          <input id="house-drilldown-search" type="search" class="form-control" placeholder="Search Voter ID or Student Name..." />
+          <select id="house-drilldown-class-filter" class="form-control" aria-label="Filter by Class">
+            <option value="">All Classes</option>
+          </select>
+          <select id="house-drilldown-section-filter" class="form-control" aria-label="Filter by Section">
+            <option value="">All Sections</option>
+          </select>
+        </div>
+
+        <div class="table-container" style="margin-bottom: 0;">
+          <table class="data-table">
+            <thead id="house-drilldown-thead"></thead>
+            <tbody id="house-drilldown-tbody"></tbody>
+          </table>
+          <div id="house-drilldown-empty" class="empty-state" hidden>No matching records found.</div>
+        </div>
+      </section>
+
+      <!-- VIEW 1: GRAPHS (Default) -->
+      <section id="view-graphs" class="house-view">
+        <div id="role-filter-bar" class="role-filter-bar" role="tablist" aria-label="Filter graphs by leadership role">
+          <button type="button" class="role-tab-btn is-active" data-role-filter="ALL">All 4 Roles</button>
+          <button type="button" class="role-tab-btn" data-role-filter="CAPTAIN_BOY">Boys Captain (10B)</button>
+          <button type="button" class="role-tab-btn" data-role-filter="CAPTAIN_GIRL">Girls Captain (10G)</button>
+          <button type="button" class="role-tab-btn" data-role-filter="VICE_CAPTAIN_BOY">Boys Vice Captain (9B)</button>
+          <button type="button" class="role-tab-btn" data-role-filter="VICE_CAPTAIN_GIRL">Girls Vice Captain (9G)</button>
+        </div>
+
+        <div id="role-graphs-grid" class="role-graphs-grid"></div>
+      </section>
+
+      <!-- VIEW 2: VOTERS (Master List of House Students + Cancel + View Image) -->
+      <section id="view-voters" class="house-view" hidden>
+        <div class="filters-bar">
+          <input id="voter-search" type="search" class="form-control" placeholder="Search Voter ID or Student Name..." />
+          <select id="voter-status-filter" class="form-control" aria-label="Filter by Status">
+            <option value="">All Students</option>
+            <option value="voted">Voted Only</option>
+            <option value="not_voted">Not Voted Only</option>
+            <option value="cancelled">Cancelled Only</option>
+          </select>
+          <select id="voter-class-filter" class="form-control" aria-label="Filter by Class">
+            <option value="">All Classes</option>
+          </select>
+          <select id="voter-section-filter" class="form-control" aria-label="Filter by Section">
+            <option value="">All Sections</option>
+          </select>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Voter ID</th>
+                <th>Student</th>
+                <th>Status</th>
+                <th>Voted For</th>
+                <th>Photo</th>
+                <th>Cast Time</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="voters-tbody"></tbody>
+          </table>
+          <div id="voters-empty" class="empty-state" hidden>No students match the selected filter.</div>
+        </div>
+
+        <div class="panel-card" id="cancelled-history-card" hidden>
+          <div class="panel-head-row">
+            <h3 class="panel-heading">Cancelled Vote History</h3>
+            <p class="panel-caption">Preserved audit records for cancelled ballots in this house.</p>
+          </div>
+          <div class="table-container" style="margin-bottom: 0;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Voter ID</th>
+                  <th>Student</th>
+                  <th>Cancelled Status</th>
+                  <th>Photo</th>
+                  <th>Cancelled By</th>
+                  <th>Cancelled Time</th>
+                </tr>
+              </thead>
+              <tbody id="cancelled-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Cancel Vote Modal -->
+  <div id="cancel-modal" class="modal-overlay" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="cancel-modal-title">
+      <h3 id="cancel-modal-title" class="modal-title">Cancel Student Vote</h3>
+      <p id="cancel-modal-desc" class="modal-desc"></p>
+      <p id="cancel-error-text" class="stat-note" style="color: #b91c1c; margin-top: 0.4rem;" hidden></p>
+      <div class="modal-actions">
+        <button type="button" id="cancel-modal-close" class="btn btn-secondary">Close</button>
+        <button type="button" id="confirm-cancel-btn" class="btn btn-danger">Confirm Cancel &amp; Allow Re-vote</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete / Clear Voter Ballots Modal -->
+  <div id="delete-modal" class="modal-overlay" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+      <h3 id="delete-modal-title" class="modal-title">Delete Student Ballots</h3>
+      <p id="delete-modal-desc" class="modal-desc"></p>
+      <p id="delete-error-text" class="stat-note" style="color: #b91c1c; margin-top: 0.4rem;" hidden></p>
+      <div class="modal-actions">
+        <button type="button" id="delete-modal-close" class="btn btn-secondary">Close</button>
+        <button type="button" id="confirm-delete-btn" class="btn btn-solid-danger">Confirm Delete &amp; Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo Inspection Modal -->
+  <div id="photo-modal" class="modal-overlay" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="photo-modal-title">
+      <h3 id="photo-modal-title" class="modal-title">Voter Verification Photo</h3>
+      <p id="photo-modal-meta" class="modal-desc"></p>
+      <img id="photo-modal-img" class="modal-photo-preview" alt="Voter verification capture" />
+      <div class="modal-actions">
+        <button type="button" id="photo-modal-close" class="btn btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script defer src="./data.js?v=975"></script>
+  <script defer src="./teachers.js?v=975"></script>
+  <script defer src="./supabase-config.js?v=998"></script>
+  <script defer src="./house.js?v=998"></script>
+</body>
+</html>
+

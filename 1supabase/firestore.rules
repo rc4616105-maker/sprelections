@@ -1,0 +1,537 @@
+rules_version = '2';
+
+// ===============================================================
+// Assumed Data Model — School House Elections 2026 (elections-101e0)
+// ===============================================================
+//
+// Collections: Bishma, Gurudrona, Hanuman, Karna, Vasistha, Vishwamithra
+// Document ID: {studentId} (Student Admission / Voting ID, e.g., "0000", "7005", or Console doc ID)
+// Fields (13 required + optional attempt photos / History):
+//   - Admission No.: string (required, immutable, 1..32 chars; must equal studentId on create)
+//   - Name: string (required, immutable once voted/cancelled, 1..150 chars)
+//   - Class: string (required, immutable once voted/cancelled, 1..30 chars)
+//   - Section: string (required, immutable once voted/cancelled, 0..80 chars)
+//   - House: string (required, immutable once set, must equal collection name)
+//   - Final: string (required, enum: "Not Voted" | "Voted" | "Cancelled")
+//   - Vote: string (required, candidate name 1..150 chars when "Voted"; "" when "Not Voted" or "Cancelled")
+//   - CandidateId: string | null (required key, 1..80 chars when "Voted"; null when "Not Voted"; string | null when "Cancelled")
+//   - Position: string | null (required key, <= 100 chars)
+//   - BallotId: string | null (required key, 1..100 chars when "Voted"; null when "Not Voted"; string | null when "Cancelled")
+//   - CastAt: string | null (required key, 1..64 chars when "Voted"; null when "Not Voted"; string | null when "Cancelled")
+//   - CancelledAt: string | null (required key, null when "Not Voted"; 1..64 chars when "Cancelled"; string | null when "Voted")
+//   - Photo: string (required, "" or image data URL <= 307200 chars; "" when "Not Voted")
+//   - ActivePhotoField: string | null (optional, e.g. "Photo", "Photo2", ..., "Photo10")
+//   - Photo2..Photo10: string | null (optional, only after vote/cancel, "" or image data URL <= 307200 chars)
+//   - History: list of maps (optional, max 10 cancelled attempt objects, append-only)
+//
+// Collection: Candidates
+// Document ID: {candId} (e.g., "CAND_BISHMA_A")
+// Fields:
+//   - Supports canonical camelCase (id, admissionNo, fullName, className, section, houseCode,
+//     positionId, positionName, tagline, isApproved) or PascalCase equivalents, plus optional photo.
+//
+// Collection: AuditLogs
+// Document ID: {logId} (append-only, immutable after create)
+// Fields:
+//   - Supports canonical camelCase or PascalCase audit fields (id/Id/LogId, action/Action,
+//     ballotId/BallotId, admissionNo/AdmissionNo, studentName/Name, houseCode/House,
+//     reason/Reason, actor/Actor, createdAt/CreatedAt/timestamp/Timestamp, etc.).
+//
+// Document: _meta/health
+//   - Unauthenticated get probe used by booths and Admin console to verify Firestore availability.
+//
+// ===============================================================
+// AUTHENTICATION TRANSITION NOTICE (Setup / Testing Phase)
+// ===============================================================
+// Firebase Authentication is NOT yet enabled on the static booths or admin/
+// pages during initial setup & testing. These prototype rules allow the static
+// browser client to read and run validated transactions without Auth, while
+// strictly enforcing schema, house isolation, anti-double-vote transitions,
+// size limits, and immutable audit logs.
+//
+// BEFORE PRODUCTION ELECTION DAY:
+//   1. Add Firebase Auth login to admin/ (Principal & authorized staff) and set
+//      a custom claim `admin: true` (or verified Admin email in `isAdmin()`).
+//   2. Uncomment the `isAdmin()` / `isAuthenticated()` checks marked with
+//      `[ENABLE AFTER ADMIN AUTH]` below so only signed-in Admins can list
+//      full identified voter tables/photos, cancel votes, seed rosters,
+//      manage candidates, or read AuditLogs.
+// ===============================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Authentication & Authorization Helpers
+    // ===============================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      // After setting Firebase Auth custom claim `{ admin: true }` for Principal/staff accounts,
+      // optionally add verified email checks here if not using custom claims alone.
+      return isAuthenticated() &&
+        (request.auth.token.admin == true || request.auth.token.role == 'admin');
+    }
+
+    // ===============================================================
+    // Generic Validation Helpers
+    // ===============================================================
+
+    function hasRequiredFields(data, fields) {
+      return data.keys().hasAll(fields);
+    }
+
+    function hasOnlyAllowedFields(data, fields) {
+      return data.keys().hasOnly(fields);
+    }
+
+    function areImmutableFieldsUnchanged(fields) {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny(fields);
+    }
+
+    function isBoundedString(val, minLen, maxLen) {
+      return val is string && val.size() >= minLen && val.size() <= maxLen;
+    }
+
+    function isOptionalBoundedString(data, field, minLen, maxLen) {
+      return !(field in data) || isBoundedString(data[field], minLen, maxLen);
+    }
+
+    function isOptionalNullableString(data, field, minLen, maxLen) {
+      return !(field in data) ||
+        data[field] == null ||
+        isBoundedString(data[field], minLen, maxLen);
+    }
+
+    function isValidHouseName(val) {
+      return val in ['Bishma', 'Gurudrona', 'Hanuman', 'Karna', 'Vasistha', 'Vishwamithra'];
+    }
+
+    function isValidHouseCode(val) {
+      return val in ['BISHMA', 'GURUDRONA', 'HANUMAN', 'KARNA', 'VASISTHA', 'VISHWAMITHRA'];
+    }
+
+    // O(1) prefix validation on JPEG/JPG/PNG/WEBP data URLs (blocks SVG/HTML XSS & >300KB DoS)
+    function isValidPhotoValue(val) {
+      return val is string &&
+        val.size() <= 307200 &&
+        (
+          val == '' ||
+          (val.size() > 23 && val[0:23] == 'data:image/jpeg;base64,') ||
+          (val.size() > 23 && val[0:23] == 'data:image/webp;base64,') ||
+          (val.size() > 22 && val[0:22] == 'data:image/png;base64,') ||
+          (val.size() > 22 && val[0:22] == 'data:image/jpg;base64,')
+        );
+    }
+
+    function isValidOptionalPhotoField(data, key) {
+      return !(key in data) || data[key] == null || isValidPhotoValue(data[key]);
+    }
+
+    function hasValidOptionalAttemptPhotos(data) {
+      return isValidOptionalPhotoField(data, 'Photo2') &&
+        isValidOptionalPhotoField(data, 'Photo3') &&
+        isValidOptionalPhotoField(data, 'Photo4') &&
+        isValidOptionalPhotoField(data, 'Photo5') &&
+        isValidOptionalPhotoField(data, 'Photo6') &&
+        isValidOptionalPhotoField(data, 'Photo7') &&
+        isValidOptionalPhotoField(data, 'Photo8') &&
+        isValidOptionalPhotoField(data, 'Photo9') &&
+        isValidOptionalPhotoField(data, 'Photo10');
+    }
+
+    function isNullOrAbsent(data, key) {
+      return !(key in data) || data[key] == null;
+    }
+
+    function hasNoAttemptPhotos(data) {
+      return isNullOrAbsent(data, 'Photo2') &&
+        isNullOrAbsent(data, 'Photo3') &&
+        isNullOrAbsent(data, 'Photo4') &&
+        isNullOrAbsent(data, 'Photo5') &&
+        isNullOrAbsent(data, 'Photo6') &&
+        isNullOrAbsent(data, 'Photo7') &&
+        isNullOrAbsent(data, 'Photo8') &&
+        isNullOrAbsent(data, 'Photo9') &&
+        isNullOrAbsent(data, 'Photo10');
+    }
+
+    // ===============================================================
+    // House Voter Document Validators (/<House>/{studentId})
+    // ===============================================================
+
+    function isValidHistoryEntry(entry) {
+      return entry is map &&
+        entry.keys().size() >= 1 &&
+        entry.keys().size() <= 14 &&
+        hasOnlyAllowedFields(entry, [
+          'Attempt', 'attempt',
+          'Vote', 'candidateName',
+          'CandidateId', 'candidateId',
+          'Position', 'positionName',
+          'BallotId', 'ballotId',
+          'CastAt', 'castAt',
+          'CancelledAt', 'cancelledAt',
+          'Reason', 'reason', 'CancelReason', 'cancelReason',
+          'CancelledBy', 'cancelledBy', 'Actor', 'actor',
+          'status', 'Status',
+          'photo', 'Photo', 'photoDataUrl', 'photoKey', 'photoField'
+        ]) &&
+        (!('Attempt' in entry) || (entry.Attempt is int && entry.Attempt >= 1 && entry.Attempt <= 20)) &&
+        (!('attempt' in entry) || (entry.attempt is int && entry.attempt >= 1 && entry.attempt <= 20)) &&
+        isOptionalBoundedString(entry, 'Vote', 0, 150) &&
+        isOptionalBoundedString(entry, 'candidateName', 0, 150) &&
+        isOptionalNullableString(entry, 'CandidateId', 0, 80) &&
+        isOptionalNullableString(entry, 'candidateId', 0, 80) &&
+        isOptionalNullableString(entry, 'Position', 0, 100) &&
+        isOptionalNullableString(entry, 'positionName', 0, 100) &&
+        isOptionalNullableString(entry, 'BallotId', 0, 100) &&
+        isOptionalNullableString(entry, 'ballotId', 0, 100) &&
+        isOptionalNullableString(entry, 'CastAt', 0, 64) &&
+        isOptionalNullableString(entry, 'castAt', 0, 64) &&
+        isOptionalNullableString(entry, 'CancelledAt', 0, 64) &&
+        isOptionalNullableString(entry, 'cancelledAt', 0, 64) &&
+        isOptionalNullableString(entry, 'Reason', 0, 300) &&
+        isOptionalNullableString(entry, 'reason', 0, 300) &&
+        isOptionalNullableString(entry, 'CancelReason', 0, 300) &&
+        isOptionalNullableString(entry, 'cancelReason', 0, 300) &&
+        isOptionalNullableString(entry, 'CancelledBy', 0, 120) &&
+        isOptionalNullableString(entry, 'cancelledBy', 0, 120) &&
+        isOptionalNullableString(entry, 'Actor', 0, 120) &&
+        isOptionalNullableString(entry, 'actor', 0, 120) &&
+        (!('status' in entry) || entry.status in ['accepted', 'cancelled']) &&
+        (!('Status' in entry) || entry.Status in ['accepted', 'cancelled']) &&
+        isOptionalNullableString(entry, 'photoKey', 0, 32) &&
+        isOptionalNullableString(entry, 'photoField', 0, 32) &&
+        (!('photo' in entry) || entry.photo == null || isValidPhotoValue(entry.photo) ||
+          (entry.photo is string && entry.photo.size() <= 16 && entry.photo.matches('^(Photo|photo)[0-9]{0,2}$'))) &&
+        (!('Photo' in entry) || entry.Photo == null || isValidPhotoValue(entry.Photo) ||
+          (entry.Photo is string && entry.Photo.size() <= 16 && entry.Photo.matches('^(Photo|photo)[0-9]{0,2}$'))) &&
+        (!('photoDataUrl' in entry) || entry.photoDataUrl == null || isValidPhotoValue(entry.photoDataUrl));
+    }
+
+    function isValidFinalStateFields(data) {
+      return (
+        data.Final == 'Not Voted' &&
+        data.Vote is string && data.Vote == '' &&
+        data.CandidateId == null &&
+        (data.Position == null || isBoundedString(data.Position, 0, 100)) &&
+        data.BallotId == null &&
+        data.CastAt == null &&
+        data.CancelledAt == null &&
+        data.Photo is string && data.Photo == ''
+      ) || (
+        data.Final == 'Voted' &&
+        isBoundedString(data.Vote, 1, 150) &&
+        isBoundedString(data.CandidateId, 1, 80) &&
+        (data.Position == null || isBoundedString(data.Position, 0, 100)) &&
+        isBoundedString(data.BallotId, 1, 100) &&
+        isBoundedString(data.CastAt, 1, 64) &&
+        (data.CancelledAt == null || isBoundedString(data.CancelledAt, 1, 64)) &&
+        isValidPhotoValue(data.Photo)
+      ) || (
+        data.Final == 'Cancelled' &&
+        data.Vote is string && data.Vote == '' &&
+        (data.CandidateId == null || isBoundedString(data.CandidateId, 1, 80)) &&
+        (data.Position == null || isBoundedString(data.Position, 0, 100)) &&
+        (data.BallotId == null || isBoundedString(data.BallotId, 1, 100)) &&
+        (data.CastAt == null || isBoundedString(data.CastAt, 1, 64)) &&
+        isBoundedString(data.CancelledAt, 1, 64) &&
+        isValidPhotoValue(data.Photo)
+      );
+    }
+
+    function isValidHouseStudentSchema(data, expectedHouse) {
+      let requiredFields = [
+        'Admission No.', 'Name', 'Class', 'Section', 'House',
+        'Final', 'Vote', 'CandidateId', 'Position', 'BallotId',
+        'CastAt', 'CancelledAt', 'Photo'
+      ];
+      let allowedFields = [
+        'Admission No.', 'Name', 'Class', 'Section', 'House',
+        'Final', 'Vote', 'CandidateId', 'Position', 'BallotId',
+        'CastAt', 'CancelledAt', 'Photo', 'ActivePhotoField',
+        'Photo2', 'Photo3', 'Photo4', 'Photo5', 'Photo6',
+        'Photo7', 'Photo8', 'Photo9', 'Photo10',
+        'History'
+      ];
+      return hasRequiredFields(data, requiredFields) &&
+        hasOnlyAllowedFields(data, allowedFields) &&
+        isBoundedString(data['Admission No.'], 1, 32) &&
+        isBoundedString(data.Name, 1, 150) &&
+        isBoundedString(data.Class, 1, 30) &&
+        isBoundedString(data.Section, 0, 80) &&
+        data.House is string &&
+        data.House == expectedHouse &&
+        data.Final in ['Not Voted', 'Voted', 'Cancelled'] &&
+        isValidFinalStateFields(data) &&
+        (!('ActivePhotoField' in data) || data.ActivePhotoField == null ||
+          (data.ActivePhotoField is string && data.ActivePhotoField.size() <= 16 && data.ActivePhotoField.matches('^(Photo|photo)[0-9]{0,2}$'))) &&
+        hasValidOptionalAttemptPhotos(data) &&
+        (!('History' in data) || (data.History is list && data.History.size() <= 10));
+    }
+
+    function isHistoryAbsentOrEmpty(data) {
+      return !('History' in data) || (data.History is list && data.History.size() == 0);
+    }
+
+    function isHistoryUnchanged(data, prevData) {
+      return (!('History' in prevData) && isHistoryAbsentOrEmpty(data)) ||
+        ('History' in prevData && 'History' in data && data.History == prevData.History);
+    }
+
+    function isValidHistoryOnCancel(data, prevData) {
+      return !('History' in data) ||
+        (data.History is list &&
+         data.History.size() <= 10 &&
+         (
+           ('History' in prevData &&
+            prevData.History is list &&
+            data.History.size() >= prevData.History.size() &&
+            data.History.size() <= prevData.History.size() + 1 &&
+            data.History.hasAll(prevData.History)) ||
+           (!('History' in prevData) && data.History.size() <= 1)
+         ) &&
+         (data.History.size() == 0 || isValidHistoryEntry(data.History[data.History.size() - 1])));
+    }
+
+    function isValidHouseStudentCreate(studentId, expectedHouse) {
+      let data = request.resource.data;
+      return isValidHouseStudentSchema(data, expectedHouse) &&
+        data['Admission No.'] == studentId &&
+        data.Final in ['Not Voted', 'Voted'] &&
+        hasNoAttemptPhotos(data) &&
+        isHistoryAbsentOrEmpty(data);
+    }
+
+    function isValidHouseStudentUpdate(expectedHouse) {
+      let data = request.resource.data;
+      let prev = resource.data;
+      let baseImmutable = areImmutableFieldsUnchanged(['Admission No.']) &&
+        (!('House' in prev) || areImmutableFieldsUnchanged(['House']));
+      let identityUnchanged = areImmutableFieldsUnchanged(['Admission No.', 'Name', 'Class', 'Section']) &&
+        (!('House' in prev) || areImmutableFieldsUnchanged(['House']));
+      return isValidHouseStudentSchema(data, expectedHouse) &&
+        baseImmutable &&
+        (
+          // 1. Roster metadata refresh before voting (Not Voted -> Not Voted)
+          // [ENABLE AFTER ADMIN AUTH]: add `&& isAdmin()`
+          (prev.Final == 'Not Voted' && data.Final == 'Not Voted' &&
+           hasNoAttemptPhotos(data) && isHistoryAbsentOrEmpty(data)) ||
+
+          // 2. First kiosk vote cast (Not Voted -> Voted)
+          // [ENABLE AFTER BOOTH AUTH]: add `&& isAuthenticated()` if using anonymous/kiosk Auth
+          (prev.Final == 'Not Voted' && data.Final == 'Voted' &&
+           identityUnchanged && hasNoAttemptPhotos(data) && isHistoryAbsentOrEmpty(data)) ||
+
+          // 3. Re-vote after cancellation (Cancelled -> Voted)
+          // [ENABLE AFTER BOOTH AUTH]: add `&& isAuthenticated()` if using anonymous/kiosk Auth
+          (prev.Final == 'Cancelled' && data.Final == 'Voted' &&
+           identityUnchanged && isHistoryUnchanged(data, prev)) ||
+
+          // 4. Vote cancellation (Voted -> Cancelled) — blocks double-vote overwrite to Voted/Not Voted
+          // [ENABLE AFTER ADMIN AUTH]: add `&& isAdmin()`
+          (prev.Final == 'Voted' && data.Final == 'Cancelled' &&
+           identityUnchanged && isValidHistoryOnCancel(data, prev)) ||
+
+          // 5. Roster metadata-only merge for already Voted/Cancelled students (Name/Class/Section only)
+          // Strictly blocks modifying Final, Vote, CandidateId, Position, BallotId, CastAt, CancelledAt, photos, or History
+          // [ENABLE AFTER ADMIN AUTH]: add `&& isAdmin()`
+          (prev.Final in ['Voted', 'Cancelled'] &&
+           data.Final == prev.Final &&
+           request.resource.data.diff(resource.data).affectedKeys().hasOnly(['Name', 'Class', 'Section']))
+        );
+    }
+
+    // ===============================================================
+    // Candidate & AuditLog Domain Validators
+    // ===============================================================
+
+    function isValidCandidate(data, candId) {
+      let allowedKeys = [
+        'id', 'admissionNo', 'fullName', 'className', 'section',
+        'houseCode', 'positionId', 'positionName', 'tagline', 'isApproved',
+        'CandidateId', 'AdmissionNo', 'Admission No.', 'Name', 'Class', 'Section',
+        'House', 'HouseCode', 'Position', 'PositionId', 'Tagline', 'IsApproved',
+        'photo', 'Photo'
+      ];
+      let hasName = isOptionalBoundedString(data, 'fullName', 1, 150) &&
+        isOptionalBoundedString(data, 'Name', 1, 150) &&
+        ('fullName' in data || 'Name' in data);
+      let hasHouse = ('houseCode' in data || 'HouseCode' in data || 'House' in data) &&
+        (!('houseCode' in data) || isValidHouseCode(data.houseCode)) &&
+        (!('HouseCode' in data) || isValidHouseCode(data.HouseCode)) &&
+        (!('House' in data) || isValidHouseName(data.House));
+      return data.keys().size() >= 2 &&
+        data.keys().size() <= 16 &&
+        hasOnlyAllowedFields(data, allowedKeys) &&
+        hasName &&
+        hasHouse &&
+        (!('id' in data) || (isBoundedString(data.id, 1, 80) && data.id == candId)) &&
+        (!('CandidateId' in data) || (isBoundedString(data.CandidateId, 1, 80) && data.CandidateId == candId)) &&
+        isOptionalNullableString(data, 'admissionNo', 0, 32) &&
+        isOptionalNullableString(data, 'AdmissionNo', 0, 32) &&
+        isOptionalNullableString(data, 'Admission No.', 0, 32) &&
+        isOptionalNullableString(data, 'className', 0, 40) &&
+        isOptionalNullableString(data, 'Class', 0, 40) &&
+        isOptionalNullableString(data, 'section', 0, 80) &&
+        isOptionalNullableString(data, 'Section', 0, 80) &&
+        isOptionalNullableString(data, 'positionId', 0, 64) &&
+        isOptionalNullableString(data, 'PositionId', 0, 64) &&
+        isOptionalNullableString(data, 'positionName', 0, 100) &&
+        isOptionalNullableString(data, 'Position', 0, 100) &&
+        isOptionalNullableString(data, 'tagline', 0, 250) &&
+        isOptionalNullableString(data, 'Tagline', 0, 250) &&
+        (!('isApproved' in data) || data.isApproved is bool) &&
+        (!('IsApproved' in data) || data.IsApproved is bool) &&
+        (!('photo' in data) || data.photo == null || isValidPhotoValue(data.photo)) &&
+        (!('Photo' in data) || data.Photo == null || isValidPhotoValue(data.Photo));
+    }
+
+    function isValidAuditTimestampField(data, field) {
+      return field in data &&
+        (isBoundedString(data[field], 1, 64) || data[field] is timestamp);
+    }
+
+    function isValidAuditLog(data, logId) {
+      let allowedKeys = [
+        'id', 'logId', 'action', 'ballotId', 'admissionNo', 'studentName',
+        'name', 'house', 'houseCode', 'reason', 'actor', 'createdAt',
+        'timestamp', 'previousVote', 'candidateId', 'candidateName', 'vote', 'details',
+        'Id', 'LogId', 'Action', 'BallotId', 'AdmissionNo', 'Admission No.', 'StudentName',
+        'Name', 'House', 'HouseCode', 'Reason', 'Actor', 'CreatedAt',
+        'Timestamp', 'PreviousVote', 'CandidateId', 'CandidateName', 'Vote', 'Details'
+      ];
+      let hasAction = ('action' in data && isBoundedString(data.action, 1, 64)) ||
+        ('Action' in data && isBoundedString(data.Action, 1, 64));
+      let hasTime = isValidAuditTimestampField(data, 'createdAt') ||
+        isValidAuditTimestampField(data, 'CreatedAt') ||
+        isValidAuditTimestampField(data, 'timestamp') ||
+        isValidAuditTimestampField(data, 'Timestamp');
+      return data.keys().size() >= 2 &&
+        data.keys().size() <= 16 &&
+        hasOnlyAllowedFields(data, allowedKeys) &&
+        hasAction &&
+        hasTime &&
+        (!('id' in data) || (isBoundedString(data.id, 1, 80) && data.id == logId)) &&
+        (!('Id' in data) || (isBoundedString(data.Id, 1, 80) && data.Id == logId)) &&
+        (!('logId' in data) || (isBoundedString(data.logId, 1, 80) && data.logId == logId)) &&
+        (!('LogId' in data) || (isBoundedString(data.LogId, 1, 80) && data.LogId == logId)) &&
+        isOptionalNullableString(data, 'ballotId', 0, 100) &&
+        isOptionalNullableString(data, 'BallotId', 0, 100) &&
+        isOptionalNullableString(data, 'admissionNo', 0, 32) &&
+        isOptionalNullableString(data, 'AdmissionNo', 0, 32) &&
+        isOptionalNullableString(data, 'Admission No.', 0, 32) &&
+        isOptionalNullableString(data, 'studentName', 0, 150) &&
+        isOptionalNullableString(data, 'StudentName', 0, 150) &&
+        isOptionalNullableString(data, 'name', 0, 150) &&
+        isOptionalNullableString(data, 'Name', 0, 150) &&
+        (!('houseCode' in data) || data.houseCode == null || isValidHouseCode(data.houseCode)) &&
+        (!('HouseCode' in data) || data.HouseCode == null || isValidHouseCode(data.HouseCode)) &&
+        (!('house' in data) || data.house == null || isValidHouseName(data.house)) &&
+        (!('House' in data) || data.House == null || isValidHouseName(data.House)) &&
+        isOptionalNullableString(data, 'reason', 0, 300) &&
+        isOptionalNullableString(data, 'Reason', 0, 300) &&
+        isOptionalNullableString(data, 'actor', 0, 120) &&
+        isOptionalNullableString(data, 'Actor', 0, 120) &&
+        isOptionalNullableString(data, 'previousVote', 0, 150) &&
+        isOptionalNullableString(data, 'PreviousVote', 0, 150) &&
+        isOptionalNullableString(data, 'candidateId', 0, 80) &&
+        isOptionalNullableString(data, 'CandidateId', 0, 80) &&
+        isOptionalNullableString(data, 'candidateName', 0, 150) &&
+        isOptionalNullableString(data, 'CandidateName', 0, 150) &&
+        isOptionalNullableString(data, 'vote', 0, 150) &&
+        isOptionalNullableString(data, 'Vote', 0, 150) &&
+        isOptionalNullableString(data, 'details', 0, 300) &&
+        isOptionalNullableString(data, 'Details', 0, 300);
+    }
+
+    // ===============================================================
+    // Six House Collections (/<House>/{studentId})
+    // ===============================================================
+    // [ENABLE AFTER ADMIN AUTH]:
+    //   - Change `allow read: if true;` to `allow get: if true; allow list: if isAdmin();`
+    //     (or `allow read: if isAdmin();` if booths also authenticate).
+    //   - Restrict `create` (for roster seeding) and `"Voted" -> "Cancelled"` updates to `isAdmin()`.
+
+    match /Bishma/{studentId} {
+      allow read: if true; // [ENABLE AFTER ADMIN AUTH]: restrict `list` / PII reads to `isAdmin()`
+      allow create: if isValidHouseStudentCreate(studentId, 'Bishma');
+      allow update: if isValidHouseStudentUpdate('Bishma');
+      allow delete: if false;
+    }
+
+    match /Gurudrona/{studentId} {
+      allow read: if true; // [ENABLE AFTER ADMIN AUTH]: restrict `list` / PII reads to `isAdmin()`
+      allow create: if isValidHouseStudentCreate(studentId, 'Gurudrona');
+      allow update: if isValidHouseStudentUpdate('Gurudrona');
+      allow delete: if false;
+    }
+
+    match /Hanuman/{studentId} {
+      allow read: if true; // [ENABLE AFTER ADMIN AUTH]: restrict `list` / PII reads to `isAdmin()`
+      allow create: if isValidHouseStudentCreate(studentId, 'Hanuman');
+      allow update: if isValidHouseStudentUpdate('Hanuman');
+      allow delete: if false;
+    }
+
+    match /Karna/{studentId} {
+      allow read: if true; // [ENABLE AFTER ADMIN AUTH]: restrict `list` / PII reads to `isAdmin()`
+      allow create: if isValidHouseStudentCreate(studentId, 'Karna');
+      allow update: if isValidHouseStudentUpdate('Karna');
+      allow delete: if false;
+    }
+
+    match /Vasistha/{studentId} {
+      allow read: if true; // [ENABLE AFTER ADMIN AUTH]: restrict `list` / PII reads to `isAdmin()`
+      allow create: if isValidHouseStudentCreate(studentId, 'Vasistha');
+      allow update: if isValidHouseStudentUpdate('Vasistha');
+      allow delete: if false;
+    }
+
+    match /Vishwamithra/{studentId} {
+      allow read: if true; // [ENABLE AFTER ADMIN AUTH]: restrict `list` / PII reads to `isAdmin()`
+      allow create: if isValidHouseStudentCreate(studentId, 'Vishwamithra');
+      allow update: if isValidHouseStudentUpdate('Vishwamithra');
+      allow delete: if false;
+    }
+
+    // ===============================================================
+    // Supporting Collections
+    // ===============================================================
+
+    match /Candidates/{candId} {
+      allow read: if true; // Approved candidates must remain readable by booths (or `isAuthenticated()`)
+      // [ENABLE AFTER ADMIN AUTH]: `if isAdmin() && isValidCandidate(request.resource.data, candId);`
+      allow create: if isValidCandidate(request.resource.data, candId);
+      allow update: if isValidCandidate(request.resource.data, candId);
+      // [ENABLE AFTER ADMIN AUTH]: `if isAdmin();`
+      allow delete: if false;
+    }
+
+    match /AuditLogs/{logId} {
+      // [ENABLE AFTER ADMIN AUTH]: `allow read: if isAdmin();`
+      allow read: if true;
+      // [ENABLE AFTER ADMIN AUTH]: `if isAdmin() && isValidAuditLog(request.resource.data, logId);`
+      allow create: if isValidAuditLog(request.resource.data, logId);
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    match /_meta/health {
+      allow get: if true;
+      allow list, write: if false;
+    }
+
+    // ===============================================================
+    // Default Deny Fallback for Unknown Collections / Subcollections
+    // ===============================================================
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

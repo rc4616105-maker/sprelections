@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Election Results &amp; Winners — School House Elections 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css?v=964" />
+  <script src="./admin-auth.js?v=6"></script>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+      <a href="./index.html" class="back-link">← All Houses</a>
+
+      <div class="sidebar-house-header">
+        <div class="sidebar-eyebrow">School Election 2026</div>
+        <h1 class="sidebar-house-title" style="color: #92400e;">Election Results</h1>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebar-category-nav" aria-label="Results categories">
+        <button type="button" class="nav-btn is-active" data-cat="CENTRAL">🏛️ School Cabinet</button>
+        <button type="button" class="nav-btn" data-cat="BHEESHMA">Bheeshma House</button>
+        <button type="button" class="nav-btn" data-cat="GURUDRONA">Gurudrona House</button>
+        <button type="button" class="nav-btn" data-cat="HANUMAN">Hanuman House</button>
+        <button type="button" class="nav-btn" data-cat="KARNA">Karna House</button>
+        <button type="button" class="nav-btn" data-cat="VASISTHA">Vasistha House</button>
+        <button type="button" class="nav-btn" data-cat="VISHWAMITHRA">Vishwamithra House</button>
+        <button type="button" class="nav-btn" data-cat="ALL">📊 All 29 Posts</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span class="badge badge-gold">29 Total Posts · Live</span>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow" style="color: #b45309;">Official Live Tally <span class="live-pulse-badge" title="Live Auto-Sync: Updates automatically every 2 seconds without refreshing"><span class="pulse-dot"></span> Live Sync (2s)</span></div>
+          <h2 class="page-title">School Election Results 2026</h2>
+          <p class="page-sub">Select any house or School Cabinet below. Click any post card to open its candidate results table.</p>
+        </div>
+        <div class="topbar-actions">
+          <button type="button" id="print-results-btn" class="btn btn-secondary" title="Export complete election results and all candidates votes to Excel (.xlsx)">🖨️ Print Results</button>
+          <button type="button" id="refresh-btn" class="btn btn-primary">Refresh Now</button>
+        </div>
+      </header>
+
+      <div id="sb-offline-banner" class="sb-offline-banner" role="alert" hidden>
+        <div>
+          <strong>Supabase Not Connected</strong> — <span id="sb-offline-msg">Results read votes strictly from Supabase. Open <a href="./index.html" style="color:inherit;text-decoration:underline;font-weight:700;">All Houses Admin</a> to connect.</span>
+        </div>
+      </div>
+
+      <!-- Quick KPI summary row -->
+      <section class="results-kpi-strip" aria-label="Election results overview">
+        <div class="results-kpi-item">
+          <span class="results-kpi-lbl">Total Accepted Votes</span>
+          <span id="res-kpi-total-votes" class="results-kpi-val mono">0</span>
+        </div>
+        <div class="results-kpi-item">
+          <span class="results-kpi-lbl">Overall Turnout</span>
+          <span id="res-kpi-turnout" class="results-kpi-val mono">0%</span>
+        </div>
+        <div class="results-kpi-item">
+          <span class="results-kpi-lbl">School Cabinet Posts</span>
+          <span class="results-kpi-val">5 Posts</span>
+        </div>
+        <div class="results-kpi-item">
+          <span class="results-kpi-lbl">House Leadership Posts</span>
+          <span class="results-kpi-val">24 Posts</span>
+        </div>
+        <div class="results-kpi-item">
+          <span class="results-kpi-lbl">Total Candidates</span>
+          <span id="res-kpi-candidates" class="results-kpi-val mono">87</span>
+        </div>
+      </section>
+
+      <!-- Category Filter Pills -->
+      <section class="results-category-section" style="margin-bottom: 1.25rem;">
+        <div class="results-filter-pills" id="results-category-pills"></div>
+      </section>
+
+      <!-- Section Header -->
+      <div class="panel-head-row" style="margin-bottom: 1rem; align-items: center;">
+        <div>
+          <h3 id="section-category-title" class="panel-heading" style="font-size: 1.15rem;">Select School Cabinet or House</h3>
+          <p id="section-category-subtitle" class="panel-caption">Click School Cabinet or any House below to open its post results and declared winners.</p>
+        </div>
+      </div>
+
+      <!-- 3-Column House Cards Grid (School Cabinet + 6 Houses) -->
+      <section aria-label="House &amp; Cabinet Results Grid">
+        <div id="results-houses-grid" class="admin-house-grid"></div>
+      </section>
+
+      <!-- Small Screen / Panel that opens directly below when pressed -->
+      <section id="results-drilldown-panel" class="panel-card" style="margin-top: 1.5rem; margin-bottom: 2rem;" hidden>
+        <div class="panel-head-row">
+          <div>
+            <h3 id="drilldown-title" class="panel-heading" style="font-size: 1.25rem;">School Cabinet — Post Winners</h3>
+            <p id="drilldown-subtitle" class="panel-caption">Showing posts, declared winners, class &amp; section, and total votes won.</p>
+          </div>
+          <button type="button" id="close-drilldown-btn" class="btn btn-secondary">Close Winners ✕</button>
+        </div>
+
+        <div class="table-container" style="margin-bottom: 0; margin-top: 0.85rem;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 25%;">Post / Position</th>
+                <th style="width: 28%;" id="th-candidate-col">Winner Candidate</th>
+                <th style="width: 17%;">Class &amp; Sec</th>
+                <th style="width: 15%; text-align: right;">No. of Votes</th>
+                <th style="width: 15%; text-align: center;">Status</th>
+              </tr>
+            </thead>
+            <tbody id="drilldown-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script defer src="./data.js?v=975"></script>
+  <script defer src="./teachers.js?v=975"></script>
+  <script defer src="./supabase-config.js?v=975"></script>
+  <script defer src="./vendor/xlsx.full.min.js"></script>
+  <script defer src="./export-excel.js?v=975"></script>
+  <script defer src="./results.js?v=977"></script>
+</body>
+</html>

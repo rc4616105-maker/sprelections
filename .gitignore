@@ -1,0 +1,9 @@
+# Keep local Supabase keys and local config completely out of Git / open source
+.env
+.env.*
+supabase.local.json
+supabase.local.js
+__pycache__/
+*.pyc
+*.log
+supabase/.temp/

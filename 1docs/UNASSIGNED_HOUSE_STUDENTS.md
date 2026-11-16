@@ -1,0 +1,26 @@
+# Students With Blank House Name in `ELECTIONS HOUSES (1).xlsx`
+
+Total unassigned students: **20** *(excluded from voting rosters until assigned a house; 9 duplicate rows in `CLASS9` sheet were also skipped)*.
+
+| # | Class | S.NO | Temp Voting ID | Student Name | Section | Father Name | Assigned House (Pending) |
+| :---: | :---: | :---: | :---: | :--- | :--- | :--- | :--- |
+| 1 | 7 | 50 | `7050` | VIHAAN REDDY JUKANTI | ALLURI SITARAMARAJU | J. VENKAT RAMANA REDDY | |
+| 2 | 7 | 70 | `7070` | ANSHUL JAKSANI | BHAGATH SINGH | NAGARAJU | |
+| 3 | 7 | 154 | `7154` | MEDHASWI SHANIGARAM | RAJGURU | NARSIMLU | |
+| 4 | 7 | 234 | `7234` | NAKUL VANSH PASULOTI | SUBHASH CHANDRA BOSE | NARESH | |
+| 5 | 7 | 248 | `7248` | GAJAWADA SHAURYA | — | RAJA | |
+| 6 | 7 | 249 | `7249` | HARSHA VARDHAN SINDHE | BHAGATH SINGH | SAHENDAR NATH | |
+| 7 | 8 | 124 | `8124` | VARSHITH PITLA | HEDGEWAR | ANIL KUMAR | |
+| 8 | 8 | 210 | `8210` | SATWIK PRANAV MAJJI | SWAMY VIVEKANANDA | NATARAJ | |
+| 9 | 9 | 54 | `9054` | EMILLIA CINDERELLA | ARYABHATTA | ANIL KUMAR | |
+| 10 | 9 | 106 | `9106` | MOKSHA REDDY JUKANTI | KALPANA CHAWLA | J. VENKAT RAMANA REDDY | |
+| 11 | 9 | 125 | `9125` | RISHWITH GOLLAPUDI | KALPANA CHAWLA | G.SURESH | |
+| 12 | 9 | 137 | `9137` | BHANUJA BHOJAIAHGARI | SATISH DHAWAN | BOJIREDDY | |
+| 13 | 9 | 150 | `9150` | PRAVASTHI BHUKYA | SATISH DHAWAN | MAHIPAL | |
+| 14 | 9 | 169 | `9169` | HAVISH RAGULA | SATISH DHAWAN | SURESH | |
+| 15 | 9 | 209 | `9209` | ANIRUDH AITHA | VIKRAM SARABHAI | SRINIVAS | |
+| 16 | 9 | 229 | `9229` | VISHWAN KAMSALI | VIKRAM SARABHAI | RAGHAVENDRA CHARY | |
+| 17 | 9 | 230 | `9230` | SHIVANNAGARI LEKHYA | — | SATHISH KUMAR | |
+| 18 | 10 | 139 | `10139` | HAYAGREEV NAKKA | JHANSI LAXMI BAI | SHYAM SUNDER | |
+| 19 | 10 | 191 | `10191` | ABHINAV NEERADI | — | DURGAIAH | |
+| 20 | 10 | 192 | `10192` | WISHRUTH NALLANAGULA | — | RAMESH KUMAR | |

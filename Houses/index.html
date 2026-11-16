@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>School House Elections 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-app: #faf6ee;
+      --bg-surface: #f3ece0;
+      --bg-card: #fffdf9;
+      --text-primary: #141413;
+      --text-secondary: #4a4741;
+      --text-muted: #767167;
+      --border-default: #e5dccb;
+      --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color-scheme: light;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    body {
+      margin: 0;
+      min-height: 100svh;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(234, 179, 8, 0.08), transparent 42%),
+        radial-gradient(circle at 88% 0%, rgba(204, 120, 92, 0.1), transparent 45%),
+        var(--bg-app);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.75rem 1.5rem 2.5rem;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      margin-bottom: 0;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .storage-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.28rem 0.35rem 0.28rem 0.75rem;
+      min-height: 46px;
+      border-radius: 9999px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      box-shadow: 0 8px 20px -12px rgba(45, 36, 20, 0.14);
+      transition: border-color 160ms ease, background-color 160ms ease;
+    }
+
+    .storage-pill.is-connected {
+      padding-right: 0.85rem;
+      border-color: rgba(22, 163, 74, 0.4);
+      background: #f3fbf6;
+    }
+
+    .storage-status-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.2rem 0.15rem;
+      border: none;
+      background: transparent;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .storage-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 9999px;
+      flex-shrink: 0;
+      transition: background-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .storage-dot.is-red {
+      background: #dc2626;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.18);
+    }
+
+    .storage-dot.is-green {
+      background: #16a34a;
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
+    }
+
+    .storage-select-btn {
+      min-height: 32px;
+      padding: 0.28rem 0.78rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-default);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+    }
+
+    .storage-select-btn:hover {
+      background: #ebe2d2;
+      border-color: #cc785c;
+    }
+
+    .storage-select-btn:active {
+      transform: scale(0.96);
+    }
+
+    .graphs-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      min-height: 46px;
+      padding: 0.7rem 1.45rem;
+      border-radius: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      color: var(--text-primary);
+      font-size: 0.94rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 8px 20px -12px rgba(45, 36, 20, 0.14);
+      transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease;
+    }
+
+    .graphs-cta:hover {
+      transform: translateY(-2px);
+      background: #ffffff;
+      border-color: #cc785c;
+    }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0.35rem 0 0.5rem;
+      font-family: var(--font-display);
+      font-size: clamp(2.15rem, 4vw, 3.1rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.08;
+      color: var(--text-primary);
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--text-secondary);
+      max-width: 60ch;
+      font-size: 1.02rem;
+    }
+
+    .house-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+      gap: 1.65rem;
+      margin: auto 0;
+    }
+
+    .house-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      min-height: 205px;
+      padding: 2.1rem 1.85rem;
+      border-radius: 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-top: 5px solid var(--card-accent);
+      box-shadow: 0 16px 36px -18px rgba(45, 36, 20, 0.14);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 180ms cubic-bezier(0.23, 1, 0.32, 1), border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+    }
+
+    .house-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--card-accent);
+      background: #ffffff;
+      box-shadow: 0 22px 42px -16px rgba(45, 36, 20, 0.19);
+    }
+
+    .house-name {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: clamp(1.55rem, 2.3vw, 1.82rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      color: var(--card-ink);
+    }
+
+    .house-motto {
+      margin: 0;
+      font-size: 0.96rem;
+      color: var(--text-secondary);
+    }
+
+    .open-link {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.75rem 1.1rem;
+      border-radius: 10px;
+      background: rgba(45, 36, 20, 0.04);
+      border: 1px solid var(--border-default);
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--card-ink);
+      transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+    }
+
+    .house-card:hover .open-link {
+      background: var(--card-accent);
+      color: #ffffff;
+      border-color: var(--card-accent);
+    }
+
+    .cabinet-card {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      background: linear-gradient(135deg, var(--bg-card) 0%, #ecfdf5 100%);
+      border-color: #a7f3d0;
+      border-top: 5px solid var(--card-accent);
+      padding: 1.75rem 2rem;
+    }
+
+    .cabinet-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      flex: 1 1 320px;
+    }
+
+    .cabinet-pill-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.15rem;
+    }
+
+    .cabinet-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #065f46;
+      background: #d1fae5;
+      padding: 0.2rem 0.65rem;
+      border-radius: 9999px;
+      border: 1px solid #a7f3d0;
+    }
+
+    .cabinet-scope {
+      font-family: var(--font-mono);
+      font-size: 0.73rem;
+      font-weight: 700;
+      color: #047857;
+      letter-spacing: 0.04em;
+    }
+
+    .house-roles-summary {
+      margin: 0;
+      font-size: 0.94rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .cabinet-card .open-link {
+      margin-top: 0;
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding: 0.85rem 1.35rem;
+    }
+
+    @media (max-width: 768px) {
+      .cabinet-card {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .cabinet-card .open-link {
+        margin-top: auto;
+      }
+    }
+
+    .portal-steps-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      padding: 1.1rem 1.35rem;
+      border-radius: 14px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+    }
+
+    .portal-step-item {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .portal-step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 9999px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    /* Polling Booth Station Badge */
+    .booth-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.85rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: 9999px;
+      font-size: 0.84rem;
+      color: var(--text-primary);
+      box-shadow: 0 1px 3px rgba(20, 20, 19, 0.04);
+    }
+    .booth-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    }
+    .booth-change-btn {
+      background: transparent;
+      border: none;
+      color: #059669;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: background 150ms ease;
+    }
+    .booth-change-btn:hover {
+      background: rgba(5, 150, 105, 0.1);
+    }
+
+    /* Booth Registration Modal */
+    .booth-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 20, 19, 0.68);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: grid;
+      place-items: center;
+      z-index: 9999;
+      padding: 1.25rem;
+      animation: modalFadeIn 220ms ease-out;
+    }
+    .booth-modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: 20px;
+      padding: 2.25rem 2rem;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 20px 45px rgba(20, 20, 19, 0.22);
+      text-align: center;
+      animation: modalSlideUp 260ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes modalSlideUp {
+      from { opacity: 0; transform: translateY(18px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .booth-modal-icon {
+      font-size: 2.2rem;
+      margin-bottom: 0.4rem;
+    }
+    .booth-modal-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin: 0 0 0.5rem;
+      color: var(--text-primary);
+    }
+    .booth-modal-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin: 0 0 1.5rem;
+      line-height: 1.5;
+    }
+    .booth-input-label {
+      display: block;
+      text-align: left;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .booth-text-input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      border: 1.5px solid var(--border-default);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      background: var(--bg-app);
+      outline: none;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+      margin-bottom: 1rem;
+    }
+    .booth-text-input:focus {
+      border-color: #059669;
+      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+    }
+    .booth-chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .booth-chips-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .booth-chip {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: 9999px;
+      padding: 0.25rem 0.65rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 140ms ease;
+    }
+    .booth-chip:hover {
+      background: #059669;
+      color: #fff;
+      border-color: #059669;
+      transform: translateY(-1px);
+    }
+    .booth-submit-btn {
+      width: 100%;
+      padding: 0.88rem 1.5rem;
+      background: #059669;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.96rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
+      transition: background 150ms ease, transform 150ms ease;
+    }
+    .booth-submit-btn:hover {
+      background: #047857;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="hero">
+      <div>
+        <div class="eyebrow">Official School Elections 2026</div>
+        <h1>School Elections 2026</h1>
+        <p class="subtitle">
+          Select your registered house or School Cabinet booth below to verify your student Voter ID and cast your vote.
+        </p>
+      </div>
+      <div class="hero-actions">
+        <div id="booth-station-badge" class="booth-badge" title="Active Polling Station">
+          <span class="booth-dot"></span>
+          <span class="booth-text">📍 Booth: <strong id="booth-station-name">—</strong><span id="booth-officer-badge" hidden> · Officer: <strong id="booth-officer-name">—</strong></span></span>
+          <button type="button" id="change-booth-btn" class="booth-change-btn">Change</button>
+        </div>
+        <div id="local-storage-slot"></div>
+        <a href="./graphs.html" class="graphs-cta">Graphs</a>
+      </div>
+    </header>
+
+    <section class="house-grid" aria-label="Official Polling Booths">
+      <!-- School Cabinet Central Executive Council -->
+      <a href="./central/index.html" class="house-card cabinet-card" style="--card-accent:#059669; --card-ink:#047857;">
+        <div class="cabinet-content">
+          <div class="cabinet-pill-row">
+            <span class="cabinet-badge">CENTRAL COUNCIL</span>
+            <span class="cabinet-scope">🎓 TEACHERS &amp; FACULTY ONLY</span>
+          </div>
+          <h2 class="house-name" style="color:#047857;">School Cabinet</h2>
+          <p class="house-roles-summary">President &bull; Vice President &bull; Literary Sec &bull; Sports Sec &bull; Social &amp; Cultural Sec</p>
+        </div>
+        <span class="open-link" style="color:#047857;"><span>Enter Cabinet Polling Booth (Teachers Only)</span> <span>&rarr;</span></span>
+      </a>
+
+      <a href="./bheeshma/index.html" class="house-card" style="--card-accent:#eab308; --card-ink:#925c04;">
+        <h2 class="house-name">Bheeshma House</h2>
+        <span class="open-link"><span>Enter Bheeshma House Polling Booth</span> <span>→</span></span>
+      </a>
+
+      <a href="./gurudrona/index.html" class="house-card" style="--card-accent:#2563eb; --card-ink:#1d4ed8;">
+        <h2 class="house-name">Gurudrona House</h2>
+        <span class="open-link"><span>Enter Gurudrona House Polling Booth</span> <span>→</span></span>
+      </a>
+
+      <a href="./hanuman/index.html" class="house-card" style="--card-accent:#f97316; --card-ink:#ea580c;">
+        <h2 class="house-name">Hanuman House</h2>
+        <span class="open-link"><span>Enter Hanuman House Polling Booth</span> <span>→</span></span>
+      </a>
+
+      <a href="./karna/index.html" class="house-card" style="--card-accent:#b91c1c; --card-ink:#991b1b;">
+        <h2 class="house-name">Karna House</h2>
+        <span class="open-link"><span>Enter Karna House Polling Booth</span> <span>→</span></span>
+      </a>
+
+      <a href="./vasistha/index.html" class="house-card" style="--card-accent:#db2777; --card-ink:#be185d;">
+        <h2 class="house-name">Vasistha House</h2>
+        <span class="open-link"><span>Enter Vasistha House Polling Booth</span> <span>→</span></span>
+      </a>
+
+      <a href="./vishwamithra/index.html" class="house-card" style="--card-accent:#7c3aed; --card-ink:#6d28d9;">
+        <h2 class="house-name">Vishwamithra House</h2>
+        <span class="open-link"><span>Enter Vishwamithra House Polling Booth</span> <span>→</span></span>
+      </a>
+    </section>
+
+    <footer class="portal-steps-strip" aria-label="Voting instructions">
+      <div class="portal-step-item">
+        <span class="portal-step-num">1</span>
+        <span>Select your registered house or cabinet booth above</span>
+      </div>
+      <div class="portal-step-item">
+        <span class="portal-step-num">2</span>
+        <span>Scan Barcode or Enter Voter ID</span>
+      </div>
+      <div class="portal-step-item">
+        <span class="portal-step-num">3</span>
+        <span>Select candidates &amp; cast your vote</span>
+      </div>
+    </footer>
+  </main>
+
+  <!-- One-Time Session Polling Booth Registration Modal -->
+  <div id="booth-register-modal" class="booth-modal-backdrop" hidden>
+    <div class="booth-modal-card">
+      <div class="booth-modal-icon">📍</div>
+      <h2 class="booth-modal-title">Register Polling Booth</h2>
+      <p class="booth-modal-desc">
+        Enter the booth name and presiding officer name for this computer station. All votes cast from this device will be tagged with this booth in Supabase.
+      </p>
+
+      <form id="booth-register-form" onsubmit="return false;">
+        <label for="booth-name-input" class="booth-input-label">Booth Name</label>
+        <input
+          type="text"
+          id="booth-name-input"
+          class="booth-text-input"
+          placeholder="e.g. Booth 1, Booth 2"
+          autocomplete="off"
+          required
+        />
+
+        <div class="booth-chips-row" style="margin-bottom: 1rem;">
+          <span class="booth-chips-label">Quick select:</span>
+          <button type="button" class="booth-chip" data-booth="Booth 1">Booth 1</button>
+          <button type="button" class="booth-chip" data-booth="Booth 2">Booth 2</button>
+          <button type="button" class="booth-chip" data-booth="Booth 3">Booth 3</button>
+        </div>
+
+        <label for="officer-name-input" class="booth-input-label">Officer Name</label>
+        <input
+          type="text"
+          id="officer-name-input"
+          class="booth-text-input"
+          placeholder="Enter Officer Name"
+          autocomplete="off"
+        />
+
+        <div class="booth-modal-actions" style="margin-top: 0.5rem;">
+          <button type="submit" id="confirm-booth-btn" class="booth-submit-btn">Confirm &amp; Open Booth Station &rarr;</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="./assets/booth-session.js?v=978"></script>
+  <script defer src="./admin/data.js?v=975"></script>
+  <script defer src="./admin/teachers.js?v=975"></script>
+  <script defer src="./admin/supabase-config.js?v=978"></script>
+  <script>
+    (function () {
+      const modal = document.getElementById("booth-register-modal");
+      const input = document.getElementById("booth-name-input");
+      const officerInput = document.getElementById("officer-name-input");
+      const confirmBtn = document.getElementById("confirm-booth-btn");
+      const changeBtn = document.getElementById("change-booth-btn");
+      const nameEl = document.getElementById("booth-station-name");
+      const officerEl = document.getElementById("booth-officer-name");
+      const officerBadge = document.getElementById("booth-officer-badge");
+      const chips = Array.from(document.querySelectorAll(".booth-chip"));
+
+      function openModal() {
+        const lastBooth = (typeof window.getLastKnownBooth === "function" && window.getLastKnownBooth()) || "Booth 1";
+        const lastOfficer = (typeof window.getLastKnownOfficer === "function" && window.getLastKnownOfficer()) || "";
+        input.value = (typeof window.getRegisteredBooth === "function" && window.getRegisteredBooth()) || lastBooth;
+        if (officerInput) {
+          officerInput.value = (typeof window.getRegisteredOfficer === "function" && window.getRegisteredOfficer()) || lastOfficer;
+        }
+        modal.hidden = false;
+        setTimeout(() => {
+          input.focus();
+          input.select();
+        }, 60);
+      }
+
+      function closeModal() {
+        modal.hidden = true;
+      }
+
+      function applyStation(boothVal, officerVal) {
+        const cleanBooth = (typeof window.setRegisteredBooth === "function" ? window.setRegisteredBooth(boothVal) : (sessionStorage.setItem("election_booth_name", boothVal), boothVal)) || "Booth 1";
+        const cleanOfficer = (typeof window.setRegisteredOfficer === "function" ? window.setRegisteredOfficer(officerVal) : (sessionStorage.setItem("election_officer_name", officerVal || ""), officerVal || "")) || "";
+
+        if (nameEl) nameEl.textContent = cleanBooth;
+        if (officerEl && officerBadge) {
+          if (cleanOfficer) {
+            officerEl.textContent = cleanOfficer;
+            officerBadge.hidden = false;
+          } else {
+            officerBadge.hidden = true;
+          }
+        }
+        closeModal();
+      }
+
+      chips.forEach((c) => {
+        c.addEventListener("click", () => {
+          input.value = c.dataset.booth;
+          if (officerInput) officerInput.focus();
+        });
+      });
+
+      function submitForm() {
+        const bVal = input.value.trim();
+        if (!bVal) {
+          input.focus();
+          return;
+        }
+        const oVal = officerInput ? officerInput.value.trim() : "";
+        applyStation(bVal, oVal);
+      }
+
+      confirmBtn.addEventListener("click", submitForm);
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          if (officerInput && !officerInput.value.trim()) {
+            officerInput.focus();
+          } else {
+            submitForm();
+          }
+        }
+      });
+
+      if (officerInput) {
+        officerInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            submitForm();
+          }
+        });
+      }
+
+      if (changeBtn) {
+        changeBtn.addEventListener("click", () => {
+          openModal();
+        });
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        const currentBooth = typeof window.getRegisteredBooth === "function" ? window.getRegisteredBooth() : "";
+        const currentOfficer = typeof window.getRegisteredOfficer === "function" ? window.getRegisteredOfficer() : "";
+        if (!currentBooth) {
+          openModal();
+        } else {
+          if (nameEl) nameEl.textContent = currentBooth;
+          if (officerEl && officerBadge) {
+            if (currentOfficer) {
+              officerEl.textContent = currentOfficer;
+              officerBadge.hidden = false;
+            } else {
+              officerBadge.hidden = true;
+            }
+          }
+        }
+      });
+    })();
+  </script>
+  <script defer>
+    window.addEventListener("DOMContentLoaded", async () => {
+      if (!window.AdminBackend || !window.PendriveStorage) return;
+      await window.AdminBackend.init();
+      await window.PendriveStorage.mount({
+        container: document.getElementById("local-storage-slot"),
+        houseMeta: null,
+        getSnapshot: () => window.AdminBackend.getSnapshot(),
+      });
+      window.AdminBackend.subscribeUpdates(() => {
+        window.PendriveStorage.syncNow();
+      });
+    });
+  </script>
+</body>
+</html>
