@@ -16,6 +16,26 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
+### 0. House-Wise Storage Isolation, Confidential Winner Results & Delayed Loading Spinner (Nov 17, 2026)
+- **House-Wise Pendrive & Local Storage Isolation (`getHouseDirectory`):**
+  - Resolved directory nesting issue where individual student voter folders (*e.g., `0000_Demo_User`, `7016_SAMANTHVIKA_LANDE`*) and house summary files were saving loose in the root folder of the selected drive.
+  - Implemented `getHouseDirectory(rootHandle, meta)` across all 7 kiosks (`Houses/*/supabase-config.js`) and Admin (`Houses/admin/supabase-config.js`).
+  - All voter folders, photos, and markdown summaries are now strictly encapsulated within their specific house subfolder (*e.g., `bheeshma/0000_Demo_User/photo.jpg`, `hanuman/7016_SAMANTHVIKA_LANDE/photo.jpg`*).
+  - Outdated loose summary files at the drive root are automatically cleaned up safely.
+- **Confidential House Election Results (`result.md` & `<HOUSE>_SUMMARY.md`):**
+  - Redesigned `buildHouseSummaryMarkdown` to strictly present candidate results and winners:
+    - Columns: `Role | Candidate | Admission No | Class | Votes Received | Result`.
+    - Automatically computes and badges candidate status: `🏆 WINNER`, `🤝 Tied (Leading)`, or `Runner-up`.
+    - Completely removed the student voter-by-voter ballot choice table from house backup summaries, upholding strict Secret Ballot confidentiality.
+- **Delayed Fullscreen Loading Circle Overlay (`#loading-overlay`):**
+  - Added modern circular loading spinner card (`.spinner-circle`) with backdrop blur across all 7 kiosks (`index.html`, `styles.css`, `app.js`).
+  - Governed by `startDelayedSpinner` (~350ms delay):
+    - Fast networks (<350ms): overlay is cancelled before appearing, maintaining instantaneous, flicker-free transitions.
+    - Slow networks (>350ms): prominently presents "Recording Ballot..." with an animated spinning ring in house accent color, assuring booth officers and students that Supabase cloud write and pendrive sync are actively executing.
+  - Automatically dismissed in `finally` upon completion or error handling.
+
+---
+
 ### 1. Secret Ballot 1-Row Voter Consolidation Across Entire Admin Suite (Nov 16, 2026 - Late Evening)
 - **Challenge Addressed:**
   - In both `Houses/admin/index.html` (Cancelled Ballots drilldown), `Houses/admin/house.html` (Cancelled Ballots drilldown and Cancelled Vote History), and `Houses/admin/edit-votes.html`, cast and cancelled ballots were previously displayed across 4 separate rows per student, revealing which specific candidates each student picked (*e.g., "Candidate A for Boys Captain"*). This violated the institutional Secret Ballot principle and created privacy controversies if screens were visible to election observers.

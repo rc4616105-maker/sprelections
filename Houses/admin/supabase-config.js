@@ -1072,54 +1072,66 @@
     const votedAdms = new Set(accepted.map((b) => b.admissionNo));
     const cancelled = ballots.filter((b) => b.status === "cancelled");
     const pct = eligible ? Math.round((votedAdms.size / eligible) * 100) : 0;
+    const nowLocal = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
 
     const lines = [
-      `# ${meta.name} House — Local Backup Summary`,
+      `# ${meta.name} House — Election Results`,
       "",
-      `- **Last Updated:** ${new Date().toISOString()}`,
-      `- **Eligible Students:** ${eligible}`,
-      `- **Voters Completed:** ${votedAdms.size} (${pct}% turnout · ${accepted.length} role ballots)`,
+      `- **House:** ${meta.name} House`,
+      `- **Last Updated:** ${nowLocal}`,
+      `- **Total Eligible Voters:** ${eligible}`,
+      `- **Total Voters Cast:** ${votedAdms.size} (${pct}% Turnout · ${accepted.length} accepted ballots)`,
       `- **Cancelled Ballots:** ${cancelled.length}`,
-      `- **Remaining To Vote:** ${Math.max(0, eligible - votedAdms.size)}`,
       "",
-      "## Candidate Tally (Accepted Votes)",
+      "## Candidate Results & Winners",
       "",
-      "| Role | Candidate | Voter ID | Accepted Votes |",
-      "| :--- | :--- | :--- | :---: |",
+      "| Role | Candidate | Admission No | Class | Votes Received | Result |",
+      "| :--- | :--- | :--- | :--- | :---: | :---: |",
     ];
 
+    const byRole = new Map();
     candidates.forEach((c) => {
+      const roleName = c.positionName || c.positionId || "House Leadership";
+      if (!byRole.has(roleName)) byRole.set(roleName, []);
       const count = accepted.filter((b) => b.candidateId === c.id).length;
-      lines.push(`| ${c.positionName} | ${c.fullName} | \`${c.admissionNo}\` | ${count} |`);
+      byRole.get(roleName).push({
+        ...c,
+        votes: count,
+      });
     });
 
-    lines.push(
-      "",
-      "## Recorded Voter Folders",
-      "",
-      "| Folder | Student | Status | Choices |",
-      "| :--- | :--- | :--- | :--- |"
-    );
+    byRole.forEach((candList, roleName) => {
+      candList.sort((a, b) => b.votes - a.votes);
+      const topVotes = candList[0] ? candList[0].votes : 0;
+      const topCount = candList.filter((c) => c.votes === topVotes && c.votes > 0).length;
 
-    const byAdm = new Map();
-    ballots.forEach((b) => {
-      if (!byAdm.has(b.admissionNo)) byAdm.set(b.admissionNo, []);
-      byAdm.get(b.admissionNo).push(b);
-    });
-
-    byAdm.forEach((list, admNo) => {
-      const activeList = list.filter((b) => b.status === "accepted");
-      const latest = activeList[0] || list[0];
-      const folder = getVoterFolderName(admNo, latest.fullName);
-      const summary = activeList.length
-        ? activeList.map((x) => x.candidateName).join(", ")
-        : latest.candidateName;
-      lines.push(
-        `| \`${folder}/\` | ${latest.fullName} | ${activeList.length ? `Accepted (${activeList.length})` : "Cancelled"} | ${summary} |`
-      );
+      candList.forEach((c) => {
+        let status = "—";
+        if (c.votes === 0 && topVotes === 0) {
+          status = "No votes yet";
+        } else if (c.votes === topVotes && c.votes > 0) {
+          status = topCount > 1 ? "🤝 Tied (Leading)" : "🏆 WINNER";
+        } else {
+          status = "Runner-up";
+        }
+        lines.push(
+          `| ${roleName} | **${c.fullName}** | \`${c.admissionNo}\` | ${c.className || ""}-${c.section || ""} | **${c.votes}** | ${status} |`
+        );
+      });
     });
 
     return lines.join("\n") + "\n";
+  }
+
+  async function getHouseDirectory(rootHandle, meta) {
+    if (!rootHandle || !meta) return rootHandle;
+    const rootName = (rootHandle.name || "").trim().toLowerCase();
+    const houseSlug = (meta.slug || "").trim().toLowerCase();
+    const houseName = (meta.name || "").trim().toLowerCase();
+    if (rootName === houseSlug || rootName === `${houseSlug} house` || rootName === houseName || rootName === `${houseName} house`) {
+      return rootHandle;
+    }
+    return await rootHandle.getDirectoryHandle(houseSlug, { create: true });
   }
 
   async function writeBinaryFile(dirHandle, filename, bytes) {
@@ -1239,11 +1251,9 @@
     const candidates = (snapshot.candidates || []).filter((c) => c.houseCode === meta.code && c.isApproved);
     const ballots = (snapshot.ballots || []).filter((b) => b.houseCode === meta.code);
 
-    await writeTextFile(
-      targetDir,
-      `${meta.code}_SUMMARY.md`,
-      buildHouseSummaryMarkdown(meta, students, candidates, ballots)
-    );
+    const summaryMd = buildHouseSummaryMarkdown(meta, students, candidates, ballots);
+    await writeTextFile(targetDir, "result.md", summaryMd);
+    await writeTextFile(targetDir, `${meta.code}_SUMMARY.md`, summaryMd);
 
     if (ballots.length === 0) {
       Array.from(pendriveState.writtenPhotos).forEach((k) => {
@@ -1320,7 +1330,8 @@
     if (!dir || !pendriveState.connected) return;
 
     if (pendriveState.houseMeta) {
-      await writeSingleHouseToDir(dir, snapshot, pendriveState.houseMeta);
+      const houseDir = await getHouseDirectory(dir, pendriveState.houseMeta);
+      await writeSingleHouseToDir(houseDir, snapshot, pendriveState.houseMeta);
       return;
     }
 

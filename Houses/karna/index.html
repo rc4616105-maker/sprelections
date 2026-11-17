@@ -288,7 +288,16 @@
     </div>
   </div>
 
-  <script src="../assets/booth-session.js?v=995"></script>
+    <!-- Delayed Fullscreen Loading Circle Overlay (Displays only when network / server takes longer) -->
+  <div id="loading-overlay" class="loading-overlay" hidden aria-live="assertive" role="alert">
+    <div class="loading-box">
+      <div class="spinner-circle"></div>
+      <h3 class="loading-title" id="loading-overlay-title">Recording Ballot...</h3>
+      <p class="loading-subtitle" id="loading-overlay-subtitle">Please wait a moment while your vote is recorded securely.</p>
+    </div>
+  </div>
+
+<script src="../assets/booth-session.js?v=995"></script>
   <script defer src="./pico.js?v=995"></script>
   <script defer src="./data.js?v=995"></script>
   <script defer src="./supabase-config.js?v=995"></script>

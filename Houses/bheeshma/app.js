@@ -79,6 +79,10 @@
     faceGuardCancelBtn: document.getElementById("face-guard-cancel-btn"),
     faceGuardConfirmBtn: document.getElementById("face-guard-confirm-btn"),
 
+    loadingOverlay: document.getElementById("loading-overlay"),
+    loadingOverlayTitle: document.getElementById("loading-overlay-title"),
+    loadingOverlaySubtitle: document.getElementById("loading-overlay-subtitle"),
+
     successSummary: document.getElementById("success-summary"),
     resetCountdownText: document.getElementById("reset-countdown-text"),
     resetProgressFill: document.getElementById("reset-progress-fill"),
@@ -100,6 +104,23 @@
     button.disabled = loading;
     button.setAttribute("aria-busy", loading ? "true" : "false");
     if (spinner) spinner.hidden = !loading;
+  }
+
+  let delayedSpinnerTimer = null;
+
+  function startDelayedSpinner(title = "Recording Ballot...", subtitle = "Please wait a moment while your vote is recorded securely.", delayMs = 350) {
+    clearTimeout(delayedSpinnerTimer);
+    delayedSpinnerTimer = setTimeout(() => {
+      if (el.loadingOverlayTitle) el.loadingOverlayTitle.textContent = title;
+      if (el.loadingOverlaySubtitle) el.loadingOverlaySubtitle.textContent = subtitle;
+      if (el.loadingOverlay) el.loadingOverlay.hidden = false;
+    }, delayMs);
+  }
+
+  function stopDelayedSpinner() {
+    clearTimeout(delayedSpinnerTimer);
+    delayedSpinnerTimer = null;
+    if (el.loadingOverlay) el.loadingOverlay.hidden = true;
   }
 
   function goToStep(stepNum) {
@@ -499,6 +520,8 @@
   }
 
   function resetBoothToStep1() {
+    clearTimeout(delayedSpinnerTimer);
+    stopDelayedSpinner();
     clearInterval(state.resetInterval);
     clearTimeout(state.resetTimeout);
     closeFaceGuardModal();
@@ -626,6 +649,7 @@
 
     setLoading(el.verifyBtn, true);
     if (el.scannerKioskBox) el.scannerKioskBox.classList.add("is-scanning");
+    startDelayedSpinner("Verifying Voter...", "Looking up student in election roster...", 400);
 
     try {
       await window.ElectionBackend.init();
@@ -664,6 +688,7 @@
         err?.message || "Unable to verify Voter ID against Supabase. Check your Supabase connection settings."
       );
     } finally {
+      stopDelayedSpinner();
       setLoading(el.verifyBtn, false);
       if (el.scannerKioskBox) el.scannerKioskBox.classList.remove("is-scanning");
     }
@@ -923,6 +948,7 @@
     setLoading(el.castVoteBtn, true);
     if (el.faceGuardConfirmBtn) setLoading(el.faceGuardConfirmBtn, true);
     el.step3Error.hidden = true;
+    startDelayedSpinner("Recording Ballot...", "Recording your vote to cloud & pendrive backup. Please wait...", 350);
 
     try {
       closeFaceGuardModal();
@@ -958,6 +984,7 @@
       el.step3ErrorMsg.textContent = err.message || "Could not record vote.";
       el.step3Error.hidden = false;
     } finally {
+      stopDelayedSpinner();
       state.isSubmitting = false;
       setLoading(el.castVoteBtn, false);
       if (el.faceGuardConfirmBtn) setLoading(el.faceGuardConfirmBtn, false);
