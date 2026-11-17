@@ -134,6 +134,15 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ---
 
+### 12. Instant Auto-Focus & Zero-Click Barcode Kiosk Verification (Nov 17, 2026)
+- **Eliminated Manual Tab Switching & Clicking:** Made the visible Voter ID input box (`#admission-input`) active by default across all 7 polling kiosks (`bheeshma`, `central`, `gurudrona`, `hanuman`, `karna`, `vasistha`, `vishwamithra`).
+- **Aggressive Auto-Focus Engine:** Added native HTML `autofocus` and implemented `triggerAutoFocus()` executing across multiple rendering ticks (25ms, 80ms, 200ms, 450ms, 800ms) on boot, tab focus, document visibility change, and background clicks.
+- **Zero-Touch Barcode Acceptance:** Operators can immediately pull the barcode scanner gun trigger upon opening any booth; the digits paste directly into the active field and auto-submit without touching the mouse.
+- **Instant Next-Voter Focus Recovery:** When voting completes, `resetStep1()` automatically clears and re-focuses the input field for the next student.
+- **Cache Busting Bump:** Bumped `app.js` script query string to `?v=1004` across all 7 house booths.
+
+---
+
 ## Summary of Verification Checks Passed
 
 | Verification Item | Status | Result |

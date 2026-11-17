@@ -16,7 +16,7 @@
   };
 
   const scannerState = {
-    mode: localStorage.getItem("election_voter_input_mode") || "scan",
+    mode: localStorage.getItem("election_voter_input_mode") || "manual",
     buffer: "",
     lastKeystrokeTime: 0,
     pairedDeviceName: localStorage.getItem("election_usb_scanner_name") || "",
@@ -517,7 +517,26 @@
     clearStep1Error();
     el.step3Error.hidden = true;
     goToStep(1);
-    setInputMode(scannerState.mode || "scan");
+    setInputMode(scannerState.mode || "manual");
+    triggerAutoFocus();
+  }
+
+  function ensureInputFocused() {
+    if (state.step !== 1) return;
+    const input = scannerState.mode === "scan" && el.scannerStreamInput
+      ? el.scannerStreamInput
+      : el.admissionInput;
+    if (!input) return;
+    try {
+      input.focus({ preventScroll: true });
+    } catch (_) {
+      try { input.focus(); } catch (_) {}
+    }
+  }
+
+  function triggerAutoFocus() {
+    ensureInputFocused();
+    [25, 80, 200, 450, 800].forEach((ms) => setTimeout(ensureInputFocused, ms));
   }
 
   function setInputMode(mode) {
@@ -540,11 +559,7 @@
     }
 
     clearStep1Error();
-    if (isScan && el.scannerStreamInput) {
-      setTimeout(() => el.scannerStreamInput.focus(), 40);
-    } else if (!isScan && el.admissionInput) {
-      setTimeout(() => el.admissionInput.focus(), 40);
-    }
+    triggerAutoFocus();
   }
 
   if (el.tabScanMode) {
@@ -692,14 +707,20 @@
     });
   }
 
-  // Channel 2: Tap/Click anywhere on Step 1 restores scanner focus
+  // Channel 2: Tap/Click anywhere on Step 1 restores scanner/input focus
   document.addEventListener("click", (e) => {
-    if (state.step === 1 && scannerState.mode === "scan" && el.scannerStreamInput) {
-      const isInteractive = e.target.closest("button, a, input, select, textarea, [role='button']");
+    if (state.step === 1) {
+      const isInteractive = e.target.closest("button, a, input, select, textarea, [role='button'], video");
       if (!isInteractive) {
-        el.scannerStreamInput.focus();
+        triggerAutoFocus();
       }
     }
+  });
+  window.addEventListener("focus", () => {
+    if (state.step === 1) triggerAutoFocus();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && state.step === 1) triggerAutoFocus();
   });
 
   // Channel 3: Rapid Scanner Detection on Manual Input (Auto-submits if gun used on manual tab)
@@ -1013,9 +1034,10 @@
     });
   }
 
-      async function boot() {
+  async function boot() {
     loadPicoFaceClassifier();
-    setInputMode(scannerState.mode || "scan");
+    setInputMode(scannerState.mode || "manual");
+    triggerAutoFocus();
     initWebHid();
     if (window.PendriveStorage) {
       await window.PendriveStorage.mount({

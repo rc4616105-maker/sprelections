@@ -57,19 +57,19 @@
 
           <!-- Dual Verification Modes: Barcode Scanner vs Manual Typing -->
           <div class="voter-auth-tabs" role="tablist" aria-label="Verification mode">
-            <button type="button" id="tab-scan-mode" class="voter-tab-btn is-active" role="tab" aria-selected="true" aria-controls="pane-barcode-scan">
+            <button type="button" id="tab-scan-mode" class="voter-tab-btn" role="tab" aria-selected="false" aria-controls="pane-barcode-scan">
               <span class="tab-icon"><img src="./scanner-gun.png" alt="" class="tab-gun-img" /></span>
               <span class="tab-label">Scan Barcode</span>
-              <span id="scanner-detected-dot" class="scanner-dot is-active" title="Scanner Active"></span>
+              <span id="scanner-detected-dot" class="scanner-dot" title="Scanner Active"></span>
             </button>
-            <button type="button" id="tab-manual-mode" class="voter-tab-btn" role="tab" aria-selected="false" aria-controls="pane-manual-entry">
+            <button type="button" id="tab-manual-mode" class="voter-tab-btn is-active" role="tab" aria-selected="true" aria-controls="pane-manual-entry">
               <span class="tab-icon">⌨️</span>
               <span class="tab-label">Enter Voter ID</span>
             </button>
           </div>
 
           <!-- Pane 1: Barcode Scanner Station (Default active) -->
-          <div id="pane-barcode-scan" class="auth-pane is-active" role="tabpanel">
+          <div id="pane-barcode-scan" class="auth-pane" role="tabpanel" hidden>
             <div class="scanner-kiosk-box">
               <input
                 id="barcode-scanner-stream"
@@ -129,20 +129,14 @@
           </div>
 
           <!-- Pane 2: Manual Voter ID Entry -->
-          <div id="pane-manual-entry" class="auth-pane" role="tabpanel" hidden>
+          <div id="pane-manual-entry" class="auth-pane is-active" role="tabpanel">
             <form id="admission-form" class="admission-form" novalidate>
               <div class="form-group">
                 <label for="admission-input" class="form-label">
                   <span>Voter ID Number</span>
                   <span class="mono-hint">Card ID</span>
                 </label>
-                <input
-                  id="admission-input"
-                  name="admissionNo"
-                  type="text"
-                  inputmode="numeric"
-                  autocomplete="off"
-                  placeholder="Enter Voter ID"
+                <input id="admission-input" name="admissionNo" type="text" inputmode="numeric" autocomplete="off" autofocus placeholder="Scan card with barcode gun or enter Voter ID..."
                   class="form-control form-control-lg mono-input"
                   required
                 />
@@ -298,6 +292,6 @@
   <script defer src="./pico.js?v=995"></script>
   <script defer src="./data.js?v=995"></script>
   <script defer src="./supabase-config.js?v=995"></script>
-  <script defer src="./app.js?v=995"></script>
+  <script defer src="./app.js?v=1004"></script>
 </body>
 </html>
