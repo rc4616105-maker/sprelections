@@ -706,7 +706,15 @@
 
   function openSupabaseModal(msg) {
     el.sbUrlInput.value = window.AdminBackend.getDefaultUrl();
-    el.sbKeyInput.value = "";
+    let savedKey = "";
+    try {
+      const saved = JSON.parse(localStorage.getItem("election_spr_2026_sb_cfg_v1") || "null");
+      if (saved && saved.anonKey) savedKey = saved.anonKey;
+    } catch (_) {}
+    if (!savedKey && typeof window.AdminBackend.getKey === "function") {
+      savedKey = window.AdminBackend.getKey();
+    }
+    el.sbKeyInput.value = savedKey;
     if (msg) {
       el.sbModalError.textContent = msg;
       el.sbModalError.hidden = false;
@@ -714,13 +722,18 @@
       el.sbModalError.hidden = true;
     }
     el.sbModal.hidden = false;
-    el.sbKeyInput.focus();
+    if (!savedKey) {
+      el.sbKeyInput.focus();
+    }
   }
 
   el.seedSupabaseBtn.addEventListener("click", async () => {
     try {
       el.seedSupabaseBtn.disabled = true;
-      const mode = await window.AdminBackend.init();
+      let mode = window.AdminBackend.mode;
+      if (mode !== "supabase") {
+        mode = await window.AdminBackend.init();
+      }
       if (mode !== "supabase") {
         openSupabaseModal(window.AdminBackend.backendError);
         return;

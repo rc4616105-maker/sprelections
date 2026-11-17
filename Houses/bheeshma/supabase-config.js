@@ -48,7 +48,7 @@
       }
     } catch (_) {}
 
-    for (const rel of ["../supabase.local.json", "./supabase.local.json"]) {
+    for (const rel of ["./supabase.local.json", "../supabase.local.json", "../../supabase.local.json"]) {
       try {
         const res = await fetch(rel, { cache: "no-store" });
         if (!res.ok) continue;

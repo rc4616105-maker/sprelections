@@ -126,6 +126,14 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ---
 
+### 11. Seamless API Key Persistence & Auto-Sync Workflow (Nov 17, 2026)
+- **Eliminated Redundant Key Prompts:** Fixed `Houses/admin/app.js` so clicking "Sync Roster to Supabase" directly proceeds with synchronization if already connected to Supabase without opening the credentials modal.
+- **Pre-filled Key Inputs:** Updated `openSupabaseModal` in `Houses/admin/app.js` to preserve and pre-populate saved keys from `localStorage` or `window.AdminBackend.getKey()` instead of blanking out the input.
+- **Multi-Level Local Config Loading:** Updated `readBrowserSupabaseConfig` across all 8 `supabase-config.js` files (`admin` + 7 houses) to check `["./supabase.local.json", "../supabase.local.json", "../../supabase.local.json"]`.
+- **Cache Busting Bump:** Bumped script query strings to `?v=1002` on `Houses/admin/index.html` and `Houses/admin/edit-votes.html`.
+
+---
+
 ## Summary of Verification Checks Passed
 
 | Verification Item | Status | Result |

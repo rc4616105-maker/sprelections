@@ -35,7 +35,7 @@
     } catch (_) { }
 
     // 2. Gitignored local file supabase.local.json (works on Live Server without exposing keys in git)
-    for (const rel of ["../supabase.local.json", "./supabase.local.json"]) {
+    for (const rel of ["./supabase.local.json", "../supabase.local.json", "../../supabase.local.json"]) {
       try {
         const res = await fetch(rel, { cache: "no-store" });
         if (!res.ok) continue;
@@ -215,6 +215,10 @@
       localStorage.removeItem(SB_CFG_KEY);
       runtime.transport = "offline";
       this.mode = "offline";
+    },
+
+    getKey() {
+      return runtime.key || "";
     },
 
     async init() {
