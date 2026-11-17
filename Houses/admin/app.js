@@ -729,7 +729,11 @@
       await refreshAll();
       alert(`Synced ${res.totalVoters} students (${res.insertedVoters} newly added) and ${res.candidates} candidates into Supabase.`);
     } catch (err) {
-      alert(err.message);
+      if (err.message && err.message.includes("voters_house_code_check")) {
+        alert("⚠️ Supabase Schema Update Required:\n\nYour Supabase database table 'voters' has an older check constraint that doesn't permit 'ALL' (for the 87 Teachers) or 'BHEESHMA'.\n\nFix: Open Supabase Dashboard -> SQL Editor and run FIX_SUPABASE_CONSTRAINT.sql, then click 'Sync Roster to Supabase' again.");
+      } else {
+        alert(err.message);
+      }
     } finally {
       el.seedSupabaseBtn.disabled = false;
     }
@@ -752,7 +756,11 @@
       await refreshAll();
       alert(`Connected & synced ${res.totalVoters} students (${res.insertedVoters} newly added) and ${res.candidates} candidates into Supabase.`);
     } catch (err) {
-      el.sbModalError.textContent = err.message || "Unable to connect to Supabase.";
+      if (err.message && err.message.includes("voters_house_code_check")) {
+        el.sbModalError.textContent = "Supabase check constraint error: please run FIX_SUPABASE_CONSTRAINT.sql in your Supabase SQL Editor.";
+      } else {
+        el.sbModalError.textContent = err.message || "Unable to connect to Supabase.";
+      }
       el.sbModalError.hidden = false;
     } finally {
       el.sbModalSave.disabled = false;

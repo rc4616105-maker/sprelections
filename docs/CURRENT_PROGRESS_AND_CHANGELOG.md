@@ -116,6 +116,16 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ---
 
+### 10. Resolved `voters_house_code_check` Supabase Constraint (Nov 17, 2026)
+- **Issue Diagnosed:** Clicking "Sync Roster to Supabase" in `Houses/admin/index.html` threw `new row for relation "voters" violates check constraint "voters_house_code_check"`.
+- **Root Cause:** The original Supabase database check constraint on `public.voters` restricted `house_code` to the old house roster and did not allow `'ALL'` (assigned to the 87 institutional teaching staff members and universal demo user) or `'BHEESHMA'` (spelling updated from `'BISHMA'`).
+- **Resolution:**
+  - Authored standalone SQL migration script [FIX_SUPABASE_CONSTRAINT.sql](file:///c:/Users/Abhinav/Documents/Election%20Spr%202026/FIX_SUPABASE_CONSTRAINT.sql) that updates legacy records, drops the old constraint, and applies the updated constraint including `'ALL'` and `'CENTRAL'`.
+  - Enhanced error handling in `Houses/admin/app.js` to surface clear instructions to the operator.
+  - Bumped cache-busting script version to `?v=1001` on `Houses/admin/index.html`.
+
+---
+
 ## Summary of Verification Checks Passed
 
 | Verification Item | Status | Result |
