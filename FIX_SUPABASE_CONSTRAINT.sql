@@ -27,7 +27,12 @@ ALTER TABLE public.voters
   ADD CONSTRAINT voters_house_code_check
   CHECK (house_code IN ('BHEESHMA', 'GURUDRONA', 'HANUMAN', 'KARNA', 'VASISTHA', 'VISHWAMITHRA', 'CENTRAL', 'ALL'));
 
--- 4. Verify RLS policies allow insertion and synchronization
+-- 4. Ensure ballots table has cancelled_by, cancel_reason, and cancelled_at columns
+ALTER TABLE public.ballots ADD COLUMN IF NOT EXISTS cancelled_by TEXT;
+ALTER TABLE public.ballots ADD COLUMN IF NOT EXISTS cancel_reason TEXT;
+ALTER TABLE public.ballots ADD COLUMN IF NOT EXISTS cancelled_at TIMESTAMPTZ;
+
+-- 5. Verify RLS policies allow insertion and synchronization
 DROP POLICY IF EXISTS voters_insert_policy ON public.voters;
 CREATE POLICY voters_insert_policy ON public.voters
   FOR INSERT TO anon, authenticated, service_role WITH CHECK (true);
