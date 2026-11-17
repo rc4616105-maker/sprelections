@@ -95,8 +95,15 @@ When the voter clicks **Cast Vote**, the kiosk activates the Face Verification G
    - Once an unobstructed human face is recognized for **2 consecutive steady frames (~400ms)**:
      - The oval flashes green: `✓ Face Detected! Hold still...`
      - The verification photo is captured as a JPEG.
-     - The ballot is submitted to Supabase.
-4. **Hardware Fallback:**
+     - The ballot is submitted to Supabase and pendrive backup.
+4. **Delayed Fullscreen Loading Circle Overlay (`#loading-overlay`):**
+   - If network or storage operations take longer than ~350ms (e.g. under low-bandwidth WiFi), a centered circular spinner overlay appears displaying:
+     - Circular rotating spinner in the house accent color (`.spinner-circle`)
+     - **"Saving Ballot..."**
+     - **"Please wait a moment..."**
+   - Fast connections (<350ms) cancel the timer before it displays, avoiding screen flicker.
+   - Reassures voters and polling officers that the ballot is being securely processed, preventing duplicate submission attempts or fear of application freeze.
+5. **Hardware Fallback:**
    - If a kiosk computer has no webcam connected or camera permission was blocked in Chrome, a friendly fallback activates after 1.5 seconds enabling the confirm button so polling stations are never blocked by hardware failure.
 
 ---

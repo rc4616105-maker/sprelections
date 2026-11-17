@@ -141,3 +141,32 @@ To protect against committing API keys into source control, the frontend reads c
    *Any admin can paste their Supabase URL and Publishable anon key into the Admin Dashboard login card, which persists across all tabs on that browser origin.*
 2. **Local Fallback (`supabase.local.json`):**  
    If no localStorage key exists, booths attempt to read `../supabase.local.json`.
+
+---
+
+## 7. Local Pendrive & Directory Backup Architecture (`window.PendriveStorage`)
+
+In addition to Supabase cloud storage, every kiosk and admin station supports direct local pendrive syncing via the native File System Access API (`showDirectoryPicker`):
+
+1. **House-Wise Directory Encapsulation:**
+   - Handled via `getHouseDirectory(rootHandle, meta)`.
+   - Regardless of whether the root of a USB flash drive or a parent directory is selected, all data is strictly encapsulated inside that specific house's subfolder:
+     ```text
+     [USB Drive or Selected Folder]/
+     └── bheeshma/
+         ├── 0000_Demo_User/
+         │   ├── photo.jpg
+         │   └── result.md
+         ├── 6082_RAVI_CHANDRA/
+         │   ├── photo.jpg
+         │   └── result.md
+         ├── result.md
+         └── BHEESHMA_SUMMARY.md
+     ```
+   - Prevents student voter folders and summaries from spilling into the root directory.
+2. **Confidential Candidate Results & Winner Tallies:**
+   - The house backup summary (`result.md` and `<HOUSE>_SUMMARY.md`) strictly contains candidate tally statistics:
+     `Role | Candidate | Admission No | Class | Votes Received | Result (🏆 WINNER / Runner-up)`.
+   - Student voter choices are completely excluded from house summaries to preserve the institutional Secret Ballot principle.
+3. **Delayed Loading Protection:**
+   - The UI displays `"Saving Ballot..."` if pendrive disk writes or network calls take longer than 350ms, ensuring complete transparency during slow operations.
