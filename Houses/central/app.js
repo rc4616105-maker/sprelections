@@ -108,7 +108,7 @@
 
   let delayedSpinnerTimer = null;
 
-  function startDelayedSpinner(title = "Recording Ballot...", subtitle = "Please wait a moment while your vote is recorded securely.", delayMs = 350) {
+  function startDelayedSpinner(title = "Saving Ballot...", subtitle = "Please wait a moment...", delayMs = 350) {
     clearTimeout(delayedSpinnerTimer);
     delayedSpinnerTimer = setTimeout(() => {
       if (el.loadingOverlayTitle) el.loadingOverlayTitle.textContent = title;
@@ -649,7 +649,7 @@
 
     setLoading(el.verifyBtn, true);
     if (el.scannerKioskBox) el.scannerKioskBox.classList.add("is-scanning");
-    startDelayedSpinner("Verifying Voter...", "Looking up student in election roster...", 400);
+    startDelayedSpinner("Verifying Voter...", "Please wait a moment...", 400);
 
     try {
       await window.ElectionBackend.init();
@@ -953,7 +953,7 @@
     setLoading(el.castVoteBtn, true);
     if (el.faceGuardConfirmBtn) setLoading(el.faceGuardConfirmBtn, true);
     el.step3Error.hidden = true;
-    startDelayedSpinner("Recording Ballot...", "Recording your vote to cloud & pendrive backup. Please wait...", 350);
+    startDelayedSpinner("Saving Ballot...", "Please wait a moment...", 350);
 
     try {
       closeFaceGuardModal();

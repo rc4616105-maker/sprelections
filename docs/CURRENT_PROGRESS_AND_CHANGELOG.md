@@ -31,7 +31,7 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
   - Added modern circular loading spinner card (`.spinner-circle`) with backdrop blur across all 7 kiosks (`index.html`, `styles.css`, `app.js`).
   - Governed by `startDelayedSpinner` (~350ms delay):
     - Fast networks (<350ms): overlay is cancelled before appearing, maintaining instantaneous, flicker-free transitions.
-    - Slow networks (>350ms): prominently presents "Recording Ballot..." with an animated spinning ring in house accent color, assuring booth officers and students that Supabase cloud write and pendrive sync are actively executing.
+    - Slow networks (>350ms): prominently presents "Saving Ballot..." with "Please wait a moment..." and an animated spinning ring in house accent color, assuring booth officers and students that the ballot write is actively executing without technical terminology.
   - Automatically dismissed in `finally` upon completion or error handling.
 
 ---
