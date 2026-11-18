@@ -671,8 +671,13 @@
       el.voterInitials.textContent = getInitials(result.student.fullName);
       el.voterName.textContent = result.student.fullName;
       el.voterIdBadge.textContent = `Voter ID ${result.student.admissionNo}`;
-      el.voterMeta.textContent = `Class ${result.student.className}-${result.student.section} · ${houseConfig.name} House`;
-      el.voterRoleTag.textContent = result.student.isCandidate
+      const isTeacher = result.student.isStaff === true || result.student.houseCode === "ALL" || result.student.admissionNo === "0000";
+      el.voterMeta.textContent = isTeacher
+        ? `${result.student.subject ? `${result.student.subject} Faculty` : "Teaching Staff"} · ${houseConfig.name}`
+        : `Class ${result.student.className}-${result.student.section} · ${houseConfig.name} House`;
+      el.voterRoleTag.textContent = isTeacher
+        ? "Authorized Teacher / Faculty"
+        : result.student.isCandidate
         ? `Candidate · ${result.student.positionName || "House Leadership"}`
         : result.verificationNote || "Eligible Voter";
       el.voterReauthTag.hidden = result.voterStatus !== "cancelled";

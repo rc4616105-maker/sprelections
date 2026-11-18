@@ -1,0 +1,172 @@
+/* Wheel Stage Layout & Styles - Header Brought Up for Breathing Room */
+
+.wheel-stage-container {
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.75rem 1rem 0.5rem;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.wheel-stage-header {
+  text-align: center;
+  margin-top: 0.25rem;
+  margin-bottom: 1.5rem;       /* Brought up with comfortable space above the pointer */
+  flex-shrink: 0;
+}
+
+.wheel-stage-header h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+}
+
+.remaining-badge {
+  display: inline-block;
+  padding: 0.25rem 0.95rem;
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #6B7280;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+/* Wheel Canvas Wrapper */
+.wheel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.25rem auto 0;
+  flex-shrink: 1;
+}
+
+#wheelCanvas {
+  display: block;
+  max-width: 100%;
+}
+
+/* Pointer Needle (Top Indicator) */
+.wheel-pointer {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 42px;
+  height: 52px;
+  z-index: 20;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+}
+
+.wheel-pointer svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Interactive Center Spin Hub Button */
+.wheel-center-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 98px;
+  height: 98px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 5px solid #EAB308;
+  color: #111827;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16), inset 0 2px 4px rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.wheel-center-btn .spin-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  color: #111827;
+}
+
+.wheel-center-btn:hover:not(:disabled) {
+  transform: translate(-50%, -50%) scale(1.08);
+  background: #FAF7F2;
+  border-color: #CA8A04;
+  box-shadow: 0 12px 26px rgba(234, 179, 8, 0.35);
+}
+
+.wheel-center-btn:active:not(:disabled) {
+  transform: translate(-50%, -50%) scale(0.96);
+}
+
+.wheel-center-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Home Stage - Results Declared Successfully Card */
+.home-completed-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.home-success-card {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-top: 8px solid #10B981;
+  border-radius: 22px;
+  padding: 3rem 3.5rem;
+  text-align: center;
+  max-width: 680px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  animation: fadeInPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes fadeInPop {
+  0% { transform: scale(0.94); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.home-success-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #111827;
+  margin-top: 0.6rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.home-success-desc {
+  font-size: 1.1rem;
+  color: #6B7280;
+  margin-bottom: 2.25rem;
+}
+
+.home-success-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

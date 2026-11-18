@@ -671,9 +671,9 @@
       el.voterInitials.textContent = getInitials(result.student.fullName);
       el.voterName.textContent = result.student.fullName;
       el.voterIdBadge.textContent = `Voter ID ${result.student.admissionNo}`;
-      const isTeacher = result.student.isStaff === true || result.student.houseCode === "ALL";
+      const isTeacher = result.student.isStaff === true || result.student.houseCode === "ALL" || result.student.admissionNo === "0000";
       el.voterMeta.textContent = isTeacher
-        ? `${result.student.subject ? `${result.student.subject} Faculty` : "Teaching Staff"} · School Cabinet`
+        ? `${result.student.subject ? `${result.student.subject} Faculty` : "Teaching Staff"} · ${houseConfig.name}`
         : `Class ${result.student.className}-${result.student.section} · ${houseConfig.name} House`;
       el.voterRoleTag.textContent = isTeacher
         ? "Authorized Teacher / Faculty"

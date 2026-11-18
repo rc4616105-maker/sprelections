@@ -702,7 +702,7 @@
     });
   }
 
-  el.refreshBtn.addEventListener("click", refreshAll);
+  if (el.refreshBtn) el.refreshBtn.addEventListener("click", refreshAll);
 
   function openSupabaseModal(msg) {
     el.sbUrlInput.value = window.AdminBackend.getDefaultUrl();

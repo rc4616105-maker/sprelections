@@ -16,7 +16,25 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
-### 0. House-Wise Storage Isolation, Confidential Winner Results & Delayed Loading Spinner (Nov 17, 2026)
+### 0. Live Supabase Result Declaration Ceremony & Universal Staff Voting Architecture (Nov 18, 2026)
+- **Live Supabase Results Integration (`Result declaration/js/supabase-sync.js`)**:
+  - Connected the standalone interactive Result Declaration Ceremony (`Result declaration/index.html`) directly to the live Supabase database.
+  - Queries `ballots?status=eq.accepted` and approved `candidates` to dynamically calculate real-time vote tallies for all 4 roles across all 6 Houses (`Bheeshma`, `Gurudrona`, `Hanuman`, `Karna`, `Vasistha`, `Vishwamithra`).
+  - Automatically sets winner details (full name, grade pill, photo URL, vote count, tied status) on scratch cards and Grand Finale table.
+  - Computes School Cabinet (Central Council) winners (President, Vice President, Literary Sec, Sports Sec, Social/Cultural Sec) and renders a commanding full-width apex leadership showcase banner in the Grand Finale view.
+  - Shows real-time connection badge in top navbar (`● Live Supabase Sync (X Votes)` vs `○ Offline Mode`) and navigation link `← Admin Console`.
+- **Replaced Admin "Refresh Now" with 1-Click "🎉 Result Declaration" (`Houses/admin/index.html`)**:
+  - Replaced the redundant "Refresh Now" button with a direct link to `../../Result declaration/index.html`.
+  - Background live polling (`Live Sync (2s)`) in Admin already executes automatically every 2 seconds via `setInterval(refreshAll, 2000)`.
+  - Guarded `el.refreshBtn` in `Houses/admin/app.js` against null to ensure error-free operation.
+- **Universal Teaching Staff Multi-House & Central Voting Architecture (`Houses/*/supabase-config.js` & `app.js`)**:
+  - Implemented teacher identification: `isStaff === true`, `houseCode === "ALL"`, `0000`, or IDs `6001`–`6087`.
+  - Teaching staff members are authorized to cast ballots across all 6 House polling booths AND the School Cabinet booth (`Central`) up to 7 separate times (29 total leadership positions).
+  - Scoped ballot duplicate verification strictly by `b.house_code === requestedHouseCode` for teachers, ensuring voting in one house never falsely locks out another booth.
+  - Bypassed global `final_status === "Voted"` blocks for faculty, accurately tracking multi-house progress (*e.g., `Voted (1/7 Houses)`* up to `Voted`).
+  - Strict single-house security remains 100% enforced for students: students cannot vote in other houses or in the Central booth.
+
+### 0.1. House-Wise Storage Isolation, Confidential Winner Results & Delayed Loading Spinner (Nov 17, 2026)
 - **House-Wise Pendrive & Local Storage Isolation (`getHouseDirectory`):**
   - Resolved directory nesting issue where individual student voter folders (*e.g., `0000_Demo_User`, `7016_SAMANTHVIKA_LANDE`*) and house summary files were saving loose in the root folder of the selected drive.
   - Implemented `getHouseDirectory(rootHandle, meta)` across all 7 kiosks (`Houses/*/supabase-config.js`) and Admin (`Houses/admin/supabase-config.js`).

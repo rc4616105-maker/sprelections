@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Election Results 2026</title>
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/wheel.css">
+  <link rel="stylesheet" href="css/scratch.css">
+  <link rel="stylesheet" href="css/finale.css">
+</head>
+
+<body>
+
+  <!-- Clean Top Bar matching Main Web Portal without buttons -->
+  <header class="top-navbar">
+    <div class="brand-section">
+      <span class="sub-tagline">OFFICIAL SCHOOL ELECTIONS 2026</span>
+      <h1 class="main-title">Result Declaration</h1>
+    </div>
+    <div class="topbar-actions">
+      <div id="sbSyncBadge" class="live-sync-badge is-offline">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span id="sbSyncText">Connecting...</span>
+      </div>
+      <a href="../Houses/admin/index.html" class="nav-btn-admin" title="Return to Admin Console">← Admin Console</a>
+    </div>
+  </header>
+
+  <!-- MAIN VIEW CONTAINER -->
+  <main id="mainContainer">
+
+    <!-- 1. SPIN WHEEL / HOME VIEW -->
+    <section id="wheelView" class="app-view active">
+      <!-- Active Wheel Stage -->
+      <div id="wheelActiveStage" class="wheel-stage-container">
+        <div class="wheel-stage-header">
+          <h2>
+            <span>House Selection Wheel</span>
+            <span id="remainingCountLabel" class="remaining-badge">6 of 6 Remaining</span>
+          </h2>
+        </div>
+
+        <div class="wheel-wrapper">
+          <!-- Top Pointer Indicator -->
+          <div class="wheel-pointer">
+            <svg viewBox="0 0 40 48">
+              <polygon points="6,4 34,4 20,44" fill="#EAB308" stroke="#FFFFFF" stroke-width="3" />
+            </svg>
+          </div>
+
+          <canvas id="wheelCanvas"></canvas>
+
+          <!-- Interactive Center Spin Hub -->
+          <button id="btnCenterSpin" class="wheel-center-btn" title="Click to Spin">
+            <span class="spin-text">SPIN</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Completed Home Stage (Shown after all houses are declared) -->
+      <div id="wheelCompletedStage" class="wheel-stage-container home-completed-container" style="display: none;">
+        <div class="home-success-card">
+          <span class="sub-tagline">OFFICIAL SCHOOL ELECTIONS 2026</span>
+          <h2 class="home-success-title">Results of All 6 Houses Declared Successfully</h2>
+          <p class="home-success-desc">The school cabinet election declaration ceremony is officially complete.</p>
+          <div class="home-success-actions">
+            <button id="btnViewResultsHome" class="btn-proceed">
+              <span>View Elected Cabinet ➔</span>
+            </button>
+            <button id="btnRestartFromHome" class="btn-admin-danger"
+              style="margin-left: 1rem; padding: 0.9rem 1.75rem; border-radius: 12px; font-size: 0.95rem;">
+              Restart Election
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. SCRATCH CARD ARENA VIEW -->
+    <section id="scratchView" class="app-view">
+      <div class="scratch-stage-container">
+        <div id="scratchHouseHeader" class="scratch-house-header">
+          <span class="house-pre-label">HOUSE RESULTS</span>
+          <h2 id="scratchHouseTitle">House Reveal Arena</h2>
+        </div>
+
+        <!-- 4-Post Cards Grid (Tap any card to expand & scratch) -->
+        <div id="scratchArenaContainer" class="scratch-arena-grid">
+          <!-- Cards rendered dynamically -->
+        </div>
+
+        <!-- Stage Navigation -->
+        <div class="scratch-controls-bar">
+          <button id="btnNextHouse" class="btn-next-house" disabled>
+            <span>Reveal All 4 Posts</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. GRAND FINALE VIEW -->
+    <section id="finaleView" class="app-view">
+      <div class="finale-stage-container">
+        <div class="finale-header">
+          <span class="sub-tagline">OFFICIAL DECLARATION COMPLETE</span>
+          <h2>Elected Student Council 2026</h2>
+          <p>Congratulations to the elected representatives of all houses</p>
+        </div>
+
+        <!-- 6 House Showcase Grid -->
+        <div id="finaleCabinetGrid" class="finale-cabinet-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL: House Selected Banner -->
+  <div id="selectedHouseModal" class="modal-overlay">
+    <div class="modal-card selected-house-modal-card">
+      <div id="selectedHouseBanner" class="modal-banner">
+        <span id="modalPreLabel" class="modal-pre-label">HOUSE SELECTED</span>
+        <h2 id="selectedHouseTitle">Gurudrona House</h2>
+      </div>
+      <div class="modal-body modal-body-compact">
+        <div class="modal-actions">
+          <button id="btnProceedToResults" class="btn-proceed">
+            <span>Show Results ➔</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Big Screen Scratch Spotlight Overlay (without "Back to Cards" or "Tap outside") -->
+  <div id="scratchSpotlightModal" class="scratch-spotlight-overlay">
+    <div class="spotlight-backdrop" id="spotlightBackdrop"></div>
+    <div class="spotlight-dialog">
+      <div id="spotlightCardTarget" class="spotlight-card-container">
+        <!-- Expanded Scratch Card is mounted here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Admin & Candidate Editor (accessible via secret key shortcut 'Ctrl+Alt+E') -->
+  <div id="adminModal" class="modal-overlay">
+    <div class="modal-card admin-modal-card">
+      <div class="admin-header">
+        <h3>Edit Candidates & Settings</h3>
+        <button class="nav-btn btn-close-modal">✕ Close</button>
+      </div>
+      <div class="admin-body-scroll">
+        <div class="admin-house-select-bar">
+          <label>Select House:</label>
+          <select id="adminHouseSelect"></select>
+        </div>
+        <div id="adminFormContainer">
+          <!-- Dynamic Form Fields -->
+        </div>
+      </div>
+      <div class="admin-footer">
+        <div style="display: flex; gap: 0.5rem;">
+          <button id="btnResetProgress" class="btn-admin-danger" title="Restore wheel with all 6 houses">Reset
+            Wheel</button>
+          <button id="btnResetAllDefaults" class="btn-admin-danger" title="Restore default candidate names">Factory
+            Reset</button>
+        </div>
+        <button id="btnSaveAdmin" class="btn-admin-save">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/data.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/confetti.js"></script>
+  <script src="js/wheel.js"></script>
+  <script src="js/scratch.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/supabase-sync.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+
+</html>
