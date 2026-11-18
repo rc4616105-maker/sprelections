@@ -171,7 +171,8 @@
           (c) => (c.house_code || "").toUpperCase() === "CENTRAL"
         );
 
-        this.centralWinners = CENTRAL_ROLES.map((cp) => {
+        const baseCabinet = (typeof DEFAULT_CABINET_POSTS !== "undefined" ? DEFAULT_CABINET_POSTS : CENTRAL_ROLES);
+        this.centralWinners = baseCabinet.map((cp) => {
           const roleCands = centralCandidates.filter(
             (c) => c.position_id === cp.id || c.position_id === cp.code
           );
@@ -191,12 +192,22 @@
           });
           candsWithVotes.sort((a, b) => b.votes - a.votes || a.fullName.localeCompare(b.fullName));
           const winner = candsWithVotes[0];
+          const grade = winner ? cleanGradeLabel(winner.className, winner.section) : (cp.grade || cp.subtitle);
+          const quote = winner ? (winner.tagline || (winner.votes > 0 ? `Elected with ${winner.votes} vote${winner.votes > 1 ? "s" : ""}` : "Apex Leadership")) : "Apex Leadership";
           return {
-            postTitle: cp.title,
-            subtitle: cp.subtitle,
-            winnerName: winner ? winner.fullName : "Awaiting Result",
-            grade: winner ? cleanGradeLabel(winner.className, winner.section) : cp.subtitle,
-            votes: winner ? winner.votes : 0
+            ...cp,
+            postTitle: cp.postTitle || cp.fullName || cp.title,
+            subtitle: cp.subtitle || cp.grade,
+            winnerName: winner ? winner.fullName : (cp.candidate?.name || "Awaiting Result"),
+            grade: grade,
+            votes: winner ? winner.votes : 0,
+            candidate: {
+              name: winner ? winner.fullName : (cp.candidate?.name || "Awaiting Result"),
+              grade: grade,
+              photo: (winner && winner.photoUrl) || cp.candidate?.photo || "",
+              quote: quote,
+              votes: winner ? winner.votes : 0
+            }
           };
         });
 

@@ -248,3 +248,94 @@ const POST_METADATA = {
   boys_vc: { title: "Boys Vice-Captain", badge: "Vice Captain" },
   girls_vc: { title: "Girls Vice-Captain", badge: "Vice Captain" }
 };
+
+/**
+ * 5 School Cabinet (Central Council) Apex Posts
+ */
+const DEFAULT_CABINET_POSTS = [
+  {
+    id: "PRESIDENT",
+    code: "Vote_President",
+    name: "President",
+    fullName: "School President",
+    color: "#059669",
+    accent: "#047857",
+    textColor: "#FFFFFF",
+    grade: "Class 10",
+    postTitle: "School President",
+    candidate: {
+      name: "Awaiting Result",
+      grade: "Class 10 · Central Cabinet",
+      photo: "",
+      quote: "Apex Student Leadership"
+    }
+  },
+  {
+    id: "VICE_PRESIDENT",
+    code: "Vote_Vice_President",
+    name: "Vice Pres",
+    fullName: "School Vice President",
+    color: "#0D9488",
+    accent: "#0F766E",
+    textColor: "#FFFFFF",
+    grade: "Class 9",
+    postTitle: "School Vice President",
+    candidate: {
+      name: "Awaiting Result",
+      grade: "Class 9 · Central Cabinet",
+      photo: "",
+      quote: "Supporting the Student Voice"
+    }
+  },
+  {
+    id: "LITERARY_SECRETARY",
+    code: "Vote_Literary_Sec",
+    name: "Literary Sec",
+    fullName: "Literary Secretary",
+    color: "#7C3AED",
+    accent: "#6D28D9",
+    textColor: "#FFFFFF",
+    grade: "Class 9",
+    postTitle: "Literary Secretary",
+    candidate: {
+      name: "Awaiting Result",
+      grade: "Class 9 · Central Cabinet",
+      photo: "",
+      quote: "Expression, Oratory & Eloquence"
+    }
+  },
+  {
+    id: "SPORTS_SECRETARY",
+    code: "Vote_Sports_Sec",
+    name: "Sports Sec",
+    fullName: "Sports Secretary",
+    color: "#EA580C",
+    accent: "#C2410C",
+    textColor: "#FFFFFF",
+    grade: "Class 9",
+    postTitle: "Sports Secretary",
+    candidate: {
+      name: "Awaiting Result",
+      grade: "Class 9 · Central Cabinet",
+      photo: "",
+      quote: "Excellence in Sportsmanship"
+    }
+  },
+  {
+    id: "SOCIAL_CULTURAL_SECRETARY",
+    code: "Vote_Social_Cultural_Sec",
+    name: "Cultural Sec",
+    fullName: "Social & Cultural Secretary",
+    color: "#D97706",
+    accent: "#B45309",
+    textColor: "#FFFFFF",
+    grade: "Class 9",
+    postTitle: "Social & Cultural Secretary",
+    candidate: {
+      name: "Awaiting Result",
+      grade: "Class 9 · Central Cabinet",
+      photo: "",
+      quote: "Creativity, Unity & Culture"
+    }
+  }
+];

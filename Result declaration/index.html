@@ -40,7 +40,7 @@
       <div id="wheelActiveStage" class="wheel-stage-container">
         <div class="wheel-stage-header">
           <h2>
-            <span>House Selection Wheel</span>
+            <span id="wheelStageTitle">House Selection Wheel</span>
             <span id="remainingCountLabel" class="remaining-badge">6 of 6 Remaining</span>
           </h2>
         </div>
@@ -107,9 +107,21 @@
     <section id="finaleView" class="app-view">
       <div class="finale-stage-container">
         <div class="finale-header">
-          <span class="sub-tagline">OFFICIAL DECLARATION COMPLETE</span>
-          <h2>Elected Student Council 2026</h2>
-          <p>Congratulations to the elected representatives of all houses</p>
+          <span id="finaleSubTagline" class="sub-tagline">OFFICIAL DECLARATION COMPLETE</span>
+          <h2 id="finaleMainTitle">Elected House Leadership 2026</h2>
+          <p id="finaleSubTitle">Congratulations to the elected representatives of all 6 houses</p>
+        </div>
+
+        <!-- Cabinet Launch Banner (Shown after 6 houses are revealed, before cabinet wheel is spun) -->
+        <div id="cabinetLaunchBanner" class="cabinet-launch-banner" style="display: none;">
+          <div class="cabinet-banner-content">
+            <span class="cabinet-mini-badge">APEX LEADERSHIP CEREMONY</span>
+            <h3>House Council Results Complete!</h3>
+            <p>Ready to reveal the School Cabinet? Spin the Central Selection Wheel to declare President, Vice President & Secretaries.</p>
+          </div>
+          <button id="btnLaunchCabinetPhase" class="btn-proceed btn-cabinet-launch">
+            <span>Reveal School Cabinet Posts ➔</span>
+          </button>
         </div>
 
         <!-- 6 House Showcase Grid -->

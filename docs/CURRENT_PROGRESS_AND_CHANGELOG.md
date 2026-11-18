@@ -16,7 +16,23 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
-### 0. Live Supabase Result Declaration Ceremony & Universal Staff Voting Architecture (Nov 18, 2026)
+### 0. Two-Phase Result Declaration Ceremony, Dedicated School Cabinet Wheel & Direct Final Reveal (Nov 18, 2026)
+- **Two-Phase Ceremony Architecture (`Result declaration/js/app.js` & `scratch.js`)**:
+  - **Phase 1: House Councils Declaration:** The ceremony begins with the 6 House Selection Wheel (`Bheeshma`, `Gurudrona`, `Hanuman`, `Karna`, `Vasistha`, `Vishwamithra`). When the wheel lands on a house, an arena with 4 leadership post scratch cards opens (Boys Captain, Girls Captain, Boys VC, Girls VC).
+  - **House Leadership Finale View:** When all 6 houses are revealed, the House Leadership Finale opens displaying solely the 6 House panels. The School Cabinet (Central Council) apex card is deliberately deferred.
+  - **Prominent School Cabinet Launch Banner (`#cabinetLaunchBanner`):** A gold/emerald leadership banner prompts: *"House Council Results Complete! Ready to reveal the School Cabinet? Spin the Central Selection Wheel to declare President, Vice President & Secretaries"* with an action button `Reveal School Cabinet Posts ➔`.
+  - **Phase 2: School Cabinet Wheel & Apex Posts Reveal:** Clicking the launch banner transitions to Phase 2, populating the canvas wheel with the 5 Apex Central Council posts (`School President` [Class 10], `School Vice President` [Class 9], `Literary Secretary` [Class 9], `Sports Secretary` [Class 9], and `Social & Cultural Secretary` [Class 9]) in their distinctive vibrant colors (`#059669`, `#0D9488`, `#7C3AED`, `#EA580C`, `#D97706`).
+  - **Centerpiece Single Post Scratch Arena (`.cabinet-single-mode`):** Spinning the Cabinet wheel selects an apex post and guides to a centered centerpiece metallic foil scratch card. Scratched with touch/mouse (140px broad brush, metallic audio, confetti, 70% pop-up celebration) to unveil the elected winner, class, and vote tally from live Supabase ballots.
+  - **Zero-Scroll Direct Final Reveal:** When only 1 house or 1 cabinet post remains, clicking the forward button directly opens the final scratch card arena with zero wheel rotation or page scrolling.
+  - **Complete Grand Finale:** Only after all 5 cabinet posts are declared does the Complete Grand Finale view open, showcasing the full-width **🏛️ School Cabinet (Central Council)** apex leadership panel at the very top, followed by all 6 House panels below.
+- **Instant Frame-1 Wheel Canvas & Hub Button Rendering:**
+  - Removed async `await` blocking during `ElectionApp.init()`. The canvas wheel and center SPIN button render synchronously in <10ms on frame 1 without delay or layout shifting. Supabase live tallies hydrate silently in the background.
+- **Clean Topbar Header (`Result declaration/index.html`):**
+  - Removed `● Live Supabase Sync` pill and replaced text `← Admin Console` with a sleek, circular SVG back-arrow button (`.nav-btn-admin.nav-back-arrow`).
+- **Synchronized Workspaces:**
+  - All additions and modifications deployed and verified across both Primary Workspace (`C:\Users\Abhinav\Documents\Election Spr 2026`) and USB External Copy (`F:\Election Spr 2026`).
+
+### 0.1. Live Supabase Result Declaration Ceremony & Universal Staff Voting Architecture (Nov 18, 2026)
 - **Live Supabase Results Integration (`Result declaration/js/supabase-sync.js`)**:
   - Connected the standalone interactive Result Declaration Ceremony (`Result declaration/index.html`) directly to the live Supabase database.
   - Queries `ballots?status=eq.accepted` and approved `candidates` to dynamically calculate real-time vote tallies for all 4 roles across all 6 Houses (`Bheeshma`, `Gurudrona`, `Hanuman`, `Karna`, `Vasistha`, `Vishwamithra`).

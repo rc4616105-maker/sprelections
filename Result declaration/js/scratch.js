@@ -3,21 +3,36 @@
  * Designed for large touchscreen/smartboard presentation without a mouse.
  * 
  * Flow:
- * 1. 4 Cards shown in the arena grid.
- * 2. Tapping a card opens it in a Large Spotlight Modal.
+ * 1. For Houses: 4 Cards shown in the arena grid. Tapping opens Large Spotlight.
+ * 2. For Cabinet: Single centerpiece card shown. Tapping opens Large Spotlight.
  * 3. Broad-coverage touch scratching (140px stroke width).
  * 4. At 70% cleared: Triggers celebratory pop-up animation, fanfare & confetti.
- * 5. Tapping outside to the side returns to the arena grid (NEVER kicks back to the wheel).
+ * 5. Spacebar/Escape or tapping backdrop returns to the arena (never kicks back to the wheel).
  */
 
 class ScratchArenaManager {
-  constructor(containerId, spotlightModalId, houseData, options = {}) {
+  constructor(containerId, spotlightModalId, houseOrPostData, options = {}) {
     this.container = document.getElementById(containerId);
     this.modal = document.getElementById(spotlightModalId);
     this.backdrop = document.getElementById("spotlightBackdrop");
     this.spotlightTarget = document.getElementById("spotlightCardTarget");
-    this.house = houseData;
+    this.isCabinet = Boolean(options.isCabinet);
     this.options = options;
+
+    if (this.isCabinet) {
+      this.cabinetPost = houseOrPostData;
+      this.house = {
+        id: houseOrPostData.id,
+        name: houseOrPostData.name,
+        fullName: "School Cabinet (Central Council)",
+        color: houseOrPostData.color || "#059669",
+        textColor: houseOrPostData.textColor || "#FFFFFF"
+      };
+    } else {
+      this.cabinetPost = null;
+      this.house = houseOrPostData;
+    }
+
     this.onAllRevealed = options.onAllRevealed || null;
     this.onPostRevealed = options.onPostRevealed || null;
 
@@ -39,7 +54,7 @@ class ScratchArenaManager {
       this.backdrop.addEventListener("click", () => this.closeSpotlight());
     }
 
-    // Spacebar or Escape returns to the 4 cards
+    // Spacebar or Escape returns to the cards
     this.keyHandler = (e) => {
       if (this.modal && this.modal.classList.contains("active")) {
         if (e.code === "Space" || e.key === "Escape") {
@@ -55,11 +70,22 @@ class ScratchArenaManager {
     if (this.keyHandler) {
       window.removeEventListener("keydown", this.keyHandler);
     }
+    if (this.currentSpotlightInstance) {
+      this.currentSpotlightInstance.destroy();
+      this.currentSpotlightInstance = null;
+    }
   }
 
   renderGrid() {
     if (!this.container) return;
     this.container.innerHTML = "";
+
+    if (this.isCabinet) {
+      this.renderCabinetGrid();
+      return;
+    }
+
+    this.container.classList.remove("cabinet-single-mode");
 
     POST_KEYS.forEach(postKey => {
       const candidate = this.house.candidates[postKey];
@@ -106,13 +132,79 @@ class ScratchArenaManager {
         `;
       }
 
-      // Tap card to open in large spotlight view
       gridCard.addEventListener("click", () => {
         this.openSpotlight(postKey);
       });
 
       this.container.appendChild(gridCard);
     });
+  }
+
+  renderCabinetGrid() {
+    this.container.classList.add("cabinet-single-mode");
+
+    const post = this.cabinetPost;
+    const postTitle = post.fullName || post.postTitle || post.name;
+    const candidate = (post.candidate) ? post.candidate : {
+      name: post.winnerName || "Awaiting Result",
+      grade: post.grade || "Class 10",
+      photo: "",
+      quote: "Apex Leadership"
+    };
+    candidate.postTitle = postTitle;
+
+    const isRevealed = this.revealedPosts.has(post.id);
+
+    const gridCard = document.createElement("div");
+    gridCard.className = `scratch-grid-card ${isRevealed ? 'is-revealed' : 'is-unrevealed'}`;
+    gridCard.style.borderTop = `7px solid ${post.color || '#059669'}`;
+    gridCard.setAttribute("data-post", post.id);
+
+    if (isRevealed) {
+      gridCard.innerHTML = `
+        <div class="card-header" style="background: #F0FDF4; border-bottom: 1px solid #BBF7D0;">
+          <span class="post-title" style="color: ${post.color || '#059669'}; font-weight: 800;">${postTitle}</span>
+        </div>
+        <div class="card-body">
+          <div class="candidate-photo-frame" style="border-color: ${post.color || '#059669'};">
+            ${this.getPhotoMarkup(candidate, post.id)}
+            <div class="winner-badge" style="background: ${post.color || '#059669'}; color: #FFFFFF;">ELECTED</div>
+          </div>
+          <h3 class="candidate-name">${candidate.name}</h3>
+          <p class="candidate-grade">${candidate.grade}</p>
+          <div class="candidate-badge" style="background: rgba(5, 150, 105, 0.08); color: #065F46; font-weight: 700;">
+            🏛️ School Cabinet (Central Council)
+          </div>
+        </div>
+      `;
+    } else {
+      gridCard.innerHTML = `
+        <div class="card-header" style="background: #F0FDF4; border-bottom: 1px solid #BBF7D0;">
+          <span class="post-title" style="color: ${post.color || '#059669'}; font-weight: 800;">${postTitle}</span>
+        </div>
+        <div class="card-foil-preview">
+          <div class="foil-preview-pattern"></div>
+          <div class="foil-preview-content">
+            <span class="foil-tap-icon">👆</span>
+            <span class="foil-tap-label">TAP TO SCRATCH & REVEAL</span>
+            <span class="foil-post-sub">${postTitle}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    gridCard.addEventListener("click", () => {
+      this.openSpotlight(post.id);
+    });
+
+    this.container.appendChild(gridCard);
+
+    // Auto-open spotlight scratch card so user can scratch immediately
+    if (!isRevealed && this.options.autoOpen !== false) {
+      setTimeout(() => {
+        this.openSpotlight(post.id);
+      }, 200);
+    }
   }
 
   getPhotoMarkup(candidate, postKey) {
@@ -123,17 +215,18 @@ class ScratchArenaManager {
   }
 
   getAvatarSvg(postKey) {
-    const isGirl = postKey.includes("girls");
+    const isGirl = String(postKey).toLowerCase().includes("girl");
+    const color = (this.isCabinet && this.cabinetPost) ? (this.cabinetPost.color || "#059669") : (this.house.color || "#2563EB");
     return `
       <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
         <circle cx="60" cy="60" r="58" fill="#F3F4F6" stroke="#E5E7EB" stroke-width="3"/>
         ${isGirl ? `
           <path d="M40 45 C40 28, 80 28, 80 45 C80 60, 40 60, 40 45 Z" fill="#D1D5DB"/>
           <path d="M60 58 C68 58, 73 50, 73 44 C73 35, 67 30, 60 30 C53 30, 47 35, 47 44 C47 50, 52 58, 60 58 Z" fill="#E5E7EB"/>
-          <path d="M35 105 C35 88, 48 76, 60 76 C72 76, 85 88, 85 105 Z" fill="${this.house.color}"/>
+          <path d="M35 105 C35 88, 48 76, 60 76 C72 76, 85 88, 85 105 Z" fill="${color}"/>
         ` : `
           <circle cx="60" cy="44" r="16" fill="#D1D5DB"/>
-          <path d="M32 105 C32 84, 46 72, 60 72 C74 72, 88 84, 88 105 Z" fill="${this.house.color}"/>
+          <path d="M32 105 C32 84, 46 72, 60 72 C74 72, 88 84, 88 105 Z" fill="${color}"/>
         `}
       </svg>
     `;
@@ -141,26 +234,49 @@ class ScratchArenaManager {
 
   openSpotlight(postKey) {
     this.activePostKey = postKey;
-    const candidate = this.house.candidates[postKey];
     const isAlreadyRevealed = this.revealedPosts.has(postKey);
+
+    let candidate;
+    let houseContext;
+
+    if (this.isCabinet) {
+      const p = this.cabinetPost;
+      candidate = (p.candidate) ? p.candidate : {
+        name: p.winnerName || "Awaiting Result",
+        grade: p.grade || "Class 10",
+        photo: "",
+        quote: "Apex Leadership"
+      };
+      candidate.postTitle = p.fullName || p.postTitle || p.name;
+      houseContext = {
+        name: p.name,
+        fullName: "School Cabinet (Central Council)",
+        color: p.color || "#059669",
+        textColor: p.textColor || "#FFFFFF"
+      };
+    } else {
+      candidate = this.house.candidates[postKey];
+      houseContext = this.house;
+    }
 
     this.spotlightTarget.innerHTML = "";
 
-    // Build the large interactive spotlight card
     this.currentSpotlightInstance = new SpotlightScratchCard(
       this.spotlightTarget,
       candidate,
-      this.house,
+      houseContext,
       postKey,
       isAlreadyRevealed,
       {
+        isCabinet: this.isCabinet,
         onRevealed: () => {
           this.revealedPosts.add(postKey);
           this.renderGrid();
           if (typeof this.onPostRevealed === "function") {
             this.onPostRevealed(postKey);
           }
-          if (this.revealedPosts.size >= POST_KEYS.length) {
+          const totalExpected = this.isCabinet ? 1 : POST_KEYS.length;
+          if (this.revealedPosts.size >= totalExpected) {
             if (typeof this.onAllRevealed === "function") {
               this.onAllRevealed();
             }
@@ -197,6 +313,7 @@ class SpotlightScratchCard {
     this.postKey = postKey;
     this.isRevealed = isAlreadyRevealed;
     this.callbacks = callbacks;
+    this.isCabinet = Boolean(callbacks.isCabinet);
 
     this.isDrawing = false;
     this.lastX = null;
@@ -213,7 +330,10 @@ class SpotlightScratchCard {
     this.wrapper.className = "spotlight-card-wrapper";
     this.wrapper.style.borderTop = `8px solid ${this.house.color}`;
 
-    const meta = POST_METADATA[this.postKey] || { title: this.candidate.postTitle, badge: "Leader" };
+    const meta = (typeof POST_METADATA !== "undefined" && POST_METADATA[this.postKey]) || {
+      title: this.candidate.postTitle || this.house.name || "Leader",
+      badge: this.isCabinet ? "Apex Leader" : "Leader"
+    };
 
     // 1. Underlying Revealed Candidate Card (Large Scale)
     const cardInner = document.createElement("div");
@@ -278,7 +398,7 @@ class SpotlightScratchCard {
   }
 
   getAvatarSvg() {
-    const isGirl = this.postKey.includes("girls");
+    const isGirl = String(this.postKey).toLowerCase().includes("girl");
     return `
       <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
         <circle cx="60" cy="60" r="58" fill="#F3F4F6" stroke="#E5E7EB" stroke-width="3"/>
@@ -334,7 +454,7 @@ class SpotlightScratchCard {
       ctx.stroke();
     }
 
-    // Top house color accent line
+    // Top color accent line
     ctx.fillStyle = this.house.color;
     ctx.fillRect(0, 0, w, 8);
 
@@ -350,7 +470,7 @@ class SpotlightScratchCard {
 
     ctx.font = "900 28px 'Plus Jakarta Sans', sans-serif";
     ctx.fillStyle = "#111827";
-    const postTitle = (POST_METADATA[this.postKey] && POST_METADATA[this.postKey].title) || "Leader";
+    const postTitle = this.candidate.postTitle || (POST_METADATA[this.postKey] && POST_METADATA[this.postKey].title) || "Leader";
     ctx.fillText(postTitle.toUpperCase(), w / 2, h / 2 + 18);
 
     ctx.restore();

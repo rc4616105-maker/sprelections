@@ -482,3 +482,16 @@
   50% { transform: scale(1.02); }
   100% { transform: scale(1); }
 }
+
+/* Centerpiece layout for Single Post Cabinet Reveal */
+.scratch-arena-grid.cabinet-single-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scratch-arena-grid.cabinet-single-mode .scratch-grid-card {
+  width: min(440px, 90vw);
+  height: clamp(320px, 50vh, 420px);
+}
+
