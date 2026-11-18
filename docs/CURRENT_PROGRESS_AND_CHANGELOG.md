@@ -16,7 +16,20 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
-### 0. Two-Phase Result Declaration Ceremony, Dedicated School Cabinet Wheel & Direct Final Reveal (Nov 18, 2026)
+### 0. Vasistha House Supabase Linking & Secret Key Auth Fix across All Kiosks (Nov 18, 2026 - Late Night)
+- **Vasistha House Supabase Sync Resolution (`Result declaration/js/data.js` & `supabase-sync.js`)**:
+  - Identified root cause of Vasistha displaying mock names (`Aditya Hegde`, etc.) rather than live Supabase candidates: `DEFAULT_HOUSES` in `data.js` had a typographic house identifier `id: "vasishta"` (with `sh`), whereas Supabase schema, table constraints, and kiosks strictly use `VASISTHA` (with `st`).
+  - Corrected `id: "vasistha"` in `Result declaration/js/data.js` and implemented case-insensitive alias normalization (`VASISHTA` -> `VASISTHA`) in `supabase-sync.js` and `app.js`.
+  - Bumped localStorage state key to `SCHOOL_ELECTION_2026_CUSTOM_DATA_V5` and auto-normalized any legacy cached records.
+  - Vasistha candidates (`Candidate A / B / C` across all 4 positions) and accepted ballots now seamlessly query and hydrate from live Supabase in real-time.
+- **Universal Secret & Publishable Key Authentication Header Support (`Houses/*/supabase-config.js`)**:
+  - Updated `sbHeaders` across all 7 kiosks (`vasistha`, `bheeshma`, `gurudrona`, `hanuman`, `karna`, `vishwamithra`, `central`) and `admin`:
+  - Supabase requires `Authorization: Bearer <token>` when using secret tokens (`sb_secret_...`) as well as JWT tokens (`eyJ...`).
+  - Added `String(key).startsWith("sb_secret_")` check alongside `eyJ`, ensuring seamless REST and storage authentication under both publishable anon keys and secret service role keys.
+- **Dual Workspace Synchronization**:
+  - Full codebase mirrored and tested across Primary Workspace (`C:\Users\Abhinav\Documents\Election Spr 2026`) and USB Drive (`F:\Election Spr 2026`).
+
+### 0.1. Two-Phase Result Declaration Ceremony, Dedicated School Cabinet Wheel & Direct Final Reveal (Nov 18, 2026)
 - **Two-Phase Ceremony Architecture (`Result declaration/js/app.js` & `scratch.js`)**:
   - **Phase 1: House Councils Declaration:** The ceremony begins with the 6 House Selection Wheel (`Bheeshma`, `Gurudrona`, `Hanuman`, `Karna`, `Vasistha`, `Vishwamithra`). When the wheel lands on a house, an arena with 4 leadership post scratch cards opens (Boys Captain, Girls Captain, Boys VC, Girls VC).
   - **House Leadership Finale View:** When all 6 houses are revealed, the House Leadership Finale opens displaying solely the 6 House panels. The School Cabinet (Central Council) apex card is deliberately deferred.

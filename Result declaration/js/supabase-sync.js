@@ -63,6 +63,13 @@
     return cls || sec || "Grade 10";
   }
 
+  function normalizeHouseCode(raw) {
+    const code = String(raw || "").toUpperCase().trim();
+    if (code === "VASISHTA" || code === "VASISTHA") return "VASISTHA";
+    if (code === "BISHMA" || code === "BHISHMA" || code === "BHEESHMA") return "BHEESHMA";
+    return code;
+  }
+
   window.SupabaseResultsSync = {
     connected: false,
     totalBallots: 0,
@@ -93,12 +100,12 @@
 
         // Tally 6 Houses
         clonedHouses.forEach((house) => {
-          const houseCodeUpper = house.id.toUpperCase();
+          const houseCodeUpper = normalizeHouseCode(house.id);
           const houseBallots = (ballots || []).filter(
-            (b) => (b.house_code || "").toUpperCase() === houseCodeUpper
+            (b) => normalizeHouseCode(b.house_code) === houseCodeUpper
           );
           const houseCandidates = (candidates || []).filter(
-            (c) => (c.house_code || "").toUpperCase() === houseCodeUpper
+            (c) => normalizeHouseCode(c.house_code) === houseCodeUpper
           );
 
           if (!house.candidates) house.candidates = {};

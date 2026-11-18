@@ -7,10 +7,15 @@
 
 class ElectionApp {
   constructor() {
-    this.customDataKey = "SCHOOL_ELECTION_2026_CUSTOM_DATA_V4";
+    this.customDataKey = "SCHOOL_ELECTION_2026_CUSTOM_DATA_V5";
 
     // 1. House Data
     this.houses = this.loadCustomData() || JSON.parse(JSON.stringify(DEFAULT_HOUSES));
+    if (Array.isArray(this.houses)) {
+      this.houses.forEach(h => {
+        if (h.id === "vasishta") h.id = "vasistha";
+      });
+    }
     this.revealedHouseIds = [];
     this.currentHouse = null;
     this.revealedPostsInCurrent = [];
@@ -751,9 +756,15 @@ class ElectionApp {
 
   loadCustomData() {
     try {
-      const saved = localStorage.getItem(this.customDataKey);
+      const saved = localStorage.getItem(this.customDataKey) || localStorage.getItem("SCHOOL_ELECTION_2026_CUSTOM_DATA_V4");
       if (saved) {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          parsed.forEach(h => {
+            if (h.id === "vasishta") h.id = "vasistha";
+          });
+          return parsed;
+        }
       }
     } catch (e) {}
     return null;

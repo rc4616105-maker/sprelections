@@ -161,7 +161,7 @@ const DEFAULT_HOUSES = [
     }
   },
   {
-    id: "vasishta",
+    id: "vasistha",
     name: "Vasistha",
     fullName: "Vasistha House",
     color: "#DB2777",      // Vibrant Rose Pink

@@ -34,7 +34,7 @@
 
   function sbHeaders(key, extra = {}) {
     const h = { apikey: key, ...extra };
-    if (String(key || "").startsWith("eyJ")) {
+    if (String(key || "").startsWith("eyJ") || String(key || "").startsWith("sb_secret_")) {
       h.Authorization = `Bearer ${key}`;
     }
     return h;
