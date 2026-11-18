@@ -218,6 +218,13 @@ class SpinWheel {
 
   spin() {
     if (this.isSpinning || this.houses.length === 0) return;
+    if (this.houses.length === 1) {
+      // If only 1 house is on the wheel, directly select it without spinning/scrolling
+      if (this.onSelectCallback) {
+        this.onSelectCallback(this.houses[0]);
+      }
+      return;
+    }
     this.isSpinning = true;
 
     if (this.centerBtn) {

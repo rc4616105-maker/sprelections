@@ -367,6 +367,8 @@ class ElectionApp {
       nextBtn.classList.add("unlocked");
       if (remaining.length === 0) {
         nextBtn.innerHTML = `<span>View Final Cabinet ➔</span>`;
+      } else if (remaining.length === 1) {
+        nextBtn.innerHTML = `<span>Final House: ${remaining[0].name} ➔</span>`;
       } else {
         nextBtn.innerHTML = `<span>Next House ➔</span>`;
       }
@@ -398,8 +400,19 @@ class ElectionApp {
       try {
         window.history.pushState({ stage: "finale" }, "");
       } catch (e) {}
+    } else if (remaining.length === 1) {
+      // Exactly 1 house remains: skip wheel scrolling/spinning and show final house scratch cards directly!
+      const lastHouse = remaining[0];
+      this.currentHouse = lastHouse;
+      this.revealedPostsInCurrent = [];
+      this.enterScratchArena(lastHouse);
+      window.soundEngine.playFanfare();
+      window.confettiEngine.burst(window.innerWidth / 2, window.innerHeight * 0.45, 65, [lastHouse.color, "#EAB308", "#111827", "#FFFFFF"]);
+      try {
+        window.history.pushState({ stage: "scratch", houseId: lastHouse.id }, "");
+      } catch (e) {}
     } else {
-      // 1 or more houses left: always return to wheel so it can be spun with true random selection
+      // 2 or more houses left: return to wheel to spin
       this.showView("wheel");
       this.updateWheelHouses();
       try {
