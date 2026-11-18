@@ -30,34 +30,36 @@ class ElectionApp {
     this.init();
   }
 
-  async init() {
-    // 1. Fetch live Supabase winners if connected!
-    if (window.SupabaseResultsSync) {
-      try {
-        const liveHouses = await window.SupabaseResultsSync.fetchLiveResults(this.houses);
-        if (liveHouses && Array.isArray(liveHouses) && liveHouses.length > 0) {
-          this.houses = liveHouses;
-        }
-      } catch (err) {
-        console.warn("Supabase live tally fetch error:", err);
-      }
-    }
-
-    // Setup Wheel
+  init() {
+    // 1. Setup & render Wheel IMMEDIATELY on frame 1 (instant zero-delay render)
     this.wheelInstance = new SpinWheel("wheelCanvas", {
       onSelect: (selectedHouse) => this.onWheelLanded(selectedHouse)
     });
     this.updateWheelHouses();
 
-    // Setup Admin Panel
+    // 2. Setup Admin Panel
     this.adminManager = new AdminManager(this);
 
-    // Setup Global Navigation & Event Listeners
+    // 3. Setup Global Navigation & Event Listeners
     this.attachEvents();
     this.initHistoryNavigation();
 
-    // Start clean at the wheel
+    // 4. Start clean at the wheel
     this.showView("wheel");
+
+    // 5. Fetch live Supabase tallies asynchronously in the background without blocking the UI
+    if (window.SupabaseResultsSync) {
+      window.SupabaseResultsSync.fetchLiveResults(this.houses)
+        .then((liveHouses) => {
+          if (liveHouses && Array.isArray(liveHouses) && liveHouses.length > 0) {
+            this.houses = liveHouses;
+            this.updateWheelHouses();
+          }
+        })
+        .catch((err) => {
+          console.warn("Background Supabase live tally fetch error:", err);
+        });
+    }
   }
 
   initHistoryNavigation() {
