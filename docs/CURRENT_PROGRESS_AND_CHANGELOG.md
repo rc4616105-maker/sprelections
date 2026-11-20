@@ -329,6 +329,16 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ---
 
+### 15. House Tag RegExp Syntax Fix for Multi-House Cast (Nov 20, 2026)
+- **Resolved Unterminated Character Class SyntaxError:**
+  - Fixed invalid regex in `castVote()` when updating `voted_for` house tags for faculty and universal demo voters (`stu.isStaff` / `0000`).
+  - Corrected escaping from `/[Bheeshma]:[^;\]+/` to `new RegExp(`\\[${escapedName}\\]:[^;]+`)` across all 7 kiosks (`bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, `vishwamithra`, `central`).
+  - Successfully resolves `Invalid regular expression: /\[Bheeshma\]:[^;\]+/: Unterminated character class` on ballot confirmation.
+- **Cache-Busting Update:** Bumped script query strings to `?v=1013` across all kiosks.
+
+---
+
+
 
 
 ## Summary of Verification Checks Passed

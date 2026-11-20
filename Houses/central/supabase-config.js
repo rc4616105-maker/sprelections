@@ -789,7 +789,7 @@
           const prevVotedFor = String(voterRow?.voted_for || "").trim();
           const houseTag = `[${houseConfig.name}]: ${summaryParts.join(", ")}`;
           const escapedName = houseConfig.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-          const tagRegex = new RegExp("\\[" + escapedName + "\\]:[^;\\]+");
+          const tagRegex = new RegExp(`\\[${escapedName}\\]:[^;]+`);
           if (!prevVotedFor) {
             updatedVotedFor = houseTag;
           } else if (tagRegex.test(prevVotedFor)) {
