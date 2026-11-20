@@ -287,9 +287,13 @@
 
           <!-- Hidden legacy hooks for seamless compatibility -->
           <button type="button" id="cast-vote-btn" hidden></button>
-          <div id="cast-action-bar" hidden></div>
+          <div id="cast-action-bar" hidden>
+            <span id="selected-progress-label" hidden></span>
+            <span id="selected-candidate-name" hidden></span>
+          </div>
           <div id="candidate-grid" hidden></div>
           <button type="button" id="back-to-step2-btn" hidden></button>
+          <p id="step3-subtitle" hidden></p>
         </div>
 
         <!-- STEP 4: Vote Casted Confirmation & 2.5s Auto Reset -->

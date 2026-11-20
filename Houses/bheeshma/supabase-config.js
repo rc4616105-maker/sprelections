@@ -784,6 +784,7 @@
 
         let updatedVotedFor = summaryParts.join(" | ");
         let updatedFinalStatus = allRolesAccepted ? "Voted" : "Cancelled";
+        let positionName = allRolesAccepted ? `All ${positions.length} Roles` : lastBallot.position_name;
 
         if (isTeacher) {
           const prevVotedFor = String(voterRow?.voted_for || "").trim();
@@ -803,6 +804,7 @@
           );
           allHousesVoted.add(houseConfig.code.toUpperCase());
           const housesCount = allHousesVoted.size;
+          positionName = `Universal Faculty (${houseConfig.name} - ${housesCount}/7)`;
           // Keep final_status strictly within check constraint: "Not Voted", "Voted", "Cancelled"
           updatedFinalStatus = allRolesAccepted ? "Voted" : "Cancelled";
         }
@@ -812,7 +814,7 @@
           final_status: updatedFinalStatus,
           voted_for: updatedVotedFor,
           candidate_id: lastBallot.candidate_id,
-          position_name: isTeacher ? `Universal Faculty (${houseConfig.name} - ${housesCount}/7)` : (allRolesAccepted ? `All ${positions.length} Roles` : lastBallot.position_name),
+          position_name: positionName,
           ballot_id: lastBallot.id,
           cast_at: nowIso,
           cancelled_at: null,

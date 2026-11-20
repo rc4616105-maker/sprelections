@@ -16,6 +16,16 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
+### 0. Fix ReferenceError `housesCount is not defined` & Complete DOM IDs Verification (Nov 20, 2026)
+- **Resolved `housesCount is not defined` in `Houses/*/supabase-config.js`**:
+  - Identified cause of student ballot submission failure: `const housesCount = allHousesVoted.size;` was declared block-scoped inside the `if (isTeacher) { ... }` block, yet referenced outside that block in the `sbRest("PATCH", ...)` payload ternary.
+  - In student vote submissions (`isTeacher === false`), JavaScript threw `ReferenceError: housesCount is not defined` causing the red alert `"Unable to Record Vote"`.
+  - Refactored `positionName` resolution: declared `let positionName = allRolesAccepted ? "All 4 Roles" : lastBallot.position_name;` in the outer function scope, and updated it to `Universal Faculty (${houseConfig.name} - ${housesCount}/7)` strictly inside the teacher block.
+  - Propagated fix across all houses: `bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, `vishwamithra`, and `central`.
+- **Complete DOM Hook Cross-Check (0 Missing IDs across all 6 houses)**:
+  - Validated all 71 DOM element IDs queried by `app.js` across all 6 house kiosks.
+  - Added full compatibility hooks for `#step3-subtitle`, `#selected-progress-label`, and `#selected-candidate-name` in hidden containers, ensuring 100% element resolution.
+
 ### 0. Zero-Scroll EVM Electronic Voting Machine Kiosk UI Rollout Across All 6 Houses (Nov 20, 2026)
 - **Authentic EVM Post-by-Post Voting Machine UI (`Houses/*/styles.css`, `index.html`, `app.js`)**:
   - Successfully redesigned Step 3 voting on all 6 house kiosks (`bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, `vishwamithra`) to completely eliminate vertical scrolling:
