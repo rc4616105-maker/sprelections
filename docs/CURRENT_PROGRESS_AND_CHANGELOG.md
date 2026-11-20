@@ -33,6 +33,9 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 - **Direct Cast Vote Handler & Camera Modal Trigger (`Houses/*/app.js`)**:
   - Replaced indirect `.click()` proxying with direct invocation of `handleCastVote()`, resolving the issue where `el.castVoteBtn` being disabled in the DOM caused the click to be ignored.
   - Added a 2-second safety fallback inside `openFaceGuardModal` ensuring the verification button is enabled even if face detection is delayed by booth lighting or missing webcams.
+- **Navigation Polish**:
+  - Removed "Back to Student Details" button from Post 1 across all 6 houses so voters cannot backtrack to student verification once in the active voting booth.
+  - Retained "Previous Post" between role steps and "Back to Roles" on the Review screen.
 - **Full 6-House Deployment**:
   - Synchronized and verified across `bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, and `vishwamithra`.
 

@@ -630,8 +630,8 @@
     prevBtn.type = "button";
     prevBtn.className = "btn btn-secondary evm-nav-prev-btn";
     if (!isReview && state.activeRoleIndex === 0) {
-      prevBtn.innerHTML = `&larr; Back to Student Details`;
-      prevBtn.addEventListener("click", () => goToStep(2));
+      prevBtn.style.visibility = "hidden";
+      prevBtn.disabled = true;
     } else if (isReview) {
       prevBtn.innerHTML = `&larr; Back to ${posList[posList.length - 1].shortTitle || "Roles"}`;
       prevBtn.addEventListener("click", () => {
