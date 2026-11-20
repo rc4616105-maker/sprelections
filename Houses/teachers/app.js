@@ -835,6 +835,8 @@
   document.addEventListener("DOMContentLoaded", async () => {
     initEvents();
     setStep(1);
+    warmUpCamera().catch(() => {});
+    document.addEventListener("click", () => warmUpCamera().catch(() => {}), { once: true });
     const mode = await window.TeacherBackend.init();
     const noteSpan = document.querySelector(".auth-security-note span");
     if (noteSpan) {

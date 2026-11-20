@@ -251,7 +251,7 @@
           const isVoterMarkedVoted = Array.isArray(vRows) && vRows.length > 0 && vRows[0].final_status === "Voted";
 
           // Strict Double-Voting Block for Teacher Universal Polling Booth:
-          if (cleanId !== "0000" && (isVoterMarkedVoted || hasAcceptedBallots) && !hasCancelledBallots) {
+          if ((isVoterMarkedVoted || hasAcceptedBallots) && !hasCancelledBallots) {
             return {
               ok: false,
               code: "ALREADY_VOTED",
@@ -286,7 +286,7 @@
       const votedCount = Object.keys(votedRolesMap).length;
 
       // Allow 0000 demo testing to re-vote freely
-      if (cleanId !== "0000" && votedCount >= totalRoles && totalRoles > 0) {
+      if (votedCount >= totalRoles && totalRoles > 0) {
         return {
           ok: false,
           code: "ALREADY_VOTED",
@@ -349,17 +349,6 @@
           cast_at: nowIso,
         }));
 
-        // For demo voter 0000, cancel any existing accepted ballots so demo tests can re-run
-        if (cleanAdm === "0000") {
-          try {
-            await sbRest("PATCH", `/rest/v1/ballots?admission_no=eq.0000&status=eq.accepted`, {
-              status: "cancelled",
-              cancelled_at: nowIso,
-              cancelled_reason: "Demo testing auto-refresh",
-            });
-          } catch (_) {}
-        }
-
         // Batch insert ballots with fallback if table schema differs (e.g. booth_name column)
         try {
           await sbRest("POST", "/rest/v1/ballots", ballotDocs);
@@ -368,23 +357,8 @@
           if (errMsg.includes("booth_name")) {
             const strippedBallots = ballotDocs.map(({ booth_name, ...rest }) => rest);
             await sbRest("POST", "/rest/v1/ballots", strippedBallots);
-          } else if (cleanAdm === "0000" || errMsg.includes("ballots_one_accepted_per_voter_role_idx")) {
-            try {
-              await sbRest("PATCH", `/rest/v1/ballots?admission_no=eq.${encodeURIComponent(cleanAdm)}&status=eq.accepted`, {
-                status: "cancelled",
-                cancelled_at: nowIso,
-                cancelled_reason: "Re-vote update",
-              });
-              const stripped = ballotDocs.map(({ booth_name, ...rest }) => rest);
-              try {
-                await sbRest("POST", "/rest/v1/ballots", ballotDocs);
-              } catch (_) {
-                await sbRest("POST", "/rest/v1/ballots", stripped);
-              }
-            } catch (retryErr) {
-              console.error("Ballot insert retry error:", retryErr);
-              throw retryErr;
-            }
+          } else if (errMsg.includes("ballots_one_accepted_per_voter_role_idx")) {
+            throw new Error(`Duplicate vote blocked: Faculty ${cleanAdm} already has accepted ballots.`);
           } else {
             console.error("Ballot insert error:", ballotErr);
             throw ballotErr;

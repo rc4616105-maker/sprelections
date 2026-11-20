@@ -1,10 +1,10 @@
-# 8. Current Progress & Changelog (As of Nov 17, 2026)
+# 8. Current Progress & Changelog (As of Nov 20, 2026)
 
 > [!IMPORTANT]
 > **MANDATORY DOCUMENTATION SYNC POLICY:**  
 > Whenever ANY change, feature, bug fix, or UI adjustment is made to any part of this project, the corresponding documentation in the `docs/` folder MUST be updated immediately in the same turn.
 
-This document records the exact state of development, features completed, bug fixes deployed, and system verification results as of **November 17, 2026**.
+This document records the exact state of development, features completed, bug fixes deployed, and system verification results as of **November 20, 2026**.
 
 ---
 
@@ -15,6 +15,31 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 ---
 
 ## Changelog & Milestone Summary
+
+### 0. Dedicated Per-House Demo Accounts & Hard Block on Double-Voting (Nov 20, 2026)
+- **Dedicated Demo Accounts Per House (`DEMO_ACCOUNTS`)**:
+  - Configured dedicated demo accounts for each house and a universal demo:
+    - `0000`: Universal Demo Voter (`ALL`, dynamically adopts current booth)
+    - `0001`: Bheeshma Demo Voter (`BHEESHMA`)
+    - `0002`: Gurudrona Demo Voter (`GURUDRONA`)
+    - `0003`: Hanuman Demo Voter (`HANUMAN`)
+    - `0004`: Karna Demo Voter (`KARNA`)
+    - `0005`: Vasistha Demo Voter (`VASISTHA`)
+    - `0006`: Vishwamithra Demo Voter (`VISHWAMITHRA`)
+- **Strict Single-Vote Rule For All Voters (Including Demo Accounts)**:
+  - Removed the `cleanId === "0000"` early bypass in `verifyStudent()` and `cleanId !== "0000"` in `verifyTeacher()`.
+  - Once any voter (regular student, faculty, or demo account `0000`–`0006`) casts their ballot, their status is saved to Supabase (`voters` and `ballots`).
+  - If they attempt to enter their ID again in that booth (or anywhere for students/teachers), the system immediately halts on Step 1 with `code: "ALREADY_VOTED"` and message:
+    `Voter ID [cleanId] ([Name]) has already cast their vote in this election. Duplicate voting is strictly blocked.`
+- **Removed Ballot Deletion & Re-vote Cancellation in `castVote()`**:
+  - Completely eliminated the `if (stu.admissionNo === "0000") { DELETE ballots... }` auto-erase routine.
+  - Eliminated the `errMsg.includes("ballots_one_accepted_per_voter_role_idx")` patch-to-cancelled re-vote retry block. Any duplicate ballot insertion attempt now strictly raises a hard database error (`Duplicate vote blocked: Voter already has accepted ballots.`).
+- **Teacher Polling Booth Automatic Photo Capture & Supabase Linkage**:
+  - Camera is automatically pre-warmed on `DOMContentLoaded` and initial interaction (`warmUpCamera()`).
+  - Photo snapshot is silently captured directly from the camera stream during `submitUniversalBallot()` without any face detection modal or delay.
+  - Supabase connectivity verified with 100% HTTP 200 health checks across all endpoints.
+- **Cache Busting**:
+  - Bumped script versions to `v=1020` across all house kiosks and the teacher polling booth.
 
 ### 0. Strict Double-Voting Hard Block Across All 7 Polling Booths (Nov 20, 2026)
 - **Strict Immediate Block on Step 1 (`Houses/*/supabase-config.js`)**:

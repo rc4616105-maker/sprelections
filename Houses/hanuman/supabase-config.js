@@ -26,6 +26,16 @@
     VICE_CAPTAIN_GIRL: "vote_9_girl",
   };
 
+  const DEMO_ACCOUNTS = {
+    "0000": { admissionNo: "0000", fullName: "Universal Demo Voter", className: "10", section: "Demo", houseCode: "ALL", isActive: true },
+    "0001": { admissionNo: "0001", fullName: "Bheeshma Demo Voter", className: "10", section: "Demo", houseCode: "BHEESHMA", isActive: true },
+    "0002": { admissionNo: "0002", fullName: "Gurudrona Demo Voter", className: "10", section: "Demo", houseCode: "GURUDRONA", isActive: true },
+    "0003": { admissionNo: "0003", fullName: "Hanuman Demo Voter", className: "10", section: "Demo", houseCode: "HANUMAN", isActive: true },
+    "0004": { admissionNo: "0004", fullName: "Karna Demo Voter", className: "10", section: "Demo", houseCode: "KARNA", isActive: true },
+    "0005": { admissionNo: "0005", fullName: "Vasistha Demo Voter", className: "10", section: "Demo", houseCode: "VASISTHA", isActive: true },
+    "0006": { admissionNo: "0006", fullName: "Vishwamithra Demo Voter", className: "10", section: "Demo", houseCode: "VISHWAMITHRA", isActive: true },
+  };
+
   function getPositionsList() {
     return Array.isArray(window.HOUSE_DATA.positions) && window.HOUSE_DATA.positions.length
       ? window.HOUSE_DATA.positions
@@ -259,30 +269,13 @@
       const { electionId, positionId, housesMeta, allStudents, houseConfig } = window.HOUSE_DATA;
       const positions = getPositionsList();
 
-      // Special Demo User (0000) - Universal Access across ALL booths!
-      if (cleanId === "0000") {
-        const demoStudent = allStudents.find((s) => s.admissionNo === "0000") || {
-          admissionNo: "0000",
-          fullName: "Demo User",
-          className: "Demo",
-          section: "All",
-          houseCode: "ALL",
-          isActive: true,
-        };
-        return {
-          ok: true,
-          student: demoStudent,
-          alreadyVoted: false,
-          canVote: true,
-          votedRoles: {},
-          cancelledRoles: [],
-          houseMeta: housesMeta[requestedHouseCode] || houseConfig,
-          rolesStatus: positions.map((p) => ({ ...p, status: "open", candidateName: null })),
-        };
-      }
+
 
       // Step 1: Check Admission No. against the student roster
-      const localMatch = allStudents.find((s) => s.admissionNo === cleanId) || null;
+      let localMatch = DEMO_ACCOUNTS[cleanId] ? { ...DEMO_ACCOUNTS[cleanId] } : (allStudents.find((s) => s.admissionNo === cleanId) || null);
+      if (cleanId === "0000" && localMatch) {
+        localMatch.houseCode = houseConfig.code;
+      }
       if (!localMatch) {
         return {
           ok: false,
@@ -298,7 +291,7 @@
       // Teacher / Teaching Staff Identification:
       // Staff IDs 6001–6087, isStaff === true, houseCode === "ALL", or cleanId === "0000"
       const numId = parseInt(cleanId, 10);
-      const isTeacher = localMatch.isStaff === true || localMatch.houseCode === "ALL" || cleanId === "0000" || (!isNaN(numId) && numId >= 6001 && numId <= 6087);
+      const isTeacher = localMatch.isStaff === true || localMatch.houseCode === "ALL" || (!isNaN(numId) && numId >= 6001 && numId <= 6087);
 
       // School Cabinet Polling Booth Restriction: TEACHERS & FACULTY ONLY
       if (requestedHouseCode === "CENTRAL") {
@@ -316,7 +309,7 @@
       // House Booth Restriction:
       // Regular students can ONLY vote in their designated house.
       // Teachers have universal eligibility and can vote across all houses + Central.
-      if (!isTeacher && requestedHouseCode !== "CENTRAL" && localMatch.houseCode !== requestedHouseCode) {
+      if (!isTeacher && cleanId !== "0000" && requestedHouseCode !== "CENTRAL" && localMatch.houseCode !== requestedHouseCode) {
         const registeredName = housesMeta[localMatch.houseCode]?.name || localMatch.houseCode;
         const requestedName = housesMeta[requestedHouseCode]?.name || requestedHouseCode;
         return {
@@ -350,7 +343,8 @@
         const isVoterMarkedVoted = vRows.length > 0 && vRows[0].final_status === "Voted";
 
         // Hard Double-Voting Block: If voter is already marked 'Voted' or has accepted ballots, and not cancelled, block immediately!
-        if (!isTeacher && cleanId !== "0000") {
+        // Hard Double-Voting Block (Applies strictly to ALL voters, including demo accounts):
+        if (!isTeacher) {
           if ((isVoterMarkedVoted || hasAcceptedBallots) && !hasCancelledBallots) {
             return {
               ok: false,
@@ -362,7 +356,7 @@
         }
 
         // Hard Double-Voting Block for Faculty: If already cast in this specific house/central booth, block duplicate attempt!
-        if (isTeacher && cleanId !== "0000") {
+        if (isTeacher) {
           const boothDisplayName = housesMeta[requestedHouseCode]?.name || houseConfig.name || requestedHouseCode;
           if (hasAcceptedBallots && !hasCancelledBallots) {
             return {
@@ -628,21 +622,23 @@
       });
 
       if (this.mode === "supabase") {
-        let stu = allStudents.find((s) => s.admissionNo === student.admissionNo);
-        if (student.admissionNo === "0000" && !stu) {
-          stu = { admissionNo: "0000", fullName: "Demo User", className: "Demo", section: "All", houseCode: "ALL", isActive: true, isStaff: true };
+        let stu = DEMO_ACCOUNTS[student.admissionNo]
+          ? { ...DEMO_ACCOUNTS[student.admissionNo] }
+          : (allStudents.find((s) => s.admissionNo === student.admissionNo) || null);
+        if (student.admissionNo === "0000" && stu) {
+          stu.houseCode = houseConfig.code;
         }
         if (!stu || !stu.isActive) {
           throw new Error("Voter not found or marked inactive.");
         }
 
         const numId = parseInt(stu.admissionNo, 10);
-        const isTeacher = stu.isStaff === true || stu.houseCode === "ALL" || stu.admissionNo === "0000" || (!isNaN(numId) && numId >= 6001 && numId <= 6087);
+        const isTeacher = stu.isStaff === true || stu.houseCode === "ALL" || (!isNaN(numId) && numId >= 6001 && numId <= 6087);
 
         if (!isTeacher && houseConfig.code === "CENTRAL") {
           throw new Error("Voting for School Cabinet is strictly reserved for Teachers and Faculty.");
         }
-        if (!isTeacher && stu.houseCode !== houseConfig.code) {
+        if (!isTeacher && stu.admissionNo !== "0000" && stu.houseCode !== houseConfig.code) {
           throw new Error("Student does not belong to this house roster.");
         }
 
@@ -687,7 +683,7 @@
             const matchHouse = isTeacher ? ((b.house_code || "").toUpperCase() === houseConfig.code.toUpperCase()) : true;
             return matchHouse && b.status === "accepted" && (b.position_id || sel.positionId) === sel.positionId;
           });
-          if (dup && stu.admissionNo !== "0000") {
+          if (dup) {
             throw new Error(`Vote already casted for ${sel.positionName} (${stu.admissionNo}) in ${houseConfig.name}.`);
           }
         }
@@ -726,20 +722,6 @@
           };
         });
 
-                if (stu.admissionNo === "0000") {
-          try {
-            await sbRest("DELETE", `/rest/v1/ballots?admission_no=eq.0000`);
-          } catch (_) {
-            try {
-              await sbRest("PATCH", `/rest/v1/ballots?admission_no=eq.0000`, {
-                status: "cancelled",
-                cancelled_at: nowIso,
-                cancel_reason: "Demo testing auto-refresh",
-              });
-            } catch (_) {}
-          }
-        }
-
         try {
           await sbRest("POST", "/rest/v1/ballots", ballotsToInsert);
         } catch (ballotErr) {
@@ -747,31 +729,8 @@
           if (errMsg.includes("booth_name")) {
             const strippedBallots = ballotsToInsert.map(({ booth_name, ...rest }) => rest);
             await sbRest("POST", "/rest/v1/ballots", strippedBallots);
-          } else if (stu.admissionNo === "0000" || errMsg.includes("ballots_one_accepted_per_voter_role_idx")) {
-            try {
-              if (stu.admissionNo === "0000") {
-                await sbRest("DELETE", `/rest/v1/ballots?admission_no=eq.0000`);
-              } else {
-                await sbRest("PATCH", `/rest/v1/ballots?admission_no=eq.${qAdm}&status=eq.accepted`, {
-                  status: "cancelled",
-                  cancelled_at: nowIso,
-                  cancel_reason: "Re-vote update",
-                });
-              }
-              const freshTs = Date.now().toString(36).toUpperCase();
-              const freshBallots = ballotsToInsert.map((b) => ({
-                ...b,
-                id: b.id.replace(/BLT-[^-]+/, `BLT-${freshTs}`),
-              }));
-              try {
-                await sbRest("POST", "/rest/v1/ballots", freshBallots);
-              } catch (_) {
-                const stripped = freshBallots.map(({ booth_name, ...rest }) => rest);
-                await sbRest("POST", "/rest/v1/ballots", stripped);
-              }
-            } catch (retryErr) {
-              throw retryErr;
-            }
+          } else if (errMsg.includes("ballots_one_accepted_per_voter_role_idx")) {
+            throw new Error(`Duplicate vote blocked: Voter ${stu.admissionNo} already has accepted ballots.`);
           } else {
             throw ballotErr;
           }
