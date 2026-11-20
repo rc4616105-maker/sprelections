@@ -27,13 +27,13 @@
   };
 
   const DEMO_ACCOUNTS = {
-    "0000": { admissionNo: "0000", fullName: "Universal Demo Voter", className: "10", section: "Demo", houseCode: "ALL", isActive: true },
-    "0001": { admissionNo: "0001", fullName: "Bheeshma Demo Voter", className: "10", section: "Demo", houseCode: "BHEESHMA", isActive: true },
-    "0002": { admissionNo: "0002", fullName: "Gurudrona Demo Voter", className: "10", section: "Demo", houseCode: "GURUDRONA", isActive: true },
-    "0003": { admissionNo: "0003", fullName: "Hanuman Demo Voter", className: "10", section: "Demo", houseCode: "HANUMAN", isActive: true },
-    "0004": { admissionNo: "0004", fullName: "Karna Demo Voter", className: "10", section: "Demo", houseCode: "KARNA", isActive: true },
-    "0005": { admissionNo: "0005", fullName: "Vasistha Demo Voter", className: "10", section: "Demo", houseCode: "VASISTHA", isActive: true },
-    "0006": { admissionNo: "0006", fullName: "Vishwamithra Demo Voter", className: "10", section: "Demo", houseCode: "VISHWAMITHRA", isActive: true },
+    "0000": { admissionNo: "0000", fullName: "Universal Demo Voter", className: "10", section: "Demo", houseCode: "ALL", isStaff: true, isUniversal: true, isActive: true },
+    "0001": { admissionNo: "0001", fullName: "Bheeshma Demo Voter", className: "10", section: "Demo", houseCode: "BHEESHMA", isStaff: false, isUniversal: false, isActive: true },
+    "0002": { admissionNo: "0002", fullName: "Gurudrona Demo Voter", className: "10", section: "Demo", houseCode: "GURUDRONA", isStaff: false, isUniversal: false, isActive: true },
+    "0003": { admissionNo: "0003", fullName: "Hanuman Demo Voter", className: "10", section: "Demo", houseCode: "HANUMAN", isStaff: false, isUniversal: false, isActive: true },
+    "0004": { admissionNo: "0004", fullName: "Karna Demo Voter", className: "10", section: "Demo", houseCode: "KARNA", isStaff: false, isUniversal: false, isActive: true },
+    "0005": { admissionNo: "0005", fullName: "Vasistha Demo Voter", className: "10", section: "Demo", houseCode: "VASISTHA", isStaff: false, isUniversal: false, isActive: true },
+    "0006": { admissionNo: "0006", fullName: "Vishwamithra Demo Voter", className: "10", section: "Demo", houseCode: "VISHWAMITHRA", isStaff: false, isUniversal: false, isActive: true },
   };
 
   function getPositionsList() {
@@ -271,9 +271,6 @@
 
       // Step 1: Check Admission No. against the student roster or demo accounts
       let localMatch = DEMO_ACCOUNTS[cleanId] ? { ...DEMO_ACCOUNTS[cleanId] } : (allStudents.find((s) => s.admissionNo === cleanId) || null);
-      if (cleanId === "0000" && localMatch) {
-        localMatch.houseCode = houseConfig.code;
-      }
       if (!localMatch) {
         return {
           ok: false,
@@ -289,7 +286,7 @@
       // Teacher / Teaching Staff Identification:
       // Staff IDs 6001–6087, isStaff === true, or houseCode === "ALL"
       const numId = parseInt(cleanId, 10);
-      const isTeacher = localMatch.isStaff === true || localMatch.houseCode === "ALL" || (!isNaN(numId) && numId >= 6001 && numId <= 6087);
+      const isTeacher = localMatch.isStaff === true || localMatch.houseCode === "ALL" || localMatch.isUniversal === true || cleanId === "0000" || (!isNaN(numId) && numId >= 6001 && numId <= 6087);
 
       // School Cabinet Polling Booth Restriction: TEACHERS & FACULTY ONLY
       if (requestedHouseCode === "CENTRAL") {
@@ -306,7 +303,7 @@
 
       // House Booth Restriction:
       // Regular students can ONLY vote in their designated house (0000 has universal house access).
-      if (!isTeacher && cleanId !== "0000" && requestedHouseCode !== "CENTRAL" && localMatch.houseCode !== requestedHouseCode) {
+      if (!isTeacher && requestedHouseCode !== "CENTRAL" && localMatch.houseCode !== requestedHouseCode) {
         const registeredName = housesMeta[localMatch.houseCode]?.name || localMatch.houseCode;
         const requestedName = housesMeta[requestedHouseCode]?.name || requestedHouseCode;
         return {
@@ -359,7 +356,7 @@
               ok: false,
               code: "ALREADY_VOTED",
               title: "Already Voted",
-              message: `Teacher ID ${cleanId} (${localMatch.fullName}) has already cast all votes for ${boothDisplayName}. Duplicate voting in this booth is strictly blocked.`,
+              message: `Universal Voter ID ${cleanId} (${localMatch.fullName}) has already cast ballots for ${boothDisplayName}. Duplicate voting in this booth is strictly blocked.`,
             };
           }
         }
@@ -621,20 +618,17 @@
         let stu = DEMO_ACCOUNTS[student.admissionNo]
           ? { ...DEMO_ACCOUNTS[student.admissionNo] }
           : (allStudents.find((s) => s.admissionNo === student.admissionNo) || null);
-        if (student.admissionNo === "0000" && stu) {
-          stu.houseCode = houseConfig.code;
-        }
         if (!stu || !stu.isActive) {
           throw new Error("Voter not found or marked inactive.");
         }
 
         const numId = parseInt(stu.admissionNo, 10);
-        const isTeacher = stu.isStaff === true || stu.houseCode === "ALL" || (!isNaN(numId) && numId >= 6001 && numId <= 6087);
+        const isTeacher = stu.isStaff === true || stu.houseCode === "ALL" || stu.isUniversal === true || stu.admissionNo === "0000" || (!isNaN(numId) && numId >= 6001 && numId <= 6087);
 
         if (!isTeacher && houseConfig.code === "CENTRAL") {
           throw new Error("Voting for School Cabinet is strictly reserved for Teachers and Faculty.");
         }
-        if (!isTeacher && stu.admissionNo !== "0000" && stu.houseCode !== houseConfig.code) {
+        if (!isTeacher && stu.houseCode !== houseConfig.code) {
           throw new Error("Student does not belong to this house roster.");
         }
 

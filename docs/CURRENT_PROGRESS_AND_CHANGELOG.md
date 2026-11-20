@@ -16,6 +16,21 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
+### 0. Universal Voter Cross-House Eligibility & Per-Booth Single-Vote Enforcement (Nov 20, 2026)
+- **Universal Voter Multi-Booth Voting Enabled (`Houses/*/supabase-config.js`)**:
+  - Configured Universal Voters (`0000` Universal Demo, Teaching Faculty IDs 6001–6087, and `houseCode === "ALL"`) to possess legitimate access across **all 7 polling booths** (Bheeshma, Gurudrona, Hanuman, Karna, Vasistha, Vishwamithra, and Central/Teachers Universal Station).
+  - Maintained `0000` with `houseCode: "ALL"`, `isUniversal: true`, and `isStaff: true` across all kiosks.
+- **Strict Single-Vote Per House Scoping for Universal Voters**:
+  - In `verifyStudent()`, double-voting check for Universal Voters is strictly scoped to `requestedHouseCode` (`ballots.filter(house_code === requestedHouseCode)`).
+  - A Universal Voter can visit and cast their ballot in each individual house booth, but can only vote **once per house**.
+  - If a Universal Voter attempts to vote a second time in a house where they already cast ballots, the booth immediately blocks them on Step 1:
+    `Universal Voter ID [cleanId] ([Name]) has already cast ballots for [House Name]. Duplicate voting in this booth is strictly blocked.`
+  - In other house booths where ballots have not yet been cast, the Universal Voter is accredited and allowed to vote.
+- **Regular Students & House Demos (`0001`–`0006`) Strictly Scoped to Single House**:
+  - Regular students and dedicated house demo accounts (`0001`–`0006`) remain restricted to their designated house and can vote only **once in the entire election**.
+- **Cache Busting**:
+  - Bumped script cachebuster versions to `v=1022` across all kiosk HTML files.
+
 ### 0. Dedicated Per-House Demo Accounts & Hard Block on Double-Voting (Nov 20, 2026)
 - **Dedicated Demo Accounts Per House (`DEMO_ACCOUNTS`)**:
   - Configured dedicated demo accounts for each house and a universal demo:
