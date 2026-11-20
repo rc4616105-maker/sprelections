@@ -16,6 +16,23 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
+### 0. Remove Post 1 "Back: Verify Info" & Extra-Large EVM Box Layout Across All 6 Houses (Nov 20, 2026)
+- **Removed "Back: Verify Info" Navigation on Post 1 (`Houses/*/app.js`)**:
+  - Hid `el.evmBackBtn` entirely on Post 1 (`state.evmPostIndex === 0`) via `visibility: hidden; disabled: true;`.
+  - Voters cannot navigate backward into voter ID accreditation once they enter the voting machine booth.
+  - On Post 2, 3, and 4, `el.evmBackBtn` remains enabled as `← Back: [Previous Post Name]` to allow changing previous role selections before final submission.
+- **Further Enlarged Candidate Rectangle Boxes & Large Photo Display (`Houses/*/styles.css`)**:
+  - Expanded `.evm-candidate-row` max height to **`165px`** (min height `95px`) with `0.85rem 1.6rem` padding and `16px` rounded corners, completely filling vertical space on all screen displays.
+  - **Extra-Large Candidate Photo Avatar (`96px × 96px`)**:
+    - Enlarged `.evm-cand-avatar` to **`96px × 96px`** with `14px` border radius and `2rem` bold initials fallback.
+    - Candidate photos (`<img>`) scale edge-to-edge with `12px` border radius.
+  - Candidate Name enlarged to **`1.55rem` bold** with `1.05rem` subtext.
+  - Serial numbers enlarged to **`1.6rem` bold**.
+  - Symbol badge enlarged to **`min-width: 165px`** with `1.85rem` symbol icons and `1.05rem` labels.
+  - Red LED lamp increased to **`20px × 20px`** with `18px` radial crimson glow.
+  - Vote action button enlarged to **`140px × 54px`** with `1.08rem` font size.
+  - Propagated across all 6 house kiosks (`bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, `vishwamithra`).
+
 ### 0. Enlarged Candidate Box & High-Visibility Photo Avatar Sizing Across All 6 Houses (Nov 20, 2026)
 - **Generous Candidate Rectangle Box Sizing (`Houses/*/styles.css`)**:
   - Expanded `.evm-candidate-row` max height from `95px` to `125px` (min height `75px`) and increased padding to `0.75rem 1.4rem` to eliminate empty bottom space and fill the booth card neatly.

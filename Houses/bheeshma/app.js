@@ -503,8 +503,11 @@
       // Update Footer
       if (el.evmBackBtn) {
         if (state.evmPostIndex === 0) {
-          el.evmBackBtn.innerHTML = `← Back: Verify Info`;
+          el.evmBackBtn.style.visibility = "hidden";
+          el.evmBackBtn.disabled = true;
         } else {
+          el.evmBackBtn.style.visibility = "visible";
+          el.evmBackBtn.disabled = false;
           const prevPos = posList[state.evmPostIndex - 1];
           el.evmBackBtn.innerHTML = `← Back: ${prevPos.shortTitle || prevPos.title}`;
         }
@@ -1147,8 +1150,6 @@
       if (state.evmPostIndex > 0) {
         state.evmPostIndex--;
         renderEvmView();
-      } else {
-        goToStep(2);
       }
     });
   }
