@@ -465,8 +465,16 @@
       const pill = document.createElement("button");
       pill.type = "button";
       pill.className = `post-step-pill${isActive ? " is-active" : ""}${isSelected ? " is-done" : ""}`;
+      const hAccent = currentHouse.accent || "#059669";
+      const hText = currentHouse.accentText || hAccent;
+      const hOnAccent = currentHouse.onAccent || "#ffffff";
+      if (isActive) {
+        pill.style.borderColor = hAccent;
+        pill.style.color = hText;
+        pill.style.boxShadow = `0 2px 8px ${hAccent}25`;
+      }
       pill.innerHTML = `
-        <span class="post-step-num">${isSelected ? "✓" : (pIdx + 1)}</span>
+        <span class="post-step-num" style="${isActive ? `background:${hAccent}; color:${hOnAccent};` : ''}">${isSelected ? "✓" : (pIdx + 1)}</span>
         <span>${role.shortTitle || role.title}</span>
       `;
       pill.addEventListener("click", () => {
@@ -500,15 +508,46 @@
     const currentRole = roles[state.currentPostIdx];
     if (!currentRole) return;
 
+    // --- Dynamic House Theme Color Switching ---
+    const houseAccent = currentHouse.accent || "#059669";
+    const houseHover = currentHouse.accentHover || currentHouse.hover || houseAccent;
+    const houseText = currentHouse.accentText || currentHouse.text || houseAccent;
+    const houseOnAccent = currentHouse.onAccent || "#ffffff";
+    const houseSubtle = `${houseAccent}18`;
+
+    // 1. Update booth card top border to match the active house
+    const boothCard = document.querySelector(".booth-card");
+    if (boothCard) {
+      boothCard.style.borderTopColor = houseAccent;
+    }
+
+    // 2. Update house eyebrow text and color in header
+    const houseEyebrow = document.querySelector(".house-eyebrow");
+    if (houseEyebrow) {
+      houseEyebrow.textContent = `${currentHouse.name} · Faculty Voting Station`;
+      houseEyebrow.style.color = houseAccent;
+    }
+
+    // 3. Set dynamic CSS variables on pageShell
+    const pageShell = document.querySelector(".page-shell");
+    if (pageShell) {
+      pageShell.style.setProperty("--house-accent", houseAccent);
+      pageShell.style.setProperty("--house-hover", houseHover);
+      pageShell.style.setProperty("--house-text", houseText);
+      pageShell.style.setProperty("--house-on-accent", houseOnAccent);
+      pageShell.style.setProperty("--house-subtle", houseSubtle);
+    }
+
     const roleKey = `${currentHouse.code}_${currentRole.id}`;
     const alreadyVoted = state.votedRolesMap[roleKey];
     const picked = state.selectedByRole[roleKey] || (alreadyVoted ? { candidate: { id: alreadyVoted.candidateId, fullName: alreadyVoted.candidateName } } : null);
 
-    // Update Header Strip
+    // Update Header Strip with house accent
     if (el.evmHouseBadge) {
       el.evmHouseBadge.textContent = `${currentHouse.name} · Post ${state.currentPostIdx + 1} of ${roles.length}`;
-      el.evmHouseBadge.style.color = currentHouse.accentText || currentHouse.accent;
-      el.evmHouseBadge.style.borderColor = currentHouse.accent;
+      el.evmHouseBadge.style.background = houseSubtle;
+      el.evmHouseBadge.style.color = houseText;
+      el.evmHouseBadge.style.borderColor = houseAccent;
     }
     if (el.evmPostTitle) el.evmPostTitle.textContent = currentRole.title;
     if (el.evmPostSubtitle) el.evmPostSubtitle.textContent = currentRole.subtitle || "";
@@ -548,7 +587,7 @@
           row.dataset.candId = cand.id;
 
           row.innerHTML = `
-            <div class="evm-cand-avatar">${photoHtml}</div>
+            <div class="evm-cand-avatar" style="${!cand.photoPath && !cand.photoUrl ? `background:${houseSubtle}; border-color:${houseAccent}60; color:${houseText};` : ''}">${photoHtml}</div>
             <div class="evm-cand-info">
               <h3 class="evm-cand-name">${cand.fullName}</h3>
               <span class="evm-cand-sub">${subText}</span>
@@ -565,6 +604,11 @@
               </button>
             </div>
           `;
+
+          if (isSelected) {
+            row.style.borderColor = houseAccent;
+            row.style.boxShadow = `0 6px 20px -2px ${houseAccent}40`;
+          }
 
           row.addEventListener("click", () => {
             state.selectedByRole[roleKey] = {
@@ -617,6 +661,13 @@
     if (el.evmNextBtn) {
       const isLastPostInHouse = state.currentPostIdx >= roles.length - 1;
       const isLastHouse = state.currentHouseIdx >= houses.length - 1;
+
+      const hAccent = currentHouse.accent || "#059669";
+      const hHover = currentHouse.accentHover || currentHouse.hover || hAccent;
+      const hOnAccent = currentHouse.onAccent || "#ffffff";
+      el.evmNextBtn.style.background = hAccent;
+      el.evmNextBtn.style.color = hOnAccent;
+      el.evmNextBtn.style.boxShadow = `0 4px 0 ${hHover}`;
 
       if (!isLastPostInHouse) {
         const nextRole = roles[state.currentPostIdx + 1];

@@ -16,6 +16,24 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
+### 0. Teacher Booth Dynamic House Theme Color Switching & Candidate Card Spacing (`Houses/teachers/`) (Nov 20, 2026)
+- **Dynamic House Theme Color Transitioning**:
+  - The voting kiosk dynamically adopts the authentic color theme of the house currently being voted on:
+    - **School Cabinet**: Emerald Green (`#059669`)
+    - **Bheeshma House**: Golden Amber (`#eab308` / `#ca8a04`, dark text `#141413`)
+    - **Gurudrona House**: Royal Blue (`#2563eb`)
+    - **Hanuman House**: Warm Orange (`#f97316`)
+    - **Karna House**: Crimson Red (`#b91c1c`)
+    - **Vasistha House**: Deep Rose (`#db2777`)
+    - **Vishwamithra House**: Royal Purple (`#7c3aed`)
+  - The color updates live across the **booth card top border**, **header eyebrow text**, **active post pill & badge**, **unit header pill**, **candidate avatar fallback**, and the primary **`Next` action button** in the kiosk footer.
+- **Enhanced Candidate Option Card Layout & Typography Spacing**:
+  - Vertically centered the candidate information cluster (`.evm-cand-info`) with `justify-content: center` to balance with the 90px avatar and 3D VOTE button.
+  - Adjusted spacing between the candidate name (`1.5rem bold`), class/option subtitle (`0.98rem semi-bold #475569`), and tagline motto (`0.85rem italic #64748b`).
+  - Added subtle accent selection glow (`box-shadow: 0 6px 20px -2px [houseAccent]`) and spacious card padding (`0.95rem 1.75rem`).
+- **Cache Busting**:
+  - Bumped cachebusters to `v=20261120_2100` across `Houses/teachers/index.html`.
+
 ### 0. Teacher Universal Polling Booth Zero-Scroll Post-by-Post EVM Kiosk (`Houses/teachers/`) (Nov 20, 2026)
 - **Zero-Scroll Single-Screen EVM Architecture**:
   - Eliminated vertical page scrolling entirely in Step 3. The interface renders within a locked `100svh` kiosk viewport (`.page-shell.step-3-active`, `.page-shell.evm-active`).
