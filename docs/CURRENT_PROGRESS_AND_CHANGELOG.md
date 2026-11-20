@@ -33,6 +33,10 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
   - Official Election Symbol emblem (Torch 🔦, Book 📖, Rising Sun 🌅, Star ⭐, Shield 🛡️, Rocket 🚀) with icon & label.
   - Candidate Full Name and Class/Section tag.
   - Tactile EVM vote button strip with glowing red LED lamp (`#ef4444`), green card border/background on selection, and live "VOTED ✓" readout.
+- **Form Submit & URL Query Handler Integrity (`Houses/*/app.js`)**:
+  - Eliminated leftover function syntax debris preventing script execution.
+  - Form submission now reliably executes `e.preventDefault()` and invokes `executeVerification()`.
+  - Added auto-verification and URL cleanup for any URL containing `?admissionNo=...`.
 - **Synchronized Deployment Across All 6 Student Houses**:
   - Upgraded code and data across all 6 student house kiosks: `bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, and `vishwamithra`.
   - Updated each house's `data.js` to feature 24 demo candidates (6 candidates per role across all 4 positions) with designated election symbols.
