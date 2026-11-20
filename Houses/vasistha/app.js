@@ -468,7 +468,6 @@
             : (cand.className ? `Class ${cand.className} ${cand.section || ""}` : (cand.section || ""));
 
           row.innerHTML = `
-            <span class="evm-cand-num">${serialFormatted}</span>
             <div class="evm-cand-avatar">${photoHtml}</div>
             <div class="evm-cand-info">
               <h3 class="evm-cand-name">${cand.fullName}</h3>

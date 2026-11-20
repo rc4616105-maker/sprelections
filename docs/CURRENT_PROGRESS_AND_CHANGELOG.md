@@ -16,6 +16,12 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
+### 0. Removed 01/02 Serial Number Column from EVM Ballot Strips Across All 6 Houses (Nov 20, 2026)
+- **Cleaner Left-Aligned Candidate Photo Presentation (`Houses/*/app.js`)**:
+  - Removed `<span class="evm-cand-num">` serial numbering (`01`, `02`, `03`) from all candidate ballot rows.
+  - Candidate cards now open directly with the prominent **`96px × 96px`** photo avatar, giving the candidate name, class details, and symbols maximum breathing room and an authentic, clean presentation.
+  - Propagated across all 6 kiosks: `bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, and `vishwamithra`.
+
 ### 0. Remove Post 1 "Back: Verify Info" & Extra-Large EVM Box Layout Across All 6 Houses (Nov 20, 2026)
 - **Removed "Back: Verify Info" Navigation on Post 1 (`Houses/*/app.js`)**:
   - Hid `el.evmBackBtn` entirely on Post 1 (`state.evmPostIndex === 0`) via `visibility: hidden; disabled: true;`.
