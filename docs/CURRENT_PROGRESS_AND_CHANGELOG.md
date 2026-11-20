@@ -16,6 +16,30 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
+### 0. Teacher Universal Polling Booth Zero-Scroll Post-by-Post EVM Kiosk (`Houses/teachers/`) (Nov 20, 2026)
+- **Zero-Scroll Single-Screen EVM Architecture**:
+  - Eliminated vertical page scrolling entirely in Step 3. The interface renders within a locked `100svh` kiosk viewport (`.page-shell.step-3-active`, `.page-shell.evm-active`).
+  - Implemented 1 House and 1 Post at a time progression (House 1: School Cabinet Posts 1–5 &rarr; House 2: Bheeshma Posts 1–4 &rarr; Houses 3–7 &rarr; Review & Cast).
+- **Interactive House Category Chips Bar (`.house-tabs-bar`, `.house-tab-chip`)**:
+  - Displays all 7 houses with real-time selection counts (e.g. `Cabinet 0/5`, `Bheeshma 0/4`, etc.).
+  - Clicking any house chip jumps directly to that house. Shows green `✓` when all roles in a house are selected.
+- **Active House Sub-Stepper (`.post-stepper-bar`, `.post-step-pill`)**:
+  - Displays horizontal pills for each position in the active house (e.g. `1. School President`, `2. Vice President`, etc.).
+  - Numbered indicator switches to green `✓` once a candidate is selected.
+- **EVM Candidate Choice Unit (`.evm-ballot-view`, `.evm-candidate-list`)**:
+  - Displays only the 2–3 candidates for the currently active position, filling the central height evenly with zero scrolling.
+  - Large candidate photo avatar, clear name & class details, election symbol badge (🔦 Torch, 📖 Book, etc.), authentic hardware red LED lamp, and 3D blue `VOTE` / green `VOTED ✓` button.
+- **Kiosk Navigation Footer (`.evm-kiosk-footer`)**:
+  - Left: `← Back` button (intelligently navigates to previous post, previous house, or Step 2 profile).
+  - Center: Live status indicator (`✓ Selected: [Candidate Name]` or `Please tap candidate or press blue VOTE button`) + overall progress count (`X / 29 Selected`).
+  - Right: `Next Post →` / `Next House →` / `Review & Cast Ballot →`.
+- **EVM Universal Ballot Review & Confirmation View (`.evm-review-view`)**:
+  - Displays an overview grid of all 29 roles across School Cabinet and 6 Houses before submission.
+  - Clicking any review card jumps directly to that role to edit selections.
+  - `Confirm & Cast Universal Ballot` triggers background automatic webcam snapshot capture and atomic submission to Supabase.
+- **Cache Busting**:
+  - Bumped cachebusters to `v=1030` across `Houses/teachers/index.html`.
+
 ### 0. Teacher Universal Polling Booth EVM Candidate Strip UI Redesign (Nov 20, 2026)
 - **Authentic EVM Candidate Rows Across All 29 Positions (`Houses/teachers/app.js`, `Houses/teachers/styles.css`)**:
   - Replaced the plain 3-column card grid with authentic horizontal EVM candidate rows (`.evm-candidate-row`) matching the exact look and feel of the student house kiosks.

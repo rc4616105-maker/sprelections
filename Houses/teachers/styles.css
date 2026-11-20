@@ -1067,3 +1067,591 @@ body {
   color: #64748b;
 }
 
+
+
+/* ==========================================================================
+   EVM Electronic Voting Machine — Zero-Scroll Single Post Kiosk Layout
+   ========================================================================== */
+
+.page-shell.step-3-active,
+.page-shell.evm-active {
+  max-width: 1200px;
+  width: 100%;
+  height: 100svh;
+  min-height: 100svh;
+  max-height: 100svh;
+  padding: 0.65rem 1.25rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.page-shell.step-3-active .booth-header,
+.page-shell.evm-active .booth-header {
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.4rem;
+  flex-shrink: 0;
+}
+
+.page-shell.step-3-active .stepper,
+.page-shell.evm-active .stepper {
+  margin-bottom: 0.4rem;
+  flex-shrink: 0;
+}
+
+.page-shell.step-3-active .booth-card,
+.page-shell.evm-active .booth-card {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem 0.65rem;
+  overflow: hidden;
+}
+
+/* EVM Step Panel */
+.evm-step-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+/* 1. House Tabs Bar */
+.house-tabs-bar {
+  display: flex;
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding: 0.15rem 0;
+  margin-bottom: 0.35rem;
+  flex-shrink: 0;
+  scrollbar-width: none;
+}
+.house-tabs-bar::-webkit-scrollbar { display: none; }
+
+.house-tab-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-default);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 140ms ease;
+  user-select: none;
+}
+
+.house-tab-chip:hover {
+  background: #ffffff;
+  border-color: var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.house-tab-chip.is-active {
+  background: #ffffff;
+  border-color: var(--chip-accent, var(--accent-teacher));
+  color: var(--chip-accent, var(--accent-teacher));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  font-weight: 800;
+}
+
+.house-tab-chip.is-complete {
+  background: #ecfdf5;
+  border-color: #86efac;
+  color: #047857;
+}
+
+.tab-badge {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  background: rgba(0, 0, 0, 0.06);
+  padding: 0.12rem 0.45rem;
+  border-radius: 9999px;
+  font-weight: 700;
+}
+
+.house-tab-chip.is-active .tab-badge {
+  background: rgba(5, 150, 105, 0.12);
+  color: var(--chip-accent, var(--accent-teacher));
+}
+
+.house-tab-chip.is-complete .tab-badge {
+  background: #10b981;
+  color: #ffffff;
+}
+
+/* 2. Post Stepper Bar */
+.post-stepper-bar {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding: 0.15rem 0;
+  margin-bottom: 0.45rem;
+  flex-shrink: 0;
+  scrollbar-width: none;
+}
+.post-stepper-bar::-webkit-scrollbar { display: none; }
+
+.post-step-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.28rem 0.75rem;
+  border-radius: 9999px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 140ms ease;
+  user-select: none;
+}
+
+.post-step-pill:hover {
+  background: #ffffff;
+  color: var(--text-primary);
+}
+
+.post-step-pill.is-active {
+  background: #ffffff;
+  border-color: var(--accent-teacher);
+  color: var(--accent-teacher);
+  font-weight: 800;
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.15);
+}
+
+.post-step-pill.is-done {
+  background: #f0fdf4;
+  border-color: #86efac;
+  color: #166534;
+}
+
+.post-step-num {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.post-step-pill.is-active .post-step-num {
+  background: var(--accent-teacher);
+  color: #ffffff;
+}
+
+.post-step-pill.is-done .post-step-num {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+/* 3. EVM Ballot View */
+.evm-ballot-view {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.evm-unit-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  padding: 0.45rem 0.95rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.evm-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.evm-post-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.evm-post-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.evm-post-instruction {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.evm-select-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-default);
+}
+
+/* EVM Candidate List (Fills height evenly, strictly zero scroll) */
+.evm-candidate-list {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 0.65rem;
+  margin: 0.45rem 0;
+  overflow: hidden;
+}
+
+.evm-candidate-row {
+  flex: 1;
+  max-height: 135px;
+  min-height: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.4rem;
+  background: var(--bg-card);
+  border: 2px solid var(--border-default);
+  border-radius: 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 140ms ease;
+}
+
+.evm-candidate-row:hover {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.evm-candidate-row.is-selected {
+  background: #f0fdf4 !important;
+  border-color: #86efac !important;
+  box-shadow: 0 6px 20px -2px rgba(16, 185, 129, 0.25);
+}
+
+.evm-cand-avatar {
+  width: 82px;
+  height: 82px;
+  border-radius: 14px;
+  background: #ecfdf5;
+  border: 2px solid #a7f3d0;
+  color: #047857;
+  font-weight: 800;
+  font-size: 1.8rem;
+  display: grid;
+  place-items: center;
+  margin-right: 1.25rem;
+  flex-shrink: 0;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.evm-cand-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.evm-candidate-row.is-selected .evm-cand-avatar {
+  background: #dcfce7;
+  border-color: #86efac;
+  color: #166534;
+}
+
+.evm-cand-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+  min-width: 0;
+  margin-right: 1.25rem;
+}
+
+.evm-cand-name {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.evm-cand-sub {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.evm-cand-tagline {
+  margin: 0;
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.evm-right-cluster {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-shrink: 0;
+}
+
+.evm-symbol-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: 12px;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-default);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  min-width: 150px;
+}
+
+.evm-symbol-icon {
+  font-size: 1.65rem;
+  line-height: 1;
+}
+
+.evm-symbol-name {
+  font-size: 0.98rem;
+  font-weight: 800;
+}
+
+/* Authentic Red LED lamp */
+.evm-led-lamp {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  border: 2px solid #94a3b8;
+  transition: all 180ms ease;
+  flex-shrink: 0;
+}
+
+.evm-candidate-row.is-selected .evm-led-lamp {
+  background: #ef4444 !important;
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 18px 6px rgba(239, 68, 68, 0.85), 0 0 6px #ef4444 !important;
+}
+
+/* 3D Action Vote Button */
+.evm-vote-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 135px;
+  min-height: 50px;
+  padding: 0.6rem 1.4rem;
+  border-radius: 12px;
+  border: none;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 4px 0 #1d4ed8;
+  transition: all 140ms ease;
+}
+
+.evm-vote-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.evm-candidate-row.is-selected .evm-vote-btn {
+  background: #059669 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 0 #047857 !important;
+}
+
+/* EVM Kiosk Footer */
+.evm-kiosk-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-default);
+  flex-shrink: 0;
+}
+
+.evm-footer-status {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex: 1;
+  justify-content: center;
+  text-align: center;
+}
+
+.evm-status-text {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.evm-progress-pill {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  color: var(--accent-teacher);
+}
+
+.evm-next-action-btn {
+  min-width: 170px;
+  padding: 0.65rem 1.5rem;
+  background: var(--accent-teacher);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 0.98rem;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 0 #047857;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.evm-next-action-btn:hover:not(:disabled) {
+  background: var(--accent-teacher-hover);
+  transform: translateY(-1px);
+}
+
+.evm-next-action-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Step 3.5: EVM Review & Cast View */
+.evm-review-view {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.evm-review-grid {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.65rem;
+  padding: 0.4rem 0.2rem;
+  margin-bottom: 0.75rem;
+}
+
+.evm-review-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.evm-review-card.is-filled {
+  border-left: 4px solid var(--accent-teacher);
+  background: #ffffff;
+}
+
+.evm-review-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #ecfdf5;
+  color: #047857;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1rem;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.evm-review-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.evm-review-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.evm-review-role {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.evm-review-cand {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0.1rem 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.evm-review-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border-default);
+  flex-shrink: 0;
+}

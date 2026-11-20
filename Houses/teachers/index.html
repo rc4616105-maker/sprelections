@@ -10,7 +10,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="./styles.css?v=1025" />
+  <link rel="stylesheet" href="./styles.css?v=1030" />
 </head>
 
 <body>
@@ -183,29 +183,86 @@
           </div>
         </div>
 
-        <!-- STEP 3: All-in-One Ballot (Cabinet + 6 Houses) -->
-        <div id="step-3" class="step-panel" hidden style="padding-bottom: 5.5rem;">
-          <div class="panel-header">
-            <span class="badge"
-              style="background:#ecfdf5; color:#047857; font-weight:800; border:1px solid #a7f3d0; padding:0.3rem 0.75rem; border-radius:9999px; font-size:0.82rem;">29
-              Total Leadership Positions</span>
-            <h2 class="panel-title">Select Candidates for All Houses &amp; Cabinet</h2>
-            <p class="panel-subtitle">Use the house category tabs to easily jump between School Cabinet and student
-              houses. Select 1 candidate for each role.</p>
-          </div>
-
-          <!-- Sticky House Category Tabs -->
-          <div id="house-tabs-bar" class="house-tabs-bar">
+                <!-- STEP 3: All-in-One EVM Ballot (Post-by-Post Zero-Scroll) -->
+        <div id="step-3" class="step-panel evm-step-panel" hidden>
+          <!-- Top House Category Tabs (7 Houses) -->
+          <div id="house-tabs-bar" class="house-tabs-bar" role="tablist" aria-label="House Selection">
             <!-- Rendered dynamically -->
           </div>
 
-          <!-- Dynamic House Ballot Sections Container -->
-          <div id="universal-ballot-container">
+          <!-- Post Stepper for Active House -->
+          <div id="post-stepper-bar" class="post-stepper-bar" role="tablist" aria-label="Post Selection">
             <!-- Rendered dynamically -->
           </div>
 
-          <div style="display:flex; justify-content:flex-start; margin-top:1.5rem;">
-            <button type="button" id="back-to-step2-btn" class="btn btn-secondary">&larr; Back to Profile</button>
+          <!-- EVM Single-Post Ballot View -->
+          <div id="evm-ballot-view" class="evm-ballot-view">
+            <!-- EVM Header Strip -->
+            <div class="evm-unit-header">
+              <div class="evm-header-left">
+                <span id="evm-house-badge" class="badge"
+                  style="background:#ecfdf5; color:#047857; font-weight:800; border:1px solid #a7f3d0; padding:0.25rem 0.65rem; border-radius:9999px; font-size:0.75rem;">
+                  Cabinet · Post 1 of 5
+                </span>
+                <h2 id="evm-post-title" class="evm-post-title">School President</h2>
+                <span id="evm-post-subtitle" class="evm-post-subtitle">Class 10 · Central Cabinet</span>
+                <span class="evm-post-instruction">· Tap Candidate or Press Blue Vote Button</span>
+              </div>
+              <div class="evm-header-right">
+                <span class="evm-select-badge">SELECT 1 CANDIDATE</span>
+              </div>
+            </div>
+
+            <!-- EVM Candidate List (Zero-scroll, dynamically rendered) -->
+            <div id="evm-candidate-list" class="evm-candidate-list" role="radiogroup" aria-label="Candidate list">
+              <!-- Dynamically populated 2-3 candidates -->
+            </div>
+
+            <!-- EVM Kiosk Navigation & Status Footer -->
+            <div class="evm-kiosk-footer">
+              <button type="button" id="evm-back-btn" class="btn btn-secondary">
+                &larr; Back
+              </button>
+              <div class="evm-footer-status">
+                <span id="evm-selection-status" class="evm-status-text">Select 1 candidate to proceed</span>
+                <span id="evm-overall-count" class="evm-progress-pill">0 / 29 Selected</span>
+              </div>
+              <button type="button" id="evm-next-btn" class="btn evm-next-action-btn">
+                Next Post &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 3.5: EVM Review & Cast View -->
+          <div id="evm-review-view" class="evm-review-view" hidden>
+            <div class="panel-header" style="margin-bottom:0.75rem;">
+              <span class="badge"
+                style="background:#ecfdf5; color:#047857; font-weight:800; padding:0.3rem 0.75rem; border-radius:9999px; font-size:0.8rem;">Review
+                &amp; Confirmation</span>
+              <h2 class="panel-title" style="margin:0.35rem 0 0.2rem; font-size:1.5rem;">Review Your Universal Ballot</h2>
+              <p class="panel-subtitle" style="font-size:0.88rem;">Review all 29 selections across School Cabinet and Student Houses before casting.</p>
+            </div>
+
+            <div id="evm-review-grid" class="evm-review-grid">
+              <!-- Dynamically populated 29 summary cards -->
+            </div>
+
+            <div class="evm-review-footer">
+              <button type="button" id="evm-review-back-btn" class="btn btn-secondary">
+                &larr; Back: Edit Ballot
+              </button>
+              <button type="button" id="evm-final-cast-btn" class="btn btn-primary btn-lg" style="padding:0.75rem 2rem; font-size:1.05rem;">
+                <span>Confirm &amp; Cast Universal Ballot &rarr;</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="step3-error" class="alert-box alert-error" role="alert" hidden style="margin-top:0.75rem;">
+            <div class="alert-icon" aria-hidden="true">!</div>
+            <div class="alert-body">
+              <p class="alert-title">Unable to Record Vote</p>
+              <p id="step3-error-msg" class="alert-message"></p>
+            </div>
           </div>
         </div>
 
@@ -237,17 +294,7 @@
       </section>
     </main>
 
-    <!-- Floating Sticky Action Bar for Step 3 -->
-    <div id="sticky-cast-bar" class="sticky-cast-bar" hidden>
-      <div class="sticky-cast-content">
-        <div class="sticky-progress-wrap">
-          <div class="sticky-progress-label">
-            <span>Overall Progress</span>
-            <strong id="sticky-progress-count">0 / 29 Roles Selected</strong>
-          </div>
-          <div class="sticky-progress-bar">
-            <div id="sticky-progress-fill" class="sticky-progress-fill"></div>
-          </div>
+    
         </div>
         <button type="button" id="proceed-cast-btn" class="btn btn-primary"
           style="padding:0.85rem 2rem; font-size:1.05rem;" disabled>
@@ -297,10 +344,10 @@
 
   <!-- Scripts -->
   <script src="../assets/booth-session.js?v=1016"></script>
-  <script src="./data.js?v=1016"></script>
+  <script src="./data.js?v=1030"></script>
   <script src="./pico.js?v=1016"></script>
   <script src="./supabase-config.js?v=1022"></script>
-  <script src="./app.js?v=1025"></script>
+  <script src="./app.js?v=1030"></script>
 </body>
 
 </html>

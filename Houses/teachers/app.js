@@ -26,6 +26,10 @@
     resetInterval: null,
     isSubmitting: false,
     scannerBuffer: "",
+    // EVM Post-by-Post Stepper State
+    currentHouseIdx: 0,
+    currentPostIdx: 0,
+    isReviewActive: false,
   };
 
   const el = {
@@ -52,7 +56,23 @@
     nextToVoteBtn: document.getElementById("next-to-vote-btn"),
 
     houseTabsBar: document.getElementById("house-tabs-bar"),
+    postStepperBar: document.getElementById("post-stepper-bar"),
     ballotContainer: document.getElementById("universal-ballot-container"),
+    evmBallotView: document.getElementById("evm-ballot-view"),
+    evmHouseBadge: document.getElementById("evm-house-badge"),
+    evmPostTitle: document.getElementById("evm-post-title"),
+    evmPostSubtitle: document.getElementById("evm-post-subtitle"),
+    evmCandidateList: document.getElementById("evm-candidate-list"),
+    evmBackBtn: document.getElementById("evm-back-btn"),
+    evmSelectionStatus: document.getElementById("evm-selection-status"),
+    evmOverallCount: document.getElementById("evm-overall-count"),
+    evmNextBtn: document.getElementById("evm-next-btn"),
+    evmReviewView: document.getElementById("evm-review-view"),
+    evmReviewGrid: document.getElementById("evm-review-grid"),
+    evmReviewBackBtn: document.getElementById("evm-review-back-btn"),
+    evmFinalCastBtn: document.getElementById("evm-final-cast-btn"),
+    step3Error: document.getElementById("step3-error"),
+    step3ErrorMsg: document.getElementById("step3-error-msg"),
     stickyCastBar: document.getElementById("sticky-cast-bar"),
     stickyProgressCount: document.getElementById("sticky-progress-count"),
     stickyProgressFill: document.getElementById("sticky-progress-fill"),
@@ -98,13 +118,11 @@
     const pageShell = document.querySelector(".page-shell");
     if (pageShell) {
       pageShell.classList.toggle("step-3-active", stepNum === 3);
+      pageShell.classList.toggle("evm-active", stepNum === 3);
     }
 
     if (stepNum === 3) {
-      if (el.stickyCastBar) el.stickyCastBar.hidden = false;
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      if (el.stickyCastBar) el.stickyCastBar.hidden = true;
+      window.scrollTo(0, 0);
     }
 
     if (stepNum === 1) {
@@ -390,220 +408,279 @@
     }
   }
 
-  // --- Step 3 Ballot Rendering ---
-  function renderAllHousesBallot() {
-    if (!el.houseTabsBar || !el.ballotContainer) return;
+  // --- Step 3 EVM Zero-Scroll Post-by-Post Ballot Controller ---
+  function countTotalProgress() {
+    let selected = 0;
+    let total = 0;
+    houses.forEach((h) => {
+      (h.positions || []).forEach((r) => {
+        total++;
+        const rk = `${h.code}_${r.id}`;
+        if (state.selectedByRole[rk] || state.votedRolesMap[rk]) selected++;
+      });
+    });
+    return { selected, total };
+  }
 
+  function renderHouseTabs() {
+    if (!el.houseTabsBar) return;
     el.houseTabsBar.innerHTML = "";
-    el.ballotContainer.innerHTML = "";
 
     houses.forEach((house, hIdx) => {
       const houseCode = house.code;
-      const houseRoles = house.positions || [];
-
-      // 1. Create Navigation Tab Pill
-      const tabChip = document.createElement("button");
-      tabChip.type = "button";
-      tabChip.className = "house-tab-chip";
-      tabChip.id = `tab-chip-${houseCode}`;
-      tabChip.style.setProperty("--accent-chip", house.accent);
-      if (hIdx === 0) tabChip.classList.add("is-active");
-
-      tabChip.innerHTML = `
-        <span>${house.shortName || house.name}</span>
-        <span class="tab-badge" id="tab-count-${houseCode}">0/${houseRoles.length}</span>
-      `;
-      tabChip.addEventListener("click", () => {
-        document.querySelectorAll(".house-tab-chip").forEach((c) => c.classList.remove("is-active"));
-        tabChip.classList.add("is-active");
-        const sec = document.getElementById(`house-sec-${houseCode}`);
-        if (sec) sec.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-      el.houseTabsBar.appendChild(tabChip);
-
-      // 2. Create House Ballot Section
-      const sec = document.createElement("section");
-      sec.className = "house-ballot-section";
-      sec.id = `house-sec-${houseCode}`;
-      sec.style.borderLeftColor = house.accent;
-
-      const candsForHouse = candidates.filter((c) => c.houseCode === houseCode && c.isApproved);
-
-      let rolesHtml = "";
-      houseRoles.forEach((role) => {
-        const roleKey = `${houseCode}_${role.id}`;
-        const roleCands = candsForHouse.filter((c) => c.positionId === role.id);
-        const alreadyVoted = state.votedRolesMap[roleKey];
-
-        let cardsHtml = "";
-        if (alreadyVoted) {
-          cardsHtml = `
-            <div style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:12px; padding:0.9rem 1.25rem; color:#166534; font-weight:700;">
-              ✓ You have already voted for <strong>${alreadyVoted.candidateName}</strong> in this position.
-            </div>
-          `;
-        } else if (roleCands.length === 0) {
-          cardsHtml = `<p style="color:var(--text-muted); font-size:0.9rem;">No candidates registered for this role.</p>`;
-        } else {
-          cardsHtml = `
-            <div class="candidate-selection-grid">
-              ${roleCands
-                .map((cand, candIdx) => {
-                  const isSelected = state.selectedByRole[roleKey]?.id === cand.id;
-                  const sym = cand.symbolObj || ELECTION_SYMBOLS[candIdx % ELECTION_SYMBOLS.length];
-                  const photoHtml = cand.photoPath || cand.photoUrl
-                    ? `<img src="${cand.photoPath || cand.photoUrl}" alt="${cand.fullName}" />`
-                    : `<span>${getInitials(cand.fullName)}</span>`;
-                  const subText = String(cand.admissionNo || "").startsWith("DEMO-")
-                    ? (cand.section || "")
-                    : (cand.className ? `Class ${cand.className} ${cand.section || ""}` : (cand.section || ""));
-
-                  return `
-                    <div
-                      class="evm-candidate-row ${isSelected ? "is-selected" : ""}"
-                      role="radio"
-                      aria-checked="${isSelected ? "true" : "false"}"
-                      data-role-key="${roleKey}"
-                      data-cand-id="${cand.id}"
-                      data-house-code="${houseCode}"
-                      data-pos-id="${role.id}"
-                      data-pos-name="${role.title}"
-                    >
-                      <div class="evm-cand-avatar">${photoHtml}</div>
-                      <div class="evm-cand-info">
-                        <h3 class="evm-cand-name">${cand.fullName}</h3>
-                        <span class="evm-cand-sub">${subText}</span>
-                        ${cand.tagline ? `<span class="evm-cand-tagline">&ldquo;${cand.tagline}&rdquo;</span>` : ""}
-                      </div>
-                      <div class="evm-right-cluster">
-                        <div class="evm-symbol-badge" title="Election Symbol: ${sym.name}">
-                          <span class="evm-symbol-icon">${sym.icon}</span>
-                          <span class="evm-symbol-name">${sym.name}</span>
-                        </div>
-                        <span class="evm-led-lamp"></span>
-                        <button type="button" class="evm-vote-btn" tabindex="-1">
-                          ${isSelected ? "VOTED ✓" : "VOTE"}
-                        </button>
-                      </div>
-                    </div>
-                  `;
-                })
-                .join("")}
-            </div>
-          `;
-        }
-
-        rolesHtml += `
-          <div class="role-block">
-            <h3 class="role-block-title">
-              <span>${role.title}</span>
-              <span class="role-subtitle">· ${role.subtitle || ""}</span>
-            </h3>
-            ${cardsHtml}
-          </div>
-        `;
-      });
-
-      sec.innerHTML = `
-        <div class="house-ballot-header">
-          <div style="display:flex; align-items:center; gap:0.6rem;">
-            <h2 class="house-ballot-title" style="color:${house.accent};">${house.name}</h2>
-          </div>
-          <span class="house-badge-pill" style="color:${house.accent}; border-color:${house.accent};">${house.badge || "House Candidates"}</span>
-        </div>
-        <div class="roles-container">
-          ${rolesHtml}
-        </div>
-      `;
-
-      el.ballotContainer.appendChild(sec);
-    });
-
-    // Attach click handlers to candidate selection EVM rows
-    el.ballotContainer.querySelectorAll(".evm-candidate-row").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const roleKey = btn.dataset.roleKey;
-        const candId = btn.dataset.candId;
-        const houseCode = btn.dataset.houseCode;
-        const posId = btn.dataset.posId;
-        const posName = btn.dataset.posName;
-
-        const cand = candidates.find((c) => c.id === candId);
-        if (!cand) return;
-
-        // Deselect previous in this role
-        el.ballotContainer.querySelectorAll(`.evm-candidate-row[data-role-key="${roleKey}"]`).forEach((b) => {
-          b.classList.remove("is-selected");
-          b.setAttribute("aria-checked", "false");
-          const vBtn = b.querySelector(".evm-vote-btn");
-          if (vBtn) vBtn.textContent = "VOTE";
-        });
-
-        // Select clicked row
-        btn.classList.add("is-selected");
-        btn.setAttribute("aria-checked", "true");
-        const vBtn = btn.querySelector(".evm-vote-btn");
-        if (vBtn) vBtn.textContent = "VOTED ✓";
-
-        state.selectedByRole[roleKey] = {
-          houseCode,
-          positionId: posId,
-          positionName: posName,
-          candidate: cand,
-        };
-
-        updateProgressUI();
-      });
-    });
-
-    updateProgressUI();
-  }
-
-  function updateProgressUI() {
-    let totalSelected = 0;
-    let totalNeeded = 0;
-
-    houses.forEach((house) => {
-      const houseCode = house.code;
       const roles = house.positions || [];
-      let houseSelected = 0;
-
+      let filledCount = 0;
       roles.forEach((r) => {
         const rk = `${houseCode}_${r.id}`;
-        totalNeeded++;
-        if (state.selectedByRole[rk] || state.votedRolesMap[rk]) {
-          houseSelected++;
-          totalSelected++;
-        }
+        if (state.selectedByRole[rk] || state.votedRolesMap[rk]) filledCount++;
       });
+      const isComplete = filledCount >= roles.length && roles.length > 0;
+      const isActive = hIdx === state.currentHouseIdx;
 
-      const tabBadge = document.getElementById(`tab-count-${houseCode}`);
-      const tabChip = document.getElementById(`tab-chip-${houseCode}`);
-      if (tabBadge && tabChip) {
-        tabBadge.textContent = `${houseSelected}/${roles.length}`;
-        const isHouseDone = houseSelected >= roles.length && roles.length > 0;
-        tabChip.classList.toggle("is-complete", isHouseDone);
-        if (isHouseDone) {
-          tabBadge.textContent = `✓ ${houseSelected}/${roles.length}`;
-        }
-      }
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = `house-tab-chip${isActive ? " is-active" : ""}${isComplete ? " is-complete" : ""}`;
+      chip.style.setProperty("--chip-accent", house.accent || "var(--accent-teacher)");
+      chip.innerHTML = `
+        <span>${house.shortName || house.name}</span>
+        <span class="tab-badge">${isComplete ? "✓ " : ""}${filledCount}/${roles.length}</span>
+      `;
+      chip.addEventListener("click", () => {
+        state.currentHouseIdx = hIdx;
+        state.currentPostIdx = 0;
+        state.isReviewActive = false;
+        renderEvmView();
+      });
+      el.houseTabsBar.appendChild(chip);
     });
+  }
 
-    if (el.stickyProgressCount) {
-      el.stickyProgressCount.textContent = `${totalSelected} / ${totalNeeded} Roles Selected`;
-    }
-    if (el.stickyProgressFill) {
-      const pct = totalNeeded ? Math.round((totalSelected / totalNeeded) * 100) : 0;
-      el.stickyProgressFill.style.width = `${pct}%`;
+  function renderPostStepper() {
+    if (!el.postStepperBar) return;
+    el.postStepperBar.innerHTML = "";
+
+    const currentHouse = houses[state.currentHouseIdx];
+    if (!currentHouse) return;
+    const roles = currentHouse.positions || [];
+
+    roles.forEach((role, pIdx) => {
+      const rk = `${currentHouse.code}_${role.id}`;
+      const isSelected = Boolean(state.selectedByRole[rk] || state.votedRolesMap[rk]);
+      const isActive = pIdx === state.currentPostIdx;
+
+      const pill = document.createElement("button");
+      pill.type = "button";
+      pill.className = `post-step-pill${isActive ? " is-active" : ""}${isSelected ? " is-done" : ""}`;
+      pill.innerHTML = `
+        <span class="post-step-num">${isSelected ? "✓" : (pIdx + 1)}</span>
+        <span>${role.shortTitle || role.title}</span>
+      `;
+      pill.addEventListener("click", () => {
+        state.currentPostIdx = pIdx;
+        state.isReviewActive = false;
+        renderEvmView();
+      });
+      el.postStepperBar.appendChild(pill);
+    });
+  }
+
+  function renderEvmView() {
+    if (!el.evmBallotView || !el.evmReviewView) return;
+
+    if (state.isReviewActive) {
+      el.evmBallotView.hidden = true;
+      el.evmReviewView.hidden = false;
+      renderEvmReviewGrid();
+      return;
     }
 
-    if (el.proceedCastBtn) {
-      const isComplete = totalSelected >= totalNeeded && totalNeeded > 0;
-      el.proceedCastBtn.disabled = !isComplete;
-      el.proceedCastBtn.innerHTML = isComplete
-        ? `<span>Confirm &amp; Cast Universal Ballot (${totalSelected}/${totalNeeded}) &rarr;</span>`
-        : `<span>Select All Roles (${totalSelected}/${totalNeeded})</span>`;
+    el.evmBallotView.hidden = false;
+    el.evmReviewView.hidden = true;
+
+    renderHouseTabs();
+    renderPostStepper();
+
+    const currentHouse = houses[state.currentHouseIdx];
+    if (!currentHouse) return;
+    const roles = currentHouse.positions || [];
+    const currentRole = roles[state.currentPostIdx];
+    if (!currentRole) return;
+
+    const roleKey = `${currentHouse.code}_${currentRole.id}`;
+    const alreadyVoted = state.votedRolesMap[roleKey];
+    const picked = state.selectedByRole[roleKey] || (alreadyVoted ? { candidate: { id: alreadyVoted.candidateId, fullName: alreadyVoted.candidateName } } : null);
+
+    // Update Header Strip
+    if (el.evmHouseBadge) {
+      el.evmHouseBadge.textContent = `${currentHouse.name} · Post ${state.currentPostIdx + 1} of ${roles.length}`;
+      el.evmHouseBadge.style.color = currentHouse.accentText || currentHouse.accent;
+      el.evmHouseBadge.style.borderColor = currentHouse.accent;
     }
+    if (el.evmPostTitle) el.evmPostTitle.textContent = currentRole.title;
+    if (el.evmPostSubtitle) el.evmPostSubtitle.textContent = currentRole.subtitle || "";
+
+    // Render Candidates List (2-3 candidates for current role, strictly zero scroll)
+    if (el.evmCandidateList) {
+      el.evmCandidateList.innerHTML = "";
+      const roleCands = candidates.filter((c) => c.houseCode === currentHouse.code && c.positionId === currentRole.id && c.isApproved);
+
+      if (alreadyVoted) {
+        const votedMsg = document.createElement("div");
+        votedMsg.style.cssText = "background:#f0fdf4; border:1.5px solid #86efac; border-radius:14px; padding:1.25rem 1.5rem; color:#166534; font-weight:700; text-align:center; font-size:1.1rem; margin:auto;";
+        votedMsg.innerHTML = `✓ You have already voted for <strong>${alreadyVoted.candidateName}</strong> in this position.`;
+        el.evmCandidateList.appendChild(votedMsg);
+      } else if (roleCands.length === 0) {
+        const noCand = document.createElement("p");
+        noCand.style.cssText = "color:var(--text-muted); font-size:1rem; text-align:center; margin:auto;";
+        noCand.textContent = "No candidates registered for this role.";
+        el.evmCandidateList.appendChild(noCand);
+      } else {
+        roleCands.forEach((cand, candIdx) => {
+          const isSelected = picked && picked.candidate.id === cand.id;
+          const sym = cand.symbolObj || ELECTION_SYMBOLS[candIdx % ELECTION_SYMBOLS.length];
+
+          const photoHtml = cand.photoPath || cand.photoUrl
+            ? `<img src="${cand.photoPath || cand.photoUrl}" alt="${cand.fullName}" />`
+            : `<span>${getInitials(cand.fullName)}</span>`;
+
+          const subText = String(cand.admissionNo || "").startsWith("DEMO-")
+            ? (cand.section || "")
+            : (cand.className ? `Class ${cand.className} ${cand.section || ""}` : (cand.section || ""));
+
+          const row = document.createElement("div");
+          row.className = `evm-candidate-row${isSelected ? " is-selected" : ""}`;
+          row.setAttribute("role", "radio");
+          row.setAttribute("aria-checked", isSelected ? "true" : "false");
+          row.dataset.candId = cand.id;
+
+          row.innerHTML = `
+            <div class="evm-cand-avatar">${photoHtml}</div>
+            <div class="evm-cand-info">
+              <h3 class="evm-cand-name">${cand.fullName}</h3>
+              <span class="evm-cand-sub">${subText}</span>
+              ${cand.tagline ? `<span class="evm-cand-tagline">&ldquo;${cand.tagline}&rdquo;</span>` : ""}
+            </div>
+            <div class="evm-right-cluster">
+              <div class="evm-symbol-badge" title="Election Symbol: ${sym.name}">
+                <span class="evm-symbol-icon">${sym.icon}</span>
+                <span class="evm-symbol-name">${sym.name}</span>
+              </div>
+              <span class="evm-led-lamp"></span>
+              <button type="button" class="evm-vote-btn" tabindex="-1">
+                ${isSelected ? "VOTED ✓" : "VOTE"}
+              </button>
+            </div>
+          `;
+
+          row.addEventListener("click", () => {
+            state.selectedByRole[roleKey] = {
+              houseCode: currentHouse.code,
+              positionId: currentRole.id,
+              positionName: currentRole.title,
+              candidate: cand,
+            };
+            renderEvmView();
+          });
+
+          el.evmCandidateList.appendChild(row);
+        });
+      }
+    }
+
+    // Update Footer Navigation
+    updateFooterNav(currentHouse, currentRole, roles, picked);
+  }
+
+  function updateFooterNav(currentHouse, currentRole, roles, picked) {
+    const { selected, total } = countTotalProgress();
+
+    // 1. Back button
+    if (el.evmBackBtn) {
+      if (state.currentHouseIdx === 0 && state.currentPostIdx === 0) {
+        el.evmBackBtn.innerHTML = `&larr; Back to Profile`;
+      } else if (state.currentPostIdx > 0) {
+        const prevRole = roles[state.currentPostIdx - 1];
+        el.evmBackBtn.innerHTML = `&larr; Back: ${prevRole.shortTitle || prevRole.title}`;
+      } else {
+        const prevHouse = houses[state.currentHouseIdx - 1];
+        el.evmBackBtn.innerHTML = `&larr; Back: ${prevHouse.shortName || prevHouse.name}`;
+      }
+    }
+
+    // 2. Status text & overall progress
+    if (el.evmSelectionStatus) {
+      if (picked) {
+        el.evmSelectionStatus.innerHTML = `<span style="color:#059669; font-weight:800;">✓ Selected: ${picked.candidate.fullName}</span>`;
+      } else {
+        el.evmSelectionStatus.innerHTML = `<span style="color:var(--text-muted);">Please tap candidate or press blue VOTE button</span>`;
+      }
+    }
+    if (el.evmOverallCount) {
+      el.evmOverallCount.textContent = `${selected} / ${total} Selected`;
+    }
+
+    // 3. Next button
+    if (el.evmNextBtn) {
+      const isLastPostInHouse = state.currentPostIdx >= roles.length - 1;
+      const isLastHouse = state.currentHouseIdx >= houses.length - 1;
+
+      if (!isLastPostInHouse) {
+        const nextRole = roles[state.currentPostIdx + 1];
+        el.evmNextBtn.innerHTML = `Next: ${nextRole.shortTitle || nextRole.title} &rarr;`;
+      } else if (!isLastHouse) {
+        const nextHouse = houses[state.currentHouseIdx + 1];
+        el.evmNextBtn.innerHTML = `Next House: ${nextHouse.shortName || nextHouse.name} &rarr;`;
+      } else {
+        el.evmNextBtn.innerHTML = `Review &amp; Cast Ballot &rarr;`;
+      }
+    }
+  }
+
+  function renderEvmReviewGrid() {
+    if (!el.evmReviewGrid) return;
+    el.evmReviewGrid.innerHTML = "";
+
+    const { selected, total } = countTotalProgress();
+    if (el.evmFinalCastBtn) {
+      const canCast = selected >= total && total > 0;
+      el.evmFinalCastBtn.disabled = !canCast;
+      el.evmFinalCastBtn.innerHTML = canCast
+        ? `<span>Confirm &amp; Cast Universal Ballot (${selected}/${total}) &rarr;</span>`
+        : `<span>Select All Roles (${selected}/${total}) to Cast</span>`;
+    }
+
+    houses.forEach((h, hIdx) => {
+      (h.positions || []).forEach((r, pIdx) => {
+        const rk = `${h.code}_${r.id}`;
+        const picked = state.selectedByRole[rk] || (state.votedRolesMap[rk] ? { candidate: { fullName: state.votedRolesMap[rk].candidateName } } : null);
+
+        const card = document.createElement("div");
+        card.className = `evm-review-card${picked ? " is-filled" : ""}`;
+        card.style.cursor = "pointer";
+        card.title = "Click to jump to this role";
+
+        const photoHtml = picked?.candidate?.photoPath || picked?.candidate?.photoUrl
+          ? `<img src="${picked.candidate.photoPath || picked.candidate.photoUrl}" alt="${picked.candidate.fullName}" />`
+          : `<span>${getInitials(picked?.candidate?.fullName || "?")}</span>`;
+
+        card.innerHTML = `
+          <div class="evm-review-avatar" style="background:${h.accent}15; color:${h.accentText || h.accent};">${photoHtml}</div>
+          <div class="evm-review-info">
+            <p class="evm-review-role" style="color:${h.accentText || h.accent};">${h.shortName || h.name} · ${r.shortTitle || r.title}</p>
+            <h4 class="evm-review-cand">${picked ? picked.candidate.fullName : "<span style='color:#ef4444; font-weight:600;'>Not Selected</span>"}</h4>
+          </div>
+        `;
+
+        card.addEventListener("click", () => {
+          state.currentHouseIdx = hIdx;
+          state.currentPostIdx = pIdx;
+          state.isReviewActive = false;
+          renderEvmView();
+        });
+
+        el.evmReviewGrid.appendChild(card);
+      });
+    });
   }
 
   // --- Submission & Finalization ---
@@ -615,6 +692,10 @@
       if (el.proceedCastBtn) {
         el.proceedCastBtn.disabled = true;
         el.proceedCastBtn.innerHTML = `<span>Recording Universal Ballot...</span>`;
+      }
+      if (el.evmFinalCastBtn) {
+        el.evmFinalCastBtn.disabled = true;
+        el.evmFinalCastBtn.innerHTML = `<span>Recording Universal Ballot...</span>`;
       }
       if (el.faceGuardConfirmBtn) {
         el.faceGuardConfirmBtn.disabled = true;
@@ -666,6 +747,10 @@
         el.proceedCastBtn.disabled = false;
         el.proceedCastBtn.innerHTML = `<span>Confirm &amp; Cast Universal Ballot &rarr;</span>`;
       }
+      if (el.evmFinalCastBtn) {
+        el.evmFinalCastBtn.disabled = false;
+        el.evmFinalCastBtn.innerHTML = `<span>Confirm &amp; Cast Universal Ballot &rarr;</span>`;
+      }
       if (el.faceGuardConfirmBtn) {
         el.faceGuardConfirmBtn.disabled = false;
         el.faceGuardConfirmBtn.textContent = "Confirm & Cast Vote";
@@ -683,6 +768,9 @@
     state.selectedByRole = {};
     state.isSubmitting = false;
     state.scannerBuffer = "";
+    state.currentHouseIdx = 0;
+    state.currentPostIdx = 0;
+    state.isReviewActive = false;
 
     if (el.admissionInput) el.admissionInput.value = "";
     if (el.scannerStreamInput) el.scannerStreamInput.value = "";
@@ -831,10 +919,54 @@
     // Navigation buttons
     el.backToStep1Btn?.addEventListener("click", () => setStep(1));
     el.nextToVoteBtn?.addEventListener("click", () => {
-      renderAllHousesBallot();
+      state.currentHouseIdx = 0;
+      state.currentPostIdx = 0;
+      state.isReviewActive = false;
+      renderEvmView();
       setStep(3);
     });
     el.backToStep2Btn?.addEventListener("click", () => setStep(2));
+
+    // EVM Stepper Navigation
+    el.evmBackBtn?.addEventListener("click", () => {
+      if (state.currentHouseIdx === 0 && state.currentPostIdx === 0) {
+        setStep(2);
+        return;
+      }
+      if (state.currentPostIdx > 0) {
+        state.currentPostIdx--;
+      } else {
+        state.currentHouseIdx--;
+        const prevHouseRoles = houses[state.currentHouseIdx].positions || [];
+        state.currentPostIdx = Math.max(0, prevHouseRoles.length - 1);
+      }
+      renderEvmView();
+    });
+
+    el.evmNextBtn?.addEventListener("click", () => {
+      const currentHouse = houses[state.currentHouseIdx];
+      const roles = currentHouse?.positions || [];
+      if (state.currentPostIdx < roles.length - 1) {
+        state.currentPostIdx++;
+        renderEvmView();
+      } else if (state.currentHouseIdx < houses.length - 1) {
+        state.currentHouseIdx++;
+        state.currentPostIdx = 0;
+        renderEvmView();
+      } else {
+        state.isReviewActive = true;
+        renderEvmView();
+      }
+    });
+
+    el.evmReviewBackBtn?.addEventListener("click", () => {
+      state.isReviewActive = false;
+      renderEvmView();
+    });
+
+    el.evmFinalCastBtn?.addEventListener("click", () => {
+      submitUniversalBallot();
+    });
 
     // Automatically capture photo and cast ballot directly (no face modal interruption)
     el.proceedCastBtn?.addEventListener("click", () => {
