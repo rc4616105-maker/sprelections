@@ -197,7 +197,7 @@
       });
       state.mediaStream = stream;
       el.cameraVideo.srcObject = stream;
-      await el.cameraVideo.play().catch(() => {});
+      await el.cameraVideo.play().catch(() => { });
       el.autoCamStatus.textContent = "Camera ready — verification photo will auto-capture when you press Cast Vote.";
     } catch (_) {
       el.autoCamStatus.textContent = "Booth auto-snapshot ready (camera permission not granted).";
@@ -314,7 +314,7 @@
             photoDataUrl: canvasEl.toDataURL("image/jpeg", 0.78),
           };
         }
-      } catch (_) {}
+      } catch (_) { }
     }
 
     // Layer 2: Pico.js Face Cascade
@@ -653,7 +653,7 @@
     try {
       input.focus({ preventScroll: true });
     } catch (_) {
-      try { input.focus(); } catch (_) {}
+      try { input.focus(); } catch (_) { }
     }
   }
 
@@ -720,7 +720,7 @@
         const dev = devices[0];
         updatePairedScannerUI(dev.productName || "USB Barcode Scanner");
       }
-    } catch (_) {}
+    } catch (_) { }
   }
 
   if (el.detectUsbBtn) {
@@ -735,7 +735,7 @@
           const dev = devices[0];
           updatePairedScannerUI(dev.productName || "USB Barcode Scanner");
         }
-      } catch (_) {}
+      } catch (_) { }
     });
   }
 
@@ -778,8 +778,8 @@
       el.voterRoleTag.textContent = isTeacher
         ? "Authorized Teacher / Faculty"
         : result.student.isCandidate
-        ? `Candidate · ${result.student.positionName || "House Leadership"}`
-        : result.verificationNote || "Eligible Voter";
+          ? `Candidate · ${result.student.positionName || "House Leadership"}`
+          : result.verificationNote || "Eligible Voter";
       el.voterReauthTag.hidden = result.voterStatus !== "cancelled";
 
       goToStep(2);
@@ -967,7 +967,7 @@
     }
   }
 
-    let noCamFallbackTimer = null;
+  let noCamFallbackTimer = null;
 
   function openFaceGuardModal(initialReason, isObstructed) {
     if (!el.faceGuardModal) return;
@@ -976,7 +976,7 @@
 
     if (el.faceLiveVideo && state.mediaStream) {
       el.faceLiveVideo.srcObject = state.mediaStream;
-      el.faceLiveVideo.play().catch(() => {});
+      el.faceLiveVideo.play().catch(() => { });
     }
 
     steadyFaceCount = 0;
@@ -1096,7 +1096,7 @@
     }
   }
 
-    el.castVoteBtn.addEventListener("click", async () => {
+  el.castVoteBtn.addEventListener("click", async () => {
     const posList = getPositionsList();
     const pendingIds = state.pendingRoleIds.length ? state.pendingRoleIds : posList.map((p) => p.id);
     const missingIds = pendingIds.filter((pid) => !state.selectedByRole[pid]);
@@ -1190,7 +1190,7 @@
       if (!isFull) {
         const root = doc.documentElement;
         if (root.requestFullscreen) {
-          root.requestFullscreen().catch(() => {});
+          root.requestFullscreen().catch(() => { });
         } else if (root.webkitRequestFullscreen) {
           root.webkitRequestFullscreen();
         } else if (root.mozRequestFullScreen) {
@@ -1200,7 +1200,7 @@
         }
       } else {
         if (doc.exitFullscreen) {
-          doc.exitFullscreen().catch(() => {});
+          doc.exitFullscreen().catch(() => { });
         } else if (doc.webkitExitFullscreen) {
           doc.webkitExitFullscreen();
         } else if (doc.mozCancelFullScreen) {

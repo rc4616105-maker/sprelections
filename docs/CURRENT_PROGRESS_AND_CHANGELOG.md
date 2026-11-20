@@ -16,6 +16,21 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
+### 0. Enlarged Candidate Box & High-Visibility Photo Avatar Sizing Across All 6 Houses (Nov 20, 2026)
+- **Generous Candidate Rectangle Box Sizing (`Houses/*/styles.css`)**:
+  - Expanded `.evm-candidate-row` max height from `95px` to `125px` (min height `75px`) and increased padding to `0.75rem 1.4rem` to eliminate empty bottom space and fill the booth card neatly.
+  - **Nearly Doubled Candidate Photo / Avatar Box**:
+    - Increased `.evm-cand-avatar` from `44px × 44px` to **`72px × 72px`** with `12px` border radius, subtle drop shadow, and enlarged fallback initials to `1.5rem`.
+    - Photos inside `.evm-cand-avatar img` render edge-to-edge with `10px` rounded corners and `object-fit: cover`.
+  - **Enhanced Typography & Control Proportions**:
+    - Candidate Name enlarged from `1.15rem` to **`1.3rem`** bold.
+    - Serial numbers enlarged to `1.35rem` bold.
+    - Symbol badges expanded to `min-width: 145px` with `1.55rem` symbol icon.
+    - LED Lamp enlarged to `17px × 17px` with enhanced `16px` crimson radial glow.
+    - Tactile vote button enlarged to `125px × 48px` (`0.98rem` font size).
+    - Review screen card avatars enlarged to `58px × 58px`.
+  - Propagated identically across all 6 house kiosks (`bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, `vishwamithra`).
+
 ### 0. Fix ReferenceError `housesCount is not defined` & Complete DOM IDs Verification (Nov 20, 2026)
 - **Resolved `housesCount is not defined` in `Houses/*/supabase-config.js`**:
   - Identified cause of student ballot submission failure: `const housesCount = allHousesVoted.size;` was declared block-scoped inside the `if (isTeacher) { ... }` block, yet referenced outside that block in the `sbRest("PATCH", ...)` payload ternary.
