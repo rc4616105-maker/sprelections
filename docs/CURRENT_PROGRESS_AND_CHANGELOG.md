@@ -16,6 +16,46 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
+### 0. Sequential Post-by-Post EVM Voting Wizard with 6-Candidate Support Across All 6 House Kiosks (Nov 20, 2026)
+- **Role-by-Role Sequential EVM Navigation (`Houses/*/app.js` & `styles.css`)**:
+  - Replaced the 4-role quad layout with a clean, high-focus **Post-by-Post sequential EVM wizard**:
+    - **Screen 1 (Post 1 of 4):** Boys Captain (Class 10 Boy) — 6 candidates in a spacious 3×2 grid.
+    - **Screen 2 (Post 2 of 4):** Girls Captain (Class 10 Girl) — 6 candidates in a spacious 3×2 grid.
+    - **Screen 3 (Post 3 of 4):** Boys Vice-Captain (Class 9 Boy) — 6 candidates in a spacious 3×2 grid.
+    - **Screen 4 (Post 4 of 4):** Girls Vice-Captain (Class 9 Girl) — 6 candidates in a spacious 3×2 grid.
+    - **Screen 5 (Review & Cast):** Dedicated ballot review screen displaying all 4 chosen candidates with "Change Choice ✎" buttons and the prominent primary action `🟢 Confirm & Cast Vote ➔`.
+- **Zero-Scroll Full-Screen Viewport (`100svh`, flex column, `overflow: hidden`)**:
+  - Entire wizard fits dynamically into any laptop, desktop, or touch tablet display with zero vertical scrolling.
+  - Dedicated horizontal stepper breadcrumb pills (`.evm-role-stepper`) showing completed posts with green checkmarks (`✓`) and active post highlighted.
+- **EVM Candidate Cards (3 Columns × 2 Rows per Screen)**:
+  - Supports 6+ candidates per role.
+  - Features large candidate photo portrait (with fallback high-contrast initials badge).
+  - Official Election Symbol emblem (Torch 🔦, Book 📖, Rising Sun 🌅, Star ⭐, Shield 🛡️, Rocket 🚀) with icon & label.
+  - Candidate Full Name and Class/Section tag.
+  - Tactile EVM vote button strip with glowing red LED lamp (`#ef4444`), green card border/background on selection, and live "VOTED ✓" readout.
+- **Synchronized Deployment Across All 6 Student Houses**:
+  - Upgraded code and data across all 6 student house kiosks: `bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, and `vishwamithra`.
+  - Updated each house's `data.js` to feature 24 demo candidates (6 candidates per role across all 4 positions) with designated election symbols.
+
+
+### 0. Full-Screen 2×2 EVM Ballot Layout with Candidate Photos & Election Symbols Across All 6 House Kiosks (Nov 20, 2026)
+- **Zero-Scroll Full-Screen Kiosk Viewport (`Houses/*/styles.css` & `app.js`)**:
+  - Implemented dynamic `.step-3-evm-active` mode: When reaching Step 3 ("Select & Cast"), the page shell automatically expands to `98vw / 1440px` and locks to `100svh` with `overflow: hidden`, completely eliminating vertical scrolling.
+  - Converted the single-column vertical stack into a high-efficiency **2×2 Quadrant EVM Grid**:
+    - **Top-Left:** Boys Captain (3 candidates)
+    - **Top-Right:** Girls Captain (3 candidates)
+    - **Bottom-Left:** Boys Vice-Captain (3 candidates)
+    - **Bottom-Right:** Girls Vice-Captain (3 candidates)
+- **Complete EVM Candidate Cards (`photo + symbol + name + post + LED button`)**:
+  - **Candidate Photo Box:** Displays candidate portrait photo (with fallback high-contrast avatar frame with initials).
+  - **Official Election Symbol:** Each candidate displays a designated election symbol emblem (e.g. 🔦 Torch, 📖 Book, 🌅 Rising Sun, ⭐ Star, 🛡️ Shield, 🚀 Rocket) with both symbol icon and name tag.
+  - **Candidate Identity:** Bold candidate full name and class/section tag.
+  - **Tactile EVM Vote Button & Glowing LED Lamp:** Each card includes an EVM vote button strip. When selected, the card glows in the house accent color, the label turns to `VOTED`, and a glowing red LED lamp (`#ef4444`) illuminates.
+- **Compact Bottom Cast Action Bar**:
+  - Stays anchored at the base of the card without overlapping, showing live progress (`Selected Candidates: 4 / 4`) and enabling the primary `Confirm & Cast Vote` action.
+- **Full House Coverage**:
+  - Deployed and synchronized across all 6 student house kiosks: `bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, and `vishwamithra`.
+
 ### 0. Teacher Universal Polling Booth Layout Harmonization & Full Backend Completion (`Houses/teachers/`) (Nov 20, 2026)
 - **Harmonized Card Layout & Design Proportions (`Houses/teachers/styles.css` & `index.html`)**:
   - Matched the clean, compact proportions of `Houses/bheeshma/`:

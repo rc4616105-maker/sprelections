@@ -19,7 +19,7 @@
 
   function sbHeaders(key, extra = {}) {
     const h = { apikey: key, ...extra };
-    if (String(key || "").startsWith("eyJ")) {
+    if (String(key || "").startsWith("eyJ") || String(key || "").startsWith("sb_secret_")) {
       h.Authorization = `Bearer ${key}`;
     }
     return h;
@@ -552,6 +552,9 @@
           created_at: nowIso,
         });
         if (channel) channel.postMessage({ type: "store_updated", at: Date.now() });
+        if (window.PendriveStorage && typeof window.PendriveStorage.syncNow === "function") {
+          window.PendriveStorage.syncNow();
+        }
         return;
       }
 
@@ -607,6 +610,9 @@
         }).catch(() => {});
 
         if (channel) channel.postMessage({ type: "store_updated", at: Date.now() });
+        if (window.PendriveStorage && typeof window.PendriveStorage.syncNow === "function") {
+          window.PendriveStorage.syncNow();
+        }
         return;
       }
 
@@ -753,6 +759,9 @@
       }).catch(() => {});
 
       if (channel) channel.postMessage({ type: "store_updated", at: Date.now() });
+      if (window.PendriveStorage && typeof window.PendriveStorage.syncNow === "function") {
+        window.PendriveStorage.syncNow();
+      }
       return { ok: true, deletedCount: ballotsList.length, admissionNo: cleanAdm };
     },
 
@@ -909,6 +918,7 @@
   // Dedicated Pendrive / Local Folder Storage Engine (House-Isolated + Per-Voter Subfolders)
   const FS_DB_NAME = "election_spr_2026_pendrive_v1";
   const FS_STORE = "handles";
+  const SHARED_ROOT_KEY = "primary_handle";
 
   function openHandleDb() {
     return new Promise((resolve, reject) => {
@@ -951,6 +961,48 @@
         tx.onerror = () => resolve();
       });
     } catch (_) { }
+  }
+
+  async function getSharedHandle() {
+    // 1. Universal primary handle
+    let h = await idbGetHandle(SHARED_ROOT_KEY);
+    if (h) return h;
+    // 2. Main hub "overview" handle
+    h = await idbGetHandle("overview");
+    if (h) return h;
+    // 3. Scope key handle if present
+    if (pendriveState.scopeKey) {
+      h = await idbGetHandle(pendriveState.scopeKey);
+      if (h) return h;
+    }
+    // 4. Any handle in IndexedDB
+    try {
+      const db = await openHandleDb();
+      return await new Promise((resolve) => {
+        const tx = db.transaction(FS_STORE, "readonly");
+        const req = tx.objectStore(FS_STORE).openCursor();
+        req.onsuccess = (e) => {
+          const cursor = e.target.result;
+          if (cursor && cursor.value) {
+            resolve(cursor.value);
+          } else {
+            resolve(null);
+          }
+        };
+        req.onerror = () => resolve(null);
+      });
+    } catch (_) {
+      return null;
+    }
+  }
+
+  async function saveSharedHandle(handle) {
+    if (!handle) return;
+    await idbSetHandle(SHARED_ROOT_KEY, handle);
+    await idbSetHandle("overview", handle);
+    if (pendriveState.scopeKey) {
+      await idbSetHandle(pendriveState.scopeKey, handle);
+    }
   }
 
   async function photoSourceToBytes(photoSrc) {
@@ -1150,6 +1202,7 @@
 
   const pendriveState = {
     dirHandle: null,
+    savedHandle: null,
     connected: false,
     scopeKey: "overview",
     houseMeta: null,
@@ -1337,7 +1390,7 @@
 
     const houses = window.ADMIN_DATA?.houses || [];
     for (const h of houses) {
-      const subDir = await dir.getDirectoryHandle(h.slug, { create: true });
+      const subDir = await getHouseDirectory(dir, h);
       await writeSingleHouseToDir(subDir, snapshot, h);
     }
   }
@@ -1360,14 +1413,30 @@
   }
 
   window.PendriveStorage = {
-    async selectFolder() {
+    async selectFolder(forcePicker = false) {
+      if (!forcePicker && pendriveState.savedHandle && !pendriveState.connected && typeof pendriveState.savedHandle.requestPermission === "function") {
+        try {
+          let perm = await pendriveState.savedHandle.requestPermission({ mode: "readwrite" });
+          if (perm === "granted") {
+            pendriveState.dirHandle = pendriveState.savedHandle;
+            pendriveState.connected = true;
+            pendriveState.writtenPhotos.clear();
+            await saveSharedHandle(pendriveState.dirHandle);
+            refreshWidgetUi();
+            if (channel) channel.postMessage({ type: "pendrive_folder_selected", at: Date.now() });
+            await this.syncNow();
+            return true;
+          }
+        } catch (_) {}
+      }
+
       if (typeof window.showDirectoryPicker !== "function") {
         alert("Direct pendrive folder saving requires Chrome or Edge over http://localhost or https://.");
         return false;
       }
       try {
         const picked = await window.showDirectoryPicker({
-          id: pendriveState.scopeKey || "election_pendrive",
+          id: "election_pendrive",
           mode: "readwrite",
         });
         let perm = await picked.queryPermission({ mode: "readwrite" });
@@ -1377,10 +1446,12 @@
         if (perm !== "granted") return false;
 
         pendriveState.dirHandle = picked;
+        pendriveState.savedHandle = picked;
         pendriveState.connected = true;
         pendriveState.writtenPhotos.clear();
-        await idbSetHandle(pendriveState.scopeKey, picked);
+        await saveSharedHandle(picked);
         refreshWidgetUi();
+        if (channel) channel.postMessage({ type: "pendrive_folder_selected", at: Date.now() });
         await this.syncNow();
         return true;
       } catch (err) {
@@ -1415,12 +1486,13 @@
         selectBtn: container.querySelector(".storage-select-btn"),
       };
 
-      const onPick = () => this.selectFolder();
+      const onPick = () => this.selectFolder(pendriveState.connected);
       pendriveState.widgetEls.selectBtn.addEventListener("click", onPick);
       pendriveState.widgetEls.statusBtn.addEventListener("click", onPick);
 
-      const saved = await idbGetHandle(pendriveState.scopeKey);
+      const saved = await getSharedHandle();
       if (saved && typeof saved.queryPermission === "function") {
+        pendriveState.savedHandle = saved;
         try {
           const perm = await saved.queryPermission({ mode: "readwrite" });
           if (perm === "granted") {
@@ -1447,4 +1519,30 @@
       }
     },
   };
+
+  if (channel) {
+    channel.addEventListener("message", async (e) => {
+      if (e.data && e.data.type === "pendrive_folder_selected") {
+        if (!pendriveState.connected) {
+          const saved = await getSharedHandle();
+          if (saved && typeof saved.queryPermission === "function") {
+            try {
+              const perm = await saved.queryPermission({ mode: "readwrite" });
+              if (perm === "granted") {
+                pendriveState.dirHandle = saved;
+                pendriveState.savedHandle = saved;
+                pendriveState.connected = true;
+                refreshWidgetUi();
+                await window.PendriveStorage.syncNow();
+              }
+            } catch (_) {}
+          }
+        } else {
+          window.PendriveStorage.syncNow();
+        }
+      } else if (pendriveState.connected) {
+        window.PendriveStorage.syncNow();
+      }
+    });
+  }
 })();

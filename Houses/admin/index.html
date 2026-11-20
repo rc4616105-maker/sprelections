@@ -1,34 +1,46 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Election Administration — School House Elections 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css?v=985" />
   <script src="./admin-auth.js?v=6"></script>
 </head>
+
 <body>
   <main class="overview-shell">
     <header class="topbar">
       <div>
-        <div class="eyebrow">Election Administration <span class="live-pulse-badge" title="Live Auto-Sync: Updates automatically every 2 seconds without refreshing"><span class="pulse-dot"></span> Live Sync (2s)</span></div>
+        <div class="eyebrow">Election Administration <span class="live-pulse-badge"
+            title="Live Auto-Sync: Updates automatically every 2 seconds without refreshing"><span
+              class="pulse-dot"></span> Live Sync (2s)</span></div>
         <h1 class="page-title">School House Elections 2026</h1>
-        <p class="page-sub">Select a house below to inspect candidate vote comparison graphs, review voter photos, and manage cancellations.</p>
+        <p class="page-sub">Select a house below to inspect candidate vote comparison graphs, review voter photos, and
+          manage cancellations.</p>
       </div>
       <div class="topbar-actions">
         <a href="../graphs.html?from=admin" class="btn btn-secondary">Graphs</a>
-        <button type="button" id="print-results-btn" class="btn btn-secondary" title="Export complete election results and all candidates votes to Excel (.xlsx)">🖨️ Print Results</button>
+        <button type="button" id="print-results-btn" class="btn btn-secondary"
+          title="Export complete election results and all candidates votes to Excel (.xlsx)">🖨️ Print Results</button>
         <button type="button" id="seed-supabase-btn" class="btn btn-secondary">Sync Roster to Supabase</button>
-        <button type="button" id="refresh-btn" class="btn btn-primary">Refresh Now</button>
+        <a href="../../Result declaration/index.html" class="btn btn-primary" id="result-declaration-btn"
+          title="Launch Interactive Result Declaration Ceremony (Spin Wheel & Scratch Cards)"
+          style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;">🎉 Result
+          Declaration</a>
       </div>
     </header>
 
     <div id="sb-offline-banner" class="sb-offline-banner" role="alert" hidden>
       <div>
-        <strong>Supabase Not Connected</strong> — <span id="sb-offline-msg">Votes are saved &amp; loaded strictly from Supabase. Click <strong>Connect &amp; Sync Supabase</strong> to connect your project.</span>
+        <strong>Supabase Not Connected</strong> — <span id="sb-offline-msg">Votes are saved &amp; loaded strictly from
+          Supabase. Click <strong>Connect &amp; Sync Supabase</strong> to connect your project.</span>
       </div>
     </div>
 
@@ -61,13 +73,16 @@
       <div class="panel-head-row">
         <div>
           <h2 id="drilldown-title" class="panel-heading">Active Accepted Voters</h2>
-          <p id="drilldown-subtitle" class="panel-caption">All registered students who have submitted active votes across booths. Reviewing photos, cast times, changing candidate choices, or resetting ballots is managed inside Edit Votes.</p>
+          <p id="drilldown-subtitle" class="panel-caption">All registered students who have submitted active votes
+            across booths. Reviewing photos, cast times, changing candidate choices, or resetting ballots is managed
+            inside Edit Votes.</p>
         </div>
         <button type="button" id="close-drilldown-btn" class="btn btn-secondary">Collapse View</button>
       </div>
 
       <div class="filters-bar">
-        <input id="drilldown-search" type="search" class="form-control" placeholder="Search Voter ID or Student Name..." />
+        <input id="drilldown-search" type="search" class="form-control"
+          placeholder="Search Voter ID or Student Name..." />
         <select id="drilldown-house-filter" class="form-control" aria-label="Filter by House">
           <option value="">All Houses</option>
         </select>
@@ -142,11 +157,14 @@
       <h3 id="supabase-modal-title" class="modal-title">Connect Supabase &amp; Sync Roster</h3>
       <p class="modal-desc">
         Run <code>supabase/schema.sql</code> in Supabase SQL Editor first, then paste your project&apos;s
-        <strong>Publishable (anon) key</strong> below (never paste an <code>sb_secret_</code> key in browser JS; on Netlify set <code>SUPABASE_KEY</code> in Netlify Environment Variables instead).
+        <strong>Publishable (anon) key</strong> below (never paste an <code>sb_secret_</code> key in browser JS; on
+        Netlify set <code>SUPABASE_KEY</code> in Netlify Environment Variables instead).
       </p>
       <div style="display:flex; flex-direction:column; gap:0.65rem; margin-top:0.85rem;">
-        <input id="sb-url-input" type="url" class="form-control" placeholder="https://rziptxcknaeuorekxwrl.supabase.co" />
-        <input id="sb-key-input" type="password" class="form-control" autocomplete="off" placeholder="sb_publishable_... or eyJ... (anon public key)" />
+        <input id="sb-url-input" type="url" class="form-control"
+          placeholder="https://rziptxcknaeuorekxwrl.supabase.co" />
+        <input id="sb-key-input" type="password" class="form-control" autocomplete="off"
+          placeholder="sb_publishable_... or eyJ... (anon public key)" />
       </div>
       <p id="sb-modal-error" class="stat-note" style="color: #b91c1c; margin-top: 0.5rem;" hidden></p>
       <div class="modal-actions">
@@ -156,11 +174,12 @@
     </div>
   </div>
 
-  <script defer src="./data.js?v=975"></script>
-  <script defer src="./teachers.js?v=975"></script>
-  <script defer src="./supabase-config.js?v=1002"></script>
+  <script defer src="./data.js?v=1010"></script>
+  <script defer src="./teachers.js?v=1010"></script>
+  <script defer src="./supabase-config.js?v=1010"></script>
   <script defer src="./vendor/xlsx.full.min.js"></script>
-  <script defer src="./export-excel.js?v=975"></script>
-  <script defer src="./app.js?v=1002"></script>
+  <script defer src="./export-excel.js?v=1010"></script>
+  <script defer src="./app.js?v=1010"></script>
 </body>
+
 </html>

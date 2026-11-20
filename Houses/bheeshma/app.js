@@ -9,6 +9,8 @@
     votedRoles: {},
     cancelledRoleIds: [],
     selectedByRole: {},
+    activeRoleIndex: 0,
+    cachedCandidates: [],
     mediaStream: null,
     resetInterval: null,
     resetTimeout: null,
@@ -135,6 +137,11 @@
       pill.classList.toggle("is-active", s === stepNum);
       pill.classList.toggle("is-done", s < stepNum);
     });
+
+    const pageShell = document.querySelector(".page-shell");
+    if (pageShell) {
+      pageShell.classList.toggle("step-3-evm-active", stepNum === 3);
+    }
   }
 
   function clearStep1Error() {
@@ -372,117 +379,340 @@
     el.castVoteBtn.disabled = pickedCount < totalNeeded || totalNeeded === 0;
   }
 
-  async function renderCandidatesStep() {
-    const candidates = await window.ElectionBackend.getHouseCandidates(houseConfig.code);
+    function renderRoleWizardView() {
     const posList = getPositionsList();
-    if (!state.pendingRoleIds.length) {
-      state.pendingRoleIds = posList.filter((p) => !state.votedRoles[p.id]).map((p) => p.id);
-    }
-    state.selectedByRole = {};
+    const isReview = state.activeRoleIndex >= posList.length;
+
     el.step3Error.hidden = true;
     el.candidateGrid.innerHTML = "";
 
-    if (el.step3Subtitle) {
-      if (state.pendingRoleIds.length < posList.length) {
-        el.step3Subtitle.textContent = `${state.pendingRoleIds.length} role${state.pendingRoleIds.length > 1 ? "s" : ""} open for ${houseConfig.name} House — previously accepted votes stay locked below.`;
-      } else {
-        el.step3Subtitle.textContent = `Choose 1 candidate for each of the ${posList.length} ${houseConfig.name} House roles below, then press Cast Vote.`;
-      }
-    }
+    // 1. TOP BREADCRUMB STEPPER
+    const stepperNav = document.createElement("nav");
+    stepperNav.className = "evm-role-stepper";
+    stepperNav.setAttribute("aria-label", "Voting Steps");
 
-    if (!candidates.length) {
-      el.candidateGrid.innerHTML = `<p class="panel-subtitle">No approved candidates found for ${houseConfig.name} House.</p>`;
-      el.castActionBar.hidden = true;
-      return;
-    }
+    posList.forEach((pos, idx) => {
+      const isDone = Boolean(state.selectedByRole[pos.id] || state.votedRoles[pos.id]);
+      const isActive = !isReview && state.activeRoleIndex === idx;
+      const stepPill = document.createElement("button");
+      stepPill.type = "button";
+      stepPill.className = `evm-role-pill${isActive ? " is-active" : ""}${isDone ? " is-done" : ""}`;
+      stepPill.innerHTML = `
+        <span class="evm-role-pill-num">${isDone ? "✓" : idx + 1}</span>
+        <span class="evm-role-pill-label">${pos.shortTitle || pos.title}</span>
+      `;
+      stepPill.addEventListener("click", () => {
+        state.activeRoleIndex = idx;
+        renderRoleWizardView();
+      });
+      stepperNav.appendChild(stepPill);
+    });
 
-    posList.forEach((pos) => {
-      const votedBallot = state.votedRoles[pos.id] || null;
-      const isCancelledRole = state.cancelledRoleIds.includes(pos.id);
-      const roleCands = candidates.filter((c) => (c.positionId || pos.id) === pos.id);
+    const allRolesChosen = posList.every((p) => Boolean(state.selectedByRole[p.id] || state.votedRoles[p.id]));
+    const reviewPill = document.createElement("button");
+    reviewPill.type = "button";
+    reviewPill.className = `evm-role-pill evm-review-pill${isReview ? " is-active" : ""}${allRolesChosen ? " is-ready" : ""}`;
+    reviewPill.innerHTML = `
+      <span class="evm-role-pill-num">${posList.length + 1}</span>
+      <span class="evm-role-pill-label">Review & Cast</span>
+    `;
+    reviewPill.addEventListener("click", () => {
+      state.activeRoleIndex = posList.length;
+      renderRoleWizardView();
+    });
+    stepperNav.appendChild(reviewPill);
 
-      const section = document.createElement("section");
-      section.className = `role-section-card${votedBallot ? " is-locked" : ""}`;
-      section.dataset.positionId = pos.id;
+    // 2. MAIN CONTENT AREA
+    const contentArea = document.createElement("div");
+    contentArea.className = "evm-wizard-content";
 
-      const head = document.createElement("div");
-      head.className = "role-section-head";
-      const titleGroup = document.createElement("div");
-      titleGroup.className = "role-section-title-group";
-      const titleEl = document.createElement("h3");
-      titleEl.className = "role-section-title";
-      titleEl.textContent = pos.title;
-      const subEl = document.createElement("span");
-      subEl.className = "role-section-sub";
-      subEl.textContent = pos.subtitle || "";
-      titleGroup.append(titleEl, subEl);
+    if (!isReview) {
+      // SINGLE ROLE VIEW
+      const currentPos = posList[state.activeRoleIndex];
+      const votedBallot = state.votedRoles[currentPos.id] || null;
+      const isCancelledRole = state.cancelledRoleIds.includes(currentPos.id);
+      const roleCands = state.cachedCandidates.filter((c) => (c.positionId || currentPos.id) === currentPos.id);
 
-      const pillEl = document.createElement("span");
-      pillEl.className = "role-state-pill";
-      if (votedBallot) {
-        pillEl.classList.add("is-locked");
-        pillEl.textContent = `Recorded: ${votedBallot.candidateName}`;
-      } else if (isCancelledRole) {
-        pillEl.textContent = "Re-vote Open (Cancelled)";
-      } else {
-        pillEl.textContent = "Select 1 candidate";
-      }
-      head.append(titleGroup, pillEl);
+      const roleBanner = document.createElement("div");
+      roleBanner.className = "evm-role-banner";
+      roleBanner.innerHTML = `
+        <div class="evm-role-banner-left">
+          <span class="badge badge-house">Post ${state.activeRoleIndex + 1} of ${posList.length}</span>
+          <h2 class="evm-role-banner-title">${currentPos.title}</h2>
+          <span class="evm-role-banner-sub">${currentPos.subtitle || ""} · Choose 1 Candidate</span>
+        </div>
+        <div class="evm-role-banner-status">
+          ${votedBallot ? `<span class="badge badge-success">Recorded: ${votedBallot.candidateName}</span>` : isCancelledRole ? `<span class="badge badge-warning">Re-vote Open</span>` : `<span class="badge badge-muted">Select 1 Below</span>`}
+        </div>
+      `;
+      contentArea.appendChild(roleBanner);
 
       const grid = document.createElement("div");
-      grid.className = "candidate-grid";
+      grid.className = "evm-candidate-grid-3x2";
       grid.setAttribute("role", "radiogroup");
-      grid.setAttribute("aria-label", `${pos.title} (${pos.subtitle || ""}) candidates`);
+      grid.setAttribute("aria-label", `${currentPos.title} candidates`);
 
-      roleCands.forEach((cand) => {
+      const ELECTION_SYMBOLS = [
+        { name: "Torch", icon: "🔦" },
+        { name: "Book", icon: "📖" },
+        { name: "Rising Sun", icon: "🌅" },
+        { name: "Star", icon: "⭐" },
+        { name: "Shield", icon: "🛡️" },
+        { name: "Rocket", icon: "🚀" }
+      ];
+
+      roleCands.forEach((cand, candIdx) => {
+        const sym = cand.symbolObj || ELECTION_SYMBOLS[candIdx % ELECTION_SYMBOLS.length];
         const card = document.createElement("button");
         card.type = "button";
-        card.className = "candidate-card";
+        card.className = "evm-candidate-card";
         card.dataset.candidateId = cand.id;
         card.setAttribute("role", "radio");
-        card.setAttribute("aria-checked", "false");
+
+        const isPicked = state.selectedByRole[currentPos.id]?.id === cand.id;
+        card.setAttribute("aria-checked", isPicked ? "true" : "false");
+        if (isPicked) card.classList.add("is-selected");
+
+        const photoHtml = cand.photoPath || cand.photoUrl
+          ? `<img src="${cand.photoPath || cand.photoUrl}" alt="${cand.fullName}" class="evm-photo-img" />`
+          : `<span class="evm-avatar-initials">${getInitials(cand.fullName)}</span>`;
+
         card.innerHTML = `
-          <div class="candidate-card-top">
-            <div class="candidate-avatar" aria-hidden="true">${getInitials(cand.fullName)}</div>
-            <span class="select-indicator" aria-hidden="true"></span>
+          <div class="evm-card-topbar">
+            <div class="evm-photo-box" aria-hidden="true">${photoHtml}</div>
+            <div class="evm-symbol-pill" title="Election Symbol: ${sym.name}">
+              <span class="evm-symbol-icon" aria-hidden="true">${sym.icon}</span>
+              <span class="evm-symbol-label">${sym.name}</span>
+            </div>
           </div>
-          <div>
-            <h4 class="candidate-name"></h4>
-            <p class="candidate-meta"></p>
+          <div class="evm-card-meta">
+            <h3 class="evm-cand-name">${cand.fullName}</h3>
+            <span class="evm-cand-section">${String(cand.admissionNo || "").startsWith("DEMO-") ? cand.section : `ID ${cand.admissionNo} · Class ${cand.className}-${cand.section}`}</span>
           </div>
-          <p class="candidate-tagline"></p>
+          <div class="evm-vote-btn-strip" aria-hidden="true">
+            <span class="evm-led-lamp"></span>
+            <span class="evm-vote-label">${isPicked ? "VOTED" : "VOTE"}</span>
+            <span class="evm-check-badge">✓</span>
+          </div>
         `;
-        card.querySelector(".candidate-name").textContent = cand.fullName;
-        card.querySelector(".candidate-meta").textContent = String(cand.admissionNo || "").startsWith("DEMO-")
-          ? `${cand.section} · ${pos.subtitle || pos.title}`
-          : `ID ${cand.admissionNo} · Class ${cand.className}-${cand.section} · ${pos.title}`;
-        card.querySelector(".candidate-tagline").textContent = cand.tagline;
 
         if (votedBallot) {
           card.disabled = true;
-          card.classList.add("is-locked");
           if (cand.id === votedBallot.candidateId) {
             card.classList.add("is-selected");
-            card.setAttribute("aria-checked", "true");
-            card.querySelector(".select-indicator").textContent = "✓";
+            card.querySelector(".evm-vote-label").textContent = "RECORDED";
           }
         } else {
           card.addEventListener("click", () => {
             Array.from(grid.children).forEach((c) => {
               c.classList.remove("is-selected");
               c.setAttribute("aria-checked", "false");
-              c.querySelector(".select-indicator").textContent = "";
+              const l = c.querySelector(".evm-vote-label");
+              if (l) l.textContent = "VOTE";
             });
             card.classList.add("is-selected");
             card.setAttribute("aria-checked", "true");
-            card.querySelector(".select-indicator").textContent = "✓";
-            state.selectedByRole[pos.id] = cand;
-            section.classList.add("is-complete");
-            pillEl.className = "role-state-pill is-picked";
-            pillEl.textContent = `Selected: ${cand.fullName}`;
+            const lbl = card.querySelector(".evm-vote-label");
+            if (lbl) lbl.textContent = "VOTED";
+
+            state.selectedByRole[currentPos.id] = cand;
             el.step3Error.hidden = true;
-            updateCastBar();
+            renderWizardFooter(navbar, posList, isReview);
           });
+        }
+
+        grid.appendChild(card);
+      });
+
+      contentArea.appendChild(grid);
+    } else {
+      // REVIEW & CAST VIEW
+      const reviewHeader = document.createElement("div");
+      reviewHeader.className = "evm-review-header";
+      reviewHeader.innerHTML = `
+        <span class="badge badge-success">Ballot Summary</span>
+        <div>
+          <h2 class="evm-review-title">Review Your Ballot</h2>
+          <p class="evm-review-sub">Verify your chosen candidates for all ${posList.length} roles below, then tap <strong>Confirm & Cast Vote</strong>.</p>
+        </div>
+      `;
+      contentArea.appendChild(reviewHeader);
+
+      const reviewGrid = document.createElement("div");
+      reviewGrid.className = "evm-review-grid";
+
+      posList.forEach((pos, idx) => {
+        const selCand = state.selectedByRole[pos.id];
+        const votedBallot = state.votedRoles[pos.id];
+        const displayCand = selCand || (votedBallot ? { fullName: votedBallot.candidateName, section: "Previously Recorded", symbolObj: { name: "Recorded", icon: "✓" } } : null);
+
+        const revCard = document.createElement("div");
+        revCard.className = "evm-review-card";
+        if (displayCand) {
+          const sym = displayCand.symbolObj || { name: "Candidate", icon: "🗳️" };
+          const photoHtml = displayCand.photoPath || displayCand.photoUrl
+            ? `<img src="${displayCand.photoPath || displayCand.photoUrl}" alt="${displayCand.fullName}" class="evm-photo-img" />`
+            : `<span class="evm-avatar-initials">${getInitials(displayCand.fullName)}</span>`;
+
+          revCard.innerHTML = `
+            <div class="evm-review-card-head">
+              <span class="evm-review-role-badge">${pos.title}</span>
+              ${votedBallot ? `<span class="badge badge-muted">Locked</span>` : `<button type="button" class="evm-review-change-btn" data-role-idx="${idx}">Change Choice ✎</button>`}
+            </div>
+            <div class="evm-review-cand-body">
+              <div class="evm-photo-box" aria-hidden="true">${photoHtml}</div>
+              <div class="evm-review-cand-info">
+                <h4 class="evm-review-cand-name">${displayCand.fullName}</h4>
+                <div class="evm-review-cand-sub">${displayCand.section || `Class ${displayCand.className || ""}`}</div>
+                <div class="evm-symbol-pill">
+                  <span class="evm-symbol-icon">${sym.icon}</span>
+                  <span class="evm-symbol-label">${sym.name}</span>
+                </div>
+              </div>
+            </div>
+          `;
+
+          const changeBtn = revCard.querySelector(".evm-review-change-btn");
+          if (changeBtn) {
+            changeBtn.addEventListener("click", () => {
+              state.activeRoleIndex = idx;
+              renderRoleWizardView();
+            });
+          }
+        } else {
+          revCard.innerHTML = `
+            <div class="evm-review-card-head">
+              <span class="evm-review-role-badge">${pos.title}</span>
+              <button type="button" class="evm-review-change-btn" data-role-idx="${idx}">Select Now ➔</button>
+            </div>
+            <div class="evm-review-cand-body is-empty">
+              <p style="color: #dc2626; font-size: 0.88rem; font-weight: 700;">No candidate selected yet!</p>
+            </div>
+          `;
+          revCard.querySelector(".evm-review-change-btn").addEventListener("click", () => {
+            state.activeRoleIndex = idx;
+            renderRoleWizardView();
+          });
+        }
+        reviewGrid.appendChild(revCard);
+      });
+
+      contentArea.appendChild(reviewGrid);
+    }
+
+    // 3. BOTTOM NAVIGATION BAR
+    const navbar = document.createElement("div");
+    navbar.className = "evm-wizard-navbar";
+    renderWizardFooter(navbar, posList, isReview);
+
+    el.candidateGrid.appendChild(stepperNav);
+    el.candidateGrid.appendChild(contentArea);
+    el.candidateGrid.appendChild(navbar);
+
+    // Keep hidden legacy elements
+    if (el.castActionBar) el.castActionBar.hidden = true;
+    if (el.backToStep2Btn) el.backToStep2Btn.hidden = true;
+    const oldPanelHeader = document.querySelector("#step-3 > .panel-header");
+    if (oldPanelHeader) oldPanelHeader.hidden = true;
+  }
+
+  function renderWizardFooter(navbar, posList, isReview) {
+    navbar.innerHTML = "";
+
+    // Prev Button
+    const prevBtn = document.createElement("button");
+    prevBtn.type = "button";
+    prevBtn.className = "btn btn-secondary evm-nav-prev-btn";
+    if (!isReview && state.activeRoleIndex === 0) {
+      prevBtn.innerHTML = `&larr; Back to Student Details`;
+      prevBtn.addEventListener("click", () => goToStep(2));
+    } else if (isReview) {
+      prevBtn.innerHTML = `&larr; Back to ${posList[posList.length - 1].shortTitle || "Roles"}`;
+      prevBtn.addEventListener("click", () => {
+        state.activeRoleIndex = posList.length - 1;
+        renderRoleWizardView();
+      });
+    } else {
+      prevBtn.innerHTML = `&larr; Previous Post`;
+      prevBtn.addEventListener("click", () => {
+        state.activeRoleIndex = Math.max(0, state.activeRoleIndex - 1);
+        renderRoleWizardView();
+      });
+    }
+    navbar.appendChild(prevBtn);
+
+    // Status in Center
+    const statusBox = document.createElement("div");
+    statusBox.className = "evm-nav-status";
+    if (!isReview) {
+      const currentPos = posList[state.activeRoleIndex];
+      const picked = state.selectedByRole[currentPos.id];
+      const voted = state.votedRoles[currentPos.id];
+      if (picked) {
+        statusBox.innerHTML = `<span class="evm-status-icon">✓</span> <span>Selected: <strong>${picked.fullName}</strong></span>`;
+      } else if (voted) {
+        statusBox.innerHTML = `<span class="evm-status-icon">✓</span> <span>Recorded: <strong>${voted.candidateName}</strong></span>`;
+      } else {
+        statusBox.innerHTML = `<span class="evm-status-hint">Please tap a candidate above to select</span>`;
+      }
+    } else {
+      const allPicked = posList.every((p) => Boolean(state.selectedByRole[p.id] || state.votedRoles[p.id]));
+      if (allPicked) {
+        statusBox.innerHTML = `<span class="evm-status-icon">✓</span> <strong>All ${posList.length} Roles Selected</strong> — Ready to Cast`;
+      } else {
+        statusBox.innerHTML = `<span style="color: #dc2626; font-weight: 700;">Missing selections! Please select all roles.</span>`;
+      }
+    }
+    navbar.appendChild(statusBox);
+
+    // Next / Confirm Button on Right
+    if (!isReview) {
+      const nextBtn = document.createElement("button");
+      nextBtn.type = "button";
+      nextBtn.className = "btn btn-primary btn-lg evm-nav-next-btn";
+      const currentPos = posList[state.activeRoleIndex];
+      const hasPicked = Boolean(state.selectedByRole[currentPos.id] || state.votedRoles[currentPos.id]);
+      nextBtn.disabled = !hasPicked;
+
+      const isLastRole = state.activeRoleIndex === posList.length - 1;
+      if (isLastRole) {
+        nextBtn.innerHTML = `Review Ballot &rarr;`;
+      } else {
+        const nextPos = posList[state.activeRoleIndex + 1];
+        nextBtn.innerHTML = `Next: ${nextPos.shortTitle || nextPos.title} &rarr;`;
+      }
+
+      nextBtn.addEventListener("click", () => {
+        state.activeRoleIndex++;
+        renderRoleWizardView();
+      });
+      navbar.appendChild(nextBtn);
+    } else {
+      const castBtn = document.createElement("button");
+      castBtn.type = "button";
+      castBtn.className = "btn btn-primary btn-lg evm-confirm-cast-btn";
+      castBtn.innerHTML = `🟢 Confirm & Cast Vote &rarr;`;
+      const allPicked = posList.every((p) => Boolean(state.selectedByRole[p.id] || state.votedRoles[p.id]));
+      castBtn.disabled = !allPicked;
+
+      castBtn.addEventListener("click", () => {
+        el.castVoteBtn.click();
+      });
+      navbar.appendChild(castBtn);
+    }
+  }
+
+  async function renderCandidatesStep() {
+    state.cachedCandidates = await window.ElectionBackend.getHouseCandidates(houseConfig.code);
+    const posList = getPositionsList();
+    if (!state.pendingRoleIds.length) {
+      state.pendingRoleIds = posList.filter((p) => !state.votedRoles[p.id]).map((p) => p.id);
+    }
+    state.selectedByRole = {};
+    state.activeRoleIndex = 0;
+    renderRoleWizardView();
+  }
+);
         }
 
         grid.appendChild(card);
@@ -529,6 +759,10 @@
     state.verifiedStudent = null;
     state.pendingRoleIds = [];
     state.votedRoles = {};
+    state.cancelledRoleIds = [];
+    state.selectedByRole = {};
+    state.activeRoleIndex = 0;
+    state.cachedCandidates = [];
     state.cancelledRoleIds = [];
     state.selectedByRole = {};
     state.isSubmitting = false;
@@ -671,8 +905,13 @@
       el.voterInitials.textContent = getInitials(result.student.fullName);
       el.voterName.textContent = result.student.fullName;
       el.voterIdBadge.textContent = `Voter ID ${result.student.admissionNo}`;
-      el.voterMeta.textContent = `Class ${result.student.className}-${result.student.section} · ${houseConfig.name} House`;
-      el.voterRoleTag.textContent = result.student.isCandidate
+      const isTeacher = result.student.isStaff === true || result.student.houseCode === "ALL" || result.student.admissionNo === "0000";
+      el.voterMeta.textContent = isTeacher
+        ? `${result.student.subject ? `${result.student.subject} Faculty` : "Teaching Staff"} · ${houseConfig.name}`
+        : `Class ${result.student.className}-${result.student.section} · ${houseConfig.name} House`;
+      el.voterRoleTag.textContent = isTeacher
+        ? "Authorized Teacher / Faculty"
+        : result.student.isCandidate
         ? `Candidate · ${result.student.positionName || "House Leadership"}`
         : result.verificationNote || "Eligible Voter";
       el.voterReauthTag.hidden = result.voterStatus !== "cancelled";

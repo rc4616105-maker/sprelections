@@ -2802,6 +2802,10 @@ window.HOUSE_DATA = {
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
     "tagline": "Demo Boys Captain Candidate A \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Torch",
+      "icon": "\ud83d\udd26"
+    },
     "isApproved": true
   },
   {
@@ -2814,6 +2818,10 @@ window.HOUSE_DATA = {
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
     "tagline": "Demo Boys Captain Candidate B \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Book",
+      "icon": "\ud83d\udcd6"
+    },
     "isApproved": true
   },
   {
@@ -2826,6 +2834,58 @@ window.HOUSE_DATA = {
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
     "tagline": "Demo Boys Captain Candidate C \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Rising Sun",
+      "icon": "\ud83c\udf05"
+    },
+    "isApproved": true
+  },
+  {
+    "id": "CAND_BHEESHMA_CAPTAIN_BOY_D",
+    "admissionNo": "DEMO-10B-D",
+    "fullName": "Candidate D",
+    "className": "10",
+    "section": "Class 10 Boy \u00b7 Option D",
+    "houseCode": "BHEESHMA",
+    "positionId": "CAPTAIN_BOY",
+    "positionName": "Boys Captain (Class 10 Boy)",
+    "tagline": "Demo Boys Captain Candidate D \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Star",
+      "icon": "\u2b50"
+    },
+    "isApproved": true
+  },
+  {
+    "id": "CAND_BHEESHMA_CAPTAIN_BOY_E",
+    "admissionNo": "DEMO-10B-E",
+    "fullName": "Candidate E",
+    "className": "10",
+    "section": "Class 10 Boy \u00b7 Option E",
+    "houseCode": "BHEESHMA",
+    "positionId": "CAPTAIN_BOY",
+    "positionName": "Boys Captain (Class 10 Boy)",
+    "tagline": "Demo Boys Captain Candidate E \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Shield",
+      "icon": "\ud83d\udee1\ufe0f"
+    },
+    "isApproved": true
+  },
+  {
+    "id": "CAND_BHEESHMA_CAPTAIN_BOY_F",
+    "admissionNo": "DEMO-10B-F",
+    "fullName": "Candidate F",
+    "className": "10",
+    "section": "Class 10 Boy \u00b7 Option F",
+    "houseCode": "BHEESHMA",
+    "positionId": "CAPTAIN_BOY",
+    "positionName": "Boys Captain (Class 10 Boy)",
+    "tagline": "Demo Boys Captain Candidate F \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Rocket",
+      "icon": "\ud83d\ude80"
+    },
     "isApproved": true
   },
   {
@@ -2838,6 +2898,10 @@ window.HOUSE_DATA = {
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
     "tagline": "Demo Girls Captain Candidate A \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Torch",
+      "icon": "\ud83d\udd26"
+    },
     "isApproved": true
   },
   {
@@ -2850,6 +2914,10 @@ window.HOUSE_DATA = {
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
     "tagline": "Demo Girls Captain Candidate B \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Book",
+      "icon": "\ud83d\udcd6"
+    },
     "isApproved": true
   },
   {
@@ -2862,6 +2930,58 @@ window.HOUSE_DATA = {
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
     "tagline": "Demo Girls Captain Candidate C \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Rising Sun",
+      "icon": "\ud83c\udf05"
+    },
+    "isApproved": true
+  },
+  {
+    "id": "CAND_BHEESHMA_CAPTAIN_GIRL_D",
+    "admissionNo": "DEMO-10G-D",
+    "fullName": "Candidate D",
+    "className": "10",
+    "section": "Class 10 Girl \u00b7 Option D",
+    "houseCode": "BHEESHMA",
+    "positionId": "CAPTAIN_GIRL",
+    "positionName": "Girls Captain (Class 10 Girl)",
+    "tagline": "Demo Girls Captain Candidate D \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Star",
+      "icon": "\u2b50"
+    },
+    "isApproved": true
+  },
+  {
+    "id": "CAND_BHEESHMA_CAPTAIN_GIRL_E",
+    "admissionNo": "DEMO-10G-E",
+    "fullName": "Candidate E",
+    "className": "10",
+    "section": "Class 10 Girl \u00b7 Option E",
+    "houseCode": "BHEESHMA",
+    "positionId": "CAPTAIN_GIRL",
+    "positionName": "Girls Captain (Class 10 Girl)",
+    "tagline": "Demo Girls Captain Candidate E \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Shield",
+      "icon": "\ud83d\udee1\ufe0f"
+    },
+    "isApproved": true
+  },
+  {
+    "id": "CAND_BHEESHMA_CAPTAIN_GIRL_F",
+    "admissionNo": "DEMO-10G-F",
+    "fullName": "Candidate F",
+    "className": "10",
+    "section": "Class 10 Girl \u00b7 Option F",
+    "houseCode": "BHEESHMA",
+    "positionId": "CAPTAIN_GIRL",
+    "positionName": "Girls Captain (Class 10 Girl)",
+    "tagline": "Demo Girls Captain Candidate F \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Rocket",
+      "icon": "\ud83d\ude80"
+    },
     "isApproved": true
   },
   {
@@ -2874,6 +2994,10 @@ window.HOUSE_DATA = {
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
     "tagline": "Demo Boys Vice Captain Candidate A \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Torch",
+      "icon": "\ud83d\udd26"
+    },
     "isApproved": true
   },
   {
@@ -2886,6 +3010,10 @@ window.HOUSE_DATA = {
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
     "tagline": "Demo Boys Vice Captain Candidate B \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Book",
+      "icon": "\ud83d\udcd6"
+    },
     "isApproved": true
   },
   {
@@ -2898,6 +3026,58 @@ window.HOUSE_DATA = {
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
     "tagline": "Demo Boys Vice Captain Candidate C \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Rising Sun",
+      "icon": "\ud83c\udf05"
+    },
+    "isApproved": true
+  },
+  {
+    "id": "CAND_BHEESHMA_VICE_CAPTAIN_BOY_D",
+    "admissionNo": "DEMO-9B-D",
+    "fullName": "Candidate D",
+    "className": "9",
+    "section": "Class 9 Boy \u00b7 Option D",
+    "houseCode": "BHEESHMA",
+    "positionId": "VICE_CAPTAIN_BOY",
+    "positionName": "Boys Vice Captain (Class 9 Boy)",
+    "tagline": "Demo Boys Vice Captain Candidate D \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Star",
+      "icon": "\u2b50"
+    },
+    "isApproved": true
+  },
+  {
+    "id": "CAND_BHEESHMA_VICE_CAPTAIN_BOY_E",
+    "admissionNo": "DEMO-9B-E",
+    "fullName": "Candidate E",
+    "className": "9",
+    "section": "Class 9 Boy \u00b7 Option E",
+    "houseCode": "BHEESHMA",
+    "positionId": "VICE_CAPTAIN_BOY",
+    "positionName": "Boys Vice Captain (Class 9 Boy)",
+    "tagline": "Demo Boys Vice Captain Candidate E \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Shield",
+      "icon": "\ud83d\udee1\ufe0f"
+    },
+    "isApproved": true
+  },
+  {
+    "id": "CAND_BHEESHMA_VICE_CAPTAIN_BOY_F",
+    "admissionNo": "DEMO-9B-F",
+    "fullName": "Candidate F",
+    "className": "9",
+    "section": "Class 9 Boy \u00b7 Option F",
+    "houseCode": "BHEESHMA",
+    "positionId": "VICE_CAPTAIN_BOY",
+    "positionName": "Boys Vice Captain (Class 9 Boy)",
+    "tagline": "Demo Boys Vice Captain Candidate F \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Rocket",
+      "icon": "\ud83d\ude80"
+    },
     "isApproved": true
   },
   {
@@ -2910,6 +3090,10 @@ window.HOUSE_DATA = {
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
     "tagline": "Demo Girls Vice Captain Candidate A \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Torch",
+      "icon": "\ud83d\udd26"
+    },
     "isApproved": true
   },
   {
@@ -2922,6 +3106,10 @@ window.HOUSE_DATA = {
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
     "tagline": "Demo Girls Vice Captain Candidate B \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Book",
+      "icon": "\ud83d\udcd6"
+    },
     "isApproved": true
   },
   {
@@ -2934,6 +3122,58 @@ window.HOUSE_DATA = {
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
     "tagline": "Demo Girls Vice Captain Candidate C \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Rising Sun",
+      "icon": "\ud83c\udf05"
+    },
+    "isApproved": true
+  },
+  {
+    "id": "CAND_BHEESHMA_VICE_CAPTAIN_GIRL_D",
+    "admissionNo": "DEMO-9G-D",
+    "fullName": "Candidate D",
+    "className": "9",
+    "section": "Class 9 Girl \u00b7 Option D",
+    "houseCode": "BHEESHMA",
+    "positionId": "VICE_CAPTAIN_GIRL",
+    "positionName": "Girls Vice Captain (Class 9 Girl)",
+    "tagline": "Demo Girls Vice Captain Candidate D \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Star",
+      "icon": "\u2b50"
+    },
+    "isApproved": true
+  },
+  {
+    "id": "CAND_BHEESHMA_VICE_CAPTAIN_GIRL_E",
+    "admissionNo": "DEMO-9G-E",
+    "fullName": "Candidate E",
+    "className": "9",
+    "section": "Class 9 Girl \u00b7 Option E",
+    "houseCode": "BHEESHMA",
+    "positionId": "VICE_CAPTAIN_GIRL",
+    "positionName": "Girls Vice Captain (Class 9 Girl)",
+    "tagline": "Demo Girls Vice Captain Candidate E \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Shield",
+      "icon": "\ud83d\udee1\ufe0f"
+    },
+    "isApproved": true
+  },
+  {
+    "id": "CAND_BHEESHMA_VICE_CAPTAIN_GIRL_F",
+    "admissionNo": "DEMO-9G-F",
+    "fullName": "Candidate F",
+    "className": "9",
+    "section": "Class 9 Girl \u00b7 Option F",
+    "houseCode": "BHEESHMA",
+    "positionId": "VICE_CAPTAIN_GIRL",
+    "positionName": "Girls Vice Captain (Class 9 Girl)",
+    "tagline": "Demo Girls Vice Captain Candidate F \u00b7 Bheeshma House",
+    "symbolObj": {
+      "name": "Rocket",
+      "icon": "\ud83d\ude80"
+    },
     "isApproved": true
   }
 ],

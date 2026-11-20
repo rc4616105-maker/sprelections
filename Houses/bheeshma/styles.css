@@ -1497,6 +1497,528 @@ html, body {
   to { opacity: 1; transform: scale(1); }
 }
 
+/* ==========================================================================
+   Full-Screen Post-by-Post EVM Wizard Layout (Zero Scroll, 100svh Filled)
+   ========================================================================== */
+.page-shell.step-3-evm-active {
+  max-width: 1440px !important;
+  width: 98vw !important;
+  height: 100svh !important;
+  min-height: 100svh !important;
+  max-height: 100svh !important;
+  padding: 0.4rem 0.8rem 0.4rem !important;
+  justify-content: flex-start !important;
+  overflow: hidden !important;
+}
+
+.page-shell.step-3-evm-active .booth-header {
+  margin-bottom: 0.25rem !important;
+}
+
+.page-shell.step-3-evm-active .house-title {
+  font-size: 1.35rem !important;
+}
+
+.page-shell.step-3-evm-active .stepper {
+  display: none !important;
+}
+
+.page-shell.step-3-evm-active .booth-main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-shell.step-3-evm-active .booth-card {
+  flex: 1 !important;
+  min-height: 0 !important;
+  padding: 0.5rem 0.85rem 0.5rem !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+}
+
+.page-shell.step-3-evm-active #step-3 {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.page-shell.step-3-evm-active #step-3 > .panel-header,
+.page-shell.step-3-evm-active #cast-action-bar,
+.page-shell.step-3-evm-active .step-footer-actions {
+  display: none !important;
+}
+
+.page-shell.step-3-evm-active .role-sections-stack {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  margin-bottom: 0 !important;
+  overflow: hidden !important;
+  gap: 0.35rem !important;
+}
+
+/* EVM Role Stepper (Horizontal Breadcrumb Pills) */
+.evm-role-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-default);
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.evm-role-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.evm-role-pill:hover {
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.evm-role-pill.is-active {
+  background: var(--house-accent-soft, #fef3c7);
+  border-color: var(--house-accent, #d97706);
+  color: var(--house-accent-text, #92400e);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.evm-role-pill.is-done {
+  color: #059669;
+}
+
+.evm-role-pill.is-done .evm-role-pill-num {
+  background: #059669;
+  color: #ffffff;
+}
+
+.evm-role-pill-num {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  color: #475569;
+  font-size: 0.72rem;
+  font-weight: 800;
+  display: inline-grid;
+  place-items: center;
+  transition: all 140ms ease;
+}
+
+.evm-role-pill.is-active .evm-role-pill-num {
+  background: var(--house-accent, #d97706);
+  color: #ffffff;
+}
+
+/* EVM Wizard Content */
+.evm-wizard-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  gap: 0.35rem;
+}
+
+/* Role Banner */
+.evm-role-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35rem 0.85rem;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-default);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.evm-role-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.evm-role-banner-title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.evm-role-banner-sub {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* 3x2 Candidate Grid */
+.evm-candidate-grid-3x2 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0.55rem;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.evm-candidate-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.55rem 0.75rem;
+  border-radius: 12px;
+  background: var(--bg-card);
+  border: 2px solid var(--border-default);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+.evm-candidate-card:hover {
+  border-color: var(--house-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.evm-candidate-card.is-selected {
+  border-color: #059669 !important;
+  background: #f0fdf4 !important;
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.35), 0 6px 16px rgba(5, 150, 105, 0.12) !important;
+}
+
+.evm-card-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.evm-photo-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-default);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.evm-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.evm-avatar-initials {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--house-accent-text);
+}
+
+.evm-symbol-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  background: #ffffff;
+  border: 1.5px dashed var(--border-default);
+  border-radius: 8px;
+}
+
+.evm-symbol-icon {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.evm-symbol-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.evm-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.evm-cand-name {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.evm-cand-section {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.evm-vote-btn-strip {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35rem 0.7rem;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  transition: all 140ms ease;
+  box-sizing: border-box;
+}
+
+.evm-led-lamp {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #94a3b8;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
+  transition: all 160ms ease;
+}
+
+.evm-vote-label {
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #475569;
+  font-family: var(--font-mono);
+}
+
+.evm-check-badge {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: transparent;
+}
+
+.evm-candidate-card.is-selected .evm-vote-btn-strip {
+  background: #059669;
+  border-color: #047857;
+}
+
+.evm-candidate-card.is-selected .evm-led-lamp {
+  background: #ef4444;
+  box-shadow: 0 0 10px #ef4444, 0 0 16px #ef4444;
+}
+
+.evm-candidate-card.is-selected .evm-vote-label {
+  color: #ffffff;
+}
+
+.evm-candidate-card.is-selected .evm-check-badge {
+  color: #ffffff;
+}
+
+/* EVM Review Screen */
+.evm-review-header {
+  padding: 0.35rem 0.85rem;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-default);
+  border-radius: 10px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.evm-review-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.evm-review-sub {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.evm-review-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0.65rem;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.evm-review-card {
+  background: var(--bg-card);
+  border: 2px solid #059669;
+  border-radius: 12px;
+  padding: 0.65rem 0.95rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.evm-review-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.evm-review-role-badge {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #059669;
+  background: #f0fdf4;
+  padding: 0.15rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid #bbf7d0;
+}
+
+.evm-review-change-btn {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--house-accent-text, #92400e);
+  background: var(--house-accent-soft, #fef3c7);
+  border: 1px solid var(--house-accent, #d97706);
+  padding: 0.15rem 0.55rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 140ms ease;
+}
+
+.evm-review-change-btn:hover {
+  background: var(--house-accent, #d97706);
+  color: #ffffff;
+}
+
+.evm-review-cand-body {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.evm-review-cand-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  overflow: hidden;
+}
+
+.evm-review-cand-name {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.evm-review-cand-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* EVM Wizard Bottom Nav Bar */
+.evm-wizard-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.85rem;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-default);
+  border-radius: 10px;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+.evm-nav-status {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.evm-status-icon {
+  color: #059669;
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.evm-status-hint {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.evm-nav-prev-btn {
+  min-height: 40px !important;
+  padding: 0.45rem 1.1rem !important;
+  font-size: 0.88rem !important;
+}
+
+.evm-nav-next-btn {
+  min-height: 42px !important;
+  padding: 0.5rem 1.6rem !important;
+  font-size: 0.95rem !important;
+  font-weight: 800 !important;
+}
+
+.evm-confirm-cast-btn {
+  min-height: 44px !important;
+  padding: 0.55rem 2rem !important;
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  background: #059669 !important;
+  border-color: #047857 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4) !important;
+}
+
+.evm-confirm-cast-btn:hover {
+  background: #047857 !important;
+  transform: translateY(-1px);
+}
+
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
