@@ -427,7 +427,7 @@
     contentArea.className = "evm-wizard-content";
 
     if (!isReview) {
-      // SINGLE ROLE VIEW
+      // VERTICAL EVM BALLOT UNIT
       const currentPos = posList[state.activeRoleIndex];
       const votedBallot = state.votedRoles[currentPos.id] || null;
       const isCancelledRole = state.cancelledRoleIds.includes(currentPos.id);
@@ -439,7 +439,7 @@
         <div class="evm-role-banner-left">
           <span class="badge badge-house">Post ${state.activeRoleIndex + 1} of ${posList.length}</span>
           <h2 class="evm-role-banner-title">${currentPos.title}</h2>
-          <span class="evm-role-banner-sub">${currentPos.subtitle || ""} · Choose 1 Candidate</span>
+          <span class="evm-role-banner-sub">${currentPos.subtitle || ""} · Tap Candidate or Press Blue Vote Button</span>
         </div>
         <div class="evm-role-banner-status">
           ${votedBallot ? `<span class="badge badge-success">Recorded: ${votedBallot.candidateName}</span>` : isCancelledRole ? `<span class="badge badge-warning">Re-vote Open</span>` : `<span class="badge badge-muted">Select 1 Below</span>`}
@@ -447,10 +447,10 @@
       `;
       contentArea.appendChild(roleBanner);
 
-      const grid = document.createElement("div");
-      grid.className = "evm-candidate-grid-3x2";
-      grid.setAttribute("role", "radiogroup");
-      grid.setAttribute("aria-label", `${currentPos.title} candidates`);
+      const ballotUnit = document.createElement("div");
+      ballotUnit.className = "evm-ballot-unit";
+      ballotUnit.setAttribute("role", "radiogroup");
+      ballotUnit.setAttribute("aria-label", `${currentPos.title} candidates`);
 
       const ELECTION_SYMBOLS = [
         { name: "Torch", icon: "🔦" },
@@ -463,56 +463,62 @@
 
       roleCands.forEach((cand, candIdx) => {
         const sym = cand.symbolObj || ELECTION_SYMBOLS[candIdx % ELECTION_SYMBOLS.length];
-        const card = document.createElement("button");
-        card.type = "button";
-        card.className = "evm-candidate-card";
-        card.dataset.candidateId = cand.id;
-        card.setAttribute("role", "radio");
+        const row = document.createElement("button");
+        row.type = "button";
+        row.className = "evm-ballot-row";
+        row.dataset.candidateId = cand.id;
+        row.setAttribute("role", "radio");
 
         const isPicked = state.selectedByRole[currentPos.id]?.id === cand.id;
-        card.setAttribute("aria-checked", isPicked ? "true" : "false");
-        if (isPicked) card.classList.add("is-selected");
+        row.setAttribute("aria-checked", isPicked ? "true" : "false");
+        if (isPicked) row.classList.add("is-selected");
 
+        const serialFormatted = String(candIdx + 1).padStart(2, "0");
         const photoHtml = cand.photoPath || cand.photoUrl
           ? `<img src="${cand.photoPath || cand.photoUrl}" alt="${cand.fullName}" class="evm-photo-img" />`
           : `<span class="evm-avatar-initials">${getInitials(cand.fullName)}</span>`;
 
-        card.innerHTML = `
-          <div class="evm-card-topbar">
+        row.innerHTML = `
+          <div class="evm-row-left">
+            <span class="evm-serial-num">${serialFormatted}</span>
             <div class="evm-photo-box" aria-hidden="true">${photoHtml}</div>
-            <div class="evm-symbol-pill" title="Election Symbol: ${sym.name}">
-              <span class="evm-symbol-icon" aria-hidden="true">${sym.icon}</span>
-              <span class="evm-symbol-label">${sym.name}</span>
+            <div class="evm-cand-details">
+              <h3 class="evm-cand-name">${cand.fullName}</h3>
+              <span class="evm-cand-meta">${String(cand.admissionNo || "").startsWith("DEMO-") ? cand.section : `ID ${cand.admissionNo} · Class ${cand.className}-${cand.section}`}</span>
             </div>
           </div>
-          <div class="evm-card-meta">
-            <h3 class="evm-cand-name">${cand.fullName}</h3>
-            <span class="evm-cand-section">${String(cand.admissionNo || "").startsWith("DEMO-") ? cand.section : `ID ${cand.admissionNo} · Class ${cand.className}-${cand.section}`}</span>
+
+          <div class="evm-row-symbol" title="Election Symbol: ${sym.name}">
+            <span class="evm-symbol-icon" aria-hidden="true">${sym.icon}</span>
+            <span class="evm-symbol-label">${sym.name}</span>
           </div>
-          <div class="evm-vote-btn-strip" aria-hidden="true">
+
+          <div class="evm-row-vote-unit" aria-hidden="true">
             <span class="evm-led-lamp"></span>
-            <span class="evm-vote-label">${isPicked ? "VOTED" : "VOTE"}</span>
-            <span class="evm-check-badge">✓</span>
+            <div class="evm-vote-trigger-btn">
+              <span class="evm-vote-label">${isPicked ? "VOTED" : "VOTE"}</span>
+              <span class="evm-check-badge">✓</span>
+            </div>
           </div>
         `;
 
         if (votedBallot) {
-          card.disabled = true;
+          row.disabled = true;
           if (cand.id === votedBallot.candidateId) {
-            card.classList.add("is-selected");
-            card.querySelector(".evm-vote-label").textContent = "RECORDED";
+            row.classList.add("is-selected");
+            row.querySelector(".evm-vote-label").textContent = "RECORDED";
           }
         } else {
-          card.addEventListener("click", () => {
-            Array.from(grid.children).forEach((c) => {
-              c.classList.remove("is-selected");
-              c.setAttribute("aria-checked", "false");
-              const l = c.querySelector(".evm-vote-label");
+          row.addEventListener("click", () => {
+            Array.from(ballotUnit.children).forEach((r) => {
+              r.classList.remove("is-selected");
+              r.setAttribute("aria-checked", "false");
+              const l = r.querySelector(".evm-vote-label");
               if (l) l.textContent = "VOTE";
             });
-            card.classList.add("is-selected");
-            card.setAttribute("aria-checked", "true");
-            const lbl = card.querySelector(".evm-vote-label");
+            row.classList.add("is-selected");
+            row.setAttribute("aria-checked", "true");
+            const lbl = row.querySelector(".evm-vote-label");
             if (lbl) lbl.textContent = "VOTED";
 
             state.selectedByRole[currentPos.id] = cand;
@@ -521,10 +527,10 @@
           });
         }
 
-        grid.appendChild(card);
+        ballotUnit.appendChild(row);
       });
 
-      contentArea.appendChild(grid);
+      contentArea.appendChild(ballotUnit);
     } else {
       // REVIEW & CAST VIEW
       const reviewHeader = document.createElement("div");

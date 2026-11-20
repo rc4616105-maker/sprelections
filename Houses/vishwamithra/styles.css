@@ -1498,11 +1498,11 @@ html, body {
 }
 
 /* ==========================================================================
-   Full-Screen Post-by-Post EVM Wizard Layout (Zero Scroll, 100svh Filled)
+   Full-Screen Post-by-Post Vertical EVM Ballot Unit (Zero Scroll, 100svh Filled)
    ========================================================================== */
 .page-shell.step-3-evm-active {
-  max-width: 1440px !important;
-  width: 98vw !important;
+  max-width: 1300px !important;
+  width: 96vw !important;
   height: 100svh !important;
   min-height: 100svh !important;
   max-height: 100svh !important;
@@ -1533,7 +1533,7 @@ html, body {
 .page-shell.step-3-evm-active .booth-card {
   flex: 1 !important;
   min-height: 0 !important;
-  padding: 0.5rem 0.85rem 0.5rem !important;
+  padding: 0.5rem 0.95rem 0.5rem !important;
   overflow: hidden !important;
   display: flex !important;
   flex-direction: column !important;
@@ -1566,7 +1566,7 @@ html, body {
   gap: 0.35rem !important;
 }
 
-/* EVM Role Stepper (Horizontal Breadcrumb Pills) */
+/* EVM Stepper Breadcrumb Pills */
 .evm-role-stepper {
   display: flex;
   align-items: center;
@@ -1583,7 +1583,7 @@ html, body {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.2rem 0.7rem;
+  padding: 0.2rem 0.75rem;
   border-radius: 9999px;
   border: 1px solid transparent;
   background: transparent;
@@ -1633,7 +1633,7 @@ html, body {
   color: #ffffff;
 }
 
-/* EVM Wizard Content */
+/* EVM Wizard Content Container */
 .evm-wizard-content {
   display: flex;
   flex-direction: column;
@@ -1674,57 +1674,77 @@ html, body {
   font-family: var(--font-mono);
 }
 
-/* 3x2 Candidate Grid */
-.evm-candidate-grid-3x2 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 0.55rem;
+/* ==========================================================================
+   VERTICAL EVM BALLOT UNIT (Authentic Electronic Voting Machine Ballot Strip)
+   ========================================================================== */
+.evm-ballot-unit {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   min-height: 0;
   overflow: hidden;
-}
-
-.evm-candidate-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 0.55rem 0.75rem;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
   border-radius: 12px;
-  background: var(--bg-card);
-  border: 2px solid var(--border-default);
-  cursor: pointer;
-  text-align: left;
-  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease, background-color 140ms ease;
-  height: 100%;
-  min-height: 0;
-  box-sizing: border-box;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.03), 0 4px 14px rgba(0,0,0,0.05);
 }
 
-.evm-candidate-card:hover {
-  border-color: var(--house-accent);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-}
-
-.evm-candidate-card.is-selected {
-  border-color: #059669 !important;
-  background: #f0fdf4 !important;
-  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.35), 0 6px 16px rgba(5, 150, 105, 0.12) !important;
-}
-
-.evm-card-topbar {
+.evm-ballot-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex: 1;
+  min-height: 0;
+  padding: 0.35rem 1rem;
+  border: none;
+  border-bottom: 1.5px solid #e2e8f0;
+  background: #ffffff;
+  cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease;
   width: 100%;
-  gap: 0.5rem;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.evm-ballot-row:last-child {
+  border-bottom: none;
+}
+
+.evm-ballot-row:hover {
+  background: #f8fafc;
+}
+
+.evm-ballot-row.is-selected {
+  background: #f0fdf4 !important;
+  border-color: #86efac;
+}
+
+/* Left Section: Serial No + Photo + Details */
+.evm-row-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.evm-serial-num {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #64748b;
+  min-width: 32px;
+  text-align: center;
+}
+
+.evm-ballot-row.is-selected .evm-serial-num {
+  color: #059669;
 }
 
 .evm-photo-box {
-  width: 52px;
-  height: 52px;
-  border-radius: 10px;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
   background: var(--bg-surface);
   border: 1.5px solid var(--border-default);
   overflow: hidden;
@@ -1740,115 +1760,136 @@ html, body {
 }
 
 .evm-avatar-initials {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 800;
   color: var(--house-accent-text);
 }
 
-.evm-symbol-pill {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.25rem 0.6rem;
-  background: #ffffff;
-  border: 1.5px dashed var(--border-default);
-  border-radius: 8px;
-}
-
-.evm-symbol-icon {
-  font-size: 1.35rem;
-  line-height: 1;
-}
-
-.evm-symbol-label {
-  font-size: 0.78rem;
-  font-weight: 800;
-  color: var(--text-secondary);
-  font-family: var(--font-mono);
-}
-
-.evm-card-meta {
+.evm-cand-details {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
-  width: 100%;
-  overflow: hidden;
+  gap: 0.1rem;
+  min-width: 0;
 }
 
 .evm-cand-name {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.12rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: #0f172a;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.evm-cand-section {
-  font-size: 0.76rem;
-  color: var(--text-muted);
+.evm-cand-meta {
+  font-size: 0.78rem;
+  color: #64748b;
   font-family: var(--font-mono);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.evm-vote-btn-strip {
-  width: 100%;
+/* Middle Section: Election Symbol */
+.evm-row-symbol {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.35rem 0.7rem;
-  background: #f1f5f9;
-  border: 1px solid #cbd5e1;
-  border-radius: 7px;
-  transition: all 140ms ease;
-  box-sizing: border-box;
+  gap: 0.5rem;
+  padding: 0.25rem 0.9rem;
+  background: #f8fafc;
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 8px;
+  margin: 0 1.25rem;
+  flex-shrink: 0;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.evm-ballot-row.is-selected .evm-row-symbol {
+  background: #ffffff;
+  border-color: #86efac;
+}
+
+.evm-symbol-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.evm-symbol-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #334155;
+  font-family: var(--font-mono);
+}
+
+/* Right Section: EVM LED Lamp + Big Tactile Vote Button */
+.evm-row-vote-unit {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-shrink: 0;
 }
 
 .evm-led-lamp {
-  width: 11px;
-  height: 11px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: #94a3b8;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.25);
+  border: 2px solid #64748b;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
   transition: all 160ms ease;
 }
 
-.evm-vote-label {
-  font-size: 0.8rem;
+.evm-ballot-row.is-selected .evm-led-lamp {
+  background: #ef4444;
+  border-color: #b91c1c;
+  box-shadow: 0 0 10px #ef4444, 0 0 20px #ef4444, 0 0 30px #ef4444;
+}
+
+.evm-vote-trigger-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 120px;
+  height: 38px;
+  border-radius: 6px;
+  background: #3b82f6;
+  border: 2px solid #2563eb;
+  color: #ffffff;
+  font-size: 0.88rem;
   font-weight: 800;
   letter-spacing: 0.05em;
-  color: #475569;
   font-family: var(--font-mono);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.25);
+  transition: all 140ms ease;
+}
+
+.evm-ballot-row:hover .evm-vote-trigger-btn {
+  background: #2563eb;
+  box-shadow: 0 3px 8px rgba(37,99,235,0.3);
+}
+
+.evm-ballot-row.is-selected .evm-vote-trigger-btn {
+  background: #059669 !important;
+  border-color: #047857 !important;
+  box-shadow: 0 2px 8px rgba(5,150,105,0.35) !important;
 }
 
 .evm-check-badge {
-  font-size: 0.82rem;
-  font-weight: 800;
-  color: transparent;
+  display: none;
 }
 
-.evm-candidate-card.is-selected .evm-vote-btn-strip {
-  background: #059669;
-  border-color: #047857;
+.evm-ballot-row.is-selected .evm-check-badge {
+  display: inline;
+  font-size: 0.95rem;
+  font-weight: 900;
 }
 
-.evm-candidate-card.is-selected .evm-led-lamp {
-  background: #ef4444;
-  box-shadow: 0 0 10px #ef4444, 0 0 16px #ef4444;
-}
-
-.evm-candidate-card.is-selected .evm-vote-label {
-  color: #ffffff;
-}
-
-.evm-candidate-card.is-selected .evm-check-badge {
-  color: #ffffff;
-}
-
-/* EVM Review Screen */
+/* ==========================================================================
+   EVM Review Screen
+   ========================================================================== */
 .evm-review-header {
   padding: 0.35rem 0.85rem;
   background: var(--bg-surface);
@@ -2016,13 +2057,4 @@ html, body {
 .evm-confirm-cast-btn:hover {
   background: #047857 !important;
   transform: translateY(-1px);
-}
-
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
 }

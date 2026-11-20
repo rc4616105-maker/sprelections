@@ -16,23 +16,23 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
-### 0. Sequential Post-by-Post EVM Voting Wizard with 6-Candidate Support Across All 6 House Kiosks (Nov 20, 2026)
-- **Role-by-Role Sequential EVM Navigation (`Houses/*/app.js` & `styles.css`)**:
-  - Replaced the 4-role quad layout with a clean, high-focus **Post-by-Post sequential EVM wizard**:
-    - **Screen 1 (Post 1 of 4):** Boys Captain (Class 10 Boy) — 6 candidates in a spacious 3×2 grid.
-    - **Screen 2 (Post 2 of 4):** Girls Captain (Class 10 Girl) — 6 candidates in a spacious 3×2 grid.
-    - **Screen 3 (Post 3 of 4):** Boys Vice-Captain (Class 9 Boy) — 6 candidates in a spacious 3×2 grid.
-    - **Screen 4 (Post 4 of 4):** Girls Vice-Captain (Class 9 Girl) — 6 candidates in a spacious 3×2 grid.
-    - **Screen 5 (Review & Cast):** Dedicated ballot review screen displaying all 4 chosen candidates with "Change Choice ✎" buttons and the prominent primary action `🟢 Confirm & Cast Vote ➔`.
-- **Zero-Scroll Full-Screen Viewport (`100svh`, flex column, `overflow: hidden`)**:
-  - Entire wizard fits dynamically into any laptop, desktop, or touch tablet display with zero vertical scrolling.
-  - Dedicated horizontal stepper breadcrumb pills (`.evm-role-stepper`) showing completed posts with green checkmarks (`✓`) and active post highlighted.
-- **EVM Candidate Cards (3 Columns × 2 Rows per Screen)**:
-  - Supports 6+ candidates per role.
-  - Features large candidate photo portrait (with fallback high-contrast initials badge).
-  - Official Election Symbol emblem (Torch 🔦, Book 📖, Rising Sun 🌅, Star ⭐, Shield 🛡️, Rocket 🚀) with icon & label.
-  - Candidate Full Name and Class/Section tag.
-  - Tactile EVM vote button strip with glowing red LED lamp (`#ef4444`), green card border/background on selection, and live "VOTED ✓" readout.
+### 0. Authentic Vertical EVM Ballot Unit & Post-by-Post Voting Flow Across All 6 House Kiosks (Nov 20, 2026)
+- **Authentic Vertical EVM Ballot Unit Architecture (`Houses/*/app.js` & `styles.css`)**:
+  - Replaced the horizontal grid layout with a real-life **Vertical EVM Ballot Machine Unit**:
+    - Each candidate is rendered as an official full-width horizontal EVM ballot strip stacked vertically.
+    - **Left Section:** Candidate Serial Number (`01`, `02`, `03`...), 48px portrait photo box, and full name + class/section metadata.
+    - **Middle Section:** Official Election Symbol (large icon + name tag in an embossed ballot frame).
+    - **Right Section:** High-contrast EVM action unit with circular Red LED lamp (`#ef4444`) and big tactile blue EVM Push Button (`[ VOTE ]`).
+    - **Tactile EVM Feedback:** Tapping anywhere on the candidate row or the vote button illuminates the bright red neon LED lamp (`box-shadow: 0 0 10px #ef4444, 0 0 20px #ef4444, 0 0 30px #ef4444`), transitions the button to emerald green `[ VOTED ✓ ]`, and highlights the row in `#f0fdf4`.
+  - **Dynamic Full-Height Filling with Zero Scrolling (`100svh`)**:
+    - Uses flexbox column distribution (`flex: 1; min-height: 0;`), perfectly distributing vertical space whether a post has 3, 4, 5, or 6 candidates.
+    - Zero vertical scrollbar on any device or viewport size.
+- **Sequential Post-by-Post Navigation & Review Screen**:
+  - Post 1: Boys Captain ➔ Post 2: Girls Captain ➔ Post 3: Boys Vice-Captain ➔ Post 4: Girls Vice-Captain ➔ Screen 5: Review & Cast.
+  - Review screen features a 2×2 verification layout with "Change Choice ✎" buttons and the prominent action `🟢 Confirm & Cast Vote ➔`.
+- **Full 6-House Deployment**:
+  - Synchronized and verified across `bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, and `vishwamithra`.
+
 - **Form Submit & URL Query Handler Integrity (`Houses/*/app.js`)**:
   - Eliminated leftover function syntax debris preventing script execution.
   - Form submission now reliably executes `e.preventDefault()` and invokes `executeVerification()`.
