@@ -480,7 +480,6 @@
 
         row.innerHTML = `
           <div class="evm-row-left">
-            <span class="evm-serial-num">${serialFormatted}</span>
             <div class="evm-photo-box" aria-hidden="true">${photoHtml}</div>
             <div class="evm-cand-details">
               <h3 class="evm-cand-name">${cand.fullName}</h3>

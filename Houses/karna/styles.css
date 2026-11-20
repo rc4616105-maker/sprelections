@@ -1729,8 +1729,8 @@ html, body {
   align-items: center;
   justify-content: space-between;
   flex: 1;
-  min-height: 0;
-  padding: 0.35rem 1rem;
+  min-height: 80px;
+  padding: 0.5rem 1.5rem;
   border: none;
   border-bottom: 1.5px solid #e2e8f0;
   background: #ffffff;
@@ -1758,7 +1758,7 @@ html, body {
 .evm-row-left {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 1.25rem;
   flex: 1;
   min-width: 0;
 }
@@ -1777,15 +1777,17 @@ html, body {
 }
 
 .evm-photo-box {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
   background: var(--bg-surface);
-  border: 1.5px solid var(--border-default);
+  border: 2px solid var(--border-default);
   overflow: hidden;
   display: grid;
   place-items: center;
   flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  transition: all 140ms ease;
 }
 
 .evm-photo-img {
@@ -1795,9 +1797,15 @@ html, body {
 }
 
 .evm-avatar-initials {
-  font-size: 1.05rem;
-  font-weight: 800;
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
   color: var(--house-accent-text);
+}
+
+.evm-ballot-row.is-selected .evm-photo-box {
+  border-color: #059669;
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.3);
 }
 
 .evm-cand-details {
@@ -1809,7 +1817,7 @@ html, body {
 
 .evm-cand-name {
   margin: 0;
-  font-size: 1.12rem;
+  font-size: 1.28rem;
   font-weight: 800;
   color: #0f172a;
   white-space: nowrap;

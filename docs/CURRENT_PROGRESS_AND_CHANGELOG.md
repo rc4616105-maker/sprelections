@@ -302,6 +302,20 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ---
 
+### 13. Sequential Role Wizard & Full-Screen EVM Ballot Unit (Nov 20, 2026)
+- **Role-by-Role EVM Wizard:** Converted 2x2 quad role layout into a sequential step-by-step EVM wizard (Boys Captain -> Girls Captain -> Boys Vice-Captain -> Girls Vice-Captain -> Review & Cast).
+- **Single-Screen 100svh Zero Scroll:** Eliminated all vertical scrolling on the ballot screen, ensuring all candidates for a given role are comfortably visible in a single viewport.
+- **Vertical EVM Ballot Strips:** Implemented realistic Electronic Voting Machine (EVM) rows featuring candidate portrait, name, class/designation, election symbol emblem, red status LED, and tactile blue [ VOTE ] button.
+- **Removed Serial Numbers & Enlarged Photos:**
+  - Removed candidate serial numbers (01, 02, 03) from the ballot rows.
+  - Enlarged candidate photo/avatar box from 48px to 72px with enhanced border, elevation, and 1.6rem bold initials for maximum visual prominence.
+  - Increased candidate name typography to 1.28rem bold and expanded ballot row padding.
+- **Unified Header & 98vw Wide Screen:** Streamlined booth header placing House title on left, step pills in center, and Local Storage status on right, expanding active ballot width to 98vw.
+- **Resolved Vote Submission & Constraint Conflicts:** Replaced synthetic proxy button triggers with direct `handleCastVote` dispatch and auto-handled demo ballot duplicate key conflicts for voter `0000`.
+
+---
+
+
 ## Summary of Verification Checks Passed
 
 | Verification Item | Status | Result |
