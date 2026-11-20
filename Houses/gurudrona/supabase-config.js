@@ -803,7 +803,8 @@
           );
           allHousesVoted.add(houseConfig.code.toUpperCase());
           const housesCount = allHousesVoted.size;
-          updatedFinalStatus = housesCount >= 7 ? "Voted" : `Voted (${housesCount}/7 Houses)`;
+          // Keep final_status strictly within check constraint: "Not Voted", "Voted", "Cancelled"
+          updatedFinalStatus = allRolesAccepted ? "Voted" : "Cancelled";
         }
 
         await sbRest("PATCH", `/rest/v1/voters?admission_no=eq.${qAdm}`, {
@@ -811,7 +812,7 @@
           final_status: updatedFinalStatus,
           voted_for: updatedVotedFor,
           candidate_id: lastBallot.candidate_id,
-          position_name: isTeacher ? `Universal Faculty (${houseConfig.name})` : (allRolesAccepted ? `All ${positions.length} Roles` : lastBallot.position_name),
+          position_name: isTeacher ? `Universal Faculty (${houseConfig.name} - ${housesCount}/7)` : (allRolesAccepted ? `All ${positions.length} Roles` : lastBallot.position_name),
           ballot_id: lastBallot.id,
           cast_at: nowIso,
           cancelled_at: null,

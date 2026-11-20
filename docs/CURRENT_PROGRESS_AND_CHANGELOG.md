@@ -338,6 +338,16 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ---
 
+### 16. Voters Final Status Check Constraint Alignment (Nov 20, 2026)
+- **Resolved `voters_final_status_check` Check Constraint Violation:**
+  - Fixed issue in `castVote()` where faculty and demo accounts had `final_status` set to dynamic strings like `"Voted (1/7 Houses)"`, which violated PostgreSQL table check constraint `CHECK (final_status in ('Not Voted', 'Voted', 'Cancelled'))`.
+  - Aligned `updatedFinalStatus` to strictly write `"Voted"` upon ballot submission across all 7 kiosks (`bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, `vishwamithra`, `central`).
+  - Faculty multi-house completion progress is now safely tracked in `position_name` (e.g. `Universal Faculty (Bheeshma - 1/7)`) and `voted_for` (e.g. `[Bheeshma]: Candidate A, Candidate B...`).
+- **Cache-Busting Update:** Bumped script query strings to `?v=1014` across all kiosks.
+
+---
+
+
 
 
 
