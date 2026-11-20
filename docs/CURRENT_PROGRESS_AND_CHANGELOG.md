@@ -36,6 +36,9 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 - **Navigation Polish**:
   - Removed "Back to Student Details" button from Post 1 across all 6 houses so voters cannot backtrack to student verification once in the active voting booth.
   - Retained "Previous Post" between role steps and "Back to Roles" on the Review screen.
+- **Unique Constraint (`ballots_one_accepted_per_voter_role_idx`) & Demo Re-test Resolution (`Houses/*/supabase-config.js`)**:
+  - Automatically cancels prior accepted ballots for demo voter `0000` (and on re-vote retries) before inserting fresh ballots, eliminating PostgreSQL unique constraint violation `ballots_one_accepted_per_voter_role_idx`.
+  - Added dedicated demo voter handler in `verifyVoter` granting full test access with all roles open.
 - **Full 6-House Deployment**:
   - Synchronized and verified across `bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, and `vishwamithra`.
 
