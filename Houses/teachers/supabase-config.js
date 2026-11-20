@@ -236,23 +236,43 @@
 
       await this.init();
 
-      // If connected to Supabase, query all prior ballots for this teacher
+      // If connected to Supabase, query both voters and ballots for this teacher
       const votedRolesMap = {};
       if (this.mode === "supabase") {
         try {
           const qAdm = encodeURIComponent(cleanId);
-          const ballots = await sbRest("GET", `/rest/v1/ballots?admission_no=eq.${qAdm}&status=eq.accepted&select=*`);
+          const [vRows, ballots] = await Promise.all([
+            sbRest("GET", `/rest/v1/voters?admission_no=eq.${qAdm}&select=*`),
+            sbRest("GET", `/rest/v1/ballots?admission_no=eq.${qAdm}&select=id,position_id,position_name,candidate_id,candidate_name,status,house_code,cast_at`),
+          ]);
+
+          const hasAcceptedBallots = Array.isArray(ballots) && ballots.some((b) => b.status === "accepted");
+          const hasCancelledBallots = Array.isArray(ballots) && ballots.some((b) => b.status === "cancelled");
+          const isVoterMarkedVoted = Array.isArray(vRows) && vRows.length > 0 && vRows[0].final_status === "Voted";
+
+          // Strict Double-Voting Block for Teacher Universal Polling Booth:
+          if (cleanId !== "0000" && (isVoterMarkedVoted || hasAcceptedBallots) && !hasCancelledBallots) {
+            return {
+              ok: false,
+              code: "ALREADY_VOTED",
+              title: "Already Voted",
+              message: `Teacher ${teacher.fullName} (ID ${teacher.admissionNo}) has already cast their universal ballot in this election. Duplicate voting is strictly blocked.`,
+            };
+          }
+
           if (Array.isArray(ballots)) {
             ballots.forEach((b) => {
-              const rk = `${b.house_code}_${b.position_id}`;
-              votedRolesMap[rk] = {
-                id: b.id,
-                houseCode: b.house_code,
-                positionId: b.position_id,
-                candidateId: b.candidate_id,
-                candidateName: b.candidate_name,
-                castAt: b.cast_at,
-              };
+              if (b.status === "accepted") {
+                const rk = `${b.house_code}_${b.position_id}`;
+                votedRolesMap[rk] = {
+                  id: b.id,
+                  houseCode: b.house_code,
+                  positionId: b.position_id,
+                  candidateId: b.candidate_id,
+                  candidateName: b.candidate_name,
+                  castAt: b.cast_at,
+                };
+              }
             });
           }
         } catch (e) {

@@ -16,6 +16,22 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
+### 0. Strict Double-Voting Hard Block Across All 7 Polling Booths (Nov 20, 2026)
+- **Strict Immediate Block on Step 1 (`Houses/*/supabase-config.js`)**:
+  - Implemented an uncompromising hard block when a previously voted person attempts to re-enter their Voter ID or scan their barcode.
+  - Replaced the brittle `bRows.length === 0` check with direct evaluation of `voters.final_status === 'Voted'` and `ballots.some(status === 'accepted')`.
+  - If a student has already voted (marked `Voted` or has accepted ballots) and has no administrative cancellations, `verifyStudent()` immediately halts with `ok: false`, `code: "ALREADY_VOTED"`, and `title: "Already Voted"`, stating:
+    `Voter ID [cleanId] ([Student Name]) has already cast their vote in this election. Duplicate voting is strictly blocked.`
+  - The Step 1 UI triggers a prominent red alert box, locking the student out of Step 2.
+- **Faculty Double-Voting Guard (`Houses/teachers/supabase-config.js`)**:
+  - In the Teacher Universal Polling Booth, `verifyTeacher()` now checks both `voters` and `ballots` tables simultaneously.
+  - If the teacher has already cast their universal ballot, they are immediately locked out on Step 1 with a clear "Already Voted" notice.
+  - In individual house booths, teachers who have already voted for that house are barred from duplicate voting in that booth while retaining eligibility for booths they haven't yet voted in.
+- **Demo Voter Safety (`0000`)**:
+  - Maintained universal demo testing exemption for `0000` so demonstrations and re-tests continue to function seamlessly.
+- **Cache Busting**:
+  - Bumped script versions to `v=1016` across all 7 house kiosks and teacher polling booth.
+
 ### 0. Teacher Universal Polling Booth Supabase Linkage & Automatic Background Photo Capture (Nov 20, 2026)
 - **Automatic Background Photo Capture (`Houses/teachers/app.js`)**:
   - Removed the requirement and modal popup for "face is detected" / manual biometric confirmation during universal voting.

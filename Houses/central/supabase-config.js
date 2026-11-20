@@ -345,14 +345,33 @@
           : (bRows || []);
 
         const hasAnyPerRole = houseBallots.some((b) => b.position_id);
+        const hasAcceptedBallots = houseBallots.some((b) => b.status === "accepted");
+        const hasCancelledBallots = houseBallots.some((b) => b.status === "cancelled");
+        const isVoterMarkedVoted = vRows.length > 0 && vRows[0].final_status === "Voted";
 
-        if (!isTeacher && bRows.length === 0 && vRows.length > 0 && vRows[0].final_status === "Voted") {
-          return {
-            ok: false,
-            code: "ALREADY_VOTED",
-            title: "Vote Already Casted",
-            message: `Voter ID ${cleanId} (${localMatch.fullName}) is already marked "Voted".`,
-          };
+        // Hard Double-Voting Block: If voter is already marked 'Voted' or has accepted ballots, and not cancelled, block immediately!
+        if (!isTeacher && cleanId !== "0000") {
+          if ((isVoterMarkedVoted || hasAcceptedBallots) && !hasCancelledBallots) {
+            return {
+              ok: false,
+              code: "ALREADY_VOTED",
+              title: "Already Voted",
+              message: `Voter ID ${cleanId} (${localMatch.fullName}) has already cast their vote in this election. Duplicate voting is strictly blocked.`,
+            };
+          }
+        }
+
+        // Hard Double-Voting Block for Faculty: If already cast in this specific house/central booth, block duplicate attempt!
+        if (isTeacher && cleanId !== "0000") {
+          const boothDisplayName = housesMeta[requestedHouseCode]?.name || houseConfig.name || requestedHouseCode;
+          if (hasAcceptedBallots && !hasCancelledBallots) {
+            return {
+              ok: false,
+              code: "ALREADY_VOTED",
+              title: "Already Voted",
+              message: `Teacher ID ${cleanId} (${localMatch.fullName}) has already cast all votes for ${boothDisplayName}. Duplicate voting in this booth is strictly blocked.`,
+            };
+          }
         }
 
         positions.forEach((pos, idx) => {
