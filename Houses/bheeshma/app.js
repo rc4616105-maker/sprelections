@@ -9,7 +9,7 @@
     votedRoles: {},
     cancelledRoleIds: [],
     selectedByRole: {},
-    activeRoleIndex: 0,
+    evmPostIndex: 0,
     cachedCandidates: [],
     mediaStream: null,
     resetInterval: null,
@@ -69,6 +69,22 @@
     step3Error: document.getElementById("step3-error"),
     step3ErrorMsg: document.getElementById("step3-error-msg"),
     backToStep2Btn: document.getElementById("back-to-step2-btn"),
+
+    mainStepper: document.getElementById("main-stepper"),
+    evmPostStepper: document.getElementById("evm-post-stepper"),
+    evmIndicators: Array.from(document.querySelectorAll("[data-evm-indicator]")),
+    evmBallotView: document.getElementById("evm-ballot-view"),
+    evmReviewView: document.getElementById("evm-review-view"),
+    evmPostBadge: document.getElementById("evm-post-badge"),
+    evmPostTitle: document.getElementById("evm-post-title"),
+    evmPostSubtitle: document.getElementById("evm-post-subtitle"),
+    evmCandidateList: document.getElementById("evm-candidate-list"),
+    evmBackBtn: document.getElementById("evm-back-btn"),
+    evmSelectionStatus: document.getElementById("evm-selection-status"),
+    evmNextBtn: document.getElementById("evm-next-btn"),
+    evmReviewGrid: document.getElementById("evm-review-grid"),
+    evmReviewBackBtn: document.getElementById("evm-review-back-btn"),
+    evmFinalCastBtn: document.getElementById("evm-final-cast-btn"),
 
     faceGuardModal: document.getElementById("face-guard-modal"),
     faceGuardBadge: document.getElementById("face-guard-badge"),
@@ -140,8 +156,10 @@
 
     const pageShell = document.querySelector(".page-shell");
     if (pageShell) {
-      pageShell.classList.toggle("step-3-evm-active", stepNum === 3);
+      pageShell.classList.toggle("evm-active", stepNum === 3);
     }
+    if (el.mainStepper) el.mainStepper.hidden = (stepNum === 3);
+    if (el.evmPostStepper) el.evmPostStepper.hidden = (stepNum !== 3);
   }
 
   function clearStep1Error() {
@@ -259,11 +277,11 @@
     const stdDev = Math.sqrt(Math.max(0, variance));
 
     // Complete dark / finger taped over lens:
-    if (mean < 7.0) {
+    if (mean < 14) {
       return { ok: false, obstructed: true, reason: "Camera is completely covered or too dark. Please remove your hand from the lens." };
     }
     // Palm / hand pressed flat against the lens:
-    if (stdDev < 3.5) {
+    if (stdDev < 8.5) {
       return { ok: false, obstructed: true, reason: "Camera is blocked by hand or object. Please uncover the lens." };
     }
     return { ok: true, obstructed: false, mean, stdDev, imgData };
@@ -312,13 +330,13 @@
       const image = { pixels: gray, nrows: h, ncols: w, ldim: w };
       const params = {
         shiftfactor: 0.1,
-        minsize: 24,
-        maxsize: 260,
+        minsize: 36,
+        maxsize: 210,
         scalefactor: 1.1,
       };
       let dets = pico.run_cascade(image, classifier, params);
       dets = pico.cluster_detections(dets, 0.2);
-      const validFaces = dets.filter((d) => d[3] > 18.0);
+      const validFaces = dets.filter((d) => d[3] > 36.0);
       if (validFaces.length > 0) {
         return {
           ok: true,
@@ -370,344 +388,195 @@
     const pickedCount = pickedPairs.length;
     const totalNeeded = pendingIds.length;
 
-    el.castActionBar.hidden = false;
+    if (el.castActionBar) el.castActionBar.hidden = false;
     if (el.selectedProgressLabel) {
       el.selectedProgressLabel.textContent = `Selected Candidates (${pickedCount} / ${totalNeeded})`;
     }
-    el.selectedCandidateName.textContent =
-      pickedCount > 0 ? pickedPairs.join(" · ") : "Choose 1 candidate for each open role above";
-    el.castVoteBtn.disabled = pickedCount < totalNeeded || totalNeeded === 0;
+    if (el.selectedCandidateName) {
+      el.selectedCandidateName.textContent =
+        pickedCount > 0 ? pickedPairs.join(" · ") : "Choose 1 candidate for each open role above";
+    }
+    if (el.castVoteBtn) {
+      el.castVoteBtn.disabled = pickedCount < totalNeeded || totalNeeded === 0;
+    }
   }
 
-      function renderRoleWizardView() {
+  const ELECTION_SYMBOLS = [
+    { name: "Torch", icon: "🔦" },
+    { name: "Book", icon: "📖" },
+    { name: "Rising Sun", icon: "🌅" },
+    { name: "Star", icon: "⭐" },
+    { name: "Shield", icon: "🛡️" },
+    { name: "Rocket", icon: "🚀" }
+  ];
+
+  function updateEvmStepper() {
+    if (!el.evmIndicators || !el.evmIndicators.length) return;
     const posList = getPositionsList();
-    const isReview = state.activeRoleIndex >= posList.length;
-
-    el.step3Error.hidden = true;
-    el.candidateGrid.innerHTML = "";
-
-    // 1. TOP BREADCRUMB STEPPER
-    const stepperNav = document.createElement("nav");
-    stepperNav.className = "evm-role-stepper";
-    stepperNav.setAttribute("aria-label", "Voting Steps");
-
-    posList.forEach((pos, idx) => {
-      const isDone = Boolean(state.selectedByRole[pos.id] || state.votedRoles[pos.id]);
-      const isActive = !isReview && state.activeRoleIndex === idx;
-      const stepPill = document.createElement("button");
-      stepPill.type = "button";
-      stepPill.className = `evm-role-pill${isActive ? " is-active" : ""}${isDone ? " is-done" : ""}`;
-      stepPill.innerHTML = `
-        <span class="evm-role-pill-num">${isDone ? "✓" : idx + 1}</span>
-        <span class="evm-role-pill-label">${pos.shortTitle || pos.title}</span>
-      `;
-      stepPill.addEventListener("click", () => {
-        state.activeRoleIndex = idx;
-        renderRoleWizardView();
-      });
-      stepperNav.appendChild(stepPill);
+    el.evmIndicators.forEach((pill, idx) => {
+      const isActive = idx === state.evmPostIndex;
+      let isDone = false;
+      if (idx < posList.length) {
+        const pos = posList[idx];
+        isDone = Boolean(state.selectedByRole[pos.id] || state.votedRoles[pos.id]);
+      } else {
+        isDone = posList.every((p) => Boolean(state.selectedByRole[p.id] || state.votedRoles[p.id]));
+      }
+      pill.classList.toggle("is-active", isActive);
+      pill.classList.toggle("is-done", isDone && !isActive);
     });
+  }
 
-    const allRolesChosen = posList.every((p) => Boolean(state.selectedByRole[p.id] || state.votedRoles[p.id]));
-    const reviewPill = document.createElement("button");
-    reviewPill.type = "button";
-    reviewPill.className = `evm-role-pill evm-review-pill${isReview ? " is-active" : ""}${allRolesChosen ? " is-ready" : ""}`;
-    reviewPill.innerHTML = `
-      <span class="evm-role-pill-num">${posList.length + 1}</span>
-      <span class="evm-role-pill-label">Review & Cast</span>
-    `;
-    reviewPill.addEventListener("click", () => {
-      state.activeRoleIndex = posList.length;
-      renderRoleWizardView();
-    });
-    stepperNav.appendChild(reviewPill);
+  function renderEvmView() {
+    const posList = getPositionsList();
+    updateEvmStepper();
 
-    // 2. MAIN CONTENT AREA
-    const contentArea = document.createElement("div");
-    contentArea.className = "evm-wizard-content";
+    if (state.evmPostIndex < posList.length) {
+      // Ballot View for single post
+      if (el.evmBallotView) el.evmBallotView.hidden = false;
+      if (el.evmReviewView) el.evmReviewView.hidden = true;
 
-    if (!isReview) {
-      // VERTICAL EVM BALLOT UNIT
-      const currentPos = posList[state.activeRoleIndex];
+      const currentPos = posList[state.evmPostIndex];
       const votedBallot = state.votedRoles[currentPos.id] || null;
-      const isCancelledRole = state.cancelledRoleIds.includes(currentPos.id);
       const roleCands = state.cachedCandidates.filter((c) => (c.positionId || currentPos.id) === currentPos.id);
 
-      const roleBanner = document.createElement("div");
-      roleBanner.className = "evm-role-banner";
-      roleBanner.innerHTML = `
-        <div class="evm-role-banner-left">
-          <span class="badge badge-house">Post ${state.activeRoleIndex + 1} of ${posList.length}</span>
-          <h2 class="evm-role-banner-title">${currentPos.title}</h2>
-          <span class="evm-role-banner-sub">${currentPos.subtitle || ""} · Tap Candidate or Press Blue Vote Button</span>
-        </div>
-        <div class="evm-role-banner-status">
-          ${votedBallot ? `<span class="badge badge-success">Recorded: ${votedBallot.candidateName}</span>` : isCancelledRole ? `<span class="badge badge-warning">Re-vote Open</span>` : `<span class="badge badge-muted">Select 1 Below</span>`}
-        </div>
-      `;
-      contentArea.appendChild(roleBanner);
+      if (el.evmPostBadge) el.evmPostBadge.textContent = `POST ${state.evmPostIndex + 1} OF ${posList.length}`;
+      if (el.evmPostTitle) el.evmPostTitle.textContent = currentPos.title;
+      if (el.evmPostSubtitle) el.evmPostSubtitle.textContent = currentPos.subtitle || "";
 
-      const ballotUnit = document.createElement("div");
-      ballotUnit.className = "evm-ballot-unit";
-      ballotUnit.setAttribute("role", "radiogroup");
-      ballotUnit.setAttribute("aria-label", `${currentPos.title} candidates`);
+      if (el.evmCandidateList) {
+        el.evmCandidateList.innerHTML = "";
+        const pickedCand = state.selectedByRole[currentPos.id] || (votedBallot ? { id: votedBallot.candidateId, fullName: votedBallot.candidateName } : null);
 
-      const ELECTION_SYMBOLS = [
-        { name: "Torch", icon: "🔦" },
-        { name: "Book", icon: "📖" },
-        { name: "Rising Sun", icon: "🌅" },
-        { name: "Star", icon: "⭐" },
-        { name: "Shield", icon: "🛡️" },
-        { name: "Rocket", icon: "🚀" }
-      ];
+        roleCands.forEach((cand, candIdx) => {
+          const sym = cand.symbolObj || ELECTION_SYMBOLS[candIdx % ELECTION_SYMBOLS.length];
+          const isPicked = pickedCand && pickedCand.id === cand.id;
+          const serialFormatted = String(candIdx + 1).padStart(2, "0");
 
-      roleCands.forEach((cand, candIdx) => {
-        const sym = cand.symbolObj || ELECTION_SYMBOLS[candIdx % ELECTION_SYMBOLS.length];
-        const row = document.createElement("button");
-        row.type = "button";
-        row.className = "evm-ballot-row";
-        row.dataset.candidateId = cand.id;
-        row.setAttribute("role", "radio");
+          const row = document.createElement("div");
+          row.className = `evm-candidate-row${isPicked ? " is-selected" : ""}`;
+          row.setAttribute("role", "radio");
+          row.setAttribute("aria-checked", isPicked ? "true" : "false");
+          row.dataset.candidateId = cand.id;
 
-        const isPicked = state.selectedByRole[currentPos.id]?.id === cand.id;
-        row.setAttribute("aria-checked", isPicked ? "true" : "false");
-        if (isPicked) row.classList.add("is-selected");
+          const photoHtml = cand.photoPath || cand.photoUrl
+            ? `<img src="${cand.photoPath || cand.photoUrl}" alt="${cand.fullName}" />`
+            : `<span>${getInitials(cand.fullName)}</span>`;
 
-        const serialFormatted = String(candIdx + 1).padStart(2, "0");
-        const photoHtml = cand.photoPath || cand.photoUrl
-          ? `<img src="${cand.photoPath || cand.photoUrl}" alt="${cand.fullName}" class="evm-photo-img" />`
-          : `<span class="evm-avatar-initials">${getInitials(cand.fullName)}</span>`;
+          const subText = String(cand.admissionNo || "").startsWith("DEMO-")
+            ? cand.section
+            : (cand.className ? `Class ${cand.className} ${cand.section || ""}` : (cand.section || ""));
 
-        row.innerHTML = `
-          <div class="evm-row-left">
-            <div class="evm-photo-box" aria-hidden="true">${photoHtml}</div>
-            <div class="evm-cand-details">
+          row.innerHTML = `
+            <span class="evm-cand-num">${serialFormatted}</span>
+            <div class="evm-cand-avatar">${photoHtml}</div>
+            <div class="evm-cand-info">
               <h3 class="evm-cand-name">${cand.fullName}</h3>
-              <span class="evm-cand-meta">${String(cand.admissionNo || "").startsWith("DEMO-") ? cand.section : `ID ${cand.admissionNo} · Class ${cand.className}-${cand.section}`}</span>
+              <span class="evm-cand-sub">${subText}</span>
             </div>
-          </div>
-
-          <div class="evm-row-symbol" title="Election Symbol: ${sym.name}">
-            <span class="evm-symbol-icon" aria-hidden="true">${sym.icon}</span>
-            <span class="evm-symbol-label">${sym.name}</span>
-          </div>
-
-          <div class="evm-row-vote-unit" aria-hidden="true">
-            <span class="evm-led-lamp"></span>
-            <div class="evm-vote-trigger-btn">
-              <span class="evm-vote-label">${isPicked ? "VOTED" : "VOTE"}</span>
-              <span class="evm-check-badge">✓</span>
+            <div class="evm-right-cluster">
+              <div class="evm-symbol-badge" title="Election Symbol: ${sym.name}">
+                <span class="evm-symbol-icon">${sym.icon}</span>
+                <span class="evm-symbol-name">${sym.name}</span>
+              </div>
+              <span class="evm-led-lamp"></span>
+              <button type="button" class="evm-vote-btn" tabindex="-1">
+                ${isPicked ? (votedBallot ? "RECORDED ✓" : "VOTED ✓") : "VOTE"}
+              </button>
             </div>
-          </div>
-        `;
+          `;
 
-        if (votedBallot) {
-          row.disabled = true;
-          if (cand.id === votedBallot.candidateId) {
-            row.classList.add("is-selected");
-            row.querySelector(".evm-vote-label").textContent = "RECORDED";
-          }
-        } else {
-          row.addEventListener("click", () => {
-            Array.from(ballotUnit.children).forEach((r) => {
-              r.classList.remove("is-selected");
-              r.setAttribute("aria-checked", "false");
-              const l = r.querySelector(".evm-vote-label");
-              if (l) l.textContent = "VOTE";
+          if (votedBallot) {
+            row.style.pointerEvents = "none";
+          } else {
+            row.addEventListener("click", () => {
+              state.selectedByRole[currentPos.id] = cand;
+              updateCastBar();
+              renderEvmView();
             });
-            row.classList.add("is-selected");
-            row.setAttribute("aria-checked", "true");
-            const lbl = row.querySelector(".evm-vote-label");
-            if (lbl) lbl.textContent = "VOTED";
+          }
 
-            state.selectedByRole[currentPos.id] = cand;
-            el.step3Error.hidden = true;
-            renderWizardFooter(navbar, posList, isReview);
-          });
+          el.evmCandidateList.appendChild(row);
+        });
+      }
+
+      // Update Footer
+      if (el.evmBackBtn) {
+        if (state.evmPostIndex === 0) {
+          el.evmBackBtn.innerHTML = `← Back: Verify Info`;
+        } else {
+          const prevPos = posList[state.evmPostIndex - 1];
+          el.evmBackBtn.innerHTML = `← Back: ${prevPos.shortTitle || prevPos.title}`;
         }
+      }
 
-        ballotUnit.appendChild(row);
-      });
+      const pickedCand = state.selectedByRole[currentPos.id] || (votedBallot ? { id: votedBallot.candidateId, fullName: votedBallot.candidateName } : null);
+      if (el.evmSelectionStatus) {
+        if (pickedCand) {
+          el.evmSelectionStatus.innerHTML = `<span style="color:#16a34a; font-weight:800;">✓ Selected: ${pickedCand.fullName}</span>`;
+        } else {
+          el.evmSelectionStatus.innerHTML = `<span style="color:var(--text-muted);">Please tap a candidate or press blue VOTE button</span>`;
+        }
+      }
 
-      contentArea.appendChild(ballotUnit);
+      if (el.evmNextBtn) {
+        el.evmNextBtn.disabled = !pickedCand;
+        const nextPos = posList[state.evmPostIndex + 1];
+        if (nextPos) {
+          el.evmNextBtn.innerHTML = `Next: ${nextPos.shortTitle || nextPos.title} →`;
+        } else {
+          el.evmNextBtn.innerHTML = `Next: Review &amp; Cast →`;
+        }
+      }
+
     } else {
-      // REVIEW & CAST VIEW
-      const reviewHeader = document.createElement("div");
-      reviewHeader.className = "evm-review-header";
-      reviewHeader.innerHTML = `
-        <span class="badge badge-success">Ballot Summary</span>
-        <div>
-          <h2 class="evm-review-title">Review Your Ballot</h2>
-          <p class="evm-review-sub">Verify your chosen candidates for all ${posList.length} roles below, then tap <strong>Confirm & Cast Vote</strong>.</p>
-        </div>
-      `;
-      contentArea.appendChild(reviewHeader);
+      // Review & Cast View (state.evmPostIndex === posList.length)
+      if (el.evmBallotView) el.evmBallotView.hidden = true;
+      if (el.evmReviewView) el.evmReviewView.hidden = false;
 
-      const reviewGrid = document.createElement("div");
-      reviewGrid.className = "evm-review-grid";
+      if (el.evmReviewGrid) {
+        el.evmReviewGrid.innerHTML = "";
+        posList.forEach((pos, idx) => {
+          const picked = state.selectedByRole[pos.id] || (state.votedRoles[pos.id] ? { id: state.votedRoles[pos.id].candidateId, fullName: state.votedRoles[pos.id].candidateName } : null);
+          const card = document.createElement("div");
+          card.className = "evm-review-card";
 
-      posList.forEach((pos, idx) => {
-        const selCand = state.selectedByRole[pos.id];
-        const votedBallot = state.votedRoles[pos.id];
-        const displayCand = selCand || (votedBallot ? { fullName: votedBallot.candidateName, section: "Previously Recorded", symbolObj: { name: "Recorded", icon: "✓" } } : null);
+          const photoHtml = picked && (picked.photoPath || picked.photoUrl)
+            ? `<img src="${picked.photoPath || picked.photoUrl}" alt="${picked.fullName}" />`
+            : `<span>${getInitials(picked ? picked.fullName : "?")}</span>`;
 
-        const revCard = document.createElement("div");
-        revCard.className = "evm-review-card";
-        if (displayCand) {
-          const sym = displayCand.symbolObj || { name: "Candidate", icon: "🗳️" };
-          const photoHtml = displayCand.photoPath || displayCand.photoUrl
-            ? `<img src="${displayCand.photoPath || displayCand.photoUrl}" alt="${displayCand.fullName}" class="evm-photo-img" />`
-            : `<span class="evm-avatar-initials">${getInitials(displayCand.fullName)}</span>`;
+          const subText = picked
+            ? (String(picked.admissionNo || "").startsWith("DEMO-") ? picked.section : (picked.className ? `Class ${picked.className} ${picked.section || ""}` : (picked.section || "")))
+            : "No candidate chosen";
 
-          revCard.innerHTML = `
-            <div class="evm-review-card-head">
-              <span class="evm-review-role-badge">${pos.title}</span>
-              ${votedBallot ? `<span class="badge badge-muted">Locked</span>` : `<button type="button" class="evm-review-change-btn" data-role-idx="${idx}">Change Choice ✎</button>`}
-            </div>
-            <div class="evm-review-cand-body">
-              <div class="evm-photo-box" aria-hidden="true">${photoHtml}</div>
-              <div class="evm-review-cand-info">
-                <h4 class="evm-review-cand-name">${displayCand.fullName}</h4>
-                <div class="evm-review-cand-sub">${displayCand.section || `Class ${displayCand.className || ""}`}</div>
-                <div class="evm-symbol-pill">
-                  <span class="evm-symbol-icon">${sym.icon}</span>
-                  <span class="evm-symbol-label">${sym.name}</span>
-                </div>
+          card.innerHTML = `
+            <div class="evm-review-card-left">
+              <div class="evm-cand-avatar">${photoHtml}</div>
+              <div>
+                <p class="evm-review-role-title">${pos.title}</p>
+                <h4 class="evm-review-cand-name" style="${!picked ? 'color:#dc2626;' : ''}">${picked ? picked.fullName : 'Not Selected'}</h4>
+                <p class="evm-review-cand-sub">${subText}</p>
               </div>
             </div>
+            <button type="button" class="evm-review-change-btn" data-change-idx="${idx}">
+              Change
+            </button>
           `;
 
-          const changeBtn = revCard.querySelector(".evm-review-change-btn");
+          const changeBtn = card.querySelector(".evm-review-change-btn");
           if (changeBtn) {
             changeBtn.addEventListener("click", () => {
-              state.activeRoleIndex = idx;
-              renderRoleWizardView();
+              state.evmPostIndex = idx;
+              renderEvmView();
             });
           }
-        } else {
-          revCard.innerHTML = `
-            <div class="evm-review-card-head">
-              <span class="evm-review-role-badge">${pos.title}</span>
-              <button type="button" class="evm-review-change-btn" data-role-idx="${idx}">Select Now ➔</button>
-            </div>
-            <div class="evm-review-cand-body is-empty">
-              <p style="color: #dc2626; font-size: 0.88rem; font-weight: 700;">No candidate selected yet!</p>
-            </div>
-          `;
-          revCard.querySelector(".evm-review-change-btn").addEventListener("click", () => {
-            state.activeRoleIndex = idx;
-            renderRoleWizardView();
-          });
-        }
-        reviewGrid.appendChild(revCard);
-      });
 
-      contentArea.appendChild(reviewGrid);
-    }
-
-    // 3. BOTTOM NAVIGATION BAR
-    const navbar = document.createElement("div");
-    navbar.className = "evm-wizard-navbar";
-    renderWizardFooter(navbar, posList, isReview);
-
-    const headerSlot = document.getElementById("evm-header-stepper-slot");
-    if (headerSlot) {
-      headerSlot.innerHTML = "";
-      headerSlot.appendChild(stepperNav);
-    } else {
-      el.candidateGrid.appendChild(stepperNav);
-    }
-    el.candidateGrid.appendChild(contentArea);
-    el.candidateGrid.appendChild(navbar);
-
-    // Keep hidden legacy elements
-    if (el.castActionBar) el.castActionBar.hidden = true;
-    if (el.backToStep2Btn) el.backToStep2Btn.hidden = true;
-    const oldPanelHeader = document.querySelector("#step-3 > .panel-header");
-    if (oldPanelHeader) oldPanelHeader.hidden = true;
-  }
-
-  function renderWizardFooter(navbar, posList, isReview) {
-    navbar.innerHTML = "";
-
-    // Prev Button
-    const prevBtn = document.createElement("button");
-    prevBtn.type = "button";
-    prevBtn.className = "btn btn-secondary evm-nav-prev-btn";
-    if (!isReview && state.activeRoleIndex === 0) {
-      prevBtn.style.visibility = "hidden";
-      prevBtn.disabled = true;
-    } else if (isReview) {
-      prevBtn.innerHTML = `&larr; Back to ${posList[posList.length - 1].shortTitle || "Roles"}`;
-      prevBtn.addEventListener("click", () => {
-        state.activeRoleIndex = posList.length - 1;
-        renderRoleWizardView();
-      });
-    } else {
-      prevBtn.innerHTML = `&larr; Previous Post`;
-      prevBtn.addEventListener("click", () => {
-        state.activeRoleIndex = Math.max(0, state.activeRoleIndex - 1);
-        renderRoleWizardView();
-      });
-    }
-    navbar.appendChild(prevBtn);
-
-    // Status in Center
-    const statusBox = document.createElement("div");
-    statusBox.className = "evm-nav-status";
-    if (!isReview) {
-      const currentPos = posList[state.activeRoleIndex];
-      const picked = state.selectedByRole[currentPos.id];
-      const voted = state.votedRoles[currentPos.id];
-      if (picked) {
-        statusBox.innerHTML = `<span class="evm-status-icon">✓</span> <span>Selected: <strong>${picked.fullName}</strong></span>`;
-      } else if (voted) {
-        statusBox.innerHTML = `<span class="evm-status-icon">✓</span> <span>Recorded: <strong>${voted.candidateName}</strong></span>`;
-      } else {
-        statusBox.innerHTML = `<span class="evm-status-hint">Please tap a candidate above to select</span>`;
-      }
-    } else {
-      const allPicked = posList.every((p) => Boolean(state.selectedByRole[p.id] || state.votedRoles[p.id]));
-      if (allPicked) {
-        statusBox.innerHTML = `<span class="evm-status-icon">✓</span> <strong>All ${posList.length} Roles Selected</strong> — Ready to Cast`;
-      } else {
-        statusBox.innerHTML = `<span style="color: #dc2626; font-weight: 700;">Missing selections! Please select all roles.</span>`;
-      }
-    }
-    navbar.appendChild(statusBox);
-
-    // Next / Confirm Button on Right
-    if (!isReview) {
-      const nextBtn = document.createElement("button");
-      nextBtn.type = "button";
-      nextBtn.className = "btn btn-primary btn-lg evm-nav-next-btn";
-      const currentPos = posList[state.activeRoleIndex];
-      const hasPicked = Boolean(state.selectedByRole[currentPos.id] || state.votedRoles[currentPos.id]);
-      nextBtn.disabled = !hasPicked;
-
-      const isLastRole = state.activeRoleIndex === posList.length - 1;
-      if (isLastRole) {
-        nextBtn.innerHTML = `Review Ballot &rarr;`;
-      } else {
-        const nextPos = posList[state.activeRoleIndex + 1];
-        nextBtn.innerHTML = `Next: ${nextPos.shortTitle || nextPos.title} &rarr;`;
+          el.evmReviewGrid.appendChild(card);
+        });
       }
 
-      nextBtn.addEventListener("click", () => {
-        state.activeRoleIndex++;
-        renderRoleWizardView();
-      });
-      navbar.appendChild(nextBtn);
-    } else {
-      const castBtn = document.createElement("button");
-      castBtn.type = "button";
-      castBtn.className = "btn btn-primary btn-lg evm-confirm-cast-btn";
-      castBtn.innerHTML = `🟢 Confirm & Cast Vote &rarr;`;
-      const allPicked = posList.every((p) => Boolean(state.selectedByRole[p.id] || state.votedRoles[p.id]));
-      castBtn.disabled = !allPicked;
-
-      castBtn.addEventListener("click", handleCastVote);
-      navbar.appendChild(castBtn);
+      const allChosen = posList.every((p) => Boolean(state.selectedByRole[p.id] || state.votedRoles[p.id]));
+      if (el.evmFinalCastBtn) el.evmFinalCastBtn.disabled = !allChosen;
     }
   }
 
@@ -718,8 +587,10 @@
       state.pendingRoleIds = posList.filter((p) => !state.votedRoles[p.id]).map((p) => p.id);
     }
     state.selectedByRole = {};
-    state.activeRoleIndex = 0;
-    renderRoleWizardView();
+    state.evmPostIndex = 0;
+    el.step3Error.hidden = true;
+    updateCastBar();
+    renderEvmView();
   }
 
   function startAutoResetCountdown() {
@@ -758,10 +629,8 @@
     state.votedRoles = {};
     state.cancelledRoleIds = [];
     state.selectedByRole = {};
-    state.activeRoleIndex = 0;
+    state.evmPostIndex = 0;
     state.cachedCandidates = [];
-    state.cancelledRoleIds = [];
-    state.selectedByRole = {};
     state.isSubmitting = false;
     scannerState.buffer = "";
     el.castVoteBtn.disabled = true;
@@ -1125,16 +994,6 @@
       }, 1500);
     }
 
-    // Kiosk safety fallback: enable confirmation after 2 seconds so booth never gets stuck
-    setTimeout(() => {
-      if (el.faceGuardConfirmBtn && !state.isSubmitting) {
-        el.faceGuardConfirmBtn.disabled = false;
-        if (!lastVerifiedPhoto) {
-          lastVerifiedPhoto = generateBoothSnapshot("Station Snapshot");
-        }
-      }
-    }, 2000);
-
     clearInterval(faceCheckInterval);
     faceCheckInterval = setInterval(async () => {
       if (state.isSubmitting) return;
@@ -1143,19 +1002,17 @@
       if (res.ok) {
         steadyFaceCount++;
         lastVerifiedPhoto = res.photoDataUrl;
-        updateFaceGuardUI("✓ Face Verified! Casting vote...", false, true);
+        updateFaceGuardUI("✓ Face Detected! Hold still...", false, true);
         if (el.faceGuardConfirmBtn) el.faceGuardConfirmBtn.disabled = false;
-        if (steadyFaceCount >= 1 && !state.isSubmitting) {
+        if (steadyFaceCount >= 2 && !state.isSubmitting) {
           clearInterval(faceCheckInterval);
           if (noCamFallbackTimer) clearTimeout(noCamFallbackTimer);
-          setTimeout(async () => {
-            if (!state.isSubmitting) {
-              await submitFinalVote(lastVerifiedPhoto);
-            }
-          }, 280);
+          await submitFinalVote(lastVerifiedPhoto);
         }
       } else {
+        steadyFaceCount = 0;
         updateFaceGuardUI(res.reason, res.obstructed, false);
+        if (el.faceGuardConfirmBtn) el.faceGuardConfirmBtn.disabled = true;
       }
     }, 200);
   }
@@ -1239,10 +1096,10 @@
     }
   }
 
-      async function handleCastVote() {
+    el.castVoteBtn.addEventListener("click", async () => {
     const posList = getPositionsList();
     const pendingIds = state.pendingRoleIds.length ? state.pendingRoleIds : posList.map((p) => p.id);
-    const missingIds = pendingIds.filter((pid) => !state.selectedByRole[pid] && !state.votedRoles[pid]);
+    const missingIds = pendingIds.filter((pid) => !state.selectedByRole[pid]);
     if (state.isSubmitting || !state.verifiedStudent || missingIds.length > 0) {
       if (missingIds.length > 0) {
         const missingNames = missingIds
@@ -1255,7 +1112,7 @@
     }
 
     state.isSubmitting = false;
-    if (el.castVoteBtn) setLoading(el.castVoteBtn, false);
+    setLoading(el.castVoteBtn, false);
     el.step3Error.hidden = true;
 
     try {
@@ -1267,11 +1124,59 @@
     } catch (err) {
       openFaceGuardModal("Camera error: " + (err.message || "Unable to access webcam."));
     }
+  });
+
+  if (el.evmIndicators) {
+    el.evmIndicators.forEach((pill, idx) => {
+      pill.style.cursor = "pointer";
+      pill.addEventListener("click", () => {
+        const posList = getPositionsList();
+        if (idx < posList.length) {
+          state.evmPostIndex = idx;
+          renderEvmView();
+        } else if (idx === posList.length) {
+          state.evmPostIndex = posList.length;
+          renderEvmView();
+        }
+      });
+    });
   }
 
-  if (el.castVoteBtn) {
-    el.castVoteBtn.disabled = false;
-    el.castVoteBtn.addEventListener("click", handleCastVote);
+  if (el.evmBackBtn) {
+    el.evmBackBtn.addEventListener("click", () => {
+      if (state.evmPostIndex > 0) {
+        state.evmPostIndex--;
+        renderEvmView();
+      } else {
+        goToStep(2);
+      }
+    });
+  }
+
+  if (el.evmNextBtn) {
+    el.evmNextBtn.addEventListener("click", () => {
+      const posList = getPositionsList();
+      if (state.evmPostIndex < posList.length) {
+        state.evmPostIndex++;
+        renderEvmView();
+      }
+    });
+  }
+
+  if (el.evmReviewBackBtn) {
+    el.evmReviewBackBtn.addEventListener("click", () => {
+      const posList = getPositionsList();
+      state.evmPostIndex = Math.max(0, posList.length - 1);
+      renderEvmView();
+    });
+  }
+
+  if (el.evmFinalCastBtn) {
+    el.evmFinalCastBtn.addEventListener("click", () => {
+      if (el.castVoteBtn) {
+        el.castVoteBtn.click();
+      }
+    });
   }
 
   el.resetNowBtn.addEventListener("click", resetBoothToStep1);
@@ -1341,17 +1246,6 @@
         window.PendriveStorage.syncNow();
       });
       await window.PendriveStorage.syncNow();
-    }
-    // Auto-verify if admissionNo was passed in query params
-    const urlParams = new URLSearchParams(window.location.search);
-    const paramAdm = urlParams.get("admissionNo");
-    if (paramAdm) {
-      if (window.history.replaceState) {
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
-      setTimeout(() => {
-        executeVerification(paramAdm);
-      }, 150);
     }
   }
 

@@ -16,61 +16,32 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
-### 0. Authentic Vertical EVM Ballot Unit & Post-by-Post Voting Flow Across All 6 House Kiosks (Nov 20, 2026)
-- **Authentic Vertical EVM Ballot Unit Architecture (`Houses/*/app.js` & `styles.css`)**:
-  - Replaced the horizontal grid layout with a real-life **Vertical EVM Ballot Machine Unit**:
-    - Each candidate is rendered as an official full-width horizontal EVM ballot strip stacked vertically.
-    - **Left Section:** Candidate Serial Number (`01`, `02`, `03`...), 48px portrait photo box, and full name + class/section metadata.
-    - **Middle Section:** Official Election Symbol (large icon + name tag in an embossed ballot frame).
-    - **Right Section:** High-contrast EVM action unit with circular Red LED lamp (`#ef4444`) and big tactile blue EVM Push Button (`[ VOTE ]`).
-    - **Tactile EVM Feedback:** Tapping anywhere on the candidate row or the vote button illuminates the bright red neon LED lamp (`box-shadow: 0 0 10px #ef4444, 0 0 20px #ef4444, 0 0 30px #ef4444`), transitions the button to emerald green `[ VOTED ✓ ]`, and highlights the row in `#f0fdf4`.
-  - **Dynamic Full-Height Filling with Zero Scrolling (`100svh`)**:
-    - Uses flexbox column distribution (`flex: 1; min-height: 0;`), perfectly distributing vertical space whether a post has 3, 4, 5, or 6 candidates.
-    - Zero vertical scrollbar on any device or viewport size.
-- **Sequential Post-by-Post Navigation & Review Screen**:
-  - Post 1: Boys Captain ➔ Post 2: Girls Captain ➔ Post 3: Boys Vice-Captain ➔ Post 4: Girls Vice-Captain ➔ Screen 5: Review & Cast.
-  - Review screen features a 2×2 verification layout with "Change Choice ✎" buttons and the prominent action `🟢 Confirm & Cast Vote ➔`.
-- **Direct Cast Vote Handler & Camera Modal Trigger (`Houses/*/app.js`)**:
-  - Replaced indirect `.click()` proxying with direct invocation of `handleCastVote()`, resolving the issue where `el.castVoteBtn` being disabled in the DOM caused the click to be ignored.
-  - Added a 2-second safety fallback inside `openFaceGuardModal` ensuring the verification button is enabled even if face detection is delayed by booth lighting or missing webcams.
-- **Navigation Polish**:
-  - Removed "Back to Student Details" button from Post 1 across all 6 houses so voters cannot backtrack to student verification once in the active voting booth.
-  - Retained "Previous Post" between role steps and "Back to Roles" on the Review screen.
-- **Unique Constraint (`ballots_one_accepted_per_voter_role_idx`) & Demo Re-test Resolution (`Houses/*/supabase-config.js`)**:
-  - Automatically cancels prior accepted ballots for demo voter `0000` (and on re-vote retries) before inserting fresh ballots, eliminating PostgreSQL unique constraint violation `ballots_one_accepted_per_voter_role_idx`.
-  - Added dedicated demo voter handler in `verifyVoter` granting full test access with all roles open.
-- **Expanded Full-Width Ballot Box & Unified Top Header Bar (`Houses/*/index.html`, `app.js`, `styles.css`)**:
-  - Moved House Title ("Bheeshma House") to the left side and Local Storage to the right side of a single unified top header bar, with the stepper navigation pills integrated in the center.
-  - Expanded the main voting card (`.page-shell.step-3-evm-active`) to `width: 98vw; max-width: 98vw; padding: 0.25rem 0.5rem`, providing massive breathing room and eliminating all cramped spacing on widescreen monitors.
-- **Full 6-House Deployment**:
-  - Synchronized and verified across `bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, and `vishwamithra`.
-
-- **Form Submit & URL Query Handler Integrity (`Houses/*/app.js`)**:
-  - Eliminated leftover function syntax debris preventing script execution.
-  - Form submission now reliably executes `e.preventDefault()` and invokes `executeVerification()`.
-  - Added auto-verification and URL cleanup for any URL containing `?admissionNo=...`.
-- **Synchronized Deployment Across All 6 Student Houses**:
-  - Upgraded code and data across all 6 student house kiosks: `bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, and `vishwamithra`.
-  - Updated each house's `data.js` to feature 24 demo candidates (6 candidates per role across all 4 positions) with designated election symbols.
-
-
-### 0. Full-Screen 2×2 EVM Ballot Layout with Candidate Photos & Election Symbols Across All 6 House Kiosks (Nov 20, 2026)
-- **Zero-Scroll Full-Screen Kiosk Viewport (`Houses/*/styles.css` & `app.js`)**:
-  - Implemented dynamic `.step-3-evm-active` mode: When reaching Step 3 ("Select & Cast"), the page shell automatically expands to `98vw / 1440px` and locks to `100svh` with `overflow: hidden`, completely eliminating vertical scrolling.
-  - Converted the single-column vertical stack into a high-efficiency **2×2 Quadrant EVM Grid**:
-    - **Top-Left:** Boys Captain (3 candidates)
-    - **Top-Right:** Girls Captain (3 candidates)
-    - **Bottom-Left:** Boys Vice-Captain (3 candidates)
-    - **Bottom-Right:** Girls Vice-Captain (3 candidates)
-- **Complete EVM Candidate Cards (`photo + symbol + name + post + LED button`)**:
-  - **Candidate Photo Box:** Displays candidate portrait photo (with fallback high-contrast avatar frame with initials).
-  - **Official Election Symbol:** Each candidate displays a designated election symbol emblem (e.g. 🔦 Torch, 📖 Book, 🌅 Rising Sun, ⭐ Star, 🛡️ Shield, 🚀 Rocket) with both symbol icon and name tag.
-  - **Candidate Identity:** Bold candidate full name and class/section tag.
-  - **Tactile EVM Vote Button & Glowing LED Lamp:** Each card includes an EVM vote button strip. When selected, the card glows in the house accent color, the label turns to `VOTED`, and a glowing red LED lamp (`#ef4444`) illuminates.
-- **Compact Bottom Cast Action Bar**:
-  - Stays anchored at the base of the card without overlapping, showing live progress (`Selected Candidates: 4 / 4`) and enabling the primary `Confirm & Cast Vote` action.
-- **Full House Coverage**:
-  - Deployed and synchronized across all 6 student house kiosks: `bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, and `vishwamithra`.
+### 0. Zero-Scroll EVM Electronic Voting Machine Kiosk UI Rollout Across All 6 Houses (Nov 20, 2026)
+- **Authentic EVM Post-by-Post Voting Machine UI (`Houses/*/styles.css`, `index.html`, `app.js`)**:
+  - Successfully redesigned Step 3 voting on all 6 house kiosks (`bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, `vishwamithra`) to completely eliminate vertical scrolling:
+    - Entire screen fills 100svh vertically (`.page-shell.evm-active`) without any scrollbars on standard monitor displays.
+    - Post-by-post sequential EVM ballot workflow:
+      - **Post 1:** Boys Captain (Class 10 Boy)
+      - **Post 2:** Girls Captain (Class 10 Girl)
+      - **Post 3:** Boys Vice Captain (Class 9 Boy)
+      - **Post 4:** Girls Vice Captain (Class 9 Girl)
+      - **Step 5:** Review & Confirmation Grid
+    - Top multi-post stepper: `1 Boys Captain` -> `2 Girls Captain` -> `3 Boys Vice Captain` -> `4 Girls Vice Captain` -> `5 Review & Cast`.
+    - Authentic EVM Ballot Row Layout:
+      - Serial number (`01`, `02`, `03`).
+      - Candidate Avatar with initials or real candidate photo thumbnail.
+      - Candidate Name, Class, and Section.
+      - Official Election Symbol badge with icon and name (e.g. 🔦 Torch, 📖 Book, 🌅 Rising Sun, ⭐ Star).
+      - Authentic Glowing Red LED EVM lamp (`.evm-led-lamp`) that lights up upon candidate selection with vibrant crimson glow.
+      - High-contrast tactile action vote button (`VOTE` in royal blue / `VOTED ✓` in emerald green).
+    - Status readout & bottom navigation bar:
+      - `← Back` (or `← Back: Verify Info` on Post 1 to return to Step 2).
+      - Selection indicator text: `✓ Selected: Candidate Name`.
+      - Highlighting Next button: `Next: [Next Post Name] →` or `Next: Review & Cast →` (enabled only when a candidate has been selected).
+    - Review & Cast Screen (`.evm-review-view`):
+      - 2x2 grid displaying chosen candidates for all 4 positions with quick "Change" buttons to jump back and adjust any post.
+      - `Confirm & Cast Vote →` button triggering the camera face verification and Supabase ballot submission.
+  - Zero sound effects or audio beeps (silent, distraction-free kiosk experience).
 
 ### 0. Teacher Universal Polling Booth Layout Harmonization & Full Backend Completion (`Houses/teachers/`) (Nov 20, 2026)
 - **Harmonized Card Layout & Design Proportions (`Houses/teachers/styles.css` & `index.html`)**:
@@ -301,55 +272,6 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 - **Cache Busting Bump:** Bumped `app.js` script query string to `?v=1004` across all 7 house booths.
 
 ---
-
-### 13. Sequential Role Wizard & Full-Screen EVM Ballot Unit (Nov 20, 2026)
-- **Role-by-Role EVM Wizard:** Converted 2x2 quad role layout into a sequential step-by-step EVM wizard (Boys Captain -> Girls Captain -> Boys Vice-Captain -> Girls Vice-Captain -> Review & Cast).
-- **Single-Screen 100svh Zero Scroll:** Eliminated all vertical scrolling on the ballot screen, ensuring all candidates for a given role are comfortably visible in a single viewport.
-- **Vertical EVM Ballot Strips:** Implemented realistic Electronic Voting Machine (EVM) rows featuring candidate portrait, name, class/designation, election symbol emblem, red status LED, and tactile blue [ VOTE ] button.
-- **Removed Serial Numbers & Enlarged Photos:**
-  - Removed candidate serial numbers (01, 02, 03) from the ballot rows.
-  - Enlarged candidate photo/avatar box from 48px to 72px with enhanced border, elevation, and 1.6rem bold initials for maximum visual prominence.
-  - Increased candidate name typography to 1.28rem bold and expanded ballot row padding.
-- **Unified Header & 98vw Wide Screen:** Streamlined booth header placing House title on left, step pills in center, and Local Storage status on right, expanding active ballot width to 98vw.
-- **Resolved Vote Submission & Constraint Conflicts:** Replaced synthetic proxy button triggers with direct `handleCastVote` dispatch and auto-handled demo ballot duplicate key conflicts for voter `0000`.
-
----
-
-### 14. Ballot Constraint Conflict Resolution & Face Detection Optimization (Nov 20, 2026)
-- **Resolved Supabase Ballot Unique Constraint Conflict:**
-  - Fixed schema column mismatch where `cancelled_reason` was being sent instead of `cancel_reason`, causing Supabase PATCH requests to silently fail with 400 Bad Request.
-  - Implemented automatic purge of previous demo ballots for `admission_no = '0000'` via `DELETE` before inserting fresh test ballots.
-  - Added automatic constraint conflict handler with dynamic timestamp ID regeneration (`BLT-{freshTs}`) and fallback retry to eliminate `duplicate key value violates unique constraint "ballots_one_accepted_per_voter_role_idx"`.
-- **Face Detection Sensitivity & Modal Verification Optimization:**
-  - Lowered Pico.js cascade threshold from strict 36.0 to 18.0 and expanded search window (`minsize: 24`, `maxsize: 260`) for rapid, dependable human face detection across varying distances and lighting.
-  - Relaxed camera obstruction detection thresholds (`mean < 7.0`, `stdDev < 3.5`) to prevent false "Camera is blocked" warnings against neutral backgrounds.
-  - Fixed modal check interval bug that continuously re-disabled the Confirm Vote button every 200ms.
-  - Streamlined verification flow: upon steady face detection, the booth displays `✓ Face Verified!` and auto-casts within 280ms while keeping the Confirm button active for immediate manual confirmation.
-- **Cache-Busting Update:** Bumped script query strings to `?v=1012` across kiosks.
-
----
-
-### 15. House Tag RegExp Syntax Fix for Multi-House Cast (Nov 20, 2026)
-- **Resolved Unterminated Character Class SyntaxError:**
-  - Fixed invalid regex in `castVote()` when updating `voted_for` house tags for faculty and universal demo voters (`stu.isStaff` / `0000`).
-  - Corrected escaping from `/[Bheeshma]:[^;\]+/` to `new RegExp(`\\[${escapedName}\\]:[^;]+`)` across all 7 kiosks (`bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, `vishwamithra`, `central`).
-  - Successfully resolves `Invalid regular expression: /\[Bheeshma\]:[^;\]+/: Unterminated character class` on ballot confirmation.
-- **Cache-Busting Update:** Bumped script query strings to `?v=1013` across all kiosks.
-
----
-
-### 16. Voters Final Status Check Constraint Alignment (Nov 20, 2026)
-- **Resolved `voters_final_status_check` Check Constraint Violation:**
-  - Fixed issue in `castVote()` where faculty and demo accounts had `final_status` set to dynamic strings like `"Voted (1/7 Houses)"`, which violated PostgreSQL table check constraint `CHECK (final_status in ('Not Voted', 'Voted', 'Cancelled'))`.
-  - Aligned `updatedFinalStatus` to strictly write `"Voted"` upon ballot submission across all 7 kiosks (`bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, `vishwamithra`, `central`).
-  - Faculty multi-house completion progress is now safely tracked in `position_name` (e.g. `Universal Faculty (Bheeshma - 1/7)`) and `voted_for` (e.g. `[Bheeshma]: Candidate A, Candidate B...`).
-- **Cache-Busting Update:** Bumped script query strings to `?v=1014` across all kiosks.
-
----
-
-
-
-
 
 ## Summary of Verification Checks Passed
 

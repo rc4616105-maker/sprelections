@@ -29,8 +29,8 @@
     </header>
 
     <main id="booth-main" class="booth-main">
-      <!-- Progress Stepper -->
-      <ol class="stepper" aria-label="Voting steps">
+      <!-- Progress Stepper (Default Steps 1, 2, 4) -->
+      <ol id="main-stepper" class="stepper" aria-label="Voting steps">
         <li class="step-pill is-active" data-step-indicator="1">
           <span class="step-num">1</span>
           <span class="step-label">Voter ID</span>
@@ -46,6 +46,30 @@
         <li class="step-pill" data-step-indicator="4">
           <span class="step-num">4</span>
           <span class="step-label">Recorded</span>
+        </li>
+      </ol>
+
+      <!-- EVM Multi-Post Stepper (Active during Step 3 voting) -->
+      <ol id="evm-post-stepper" class="stepper evm-post-stepper" aria-label="Leadership role steps" hidden>
+        <li class="step-pill is-active" data-evm-indicator="0">
+          <span class="step-num">1</span>
+          <span class="step-label">Boys Captain</span>
+        </li>
+        <li class="step-pill" data-evm-indicator="1">
+          <span class="step-num">2</span>
+          <span class="step-label">Girls Captain</span>
+        </li>
+        <li class="step-pill" data-evm-indicator="2">
+          <span class="step-num">3</span>
+          <span class="step-label">Boys Vice Captain</span>
+        </li>
+        <li class="step-pill" data-evm-indicator="3">
+          <span class="step-num">4</span>
+          <span class="step-label">Girls Vice Captain</span>
+        </li>
+        <li class="step-pill" data-evm-indicator="4">
+          <span class="step-num">5</span>
+          <span class="step-label">Review &amp; Cast</span>
         </li>
       </ol>
 
@@ -194,18 +218,66 @@
           </div>
         </div>
 
-        <!-- STEP 3: Candidate Selection & Cast Option -->
-        <div id="step-3" class="step-panel" hidden>
-          <div class="panel-header">
-            <span class="badge badge-house">4 Leadership Roles · Bheeshma</span>
-            <h2 class="panel-title">Select Your Candidates</h2>
-            <p id="step3-subtitle" class="panel-subtitle">Choose 1 candidate for each open Bheeshma House role below,
-              then press <strong>Cast Vote</strong>.</p>
+        <!-- STEP 3: EVM Electronic Voting Machine Kiosk -->
+        <div id="step-3" class="step-panel evm-step-panel" hidden>
+          <!-- EVM Ballot View (Posts 1 through 4) -->
+          <div id="evm-ballot-view" class="evm-ballot-view">
+            <!-- EVM Header Strip -->
+            <div class="evm-unit-header">
+              <div class="evm-header-left">
+                <span id="evm-post-badge" class="badge badge-house">POST 1 OF 4</span>
+                <h2 id="evm-post-title" class="evm-post-title">Boys Captain</h2>
+                <span id="evm-post-subtitle" class="evm-post-subtitle">Class 10 Boy</span>
+                <span class="evm-post-instruction">· Tap Candidate or Press Blue Vote Button</span>
+              </div>
+              <div class="evm-header-right">
+                <span class="evm-select-badge">SELECT 1 BELOW</span>
+              </div>
+            </div>
+
+            <!-- EVM Candidate Rows Container (Dynamically fills vertical height) -->
+            <div id="evm-candidate-list" class="evm-candidate-list" role="radiogroup" aria-label="Candidates list">
+              <!-- Dynamically populated candidate strips -->
+            </div>
+
+            <!-- EVM Kiosk Navigation & Status Footer -->
+            <div class="evm-kiosk-footer">
+              <button type="button" id="evm-back-btn" class="btn btn-secondary">
+                ← Back
+              </button>
+              <div class="evm-footer-status">
+                <span id="evm-selection-status" class="evm-status-text">Select 1 candidate to proceed</span>
+              </div>
+              <button type="button" id="evm-next-btn" class="btn evm-next-action-btn" disabled>
+                Next Post →
+              </button>
+            </div>
           </div>
 
-          <div id="candidate-grid" class="role-sections-stack" aria-label="Bheeshma House role candidates"></div>
+          <!-- Step 3.5: EVM Review & Cast View -->
+          <div id="evm-review-view" class="evm-review-view" hidden>
+            <div class="panel-header">
+              <span class="badge badge-success">Review &amp; Confirmation</span>
+              <h2 class="panel-title">Review Your Selections</h2>
+              <p class="panel-subtitle">Review your chosen candidates for all 4 Bheeshma House roles below before casting your official vote.</p>
+            </div>
 
-          <div id="step3-error" class="alert-box alert-error" role="alert" hidden>
+            <div id="evm-review-grid" class="evm-review-grid">
+              <!-- Dynamically populated 4 cards -->
+            </div>
+
+            <div class="evm-review-footer">
+              <button type="button" id="evm-review-back-btn" class="btn btn-secondary">
+                ← Back: Edit Selections
+              </button>
+              <button type="button" id="evm-final-cast-btn" class="btn btn-primary btn-lg">
+                <span class="btn-text">Confirm &amp; Cast Vote &rarr;</span>
+                <span class="spinner" aria-hidden="true" hidden></span>
+              </button>
+            </div>
+          </div>
+
+          <div id="step3-error" class="alert-box alert-error" role="alert" hidden style="margin-top: 1rem;">
             <div class="alert-icon" aria-hidden="true">!</div>
             <div class="alert-body">
               <p class="alert-title">Unable to Record Vote</p>
@@ -213,21 +285,11 @@
             </div>
           </div>
 
-          <!-- Appears while selecting candidates; enables once all open roles are chosen -->
-          <div id="cast-action-bar" class="cast-action-bar" hidden>
-            <div class="selected-readout">
-              <span id="selected-progress-label" class="selected-label">Selected Candidates (0 / 4)</span>
-              <strong id="selected-candidate-name" class="selected-name">Select 1 candidate for each role above</strong>
-            </div>
-            <button type="button" id="cast-vote-btn" class="btn btn-primary btn-lg" disabled>
-              <span class="btn-text">Cast Vote</span>
-              <span class="spinner" aria-hidden="true" hidden></span>
-            </button>
-          </div>
-
-          <div class="step-footer-actions">
-            <button type="button" id="back-to-step2-btn" class="btn btn-secondary">Back</button>
-          </div>
+          <!-- Hidden legacy hooks for seamless compatibility -->
+          <button type="button" id="cast-vote-btn" hidden></button>
+          <div id="cast-action-bar" hidden></div>
+          <div id="candidate-grid" hidden></div>
+          <button type="button" id="back-to-step2-btn" hidden></button>
         </div>
 
         <!-- STEP 4: Vote Casted Confirmation & 2.5s Auto Reset -->
