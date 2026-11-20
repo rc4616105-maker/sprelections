@@ -39,6 +39,9 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 - **Unique Constraint (`ballots_one_accepted_per_voter_role_idx`) & Demo Re-test Resolution (`Houses/*/supabase-config.js`)**:
   - Automatically cancels prior accepted ballots for demo voter `0000` (and on re-vote retries) before inserting fresh ballots, eliminating PostgreSQL unique constraint violation `ballots_one_accepted_per_voter_role_idx`.
   - Added dedicated demo voter handler in `verifyVoter` granting full test access with all roles open.
+- **Expanded Full-Width Ballot Box & Unified Top Header Bar (`Houses/*/index.html`, `app.js`, `styles.css`)**:
+  - Moved House Title ("Bheeshma House") to the left side and Local Storage to the right side of a single unified top header bar, with the stepper navigation pills integrated in the center.
+  - Expanded the main voting card (`.page-shell.step-3-evm-active`) to `width: 98vw; max-width: 98vw; padding: 0.25rem 0.5rem`, providing massive breathing room and eliminating all cramped spacing on widescreen monitors.
 - **Full 6-House Deployment**:
   - Synchronized and verified across `bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, and `vishwamithra`.
 

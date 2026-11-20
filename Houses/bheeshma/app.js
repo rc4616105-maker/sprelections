@@ -611,7 +611,13 @@
     navbar.className = "evm-wizard-navbar";
     renderWizardFooter(navbar, posList, isReview);
 
-    el.candidateGrid.appendChild(stepperNav);
+    const headerSlot = document.getElementById("evm-header-stepper-slot");
+    if (headerSlot) {
+      headerSlot.innerHTML = "";
+      headerSlot.appendChild(stepperNav);
+    } else {
+      el.candidateGrid.appendChild(stepperNav);
+    }
     el.candidateGrid.appendChild(contentArea);
     el.candidateGrid.appendChild(navbar);
 

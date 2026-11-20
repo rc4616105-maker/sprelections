@@ -1501,8 +1501,9 @@ html, body {
    Full-Screen Post-by-Post Vertical EVM Ballot Unit (Zero Scroll, 100svh Filled)
    ========================================================================== */
 .page-shell.step-3-evm-active {
-  max-width: 1300px !important;
-  width: 96vw !important;
+  max-width: 98vw !important;
+  width: 98vw !important;
+  padding: 0.25rem 0.5rem 0.25rem !important;
   height: 100svh !important;
   min-height: 100svh !important;
   max-height: 100svh !important;
@@ -1512,7 +1513,41 @@ html, body {
 }
 
 .page-shell.step-3-evm-active .booth-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
   margin-bottom: 0.25rem !important;
+  padding: 0 0.5rem !important;
+  width: 100% !important;
+  gap: 1rem !important;
+  flex-shrink: 0 !important;
+}
+
+.page-shell.step-3-evm-active .brand-cluster {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  flex-shrink: 0 !important;
+}
+
+.page-shell.step-3-evm-active .house-eyebrow {
+  display: none !important;
+}
+
+.page-shell.step-3-evm-active .house-title {
+  font-size: 1.3rem !important;
+  margin: 0 !important;
+}
+
+.page-shell.step-3-evm-active .evm-header-stepper-slot {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 1 !important;
+}
+
+.page-shell.step-3-evm-active .booth-header-actions {
+  flex-shrink: 0 !important;
 }
 
 .page-shell.step-3-evm-active .house-title {
