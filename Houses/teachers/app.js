@@ -4,6 +4,15 @@
   const { houses, candidates, electionId } = window.TEACHER_BOOTH_DATA || { houses: [], candidates: [] };
   const totalAvailableRoles = houses.reduce((sum, h) => sum + (h.positions?.length || 0), 0);
 
+  const ELECTION_SYMBOLS = [
+    { name: "Torch", icon: "🔦" },
+    { name: "Book", icon: "📖" },
+    { name: "Rising Sun", icon: "🌅" },
+    { name: "Star", icon: "⭐" },
+    { name: "Shield", icon: "🛡️" },
+    { name: "Rocket", icon: "🚀" }
+  ];
+
   const state = {
     step: 1,
     verifiedTeacher: null,
@@ -439,23 +448,44 @@
           cardsHtml = `
             <div class="candidate-selection-grid">
               ${roleCands
-                .map((cand) => {
+                .map((cand, candIdx) => {
                   const isSelected = state.selectedByRole[roleKey]?.id === cand.id;
+                  const sym = cand.symbolObj || ELECTION_SYMBOLS[candIdx % ELECTION_SYMBOLS.length];
+                  const photoHtml = cand.photoPath || cand.photoUrl
+                    ? `<img src="${cand.photoPath || cand.photoUrl}" alt="${cand.fullName}" />`
+                    : `<span>${getInitials(cand.fullName)}</span>`;
+                  const subText = String(cand.admissionNo || "").startsWith("DEMO-")
+                    ? (cand.section || "")
+                    : (cand.className ? `Class ${cand.className} ${cand.section || ""}` : (cand.section || ""));
+
                   return `
-                    <button
-                      type="button"
-                      class="candidate-card-btn ${isSelected ? "is-selected" : ""}"
+                    <div
+                      class="evm-candidate-row ${isSelected ? "is-selected" : ""}"
+                      role="radio"
+                      aria-checked="${isSelected ? "true" : "false"}"
                       data-role-key="${roleKey}"
                       data-cand-id="${cand.id}"
                       data-house-code="${houseCode}"
                       data-pos-id="${role.id}"
                       data-pos-name="${role.title}"
                     >
-                      <div class="cand-check-indicator">✓</div>
-                      <h4 class="cand-name">${cand.fullName}</h4>
-                      <div class="cand-meta">${cand.className ? `Class ${cand.className}` : ""}${cand.section ? `-${cand.section}` : ""}</div>
-                      ${cand.tagline ? `<div class="cand-tagline">&ldquo;${cand.tagline}&rdquo;</div>` : ""}
-                    </button>
+                      <div class="evm-cand-avatar">${photoHtml}</div>
+                      <div class="evm-cand-info">
+                        <h3 class="evm-cand-name">${cand.fullName}</h3>
+                        <span class="evm-cand-sub">${subText}</span>
+                        ${cand.tagline ? `<span class="evm-cand-tagline">&ldquo;${cand.tagline}&rdquo;</span>` : ""}
+                      </div>
+                      <div class="evm-right-cluster">
+                        <div class="evm-symbol-badge" title="Election Symbol: ${sym.name}">
+                          <span class="evm-symbol-icon">${sym.icon}</span>
+                          <span class="evm-symbol-name">${sym.name}</span>
+                        </div>
+                        <span class="evm-led-lamp"></span>
+                        <button type="button" class="evm-vote-btn" tabindex="-1">
+                          ${isSelected ? "VOTED ✓" : "VOTE"}
+                        </button>
+                      </div>
+                    </div>
                   `;
                 })
                 .join("")}
@@ -489,8 +519,8 @@
       el.ballotContainer.appendChild(sec);
     });
 
-    // Attach click handlers to candidate selection cards
-    el.ballotContainer.querySelectorAll(".candidate-card-btn").forEach((btn) => {
+    // Attach click handlers to candidate selection EVM rows
+    el.ballotContainer.querySelectorAll(".evm-candidate-row").forEach((btn) => {
       btn.addEventListener("click", () => {
         const roleKey = btn.dataset.roleKey;
         const candId = btn.dataset.candId;
@@ -502,12 +532,19 @@
         if (!cand) return;
 
         // Deselect previous in this role
-        el.ballotContainer.querySelectorAll(`.candidate-card-btn[data-role-key="${roleKey}"]`).forEach((b) => {
+        el.ballotContainer.querySelectorAll(`.evm-candidate-row[data-role-key="${roleKey}"]`).forEach((b) => {
           b.classList.remove("is-selected");
+          b.setAttribute("aria-checked", "false");
+          const vBtn = b.querySelector(".evm-vote-btn");
+          if (vBtn) vBtn.textContent = "VOTE";
         });
 
-        // Select clicked card
+        // Select clicked row
         btn.classList.add("is-selected");
+        btn.setAttribute("aria-checked", "true");
+        const vBtn = btn.querySelector(".evm-vote-btn");
+        if (vBtn) vBtn.textContent = "VOTED ✓";
+
         state.selectedByRole[roleKey] = {
           houseCode,
           positionId: posId,

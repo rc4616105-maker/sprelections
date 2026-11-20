@@ -16,6 +16,18 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
+### 0. Teacher Universal Polling Booth EVM Candidate Strip UI Redesign (Nov 20, 2026)
+- **Authentic EVM Candidate Rows Across All 29 Positions (`Houses/teachers/app.js`, `Houses/teachers/styles.css`)**:
+  - Replaced the plain 3-column card grid with authentic horizontal EVM candidate rows (`.evm-candidate-row`) matching the exact look and feel of the student house kiosks.
+  - **Large Square Candidate Photo Avatar (`.evm-cand-avatar`)**: Displaying high-resolution candidate photo (`96px × 96px`) with 14px rounded borders and bold initials fallback.
+  - **Bold Candidate Identity Typography (`.evm-cand-name`, `.evm-cand-sub`, `.evm-cand-tagline`)**: Clean 1.55rem bold name, class/option details, and motto tagline.
+  - **Election Symbol Badge (`.evm-symbol-badge`)**: Prominent emoji symbol badge (🔦 Torch, 📖 Book, 🌅 Rising Sun, ⭐ Star, 🛡️ Shield, 🚀 Rocket) with icon and name.
+  - **Authentic Red LED Indicator Lamp (`.evm-led-lamp`)**: Hardware-style EVM lamp that turns glowing red upon candidate selection.
+  - **Interactive 3D Vote Action Button (`.evm-vote-btn`)**: Blue "VOTE" button that changes into green "VOTED ✓" with 3D press shadow and mint selection highlight (`#f0fdf4`, `#86efac`).
+  - **Container & Card Width Enhancement**: Expanded `.page-shell.step-3-active` to `max-width: 1180px` and styled `.role-block` with 18px rounded borders and crisp section separation.
+- **Cache Busting**:
+  - Bumped `styles.css?v=1025` and `app.js?v=1025` in `Houses/teachers/index.html`.
+
 ### 0. Universal Voter Cross-House Eligibility & Per-Booth Single-Vote Enforcement (Nov 20, 2026)
 - **Universal Voter Multi-Booth Voting Enabled (`Houses/*/supabase-config.js`)**:
   - Configured Universal Voters (`0000` Universal Demo, Teaching Faculty IDs 6001–6087, and `houseCode === "ALL"`) to possess legitimate access across **all 7 polling booths** (Bheeshma, Gurudrona, Hanuman, Karna, Vasistha, Vishwamithra, and Central/Teachers Universal Station).
