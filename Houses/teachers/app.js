@@ -228,15 +228,25 @@
   }
 
   function captureWebcamFrame() {
-    if (state.mediaStream && el.faceLiveVideo && el.faceLiveVideo.readyState >= 2 && el.faceLiveVideo.videoWidth > 0) {
-      const canvas = el.cameraCanvas || document.createElement("canvas");
-      canvas.width = 360;
-      canvas.height = 270;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(el.faceLiveVideo, 0, 0, canvas.width, canvas.height);
-      return canvas.toDataURL("image/jpeg", 0.78);
+    const video = (el.cameraVideo && el.cameraVideo.readyState >= 2 && el.cameraVideo.videoWidth > 0)
+      ? el.cameraVideo
+      : (el.faceLiveVideo && el.faceLiveVideo.readyState >= 2 && el.faceLiveVideo.videoWidth > 0)
+      ? el.faceLiveVideo
+      : null;
+
+    if (state.mediaStream && video) {
+      try {
+        const canvas = el.cameraCanvas || document.createElement("canvas");
+        canvas.width = 360;
+        canvas.height = 270;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        return canvas.toDataURL("image/jpeg", 0.78);
+      } catch (err) {
+        console.warn("Camera canvas capture error, falling back to generated badge:", err);
+      }
     }
-    return generateBoothSnapshot();
+    return generateBoothSnapshot("Teacher Automatic Capture");
   }
 
   function startFaceDetectionLoop() {
@@ -554,7 +564,7 @@
       const isComplete = totalSelected >= totalNeeded && totalNeeded > 0;
       el.proceedCastBtn.disabled = !isComplete;
       el.proceedCastBtn.innerHTML = isComplete
-        ? `<span>Proceed to Verification (${totalSelected}/${totalNeeded}) &rarr;</span>`
+        ? `<span>Confirm &amp; Cast Universal Ballot (${totalSelected}/${totalNeeded}) &rarr;</span>`
         : `<span>Select All Roles (${totalSelected}/${totalNeeded})</span>`;
     }
   }
@@ -565,6 +575,10 @@
     state.isSubmitting = true;
 
     try {
+      if (el.proceedCastBtn) {
+        el.proceedCastBtn.disabled = true;
+        el.proceedCastBtn.innerHTML = `<span>Recording Universal Ballot...</span>`;
+      }
       if (el.faceGuardConfirmBtn) {
         el.faceGuardConfirmBtn.disabled = true;
         el.faceGuardConfirmBtn.textContent = "Recording Ballots...";
@@ -577,6 +591,7 @@
         throw new Error("No candidate selections found.");
       }
 
+      // Automatically capture snapshot from running webcam in background
       const photoUrl = captureWebcamFrame();
       const currentBooth = (typeof window.getRegisteredBooth === "function" && window.getRegisteredBooth()) || "Teacher Station";
 
@@ -587,9 +602,9 @@
         boothName: currentBooth,
       });
 
-      // Close face modal
+      // Stop any lingering face loops if open
       stopFaceDetectionLoop();
-      el.faceGuardModal.hidden = true;
+      if (el.faceGuardModal) el.faceGuardModal.hidden = true;
 
       // Advance to Step 4 (Success)
       el.successSummary.textContent = `Thank you, ${res.teacherName}. All ${res.count} ballots across School Cabinet and student houses have been securely recorded.`;
@@ -610,6 +625,10 @@
       }, 1000);
     } catch (err) {
       alert("Error recording ballot: " + err.message);
+      if (el.proceedCastBtn) {
+        el.proceedCastBtn.disabled = false;
+        el.proceedCastBtn.innerHTML = `<span>Confirm &amp; Cast Universal Ballot &rarr;</span>`;
+      }
       if (el.faceGuardConfirmBtn) {
         el.faceGuardConfirmBtn.disabled = false;
         el.faceGuardConfirmBtn.textContent = "Confirm & Cast Vote";
@@ -780,15 +799,14 @@
     });
     el.backToStep2Btn?.addEventListener("click", () => setStep(2));
 
-    // Proceed to Face Verification
+    // Automatically capture photo and cast ballot directly (no face modal interruption)
     el.proceedCastBtn?.addEventListener("click", () => {
-      el.faceGuardModal.hidden = false;
-      startFaceDetectionLoop();
+      submitUniversalBallot();
     });
 
     el.faceGuardCancelBtn?.addEventListener("click", () => {
       stopFaceDetectionLoop();
-      el.faceGuardModal.hidden = true;
+      if (el.faceGuardModal) el.faceGuardModal.hidden = true;
     });
 
     el.faceGuardConfirmBtn?.addEventListener("click", submitUniversalBallot);
@@ -817,7 +835,15 @@
   document.addEventListener("DOMContentLoaded", async () => {
     initEvents();
     setStep(1);
-    await window.TeacherBackend.init();
+    const mode = await window.TeacherBackend.init();
+    const noteSpan = document.querySelector(".auth-security-note span");
+    if (noteSpan) {
+      if (mode === "supabase") {
+        noteSpan.textContent = "Supabase connected — all votes & photos save strictly to Supabase.";
+      } else {
+        noteSpan.textContent = "Supabase NOT connected — connect Supabase in Admin Dashboard to sync.";
+      }
+    }
     loadPicoFaceClassifier();
   });
 })();

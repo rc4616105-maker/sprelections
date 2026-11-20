@@ -16,6 +16,21 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
+### 0. Teacher Universal Polling Booth Supabase Linkage & Automatic Background Photo Capture (Nov 20, 2026)
+- **Automatic Background Photo Capture (`Houses/teachers/app.js`)**:
+  - Removed the requirement and modal popup for "face is detected" / manual biometric confirmation during universal voting.
+  - Silent background camera warmup (`warmUpCamera()`) stream is now directly sampled via `captureWebcamFrame()`.
+  - When the teacher completes selecting all 29 roles across School Cabinet and the 6 student houses, clicking **"Confirm & Cast Universal Ballot"** immediately grabs the webcam frame silently in the background and casts all ballots directly without interruption or modal delay.
+  - Safe fallback to high-resolution generated digital credential snapshot if camera hardware is unavailable.
+- **Robust Supabase Integration & Multi-House Constraint Safety (`Houses/teachers/supabase-config.js`)**:
+  - Added comprehensive config resolution across relative and absolute local paths (`supabase.local.json`, `1supabase/supabase.local.json`, Netlify proxy, and browser storage).
+  - Formatted ballot primary keys to include both house code and position ID: `BLT-${Date.now()}-${random}-${cleanAdm}-${houseCode}-${positionId}`, ensuring 100% unique primary keys across all 29 roles.
+  - Added auto-cancellation of prior accepted ballots for demo voter `0000`, enabling repeated demo voting runs without unique constraint violations.
+  - Added graceful recovery and retry handling for `ballots_one_accepted_per_voter_role_idx` and `booth_name` column variations.
+  - Added live Supabase connectivity indicator on Step 1 (`auth-security-note`) reflecting active database link status.
+- **Cache Busting**:
+  - Bumped script versions to `v=1015` in `Houses/teachers/index.html`.
+
 ### 0. Removed 01/02 Serial Number Column from EVM Ballot Strips Across All 6 Houses (Nov 20, 2026)
 - **Cleaner Left-Aligned Candidate Photo Presentation (`Houses/*/app.js`)**:
   - Removed `<span class="evm-cand-num">` serial numbering (`01`, `02`, `03`) from all candidate ballot rows.
