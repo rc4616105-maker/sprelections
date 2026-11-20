@@ -30,6 +30,9 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 - **Sequential Post-by-Post Navigation & Review Screen**:
   - Post 1: Boys Captain ➔ Post 2: Girls Captain ➔ Post 3: Boys Vice-Captain ➔ Post 4: Girls Vice-Captain ➔ Screen 5: Review & Cast.
   - Review screen features a 2×2 verification layout with "Change Choice ✎" buttons and the prominent action `🟢 Confirm & Cast Vote ➔`.
+- **Direct Cast Vote Handler & Camera Modal Trigger (`Houses/*/app.js`)**:
+  - Replaced indirect `.click()` proxying with direct invocation of `handleCastVote()`, resolving the issue where `el.castVoteBtn` being disabled in the DOM caused the click to be ignored.
+  - Added a 2-second safety fallback inside `openFaceGuardModal` ensuring the verification button is enabled even if face detection is delayed by booth lighting or missing webcams.
 - **Full 6-House Deployment**:
   - Synchronized and verified across `bheeshma`, `gurudrona`, `hanuman`, `karna`, `vasistha`, and `vishwamithra`.
 

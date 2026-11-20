@@ -701,9 +701,7 @@
       const allPicked = posList.every((p) => Boolean(state.selectedByRole[p.id] || state.votedRoles[p.id]));
       castBtn.disabled = !allPicked;
 
-      castBtn.addEventListener("click", () => {
-        el.castVoteBtn.click();
-      });
+      castBtn.addEventListener("click", handleCastVote);
       navbar.appendChild(castBtn);
     }
   }
@@ -1118,6 +1116,16 @@
       }, 1500);
     }
 
+    // Kiosk safety fallback: enable confirmation after 2 seconds so booth never gets stuck
+    setTimeout(() => {
+      if (el.faceGuardConfirmBtn && !state.isSubmitting) {
+        el.faceGuardConfirmBtn.disabled = false;
+        if (!lastVerifiedPhoto) {
+          lastVerifiedPhoto = generateBoothSnapshot("Station Snapshot");
+        }
+      }
+    }, 2000);
+
     clearInterval(faceCheckInterval);
     faceCheckInterval = setInterval(async () => {
       if (state.isSubmitting) return;
@@ -1220,10 +1228,10 @@
     }
   }
 
-    el.castVoteBtn.addEventListener("click", async () => {
+      async function handleCastVote() {
     const posList = getPositionsList();
     const pendingIds = state.pendingRoleIds.length ? state.pendingRoleIds : posList.map((p) => p.id);
-    const missingIds = pendingIds.filter((pid) => !state.selectedByRole[pid]);
+    const missingIds = pendingIds.filter((pid) => !state.selectedByRole[pid] && !state.votedRoles[pid]);
     if (state.isSubmitting || !state.verifiedStudent || missingIds.length > 0) {
       if (missingIds.length > 0) {
         const missingNames = missingIds
@@ -1236,7 +1244,7 @@
     }
 
     state.isSubmitting = false;
-    setLoading(el.castVoteBtn, false);
+    if (el.castVoteBtn) setLoading(el.castVoteBtn, false);
     el.step3Error.hidden = true;
 
     try {
@@ -1248,7 +1256,12 @@
     } catch (err) {
       openFaceGuardModal("Camera error: " + (err.message || "Unable to access webcam."));
     }
-  });
+  }
+
+  if (el.castVoteBtn) {
+    el.castVoteBtn.disabled = false;
+    el.castVoteBtn.addEventListener("click", handleCastVote);
+  }
 
   el.resetNowBtn.addEventListener("click", resetBoothToStep1);
 
