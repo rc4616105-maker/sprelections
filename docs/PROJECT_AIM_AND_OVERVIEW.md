@@ -45,6 +45,14 @@ Voted exclusively by teaching faculty at the Central Booth ([Houses/central/inde
 
 ---
 
+### C. Teacher Universal Polling Booth (All-in-One 29-Role Ballot)
+To provide faculty and teachers with a seamless voting experience, a dedicated **Teacher Universal Polling Booth** (`Houses/teachers/index.html`) is provided:
+- **Electorate**: Teachers & Faculty ONLY (Voter IDs `6001`–`6087`, plus universal demo ID `0000`).
+- **Scope**: Combines all **5 School Cabinet** leadership posts and all **24 House Leadership** posts (4 roles across Bheeshma, Gurudrona, Hanuman, Karna, Vasistha, and Vishwamithra).
+- **Consolidated Flow**: Instead of visiting 7 distinct polling booths, teachers cast their complete 29-role vote in a single continuous session with interactive category navigation and a single face verification capture.
+
+---
+
 ## Electorate Demographics
 
 The total electorate comprises **966 registered voters**:

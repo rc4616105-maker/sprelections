@@ -16,7 +16,90 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
-### 0. House-Wise Storage Isolation, Confidential Winner Results & Delayed Loading Spinner (Nov 17, 2026)
+### 0. Teacher Universal Polling Booth Layout Harmonization & Full Backend Completion (`Houses/teachers/`) (Nov 20, 2026)
+- **Harmonized Card Layout & Design Proportions (`Houses/teachers/styles.css` & `index.html`)**:
+  - Matched the clean, compact proportions of `Houses/bheeshma/`:
+    - Updated `.page-shell` to `max-width: 920px; min-height: 100svh; display: flex; flex-direction: column; justify-content: center;` for Steps 1, 2, and 4.
+    - Added dynamic `.page-shell.step-3-active` expanding smoothly to `max-width: 1040px` with `justify-content: flex-start` when navigating the 29-role multi-house ballot in Step 3.
+    - Updated `.booth-card` with `border-top: 5px solid var(--accent-teacher); border-radius: 20px; padding: clamp(1.85rem, 3.8vw, 2.85rem); min-height: 360px; box-shadow: var(--shadow-card);` removing excessive vertical stretch (`flex: 1`).
+    - Redesigned the barcode scanner presentation: white circular radar ring with drop shadow, glowing red laser sweep animation (`#ef4444`), and `Plug & Play Scanner Active (Listening)` badge.
+    - Added security note: `<p class="auth-security-note"><span>Supabase connected — all votes &amp; photos save strictly to Supabase.</span></p>`.
+- **4-Channel USB Barcode Scanner Gun Architecture (`Houses/teachers/app.js`)**:
+  - Implemented the robust 4-channel scanner system from Bheeshma:
+    - *Channel 1:* Dedicated hidden stream input with debounce & `Enter`/`Tab` key handling.
+    - *Channel 2:* Click-anywhere / window focus / visibility auto-focusing on scanner input during Step 1.
+    - *Channel 3:* Rapid burst detection on manual input field that auto-submits if the handheld scanner gun is triggered on the manual tab.
+    - *Channel 4:* Global window `keydown` buffer accumulator catching rapid barcode scanner bursts even if browser focus was lost.
+- **Supabase Backend Ballot Insertion & Auth Fix (`Houses/teachers/supabase-config.js`)**:
+  - Fixed ballot submission failure: removed `booth_name` column from `ballotDocs` payload (as `ballots` table schema cache does not have `booth_name`), plus added try/catch fallback stripping `booth_name` to prevent HTTP 400 errors.
+  - Added full token authentication support in `sbHeaders()` for both secret keys (`sb_secret_...`) and JWT tokens (`eyJ...`).
+  - Added support for `saved.anonKey`, `saved.secretKey`, or `saved.key` in `readBrowserSupabaseConfig()`.
+  - Implemented resilient teacher voter status update in `public.voters`: checks if teacher exists, creates or patches record with `final_status = "Voted"`, `voted_for = "29 Roles Cast"`, and snapshot URL.
+  - Added non-blocking audit logging to `public.audit_logs`.
+- **Delayed Fullscreen Loading Spinner Overlay**:
+  - Added `#loading-overlay` HTML and CSS with emerald spinner circle for smooth visual feedback while 29 ballots and photo snapshot are committed to Supabase.
+- **Standalone School Cabinet Card Removal & Clean Redirect**:
+  - Cleaned up whitespace in `Houses/index.html` where School Cabinet was removed.
+  - Replaced `Houses/central/index.html` with an automatic, immediate redirect (`<meta http-equiv="refresh">` and `window.location.replace`) to `../teachers/index.html`.
+
+### 0. Teacher Universal All-in-One Polling Booth Launch (`Houses/teachers/`) (Nov 20, 2026)
+- **Unified Faculty Polling System**:
+  - Implemented `Houses/teachers/` containing dedicated `index.html`, `app.js`, `styles.css`, `supabase-config.js`, and `data.js`.
+  - Solved faculty workflow challenge: Teachers can now vote for the **School Cabinet (5 roles)** and **All 6 Student Houses (24 roles)** simultaneously in a single 29-position ballot session, removing the need to navigate 7 separate booths.
+  - Interactive sticky category navigation with live per-house progress indicators (`0/5`, `0/4`) and floating action bar (`Selected: X / 29 roles`).
+  - Face Verification & Audit: Client-side Pico.js face detection guard capturing a single photo snapshot upon ballot confirmation.
+  - Supabase Integration: Atomic batch insertion of all 29 ballot choices into `public.ballots` and marking `final_status = 'Voted'` in `public.voters`.
+  - Portal Integration: Added high-visibility launcher card on `Houses/index.html` and a direct-switch banner on `Houses/central/index.html`.
+  - Synchronized documentation across `docs/README.md`, `docs/PROJECT_AIM_AND_OVERVIEW.md`, `docs/VOTING_KIOSKS_AND_BIOMETRICS.md`, and `docs/CURRENT_PROGRESS_AND_CHANGELOG.md`.
+
+### 1. Vasistha House Supabase Linking & Secret Key Auth Fix across All Kiosks (Nov 18, 2026 - Late Night)
+- **Vasistha House Supabase Sync Resolution (`Result declaration/js/data.js` & `supabase-sync.js`)**:
+  - Identified root cause of Vasistha displaying mock names (`Aditya Hegde`, etc.) rather than live Supabase candidates: `DEFAULT_HOUSES` in `data.js` had a typographic house identifier `id: "vasishta"` (with `sh`), whereas Supabase schema, table constraints, and kiosks strictly use `VASISTHA` (with `st`).
+  - Corrected `id: "vasistha"` in `Result declaration/js/data.js` and implemented case-insensitive alias normalization (`VASISHTA` -> `VASISTHA`) in `supabase-sync.js` and `app.js`.
+  - Bumped localStorage state key to `SCHOOL_ELECTION_2026_CUSTOM_DATA_V5` and auto-normalized any legacy cached records.
+  - Vasistha candidates (`Candidate A / B / C` across all 4 positions) and accepted ballots now seamlessly query and hydrate from live Supabase in real-time.
+- **Universal Secret & Publishable Key Authentication Header Support (`Houses/*/supabase-config.js`)**:
+  - Updated `sbHeaders` across all 7 kiosks (`vasistha`, `bheeshma`, `gurudrona`, `hanuman`, `karna`, `vishwamithra`, `central`) and `admin`:
+  - Supabase requires `Authorization: Bearer <token>` when using secret tokens (`sb_secret_...`) as well as JWT tokens (`eyJ...`).
+  - Added `String(key).startsWith("sb_secret_")` check alongside `eyJ`, ensuring seamless REST and storage authentication under both publishable anon keys and secret service role keys.
+- **Dual Workspace Synchronization**:
+  - Full codebase mirrored and tested across Primary Workspace (`C:\Users\Abhinav\Documents\Election Spr 2026`) and USB Drive (`F:\Election Spr 2026`).
+
+### 0.1. Two-Phase Result Declaration Ceremony, Dedicated School Cabinet Wheel & Direct Final Reveal (Nov 18, 2026)
+- **Two-Phase Ceremony Architecture (`Result declaration/js/app.js` & `scratch.js`)**:
+  - **Phase 1: House Councils Declaration:** The ceremony begins with the 6 House Selection Wheel (`Bheeshma`, `Gurudrona`, `Hanuman`, `Karna`, `Vasistha`, `Vishwamithra`). When the wheel lands on a house, an arena with 4 leadership post scratch cards opens (Boys Captain, Girls Captain, Boys VC, Girls VC).
+  - **House Leadership Finale View:** When all 6 houses are revealed, the House Leadership Finale opens displaying solely the 6 House panels. The School Cabinet (Central Council) apex card is deliberately deferred.
+  - **Prominent School Cabinet Launch Banner (`#cabinetLaunchBanner`):** A gold/emerald leadership banner prompts: *"House Council Results Complete! Ready to reveal the School Cabinet? Spin the Central Selection Wheel to declare President, Vice President & Secretaries"* with an action button `Reveal School Cabinet Posts ➔`.
+  - **Phase 2: School Cabinet Wheel & Apex Posts Reveal:** Clicking the launch banner transitions to Phase 2, populating the canvas wheel with the 5 Apex Central Council posts (`School President` [Class 10], `School Vice President` [Class 9], `Literary Secretary` [Class 9], `Sports Secretary` [Class 9], and `Social & Cultural Secretary` [Class 9]) in their distinctive vibrant colors (`#059669`, `#0D9488`, `#7C3AED`, `#EA580C`, `#D97706`).
+  - **Centerpiece Single Post Scratch Arena (`.cabinet-single-mode`):** Spinning the Cabinet wheel selects an apex post and guides to a centered centerpiece metallic foil scratch card. Scratched with touch/mouse (140px broad brush, metallic audio, confetti, 70% pop-up celebration) to unveil the elected winner, class, and vote tally from live Supabase ballots.
+  - **Zero-Scroll Direct Final Reveal:** When only 1 house or 1 cabinet post remains, clicking the forward button directly opens the final scratch card arena with zero wheel rotation or page scrolling.
+  - **Complete Grand Finale:** Only after all 5 cabinet posts are declared does the Complete Grand Finale view open, showcasing the full-width **🏛️ School Cabinet (Central Council)** apex leadership panel at the very top, followed by all 6 House panels below.
+- **Instant Frame-1 Wheel Canvas & Hub Button Rendering:**
+  - Removed async `await` blocking during `ElectionApp.init()`. The canvas wheel and center SPIN button render synchronously in <10ms on frame 1 without delay or layout shifting. Supabase live tallies hydrate silently in the background.
+- **Clean Topbar Header (`Result declaration/index.html`):**
+  - Removed `● Live Supabase Sync` pill and replaced text `← Admin Console` with a sleek, circular SVG back-arrow button (`.nav-btn-admin.nav-back-arrow`).
+- **Synchronized Workspaces:**
+  - All additions and modifications deployed and verified across both Primary Workspace (`C:\Users\Abhinav\Documents\Election Spr 2026`) and USB External Copy (`F:\Election Spr 2026`).
+
+### 0.1. Live Supabase Result Declaration Ceremony & Universal Staff Voting Architecture (Nov 18, 2026)
+- **Live Supabase Results Integration (`Result declaration/js/supabase-sync.js`)**:
+  - Connected the standalone interactive Result Declaration Ceremony (`Result declaration/index.html`) directly to the live Supabase database.
+  - Queries `ballots?status=eq.accepted` and approved `candidates` to dynamically calculate real-time vote tallies for all 4 roles across all 6 Houses (`Bheeshma`, `Gurudrona`, `Hanuman`, `Karna`, `Vasistha`, `Vishwamithra`).
+  - Automatically sets winner details (full name, grade pill, photo URL, vote count, tied status) on scratch cards and Grand Finale table.
+  - Computes School Cabinet (Central Council) winners (President, Vice President, Literary Sec, Sports Sec, Social/Cultural Sec) and renders a commanding full-width apex leadership showcase banner in the Grand Finale view.
+  - Shows real-time connection badge in top navbar (`● Live Supabase Sync (X Votes)` vs `○ Offline Mode`) and navigation link `← Admin Console`.
+- **Replaced Admin "Refresh Now" with 1-Click "🎉 Result Declaration" (`Houses/admin/index.html`)**:
+  - Replaced the redundant "Refresh Now" button with a direct link to `../../Result declaration/index.html`.
+  - Background live polling (`Live Sync (2s)`) in Admin already executes automatically every 2 seconds via `setInterval(refreshAll, 2000)`.
+  - Guarded `el.refreshBtn` in `Houses/admin/app.js` against null to ensure error-free operation.
+- **Universal Teaching Staff Multi-House & Central Voting Architecture (`Houses/*/supabase-config.js` & `app.js`)**:
+  - Implemented teacher identification: `isStaff === true`, `houseCode === "ALL"`, `0000`, or IDs `6001`–`6087`.
+  - Teaching staff members are authorized to cast ballots across all 6 House polling booths AND the School Cabinet booth (`Central`) up to 7 separate times (29 total leadership positions).
+  - Scoped ballot duplicate verification strictly by `b.house_code === requestedHouseCode` for teachers, ensuring voting in one house never falsely locks out another booth.
+  - Bypassed global `final_status === "Voted"` blocks for faculty, accurately tracking multi-house progress (*e.g., `Voted (1/7 Houses)`* up to `Voted`).
+  - Strict single-house security remains 100% enforced for students: students cannot vote in other houses or in the Central booth.
+
+### 0.1. House-Wise Storage Isolation, Confidential Winner Results & Delayed Loading Spinner (Nov 17, 2026)
 - **House-Wise Pendrive & Local Storage Isolation (`getHouseDirectory`):**
   - Resolved directory nesting issue where individual student voter folders (*e.g., `0000_Demo_User`, `7016_SAMANTHVIKA_LANDE`*) and house summary files were saving loose in the root folder of the selected drive.
   - Implemented `getHouseDirectory(rootHandle, meta)` across all 7 kiosks (`Houses/*/supabase-config.js`) and Admin (`Houses/admin/supabase-config.js`).

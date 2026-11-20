@@ -47,6 +47,7 @@ The entire voting platform is built as a **pure static web application with zero
    - **Vasistha House Booth:** [`http://127.0.0.1:5500/Houses/vasistha/index.html`](http://127.0.0.1:5500/Houses/vasistha/index.html)
    - **Vishwamithra House Booth:** [`http://127.0.0.1:5500/Houses/vishwamithra/index.html`](http://127.0.0.1:5500/Houses/vishwamithra/index.html)
    - **School Cabinet (Teacher-Only Booth):** [`http://127.0.0.1:5500/Houses/central/index.html`](http://127.0.0.1:5500/Houses/central/index.html)
+   - **Teacher Universal Booth (All Houses & Cabinet at Once):** [`http://127.0.0.1:5500/Houses/teachers/index.html`](http://127.0.0.1:5500/Houses/teachers/index.html)
 3. **Access Administration Portals:**
    - **Admin Live Dashboard:** [`http://127.0.0.1:5500/Houses/admin/index.html`](http://127.0.0.1:5500/Houses/admin/index.html)
    - **Edit & Manage Votes (Secret Ballot 1-Row Register):** [`http://127.0.0.1:5500/Houses/admin/edit-votes.html`](http://127.0.0.1:5500/Houses/admin/edit-votes.html)

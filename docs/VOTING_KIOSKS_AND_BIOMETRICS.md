@@ -117,3 +117,32 @@ When the voter clicks **Cast Vote**, the kiosk activates the Face Verification G
   - Clears all candidate selections.
   - Stops the camera media stream tracks.
   - Resets state and returns to **Step 1: Scan Barcode** for the next student in line.
+
+
+---
+
+## Special Kiosk: Teacher Universal Polling Booth (`Houses/teachers/`)
+
+To streamline faculty voting, the **Teacher Universal Booth** (`Houses/teachers/index.html`) eliminates the friction of teachers having to visit 7 separate booths:
+
+1. **Authentication (Step 1)**:
+   - Accepts teacher barcodes or manual IDs (`6001`–`6087`, demo `0000`).
+   - Rejects student IDs with clear messaging that students must vote at their respective house booths.
+   - Enforces single-voting constraint (checks Supabase and local storage for prior voting records).
+
+2. **Unified Ballot Interface (Step 3)**:
+   - Presents all **29 electoral positions** across 7 category sections:
+     - **School Cabinet** (5 roles)
+     - **Bheeshma House** (4 roles)
+     - **Gurudrona House** (4 roles)
+     - **Hanuman House** (4 roles)
+     - **Karna House** (4 roles)
+     - **Vasistha House** (4 roles)
+     - **Vishwamithra House** (4 roles)
+   - Features **sticky category jump tabs** with per-house completion badges (`0/5`, `4/4`, etc.).
+   - Includes a **floating bottom action bar** tracking total progress (`Selected: X / 29 roles`) and providing a quick link to review unselected positions before casting.
+
+3. **Biometric Face Verification & Batch Cast**:
+   - Single Pico.js face detection loop captures an audit photograph.
+   - Submits all 29 cast votes to Supabase `ballots` table in a single atomic batch transaction.
+   - Marks the faculty member's accreditation status as `Voted` in Supabase `voters` table and localStorage.

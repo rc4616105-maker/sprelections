@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" data-house="teachers" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher Universal Polling Booth — School Elections 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <div class="page-shell">
+    <header class="booth-header">
+      <div class="brand-cluster">
+        <div class="house-eyebrow">Universal Faculty Voting Station</div>
+        <h1 id="house-title-btn" class="house-title" title="Tap to toggle Fullscreen">Teacher Polling Booth</h1>
+      </div>
+      <div class="booth-header-actions">
+        <div id="booth-station-badge" class="booth-badge"
+          style="font-size:0.84rem; padding:0.4rem 0.85rem; border:1px solid #e5dccb; border-radius:9999px; background:#fffdf9;">
+          📍 Booth: <strong id="booth-station-name">Teacher Station</strong>
+        </div>
+        <div id="local-storage-slot"></div>
+        <a href="../graphs.html" class="btn btn-secondary"
+          style="padding:0.45rem 0.95rem; font-size:0.86rem; border-radius:9999px; text-decoration:none;">Graphs</a>
+      </div>
+    </header>
+
+    <main class="booth-main">
+      <!-- Progress Stepper -->
+      <ol class="stepper" aria-label="Voting steps">
+        <li class="step-pill is-active" data-step-indicator="1">
+          <span class="step-num">1</span>
+          <span class="step-label">Teacher Card</span>
+        </li>
+        <li class="step-pill" data-step-indicator="2">
+          <span class="step-num">2</span>
+          <span class="step-label">Faculty Identity</span>
+        </li>
+        <li class="step-pill" data-step-indicator="3">
+          <span class="step-num">3</span>
+          <span class="step-label">All-in-One Ballot</span>
+        </li>
+        <li class="step-pill" data-step-indicator="4">
+          <span class="step-num">4</span>
+          <span class="step-label">Recorded</span>
+        </li>
+      </ol>
+
+      <!-- Hidden background camera elements -->
+      <video id="camera-video" autoplay playsinline muted
+        style="position:fixed; opacity:0.001; pointer-events:none; width:320px; height:240px;"></video>
+      <canvas id="camera-canvas" width="320" height="240" hidden></canvas>
+
+      <!-- Main Voting Card -->
+      <section class="booth-card">
+        <!-- STEP 1: Scanner / Teacher ID -->
+        <div id="step-1" class="step-panel">
+          <div class="panel-header">
+            <span class="badge"
+              style="background:#ecfdf5; color:#047857; font-weight:800; border:1px solid #a7f3d0; padding:0.3rem 0.75rem; border-radius:9999px; font-size:0.82rem;">🎓
+              Faculty &amp; Staff Exclusive</span>
+            <h2 class="panel-title">Teacher Voter Verification</h2>
+            <p class="panel-subtitle">Scan your Teacher Voter Card barcode or enter your Faculty ID to begin.</p>
+          </div>
+
+          <!-- Dual Verification Modes -->
+          <div class="voter-auth-tabs">
+            <button type="button" id="tab-scan-mode" class="voter-tab-btn is-active">
+              <img src="./scanner-gun.png" alt="" class="tab-gun-img" />
+              <span>Scan Barcode</span>
+              <span id="scanner-active-dot" class="scanner-dot is-active"></span>
+            </button>
+            <button type="button" id="tab-manual-mode" class="voter-tab-btn">
+              <span>⌨️</span>
+              <span>Enter Faculty ID</span>
+            </button>
+          </div>
+
+          <!-- Pane 1: Barcode Scanner -->
+          <div id="pane-barcode-scan" class="auth-pane">
+            <div class="scanner-kiosk-box">
+              <input id="barcode-scanner-stream" type="text" autocomplete="off" class="scanner-stream-input"
+                aria-label="Barcode scanner input receiver" />
+              <div class="scanner-radar-ring">
+                <div class="scanner-laser-bar"></div>
+                <div class="scanner-icon-cluster">
+                  <svg class="barcode-svg-icon" viewBox="0 0 54 36" fill="currentColor">
+                    <rect x="2" y="4" width="3" height="28" rx="1" />
+                    <rect x="7" y="4" width="2" height="28" />
+                    <rect x="11" y="4" width="4" height="28" rx="1" />
+                    <rect x="17" y="4" width="2" height="28" />
+                    <rect x="21" y="4" width="6" height="28" rx="1" />
+                    <rect x="29" y="4" width="2" height="28" />
+                    <rect x="33" y="4" width="4" height="28" rx="1" />
+                    <rect x="39" y="4" width="2" height="28" />
+                    <rect x="43" y="4" width="5" height="28" rx="1" />
+                    <rect x="50" y="4" width="2" height="28" />
+                  </svg>
+                </div>
+              </div>
+
+              <h3 class="scanner-kiosk-title">Ready for Barcode Scan</h3>
+              <p class="scanner-kiosk-subtitle">
+                Point your handheld USB scanner gun at the Teacher / Staff Voter Card and pull the trigger.
+              </p>
+
+              <div class="scanner-status-pill-wrap">
+                <div class="scanner-status-pill is-ready">
+                  <span class="status-pulse-dot"></span>
+                  <span>Plug &amp; Play Scanner Active (Listening)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pane 2: Manual Voter ID Entry -->
+          <div id="pane-manual-entry" class="auth-pane" hidden>
+            <form id="admission-form" novalidate>
+              <div class="form-group">
+                <label for="admission-input" class="form-label">
+                  <span>Teacher / Faculty ID</span>
+                  <span style="font-family:var(--font-mono); color:var(--text-muted); font-size:0.8rem;">ID
+                    6001–6087</span>
+                </label>
+                <input id="admission-input" name="admissionNo" type="text" inputmode="numeric" autocomplete="off"
+                  placeholder="Enter Faculty ID (e.g. 6001, 6082)" class="form-control" required />
+              </div>
+
+              <button type="submit" id="verify-btn" class="btn btn-primary btn-block">
+                <span>Verify Faculty ID &rarr;</span>
+              </button>
+            </form>
+          </div>
+
+          <div id="step1-error" class="alert-box alert-error" hidden>
+            <div class="alert-icon">!</div>
+            <div>
+              <p id="step1-error-title" class="alert-title">Accreditation Error</p>
+              <p id="step1-error-msg" class="alert-message"></p>
+            </div>
+          </div>
+
+          <p class="auth-security-note">
+            <span>Supabase connected — all votes &amp; photos save strictly to Supabase.</span>
+          </p>
+        </div>
+
+        <!-- STEP 2: Confirm Teacher Identity -->
+        <div id="step-2" class="step-panel" hidden>
+          <div class="panel-header">
+            <span class="badge"
+              style="background:#ecfdf5; color:#047857; font-weight:800; border:1px solid #a7f3d0; padding:0.3rem 0.75rem; border-radius:9999px; font-size:0.82rem;">✓
+              Faculty Accredited</span>
+            <h2 class="panel-title">Confirm Faculty Identity</h2>
+            <p class="panel-subtitle">Review your teacher profile below and click <strong>Next</strong> to open the full
+              election ballot.</p>
+          </div>
+
+          <div class="voter-summary-card">
+            <div class="voter-avatar" id="voter-initials">TR</div>
+            <div class="voter-details">
+              <h3 id="voter-name" class="voter-name">Teacher Name</h3>
+              <p id="voter-meta" class="voter-meta">Subject / Faculty · SPR School of Excellence</p>
+              <div style="display:flex; gap:0.5rem; align-items:center;">
+                <span id="voter-id-badge" class="mono-pill">ID 6001</span>
+                <span class="badge"
+                  style="background:#e0e7ff; color:#3730a3; font-weight:700; font-size:0.75rem; padding:0.2rem 0.6rem; border-radius:9999px;">Universal
+                  Voter (29 Roles)</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; margin-top:1.5rem;">
+            <button type="button" id="back-to-step1-btn" class="btn btn-secondary">&larr; Back</button>
+            <button type="button" id="next-to-vote-btn" class="btn btn-primary">Next: Open All-in-One Ballot
+              &rarr;</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: All-in-One Ballot (Cabinet + 6 Houses) -->
+        <div id="step-3" class="step-panel" hidden style="padding-bottom: 5.5rem;">
+          <div class="panel-header">
+            <span class="badge"
+              style="background:#ecfdf5; color:#047857; font-weight:800; border:1px solid #a7f3d0; padding:0.3rem 0.75rem; border-radius:9999px; font-size:0.82rem;">29
+              Total Leadership Positions</span>
+            <h2 class="panel-title">Select Candidates for All Houses &amp; Cabinet</h2>
+            <p class="panel-subtitle">Use the house category tabs to easily jump between School Cabinet and student
+              houses. Select 1 candidate for each role.</p>
+          </div>
+
+          <!-- Sticky House Category Tabs -->
+          <div id="house-tabs-bar" class="house-tabs-bar">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <!-- Dynamic House Ballot Sections Container -->
+          <div id="universal-ballot-container">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <div style="display:flex; justify-content:flex-start; margin-top:1.5rem;">
+            <button type="button" id="back-to-step2-btn" class="btn btn-secondary">&larr; Back to Profile</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: Success / Confirmation -->
+        <div id="step-4" class="step-panel" hidden>
+          <div class="success-card">
+            <div class="success-check-ring">✓</div>
+            <span class="badge"
+              style="background:#ecfdf5; color:#047857; font-weight:800; padding:0.35rem 0.95rem; border-radius:9999px; font-size:0.88rem;">Ballot
+              Recorded</span>
+            <h2 class="panel-title" style="font-size:2rem; margin:0.75rem 0 0.5rem;">Votes Cast Successfully!</h2>
+            <p id="success-summary" class="panel-subtitle"
+              style="font-size:1.05rem; max-width:540px; margin:0 auto 1.5rem;">
+              Thank you. Your ballots across School Cabinet and student houses have been securely recorded into
+              Supabase.
+            </p>
+            <div
+              style="background:var(--bg-surface); padding:1rem; border-radius:12px; max-width:380px; margin:0 auto 1.5rem;">
+              <p id="reset-countdown-text"
+                style="font-size:0.9rem; font-weight:700; color:var(--text-secondary); margin:0;">
+                Station resets for next teacher in <strong>5</strong>s
+              </p>
+            </div>
+            <button type="button" id="reset-now-btn" class="btn btn-primary" style="margin:0 auto;">
+              <span>Ready for Next Teacher &rarr;</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Floating Sticky Action Bar for Step 3 -->
+    <div id="sticky-cast-bar" class="sticky-cast-bar" hidden>
+      <div class="sticky-cast-content">
+        <div class="sticky-progress-wrap">
+          <div class="sticky-progress-label">
+            <span>Overall Progress</span>
+            <strong id="sticky-progress-count">0 / 29 Roles Selected</strong>
+          </div>
+          <div class="sticky-progress-bar">
+            <div id="sticky-progress-fill" class="sticky-progress-fill"></div>
+          </div>
+        </div>
+        <button type="button" id="proceed-cast-btn" class="btn btn-primary"
+          style="padding:0.85rem 2rem; font-size:1.05rem;" disabled>
+          <span>Cast All Votes &rarr;</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Face Verification Guard Modal -->
+    <div id="face-guard-modal" class="face-guard-backdrop" hidden>
+      <div class="face-guard-card">
+        <span class="badge"
+          style="background:#ecfdf5; color:#047857; font-weight:800; padding:0.3rem 0.75rem; border-radius:9999px; font-size:0.8rem;">Edge
+          AI Biometrics</span>
+        <h3 style="font-family:var(--font-display); font-size:1.5rem; margin:0.4rem 0 0.25rem;">Face Verification</h3>
+        <p style="font-size:0.88rem; color:var(--text-secondary); margin:0 0 1rem;">Please look directly at the webcam
+          inside the oval guide to verify and record your vote.</p>
+
+        <div id="camera-guide-ring" class="camera-guide-ring">
+          <video id="face-live-video" class="camera-live-video" autoplay playsinline muted></video>
+        </div>
+
+        <div style="margin-bottom:1.25rem;">
+          <span id="face-status-label" class="badge"
+            style="background:#fef3c7; color:#92400e; font-weight:700; font-size:0.84rem; padding:0.4rem 0.95rem; border-radius:9999px;">
+            Detecting face...
+          </span>
+        </div>
+
+        <div style="display:flex; justify-content:center; gap:0.75rem;">
+          <button type="button" id="face-guard-cancel-btn" class="btn btn-secondary">Cancel</button>
+          <button type="button" id="face-guard-confirm-btn" class="btn btn-primary" disabled>Confirm &amp; Cast
+            Vote</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delayed Fullscreen Loading Circle Overlay -->
+  <div id="loading-overlay" class="loading-overlay" hidden aria-live="assertive" role="alert">
+    <div class="loading-box">
+      <div class="spinner-circle"></div>
+      <h3 class="loading-title" id="loading-overlay-title">Recording Universal Ballot...</h3>
+      <p class="loading-subtitle" id="loading-overlay-subtitle">Saving School Cabinet and House votes to Supabase...</p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/booth-session.js?v=1011"></script>
+  <script src="./data.js?v=1011"></script>
+  <script src="./pico.js?v=1011"></script>
+  <script src="./supabase-config.js?v=1011"></script>
+  <script src="./app.js?v=1011"></script>
+</body>
+
+</html>
