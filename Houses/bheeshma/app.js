@@ -259,11 +259,11 @@
     const stdDev = Math.sqrt(Math.max(0, variance));
 
     // Complete dark / finger taped over lens:
-    if (mean < 14) {
+    if (mean < 7.0) {
       return { ok: false, obstructed: true, reason: "Camera is completely covered or too dark. Please remove your hand from the lens." };
     }
     // Palm / hand pressed flat against the lens:
-    if (stdDev < 8.5) {
+    if (stdDev < 3.5) {
       return { ok: false, obstructed: true, reason: "Camera is blocked by hand or object. Please uncover the lens." };
     }
     return { ok: true, obstructed: false, mean, stdDev, imgData };
@@ -312,13 +312,13 @@
       const image = { pixels: gray, nrows: h, ncols: w, ldim: w };
       const params = {
         shiftfactor: 0.1,
-        minsize: 36,
-        maxsize: 210,
+        minsize: 24,
+        maxsize: 260,
         scalefactor: 1.1,
       };
       let dets = pico.run_cascade(image, classifier, params);
       dets = pico.cluster_detections(dets, 0.2);
-      const validFaces = dets.filter((d) => d[3] > 36.0);
+      const validFaces = dets.filter((d) => d[3] > 18.0);
       if (validFaces.length > 0) {
         return {
           ok: true,
@@ -1143,17 +1143,19 @@
       if (res.ok) {
         steadyFaceCount++;
         lastVerifiedPhoto = res.photoDataUrl;
-        updateFaceGuardUI("✓ Face Detected! Hold still...", false, true);
+        updateFaceGuardUI("✓ Face Verified! Casting vote...", false, true);
         if (el.faceGuardConfirmBtn) el.faceGuardConfirmBtn.disabled = false;
-        if (steadyFaceCount >= 2 && !state.isSubmitting) {
+        if (steadyFaceCount >= 1 && !state.isSubmitting) {
           clearInterval(faceCheckInterval);
           if (noCamFallbackTimer) clearTimeout(noCamFallbackTimer);
-          await submitFinalVote(lastVerifiedPhoto);
+          setTimeout(async () => {
+            if (!state.isSubmitting) {
+              await submitFinalVote(lastVerifiedPhoto);
+            }
+          }, 280);
         }
       } else {
-        steadyFaceCount = 0;
         updateFaceGuardUI(res.reason, res.obstructed, false);
-        if (el.faceGuardConfirmBtn) el.faceGuardConfirmBtn.disabled = true;
       }
     }, 200);
   }

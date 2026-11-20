@@ -707,13 +707,52 @@
           };
         });
 
+        if (stu.admissionNo === "0000") {
+          try {
+            await sbRest("DELETE", `/rest/v1/ballots?admission_no=eq.0000`);
+          } catch (_) {
+            try {
+              await sbRest("PATCH", `/rest/v1/ballots?admission_no=eq.0000`, {
+                status: "cancelled",
+                cancelled_at: nowIso,
+                cancel_reason: "Demo testing auto-refresh",
+              });
+            } catch (_) {}
+          }
+        }
+
         try {
           await sbRest("POST", "/rest/v1/ballots", ballotsToInsert);
         } catch (ballotErr) {
-          if (String(ballotErr?.message || "").includes("booth_name")) {
-            // Graceful fallback if booth_name column does not exist in ballots table
+          const errMsg = String(ballotErr?.message || "");
+          if (errMsg.includes("booth_name")) {
             const strippedBallots = ballotsToInsert.map(({ booth_name, ...rest }) => rest);
             await sbRest("POST", "/rest/v1/ballots", strippedBallots);
+          } else if (stu.admissionNo === "0000" || errMsg.includes("ballots_one_accepted_per_voter_role_idx")) {
+            try {
+              if (stu.admissionNo === "0000") {
+                await sbRest("DELETE", `/rest/v1/ballots?admission_no=eq.0000`);
+              } else {
+                await sbRest("PATCH", `/rest/v1/ballots?admission_no=eq.${qAdm}&status=eq.accepted`, {
+                  status: "cancelled",
+                  cancelled_at: nowIso,
+                  cancel_reason: "Re-vote update",
+                });
+              }
+              const freshTs = Date.now().toString(36).toUpperCase();
+              const freshBallots = ballotsToInsert.map((b) => ({
+                ...b,
+                id: b.id.replace(/BLT-[^-]+/, `BLT-${freshTs}`),
+              }));
+              try {
+                await sbRest("POST", "/rest/v1/ballots", freshBallots);
+              } catch (_) {
+                const stripped = freshBallots.map(({ booth_name, ...rest }) => rest);
+                await sbRest("POST", "/rest/v1/ballots", stripped);
+              }
+            } catch (retryErr) {
+              throw retryErr;
+            }
           } else {
             throw ballotErr;
           }

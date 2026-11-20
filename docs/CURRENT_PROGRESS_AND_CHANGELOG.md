@@ -315,6 +315,21 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ---
 
+### 14. Ballot Constraint Conflict Resolution & Face Detection Optimization (Nov 20, 2026)
+- **Resolved Supabase Ballot Unique Constraint Conflict:**
+  - Fixed schema column mismatch where `cancelled_reason` was being sent instead of `cancel_reason`, causing Supabase PATCH requests to silently fail with 400 Bad Request.
+  - Implemented automatic purge of previous demo ballots for `admission_no = '0000'` via `DELETE` before inserting fresh test ballots.
+  - Added automatic constraint conflict handler with dynamic timestamp ID regeneration (`BLT-{freshTs}`) and fallback retry to eliminate `duplicate key value violates unique constraint "ballots_one_accepted_per_voter_role_idx"`.
+- **Face Detection Sensitivity & Modal Verification Optimization:**
+  - Lowered Pico.js cascade threshold from strict 36.0 to 18.0 and expanded search window (`minsize: 24`, `maxsize: 260`) for rapid, dependable human face detection across varying distances and lighting.
+  - Relaxed camera obstruction detection thresholds (`mean < 7.0`, `stdDev < 3.5`) to prevent false "Camera is blocked" warnings against neutral backgrounds.
+  - Fixed modal check interval bug that continuously re-disabled the Confirm Vote button every 200ms.
+  - Streamlined verification flow: upon steady face detection, the booth displays `✓ Face Verified!` and auto-casts within 280ms while keeping the Confirm button active for immediate manual confirmation.
+- **Cache-Busting Update:** Bumped script query strings to `?v=1012` across kiosks.
+
+---
+
+
 
 ## Summary of Verification Checks Passed
 
