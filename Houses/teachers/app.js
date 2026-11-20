@@ -57,7 +57,6 @@
 
     houseTabsBar: document.getElementById("house-tabs-bar"),
     postStepperBar: document.getElementById("post-stepper-bar"),
-    ballotContainer: document.getElementById("universal-ballot-container"),
     evmBallotView: document.getElementById("evm-ballot-view"),
     evmHouseBadge: document.getElementById("evm-house-badge"),
     evmPostTitle: document.getElementById("evm-post-title"),
@@ -73,11 +72,6 @@
     evmFinalCastBtn: document.getElementById("evm-final-cast-btn"),
     step3Error: document.getElementById("step3-error"),
     step3ErrorMsg: document.getElementById("step3-error-msg"),
-    stickyCastBar: document.getElementById("sticky-cast-bar"),
-    stickyProgressCount: document.getElementById("sticky-progress-count"),
-    stickyProgressFill: document.getElementById("sticky-progress-fill"),
-    proceedCastBtn: document.getElementById("proceed-cast-btn"),
-    backToStep2Btn: document.getElementById("back-to-step2-btn"),
 
     cameraVideo: document.getElementById("camera-video"),
     cameraCanvas: document.getElementById("camera-canvas"),

@@ -37,8 +37,11 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
   - Displays an overview grid of all 29 roles across School Cabinet and 6 Houses before submission.
   - Clicking any review card jumps directly to that role to edit selections.
   - `Confirm & Cast Universal Ballot` triggers background automatic webcam snapshot capture and atomic submission to Supabase.
-- **Cache Busting**:
-  - Bumped cachebusters to `v=1030` across `Houses/teachers/index.html`.
+- **Cache Busting & Strict Anti-Cache Headers**:
+  - Bumped cachebusters to `v=20261120_2015` across `Houses/teachers/index.html`.
+  - Added `<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">` to prevent browsers from caching stale scripts or long-scroll layouts.
+  - Enhanced candidate row dimensions with large 92px avatars, bold 1.55rem titles, and 52px 3D buttons for high-clarity viewing.
+  - Completely cleaned legacy element references and orphaned tags in `index.html` and `app.js`.
 
 ### 0. Teacher Universal Polling Booth EVM Candidate Strip UI Redesign (Nov 20, 2026)
 - **Authentic EVM Candidate Rows Across All 29 Positions (`Houses/teachers/app.js`, `Houses/teachers/styles.css`)**:
