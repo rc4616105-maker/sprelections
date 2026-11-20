@@ -379,7 +379,7 @@
     el.castVoteBtn.disabled = pickedCount < totalNeeded || totalNeeded === 0;
   }
 
-    function renderRoleWizardView() {
+      function renderRoleWizardView() {
     const posList = getPositionsList();
     const isReview = state.activeRoleIndex >= posList.length;
 
@@ -711,18 +711,6 @@
     state.selectedByRole = {};
     state.activeRoleIndex = 0;
     renderRoleWizardView();
-  }
-);
-        }
-
-        grid.appendChild(card);
-      });
-
-      section.append(head, grid);
-      el.candidateGrid.appendChild(section);
-    });
-
-    updateCastBar();
   }
 
   function startAutoResetCountdown() {
@@ -1327,6 +1315,17 @@
         window.PendriveStorage.syncNow();
       });
       await window.PendriveStorage.syncNow();
+    }
+    // Auto-verify if admissionNo was passed in query params
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramAdm = urlParams.get("admissionNo");
+    if (paramAdm) {
+      if (window.history.replaceState) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+      setTimeout(() => {
+        executeVerification(paramAdm);
+      }, 150);
     }
   }
 
