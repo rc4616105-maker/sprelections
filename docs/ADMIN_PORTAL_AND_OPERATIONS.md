@@ -33,6 +33,7 @@ Access: [`http://127.0.0.1:5500/Houses/admin/index.html`](http://127.0.0.1:5500/
    - **Sync Roster to Supabase:** Bulk-synchronizes the static student and faculty rosters into the Supabase database.
    - **Graphs:** Opens live, full-screen candidate comparison charts.
    - **Print Results:** Renders a formal, high-resolution official election certificate suitable for printing and institutional signing.
+   - **Freeze House Polling & Tally 24 Winners:** Controls the Two-Stage Electoral Lifecycle. Pauses general house voting kiosks, runs the automated tally across all 6 houses, locks the 24 winners into `ELECTED_HOUSE_WINNERS_2026`, and activates the School Cabinet Electoral College.
 
 ---
 

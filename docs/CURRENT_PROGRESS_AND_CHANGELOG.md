@@ -16,6 +16,14 @@ All core functionalities, kiosks, biometrics, hardware scanner inputs, cloud dat
 
 ## Changelog & Milestone Summary
 
+### 0. Two-Stage Electoral Lifecycle Specification & Documentation (Nov 24, 2026)
+- **Two-Stage Election Lifecycle Architecture Defined**:
+  - Formalized the master election procedure: **Stage 1 (General House Voting)** &rarr; **Admin Pause & 24-Winner Tally** &rarr; **Stage 2 (Scratch Card Declaration Ceremony)** &rarr; **Stage 3 (School Cabinet Electoral College Voting)**.
+  - Documented the exact coordination between the 6 house booths, the Admin pause control, the `ELECTED_HOUSE_WINNERS_2026` dataset, the Scratch Card arena in `Result declaration/`, and the School Cabinet booth in `Houses/central/`.
+- **Electoral College Security Enforcement**:
+  - Enforced that ordinary students are strictly blocked from the School Cabinet booth once house elections end.
+  - Verified that only the 24 elected House Captains & Vice Captains receive the green `🎖️ Authorized Electoral College Voter (1 of 24 House Leaders)` badge and voting clearance for Central Cabinet leadership roles.
+
 ### 0. House Constituencies, Live Voters Stream & Cloud Deployment Ready (Nov 24, 2026)
 - **Official House Constituencies Integration**:
   - Assigned and deployed official geographic constituency identities to all 6 houses across all booth headers, turnout graphs, and portal cards:
