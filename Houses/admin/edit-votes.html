@@ -10,8 +10,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="./styles.css?v=985" />
-  <script src="./admin-auth.js?v=6"></script>
+  <link rel="stylesheet" href="./styles.css?v=20261123RR" />
+  <script src="./admin-auth.js?v=20261123GG"></script>
 </head>
 
 <body>
@@ -25,8 +25,8 @@
       </div>
 
       <nav class="sidebar-nav" aria-label="Edit votes navigation">
-        <button type="button" id="nav-btn-ballots" class="nav-btn is-active" data-edit-view="ballots">📋 All Cast
-          Ballots</button>
+        <button type="button" id="nav-btn-ballots" class="nav-btn is-active" data-edit-view="ballots">🗳️ All Cast Ballots</button>
+        <button type="button" id="nav-btn-students" class="nav-btn" data-edit-view="students">👥 All Students Register</button>
       </nav>
 
       <div class="sidebar-footer">
@@ -46,6 +46,7 @@
         </div>
         <div class="topbar-actions">
           <a href="./index.html" class="btn btn-secondary">← All Houses Overview</a>
+          <button type="button" id="open-candidates-btn" class="btn btn-secondary" title="View all 140 contesting candidates">👥 Contesting Candidates</button>
           <a href="./results.html" class="btn btn-secondary">Results &amp; Winners</a>
           <button type="button" id="refresh-btn" class="btn btn-primary">Refresh Now</button>
         </div>
@@ -72,7 +73,7 @@
           <span class="stat-note">Excluded · View cancelled →</span>
         </button>
         <button type="button" class="stat-card stat-card-btn" data-ballot-kpi="eligible">
-          <span class="stat-label">Eligible Master Roster</span>
+          <span class="stat-label">Eligible Master Register</span>
           <span id="kpi-eligible-roster" class="stat-value">0</span>
           <span class="stat-note">Active registered students →</span>
         </button>
@@ -92,8 +93,11 @@
               votes, or delete student ballots.</p>
           </div>
           <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
-            <button type="button" id="btn-open-add-candidate" class="btn btn-primary"
-              style="background:#059669; border-color:#059669; font-weight:700;">➕ Add Candidate to Participate</button>
+            <button type="button" id="btn-switch-to-students" class="btn btn-secondary"
+              style="font-weight:700; display:inline-flex; align-items:center; gap:0.45rem; border:1.5px solid #cbd5e1; background:#ffffff;"
+              title="Switch to All Students Register to view all house students, edit details, or add new students">
+              <span>👥 All Students Register &amp; Add Student →</span>
+            </button>
           </div>
         </div>
 
@@ -119,8 +123,9 @@
           <select id="ballot-status-filter" class="form-control" aria-label="Filter by Status">
             <option value="accepted">Accepted Votes</option>
             <option value="cancelled">Cancelled Ballots</option>
-            <option value="eligible">All Eligible Students (Master Roster)</option>
+            <option value="eligible">All Eligible Students (Master Register)</option>
             <option value="remaining">Pending (Not Voted)</option>
+            <option value="added">✨ Added Students (Custom)</option>
             <option value="all">All Cast Ballots</option>
           </select>
         </div>
@@ -148,6 +153,126 @@
               Found</strong>
             <span id="empty-subtitle" style="color: var(--text-muted); font-size: 0.82rem;">No cast ballots match the
               current filters.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- View 2: All Students Master Register View (House-wise) -->
+      <section id="view-students" class="panel-card" style="margin-bottom: 2rem;" hidden>
+        <div class="panel-head-row">
+          <div>
+            <h3 class="panel-heading" style="display:flex; align-items:center; gap:0.6rem;">
+              <span>All Students Master Register (House-wise)</span>
+              <span class="badge badge-primary" id="badge-total-students-count" style="font-size:0.8rem; background:#0f172a; color:#fff;">968 Students</span>
+            </h3>
+            <p class="panel-caption">Complete official register of all students and faculty across houses. Filter house-wise, search by Voter ID, edit student details, or register missing students.</p>
+          </div>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+            <button type="button" id="btn-view-added-students" class="btn btn-secondary"
+              style="font-weight:700; display:inline-flex; align-items:center; gap:0.45rem; border:1.5px solid #cbd5e1; background:#ffffff;"
+              title="View all students who were manually added to the voter register">
+              <span>📋 View Added Students</span>
+              <span id="badge-added-count" style="background:#0284c7; color:#fff; font-size:0.75rem; font-weight:800; padding:0.15rem 0.55rem; border-radius:999px;">0</span>
+            </button>
+            <button type="button" id="btn-open-add-student" class="btn btn-primary"
+              style="background:#059669; border-color:#059669; font-weight:700;">➕ Add Student to Voter List</button>
+          </div>
+        </div>
+
+        <!-- House Tabs / Pills -->
+        <div class="house-filter-pills" id="house-filter-pills" style="margin-top:0.75rem;">
+          <button type="button" class="btn-house-pill is-active" data-house="">
+            <span>All Houses</span>
+            <span class="pill-badge" id="pill-count-all">0</span>
+          </button>
+          <button type="button" class="btn-house-pill" data-house="BHEESHMA" style="border-left: 3px solid #ca8a04;">
+            <span>🟡 Bheeshma</span>
+            <span class="pill-badge" id="pill-count-bheeshma">0</span>
+          </button>
+          <button type="button" class="btn-house-pill" data-house="GURUDRONA" style="border-left: 3px solid #2563eb;">
+            <span>🔵 Gurudrona</span>
+            <span class="pill-badge" id="pill-count-gurudrona">0</span>
+          </button>
+          <button type="button" class="btn-house-pill" data-house="HANUMAN" style="border-left: 3px solid #ea580c;">
+            <span>🟠 Hanuman</span>
+            <span class="pill-badge" id="pill-count-hanuman">0</span>
+          </button>
+          <button type="button" class="btn-house-pill" data-house="KARNA" style="border-left: 3px solid #dc2626;">
+            <span>🔴 Karna</span>
+            <span class="pill-badge" id="pill-count-karna">0</span>
+          </button>
+          <button type="button" class="btn-house-pill" data-house="VASISTHA" style="border-left: 3px solid #db2777;">
+            <span><span class="sphere-pink" aria-hidden="true"></span>Vasistha</span>
+            <span class="pill-badge" id="pill-count-vasistha">0</span>
+          </button>
+          <button type="button" class="btn-house-pill" data-house="VISHWAMITHRA" style="border-left: 3px solid #7c3aed;">
+            <span>🟣 Vishwamithra</span>
+            <span class="pill-badge" id="pill-count-vishwamithra">0</span>
+          </button>
+          <button type="button" class="btn-house-pill" data-house="ALL" style="border-left: 3px solid #475569;">
+            <span>👔 Faculty</span>
+            <span class="pill-badge" id="pill-count-faculty">0</span>
+          </button>
+        </div>
+
+        <!-- Filters Bar for Students Master List -->
+        <div class="filters-bar" style="margin-top: 0.5rem; margin-bottom: 1.25rem;">
+          <input id="stu-master-search" type="search" class="form-control"
+            placeholder="Search Voter ID, Student Name, Class, Section..." />
+          <select id="stu-master-house-filter" class="form-control" aria-label="Filter by House">
+            <option value="">All Houses</option>
+            <option value="BHEESHMA">Bheeshma House</option>
+            <option value="GURUDRONA">Gurudrona House</option>
+            <option value="HANUMAN">Hanuman House</option>
+            <option value="KARNA">Karna House</option>
+            <option value="VASISTHA">Vasistha House</option>
+            <option value="VISHWAMITHRA">Vishwamithra House</option>
+            <option value="ALL">All Houses / Faculty</option>
+          </select>
+          <select id="stu-master-class-filter" class="form-control" aria-label="Filter by Class">
+            <option value="">All Classes</option>
+            <option value="10">Class 10</option>
+            <option value="9">Class 9</option>
+            <option value="8">Class 8</option>
+            <option value="7">Class 7</option>
+            <option value="6">Class 6</option>
+            <option value="Staff">Faculty / Staff</option>
+          </select>
+          <select id="stu-master-section-filter" class="form-control" aria-label="Filter by Section">
+            <option value="">All Sections</option>
+          </select>
+          <select id="stu-master-status-filter" class="form-control" aria-label="Filter by Status">
+            <option value="">All Voting Statuses</option>
+            <option value="voted">✓ Voted</option>
+            <option value="not_voted">Pending (Not Voted)</option>
+            <option value="added">📋 Manually Added</option>
+          </select>
+        </div>
+
+        <div class="table-container" style="margin-bottom: 0;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 12%;">Voter ID</th>
+                <th style="width: 25%;">Student Details</th>
+                <th style="width: 10%;">Class</th>
+                <th style="width: 18%;">Section</th>
+                <th style="width: 15%;">House</th>
+                <th style="width: 10%;">Status</th>
+                <th style="width: 10%; min-width: 130px;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="stu-master-tbody"></tbody>
+          </table>
+          <div id="stu-master-loading" class="empty-state" style="padding: 2.75rem 1rem; text-align: center;" hidden>
+            <div class="stu-loading-spinner"></div>
+            <strong style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.25rem;">Loading Students Register...</strong>
+            <span style="color: var(--text-muted); font-size: 0.82rem;">Fetching student details and live voting statuses</span>
+          </div>
+          <div id="stu-master-empty" class="empty-state" hidden>
+            <div style="font-size: 1.6rem; margin-bottom: 0.35rem;">👥</div>
+            <strong style="color: var(--text-primary); font-size: 0.95rem; display: block; margin-bottom: 0.2rem;">No Students Found</strong>
+            <span style="color: var(--text-muted); font-size: 0.82rem;">No students match the current filters.</span>
           </div>
         </div>
       </section>
@@ -192,99 +317,294 @@
     </div>
   </div>
 
-  <!-- Add Candidate to Participate Modal -->
-  <div id="add-candidate-modal" class="modal-overlay" hidden>
-    <div class="modal-card" style="max-width: 540px;" role="dialog" aria-modal="true"
-      aria-labelledby="add-cand-modal-title">
-      <h3 id="add-cand-modal-title" class="modal-title">➕ Add Candidate to Participate in Election</h3>
-      <p class="modal-desc">Register a student to contest for a leadership role in their House or School Cabinet.</p>
 
-      <form id="add-candidate-form" onsubmit="return false;">
-        <div style="display:flex; flex-direction:column; gap:0.85rem; margin-top:1rem;">
+  <!-- Edit / Change Student Details Modal -->
+  <div id="edit-student-modal" class="modal-overlay" hidden>
+    <div class="modal-card" style="max-width: 560px;" role="dialog" aria-modal="true"
+      aria-labelledby="edit-student-modal-title">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.75rem;">
+        <div>
+          <h3 id="edit-student-modal-title" class="modal-title" style="margin:0;">✏️ Change Student Details</h3>
+          <p class="modal-desc" style="margin-top:0.35rem; margin-bottom:0;">Update student name, class, section, or house assignment. Changes update in real time.</p>
+        </div>
+        <button type="button" id="edit-student-modal-close-x" class="btn btn-secondary" style="font-size:1.1rem; padding:0.2rem 0.6rem; line-height:1;" title="Close">✕</button>
+      </div>
+
+      <form id="edit-student-form" onsubmit="return false;">
+        <input type="hidden" id="edit-student-adm" />
+
+        <div style="display:flex; flex-direction:column; gap:0.85rem; margin-top:0.85rem;">
+          <!-- Voter ID Badge -->
+          <div style="display:flex; align-items:center; justify-content:space-between; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:8px; padding:0.6rem 0.85rem;">
+            <div>
+              <span style="font-size:0.75rem; text-transform:uppercase; font-weight:800; color:#64748b;">Voter ID</span>
+              <div id="edit-student-voter-id-display" class="mono" style="font-size:1.15rem; font-weight:800; color:#0369a1; letter-spacing:0.08em;">--</div>
+            </div>
+            <span id="edit-student-voted-pill" class="badge badge-muted" style="font-size:0.75rem;">Not Voted</span>
+          </div>
+
           <div class="form-group">
-            <label class="form-label" for="new-cand-name"
-              style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Candidate Full Name *</label>
-            <input type="text" id="new-cand-name" class="form-control"
-              placeholder="Enter student full name (e.g. Rahul Sharma)" required autocomplete="off" />
+            <label class="form-label" for="edit-student-name"
+              style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Student Full Name *</label>
+            <input type="text" id="edit-student-name" class="form-control" required autocomplete="off" />
+          </div>
+
+          <input type="hidden" id="edit-student-father" value="" />
+          <div class="form-group">
+            <label class="form-label" for="edit-student-gender"
+              style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Gender *</label>
+            <select id="edit-student-gender" class="form-control" required>
+              <option value="Boy">Boy</option>
+              <option value="Girl">Girl</option>
+            </select>
           </div>
 
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem;">
             <div class="form-group">
-              <label class="form-label" for="new-cand-house"
-                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Contesting In *</label>
-              <select id="new-cand-house" class="form-control" required>
+              <label class="form-label" for="edit-student-class"
+                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Class *</label>
+              <select id="edit-student-class" class="form-control" required>
+                <option value="10">Class 10</option>
+                <option value="9">Class 9</option>
+                <option value="8">Class 8</option>
+                <option value="7">Class 7</option>
+                <option value="6">Class 6</option>
+                <option value="Staff">Faculty / Staff</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="edit-student-section"
+                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Section *</label>
+              <select id="edit-student-section" class="form-control" required>
+                <!-- Populated dynamically based on Class -->
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="edit-student-house"
+              style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">House Assignment *</label>
+            <select id="edit-student-house" class="form-control" required>
+              <option value="BHEESHMA">Bheeshma House</option>
+              <option value="GURUDRONA">Gurudrona House</option>
+              <option value="HANUMAN">Hanuman House</option>
+              <option value="KARNA">Karna House</option>
+              <option value="VASISTHA">Vasistha House</option>
+              <option value="VISHWAMITHRA">Vishwamithra House</option>
+              <option value="ALL">ALL House (Faculty)</option>
+            </select>
+          </div>
+        </div>
+
+        <p id="edit-student-error" class="stat-note" style="color: #b91c1c; margin-top: 0.65rem;" hidden></p>
+        <p id="edit-student-success" class="stat-note" style="color: #047857; margin-top: 0.65rem; font-weight: 700;" hidden></p>
+
+        <div class="modal-actions" style="margin-top: 1.25rem;">
+          <button type="button" id="edit-student-modal-close" class="btn btn-secondary">Cancel</button>
+          <button type="submit" id="edit-student-submit-btn" class="btn btn-primary"
+            style="background:#0284c7; border-color:#0284c7; font-weight:700;">💾 Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- View Added Students Modal -->
+  <div id="view-added-modal" class="modal-overlay" hidden>
+    <div class="modal-card" style="max-width: 800px; width: 95%; max-height: 88vh; display: flex; flex-direction: column;" role="dialog" aria-modal="true"
+      aria-labelledby="view-added-modal-title">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+        <div>
+          <h3 id="view-added-modal-title" class="modal-title" style="margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+            <span>📋 Manually Added Students</span>
+            <span id="modal-added-count-pill" style="font-size: 0.75rem; font-weight: 800; background: #e0f2fe; color: #0369a1; padding: 0.2rem 0.6rem; border-radius: 999px;">0 Students</span>
+          </h3>
+          <p class="modal-desc" style="margin-top: 0.35rem; margin-bottom: 0;">Students registered into the register who were missing from the initial school register.</p>
+        </div>
+        <button type="button" id="view-added-modal-close-x" class="btn btn-secondary" style="font-size: 1.1rem; padding: 0.2rem 0.6rem; line-height: 1;" title="Close">✕</button>
+      </div>
+
+      <div style="overflow-y: auto; flex: 1; border: 1.5px solid #e2e8f0; border-radius: 8px; margin-top: 0.5rem; background: #ffffff;">
+        <table class="data-table" style="margin: 0; width: 100%;">
+          <thead>
+            <tr style="background: #f8fafc;">
+              <th style="width: 20%;">Voter ID</th>
+              <th style="width: 30%;">Student Details</th>
+              <th style="width: 18%;">House</th>
+              <th style="width: 16%;">Status</th>
+              <th style="width: 16%;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="added-students-tbody">
+            <!-- Rendered dynamically -->
+          </tbody>
+        </table>
+        <div id="added-students-empty" style="text-align: center; padding: 2.5rem 1rem;" hidden>
+          <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">📋</div>
+          <h4 style="margin: 0; font-size: 1.05rem; font-weight: 700; color: #334155;">No Added Students Yet</h4>
+          <p style="margin: 0.35rem 0 0; font-size: 0.85rem; color: #64748b;">Click <strong>"+ Add Student to Voter List"</strong> to register any missing student.</p>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+        <button type="button" id="btn-open-add-from-view" class="btn btn-primary" style="background:#059669; border-color:#059669; font-weight:700;">
+          ➕ Add Another Student
+        </button>
+        <button type="button" id="view-added-modal-close" class="btn btn-secondary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Student to Voter List Modal -->
+  <div id="add-student-modal" class="modal-overlay" hidden>
+    <div class="modal-card" style="max-width: 560px;" role="dialog" aria-modal="true"
+      aria-labelledby="add-student-modal-title">
+      <h3 id="add-student-modal-title" class="modal-title">➕ Add Missing Voter to Election Register</h3>
+      <p class="modal-desc" id="add-voter-modal-desc">Register a missing student or faculty member into the master election register with a unique, unidentifiable random Voter ID.</p>
+
+      <div style="display:flex; background:#f1f5f9; padding:4px; border-radius:10px; gap:4px; margin-top:0.75rem;">
+        <button type="button" id="type-btn-student" class="btn btn-secondary active"
+          style="flex:1; border:none; padding:0.45rem; font-weight:700; border-radius:8px; background:#ffffff; color:#0f172a; box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+          🎓 Student Voter
+        </button>
+        <button type="button" id="type-btn-faculty" class="btn btn-secondary"
+          style="flex:1; border:none; padding:0.45rem; font-weight:700; border-radius:8px; background:transparent; color:#64748b;">
+          👩‍🏫 Faculty / Staff
+        </button>
+      </div>
+
+      <form id="add-student-form" onsubmit="return false;">
+        <div style="display:flex; flex-direction:column; gap:0.85rem; margin-top:0.85rem;">
+          <div class="form-group">
+            <label class="form-label" for="new-student-name" id="label-voter-name"
+              style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Student Full Name *</label>
+            <input type="text" id="new-student-name" class="form-control"
+              placeholder="Enter full name" required autocomplete="off" />
+          </div>
+
+          <input type="hidden" id="new-student-father" value="" />
+          <div class="form-group">
+            <label class="form-label" for="new-student-gender"
+              style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Gender *</label>
+            <select id="new-student-gender" class="form-control" required>
+              <option value="Boy">Boy / Male</option>
+              <option value="Girl">Girl / Female</option>
+            </select>
+          </div>
+
+          <!-- Student-specific Fields (Class, Section, House) -->
+          <div id="student-fields-box">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem;">
+              <div class="form-group">
+                <label class="form-label" for="new-student-class"
+                  style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Class *</label>
+                <select id="new-student-class" class="form-control" required>
+                  <option value="10">Class 10</option>
+                  <option value="9">Class 9</option>
+                  <option value="8">Class 8</option>
+                  <option value="7">Class 7</option>
+                  <option value="6">Class 6</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="new-student-section"
+                  style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Section *</label>
+                <select id="new-student-section" class="form-control" required>
+                  <!-- Populated dynamically based on Class selection -->
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top:0.85rem;">
+              <label class="form-label" for="new-student-house"
+                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">House Assignment *</label>
+              <select id="new-student-house" class="form-control" required>
                 <option value="BHEESHMA">Bheeshma House</option>
                 <option value="GURUDRONA">Gurudrona House</option>
                 <option value="HANUMAN">Hanuman House</option>
                 <option value="KARNA">Karna House</option>
                 <option value="VASISTHA">Vasistha House</option>
                 <option value="VISHWAMITHRA">Vishwamithra House</option>
-                <option value="CENTRAL">School Cabinet</option>
               </select>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="new-cand-position"
-                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Post / Role *</label>
-              <select id="new-cand-position" class="form-control" required></select>
             </div>
           </div>
 
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem;">
+          <!-- Faculty-specific Fields (Subject/Department) -->
+          <div id="faculty-fields-box" style="display:none; flex-direction:column; gap:0.85rem;">
             <div class="form-group">
-              <label class="form-label" for="new-cand-class"
-                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Class *</label>
-              <select id="new-cand-class" class="form-control" required>
-                <option value="10">Class 10</option>
-                <option value="9">Class 9</option>
-                <option value="8">Class 8</option>
-                <option value="7">Class 7</option>
-                <option value="6">Class 6</option>
+              <label class="form-label" for="new-faculty-subject"
+                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Subject / Department *</label>
+              <select id="new-faculty-subject" class="form-control">
+                <option value="MATHS">MATHS</option>
+                <option value="SCIENCE">SCIENCE</option>
+                <option value="ENGLISH">ENGLISH</option>
+                <option value="TELUGU">TELUGU</option>
+                <option value="HINDI">HINDI</option>
+                <option value="SOCIAL">SOCIAL</option>
+                <option value="COMPUTER">COMPUTER</option>
+                <option value="PHYSICS">PHYSICS</option>
+                <option value="CHEMISTRY">CHEMISTRY</option>
+                <option value="BIOLOGY">BIOLOGY</option>
+                <option value="PET">PET (Physical Ed)</option>
+                <option value="ART">ART &amp; CRAFT</option>
+                <option value="AO">ADMINISTRATIVE OFFICER (AO)</option>
+                <option value="CORRESPONDENT">CORRESPONDENT</option>
+                <option value="FACULTY">GENERAL FACULTY</option>
               </select>
             </div>
-
-            <div class="form-group">
-              <label class="form-label" for="new-cand-section"
-                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Section *</label>
-              <input type="text" id="new-cand-section" class="form-control"
-                placeholder="e.g. Ashoka Chakravarthi or 10-A" required autocomplete="off" />
-            </div>
+            <p style="font-size:0.75rem; color:#64748b; margin:0;">
+              House assignment is automatically set to <strong>ALL (Universal Staff Electorate)</strong> with 29 voting positions across all booths.
+            </p>
           </div>
 
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem;">
-            <div class="form-group">
-              <label class="form-label" for="new-cand-adm"
-                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Voter ID / Admission No</label>
-              <input type="text" id="new-cand-adm" class="form-control"
-                placeholder="e.g. 10045 (or leave blank to auto-generate)" autocomplete="off" />
+          <!-- Random Voter ID Generator -->
+          <div class="form-group" style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:10px; padding:0.85rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+              <label class="form-label" for="new-student-voter-id"
+                style="font-weight:800; font-size:0.82rem; text-transform:uppercase; color:#0f172a; margin:0;">
+                Generated Voter ID *
+              </label>
+              <button type="button" id="btn-reroll-code" class="btn btn-secondary"
+                style="font-size:0.75rem; padding:0.25rem 0.6rem; font-weight:700; display:inline-flex; align-items:center; gap:0.3rem;"
+                title="Generate another completely random non-sequential voter code">
+                🎲 Re-Roll Code
+              </button>
             </div>
 
-            <div class="form-group">
-              <label class="form-label" for="new-cand-tagline"
-                style="font-weight:700; font-size:0.82rem; text-transform:uppercase;">Campaign Motto / Tagline</label>
-              <input type="text" id="new-cand-tagline" class="form-control"
-                placeholder="e.g. Leadership through Service" autocomplete="off" />
+            <div style="display:flex; gap:0.5rem; align-items:center;">
+              <input type="text" id="new-student-voter-id" class="form-control"
+                style="font-family:'JetBrains Mono',monospace; font-size:1.15rem; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; color:#0369a1; background:#ffffff;"
+                maxlength="12" required autocomplete="off" />
+              <span id="code-status-pill" style="font-size:0.72rem; font-weight:700; padding:0.3rem 0.6rem; border-radius:6px; background:#dcfce7; color:#15803d; white-space:nowrap;">
+                ✓ Unique (No Repetition)
+              </span>
             </div>
+
+            <p id="code-hint-text" style="font-size:0.72rem; color:#64748b; margin-top:0.4rem; margin-bottom:0; line-height:1.3;">
+              Prefix (<strong id="code-prefix-hint">1C</strong>) matches Class &amp; Section · 4 non-sequential random digits · Strictly unique.
+            </p>
           </div>
         </div>
 
-        <p id="add-cand-error" class="stat-note" style="color: #b91c1c; margin-top: 0.65rem;" hidden></p>
-        <p id="add-cand-success" class="stat-note" style="color: #047857; margin-top: 0.65rem; font-weight: 700;"
-          hidden></p>
+        <p id="add-student-error" class="stat-note" style="color: #b91c1c; margin-top: 0.65rem;" hidden></p>
+        <p id="add-student-success" class="stat-note" style="color: #047857; margin-top: 0.65rem; font-weight: 700;" hidden></p>
 
         <div class="modal-actions" style="margin-top: 1.25rem;">
-          <button type="button" id="add-cand-modal-close" class="btn btn-secondary">Close</button>
-          <button type="submit" id="add-cand-submit-btn" class="btn btn-primary"
-            style="background:#059669; border-color:#059669; font-weight:700;">➕ Save &amp; Add Candidate</button>
+          <button type="button" id="add-student-modal-close" class="btn btn-secondary">Close</button>
+          <button type="submit" id="add-student-submit-btn" class="btn btn-primary"
+            style="background:#059669; border-color:#059669; font-weight:700;">➕ Save &amp; Register Voter</button>
         </div>
       </form>
     </div>
   </div>
 
-  <script defer src="./data.js?v=1010"></script>
-  <script defer src="./teachers.js?v=1010"></script>
-  <script defer src="./supabase-config.js?v=1010"></script>
-  <script defer src="./edit-votes.js?v=1010"></script>
+  <script defer src="./data.js?v=20261123RR"></script>
+  <script defer src="./teachers.js?v=20261123GG"></script>
+  <script defer src="../assets/all-candidates.js?v=20261123RR"></script>
+  <script defer src="../assets/candidates-modal.js?v=20261123RR"></script>
+  <script defer src="./supabase-config.js?v=20261123KK"></script>
+  <script defer src="./edit-votes.js?v=20261123KK"></script>
 </body>
 
 </html>

@@ -3,7 +3,7 @@
 (function () {
   const SB_CFG_KEY = "election_spr_2026_sb_cfg_v1";
   const DEFAULT_SB_URL = "https://rziptxcknaeuorekxwrl.supabase.co";
-  const DEFAULT_SB_KEY = ""; // Embedded Publishable / anon key
+  const DEFAULT_SB_KEY = "sb_publishable_jcyjkISfyHxcKPwVUloYYQ_4BfL3pUZ";
   const BUCKET = "voter-photos";
   const ELECTION_ID = "ELECTION_2026";
   const CHANNEL_NAME = "election_spr_2026_sync";
@@ -11,7 +11,7 @@
 
   function sbHeaders(key, extra = {}) {
     const h = { apikey: key, ...extra };
-    if (String(key || "").startsWith("eyJ") || String(key || "").startsWith("sb_secret_")) {
+    if (String(key || "").startsWith("eyJ") || String(key || "").startsWith("sb_secret_") || String(key || "").startsWith("sb_publishable_")) {
       h.Authorization = `Bearer ${key}`;
     }
     return h;
@@ -28,7 +28,7 @@
         const k = (saved.anonKey || saved.secretKey || saved.key || "").trim();
         return { url: (saved.url || DEFAULT_SB_URL).replace(/\/+$/, ""), key: k };
       }
-    } catch (_) {}
+    } catch (_) { }
 
     for (const rel of [
       "./supabase.local.json",
@@ -48,7 +48,7 @@
         if (k && k !== "paste-your-supabase-key-here") {
           return { url: String(parsed.url || DEFAULT_SB_URL).replace(/\/+$/, ""), key: k };
         }
-      } catch (_) {}
+      } catch (_) { }
     }
     return { url: DEFAULT_SB_URL, key: "" };
   }
@@ -71,7 +71,7 @@
       let parsed = {};
       try {
         parsed = txt ? JSON.parse(txt) : {};
-      } catch (_) {}
+      } catch (_) { }
       if (!res.ok) throw new Error(parsed.message || parsed.error || `Supabase HTTP ${res.status}`);
       return parsed;
     }
@@ -89,7 +89,7 @@
     let parsed = {};
     try {
       parsed = txt ? JSON.parse(txt) : {};
-    } catch (_) {}
+    } catch (_) { }
     if (!res.ok) {
       throw new Error(parsed.message || parsed.error || parsed.hint || `Supabase HTTP ${res.status}`);
     }
@@ -164,7 +164,7 @@
               return "supabase";
             }
           }
-        } catch (_) {}
+        } catch (_) { }
 
         // 2. Read browser / local config
         const cfg = await readBrowserSupabaseConfig();
@@ -203,250 +203,276 @@
     },
 
     async verifyTeacher(inputTeacherId) {
-      const cleanId = String(inputTeacherId || "").trim();
+      const cleanId = String(inputTeacherId || "").trim().toUpperCase();
       if (!cleanId) {
         return { ok: false, code: "EMPTY_ID", message: "Please scan or enter your Teacher Voter ID." };
       }
 
-      const allTeachers = window.TEACHER_BOOTH_DATA?.teachers || [];
-      let teacher = allTeachers.find((t) => String(t.admissionNo).trim() === cleanId);
-
-      // Support universal test account
-      if (cleanId === "0000" && !teacher) {
-        teacher = {
-          admissionNo: "0000",
-          fullName: "Universal Faculty Demo",
-          subject: "DEMONSTRATION",
-          className: "Staff",
-          section: "Faculty",
-          houseCode: "ALL",
-          houseName: "All Houses & Cabinet",
-          isStaff: true,
-          isActive: true,
-        };
-      }
-
-      if (!teacher) {
-        return {
-          ok: false,
-          code: "NOT_A_TEACHER",
-          message: `ID "${cleanId}" is not recognized as a registered Teacher or Faculty member. Please use your Teacher Voter Card.`,
-        };
-      }
-
       await this.init();
 
-      // If connected to Supabase, query both voters and ballots for this teacher
-      const votedRolesMap = {};
-      if (this.mode === "supabase") {
-        try {
-          const qAdm = encodeURIComponent(cleanId);
-          const [vRows, ballots] = await Promise.all([
-            sbRest("GET", `/rest/v1/voters?admission_no=eq.${qAdm}&select=*`),
-            sbRest("GET", `/rest/v1/ballots?admission_no=eq.${qAdm}&select=id,position_id,position_name,candidate_id,candidate_name,status,house_code,cast_at`),
-          ]);
+      const allTeachers = window.TEACHER_BOOTH_DATA?.teachers || [];
+      let teacher = allTeachers.find((t) => String(t.admissionNo).trim().toUpperCase() === cleanId);
 
-          const hasAcceptedBallots = Array.isArray(ballots) && ballots.some((b) => b.status === "accepted");
-          const hasCancelledBallots = Array.isArray(ballots) && ballots.some((b) => b.status === "cancelled");
-          const isVoterMarkedVoted = Array.isArray(vRows) && vRows.length > 0 && vRows[0].final_status === "Voted";
+        // Support universal test accounts
+        if ((cleanId === "0000" || cleanId === "6000" || cleanId === "SPRFAC100") && !teacher) {
+          teacher = {
+            admissionNo: cleanId,
+            fullName: "Dr. Rajesh Sharma",
+            subject: "Senior Faculty",
+            className: "Staff",
+            section: "Faculty",
+            houseCode: "ALL",
+            houseName: "All Houses & Cabinet",
+            isStaff: true,
+            isActive: true,
+            photoUrl: "../assets/candidates/teacher_demo.jpg",
+          };
+        }
 
-          // Strict Double-Voting Block for Teacher Universal Polling Booth:
-          if ((isVoterMarkedVoted || hasAcceptedBallots) && !hasCancelledBallots) {
-            return {
-              ok: false,
-              code: "ALREADY_VOTED",
-              title: "Already Voted",
-              message: `Teacher ${teacher.fullName} (ID ${teacher.admissionNo}) has already cast their universal ballot in this election. Duplicate voting is strictly blocked.`,
-            };
-          }
-
-          if (Array.isArray(ballots)) {
-            ballots.forEach((b) => {
-              if (b.status === "accepted") {
-                const rk = `${b.house_code}_${b.position_id}`;
-                votedRolesMap[rk] = {
-                  id: b.id,
-                  houseCode: b.house_code,
-                  positionId: b.position_id,
-                  candidateId: b.candidate_id,
-                  candidateName: b.candidate_name,
-                  castAt: b.cast_at,
+        // If not in local cache, query Supabase voters table directly!
+        if (!teacher && this.mode === "supabase") {
+          try {
+            const qAdm = encodeURIComponent(cleanId);
+            const vRows = await sbRest("GET", `/rest/v1/voters?admission_no=eq.${qAdm}&select=*`);
+            if (Array.isArray(vRows) && vRows.length > 0) {
+              const r = vRows[0];
+              if (r.house_code === "ALL" || r.class_name === "Staff" || String(r.admission_no).toUpperCase().startsWith("SPR")) {
+                teacher = {
+                  admissionNo: r.admission_no,
+                  fullName: r.full_name,
+                  subject: r.section || "Faculty",
+                  className: "Staff",
+                  section: r.section || "Faculty",
+                  houseCode: "ALL",
+                  houseName: "All Houses & Cabinet",
+                  isStaff: true,
+                  isActive: true,
+                  photoUrl: "../assets/candidates/teacher_demo.jpg"
                 };
               }
-            });
-          }
-        } catch (e) {
-          console.warn("Could not check prior teacher ballots:", e);
+            }
+          } catch (_) { }
         }
-      }
 
-      // Calculate total available roles across all houses
-      const allHouses = window.TEACHER_BOOTH_DATA?.houses || [];
-      const totalRoles = allHouses.reduce((sum, h) => sum + (h.positions?.length || 0), 0);
-      const votedCount = Object.keys(votedRolesMap).length;
+        if (!teacher) {
+          return {
+            ok: false,
+            code: "NOT_A_TEACHER",
+            message: `ID "${cleanId}" is not recognized as a registered Teacher or Faculty member. Please use your Teacher Voter Card.`,
+          };
+        }
 
-      // Allow 0000 demo testing to re-vote freely
-      if (votedCount >= totalRoles && totalRoles > 0) {
-        return {
-          ok: false,
-          code: "ALREADY_VOTED",
-          message: `Teacher ${teacher.fullName} (ID ${teacher.admissionNo}) has already cast all ${totalRoles} ballots across School Cabinet and all 6 Houses.`,
-        };
-      }
-
-      return {
-        ok: true,
-        teacher,
-        votedRolesMap,
-        votedCount,
-        totalRoles,
-      };
-    },
-
-    async castUniversalBallot({ teacher, selections, photoDataUrl, boothName }) {
-      const finalBooth = String(
-        boothName ||
-        (typeof window.getRegisteredBooth === "function" && window.getRegisteredBooth()) ||
-        sessionStorage.getItem("election_booth_name") ||
-        localStorage.getItem("last_registered_booth") ||
-        "Teacher Station"
-      ).trim();
-
-      const nowIso = new Date().toISOString();
-      const cleanAdm = String(teacher.admissionNo || "").trim();
-
-      if (!Array.isArray(selections) || selections.length === 0) {
-        throw new Error("No candidate selections provided.");
-      }
-
-      if (this.mode === "supabase") {
-        // 1. Upload verification snapshot to storage
-        let photoRelPath = "";
-        if (photoDataUrl && photoDataUrl.startsWith("data:")) {
+        // If connected to Supabase, query both voters and ballots for this teacher
+        const votedRolesMap = {};
+        if (this.mode === "supabase") {
           try {
-            const timeSlug = Date.now();
-            photoRelPath = `teachers/${cleanAdm}/${timeSlug}.jpg`;
-            await uploadPhotoToStorage(photoRelPath, photoDataUrl);
+            const qAdm = encodeURIComponent(cleanId);
+            const [vRows, ballots] = await Promise.all([
+              sbRest("GET", `/rest/v1/voters?admission_no=eq.${qAdm}&select=*`),
+              sbRest("GET", `/rest/v1/ballots?admission_no=eq.${qAdm}&select=id,position_id,position_name,candidate_id,candidate_name,status,house_code,cast_at`),
+            ]);
+
+            const hasAcceptedBallots = Array.isArray(ballots) && ballots.some((b) => b.status === "accepted");
+            const hasCancelledBallots = Array.isArray(ballots) && ballots.some((b) => b.status === "cancelled");
+            const isVoterMarkedVoted = Array.isArray(vRows) && vRows.length > 0 && vRows[0].final_status === "Voted";
+
+            // Strict Double-Voting Block for Teacher Universal Polling Booth:
+            if ((isVoterMarkedVoted || hasAcceptedBallots) && !hasCancelledBallots) {
+              return {
+                ok: false,
+                code: "ALREADY_VOTED",
+                title: "Already Voted",
+                message: `Teacher ${teacher.fullName} (ID ${teacher.admissionNo}) has already cast their universal ballot in this election. Duplicate voting is strictly blocked.`,
+              };
+            }
+
+            if (Array.isArray(ballots)) {
+              ballots.forEach((b) => {
+                if (b.status === "accepted") {
+                  const rk = `${b.house_code}_${b.position_id}`;
+                  votedRolesMap[rk] = {
+                    id: b.id,
+                    houseCode: b.house_code,
+                    positionId: b.position_id,
+                    candidateId: b.candidate_id,
+                    candidateName: b.candidate_name,
+                    castAt: b.cast_at,
+                  };
+                }
+              });
+            }
           } catch (e) {
-            console.warn("Storage upload warning:", e);
+            console.warn("Could not check prior teacher ballots:", e);
           }
         }
 
-        // 2. Build ballot records for each selected position with guaranteed unique IDs across houses
-        const ballotDocs = selections.map((sel) => ({
-          id: `BLT-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${cleanAdm}-${sel.houseCode}-${sel.positionId}`,
-          election_id: ELECTION_ID,
-          admission_no: cleanAdm,
-          house_code: sel.houseCode,
-          position_id: sel.positionId,
-          position_name: sel.positionName,
-          candidate_id: sel.candidate.id,
-          candidate_name: sel.candidate.fullName,
-          photo_path: photoRelPath,
-          photo_field: "photo_path",
-          status: "accepted",
-          booth_name: finalBooth,
-          cast_at: nowIso,
-        }));
+        // Calculate total available roles across all houses
+        const allHouses = window.TEACHER_BOOTH_DATA?.houses || [];
+        const totalRoles = allHouses.reduce((sum, h) => sum + (h.positions?.length || 0), 0);
+        const votedCount = Object.keys(votedRolesMap).length;
 
-        // Batch insert ballots with fallback if table schema differs (e.g. booth_name column)
-        try {
-          await sbRest("POST", "/rest/v1/ballots", ballotDocs);
-        } catch (ballotErr) {
-          const errMsg = String(ballotErr?.message || "");
-          if (errMsg.includes("booth_name")) {
-            const strippedBallots = ballotDocs.map(({ booth_name, ...rest }) => rest);
-            await sbRest("POST", "/rest/v1/ballots", strippedBallots);
-          } else if (errMsg.includes("ballots_one_accepted_per_voter_role_idx")) {
-            throw new Error(`Duplicate vote blocked: Faculty ${cleanAdm} already has accepted ballots.`);
-          } else {
-            console.error("Ballot insert error:", ballotErr);
-            throw ballotErr;
-          }
-        }
-
-        // 3. Upsert / update teacher voter record to Voted
-        const qAdm = encodeURIComponent(cleanAdm);
-        try {
-          const existingRows = await sbRest("GET", `/rest/v1/voters?admission_no=eq.${qAdm}&select=*`);
-          if (!existingRows || existingRows.length === 0) {
-            await sbRest("POST", "/rest/v1/voters", {
-              admission_no: cleanAdm,
-              full_name: teacher.fullName,
-              class_name: teacher.className || "Staff",
-              section: teacher.section || "Faculty",
-              house_code: "ALL",
-              house_name: "All Houses & Cabinet",
-              final_status: "Voted",
-              voted_for: `${ballotDocs.length} Roles Cast`,
-              position_name: "Universal Teacher Ballot",
-              cast_at: nowIso,
-              photo_path: photoRelPath,
-              is_active: true,
-              updated_at: nowIso,
-            }).catch((postErr) => {
-              console.warn("Voter insert note:", postErr);
-            });
-          } else {
-            await sbRest("PATCH", `/rest/v1/voters?admission_no=eq.${qAdm}`, {
-              final_status: "Voted",
-              voted_for: `${ballotDocs.length} Roles Cast`,
-              cast_at: nowIso,
-              photo_path: photoRelPath || existingRows[0].photo_path,
-              updated_at: nowIso,
-            }).catch((patchErr) => {
-              console.warn("Voter patch note:", patchErr);
-            });
-          }
-        } catch (vErr) {
-          console.warn("Voter status update note:", vErr);
-        }
-
-        // 4. Log non-repudiable audit entry
-        try {
-          await sbRest("POST", "/rest/v1/audit_logs", {
-            id: `AUD-${Date.now().toString(36).toUpperCase()}`,
-            action: "TEACHER_UNIVERSAL_BALLOT_CAST",
-            admission_no: cleanAdm,
-            student_name: teacher.fullName,
-            house_code: "ALL",
-            reason: `Cast ${ballotDocs.length} ballots across School Cabinet and all student houses`,
-            actor: finalBooth,
-            created_at: nowIso,
-          });
-        } catch (_) {}
-
-        // 5. Broadcast to cross-tab synchronizer
-        if (channel) {
-          channel.postMessage({ type: "store_updated", at: Date.now() });
+        // Allow 0000 and 6000 demo testing to re-vote freely
+        if (cleanId !== "0000" && cleanId !== "6000" && votedCount >= totalRoles && totalRoles > 0) {
+          return {
+            ok: false,
+            code: "ALREADY_VOTED",
+            message: `Teacher ${teacher.fullName} (ID ${teacher.admissionNo}) has already cast all ${totalRoles} ballots across School Cabinet and all 6 Houses.`,
+          };
         }
 
         return {
           ok: true,
-          count: ballotDocs.length,
+          teacher,
+          votedRolesMap,
+          votedCount,
+          totalRoles,
+        };
+      },
+
+    async castUniversalBallot({ teacher, selections, photoDataUrl, boothName }) {
+        const finalBooth = String(
+          boothName ||
+          (typeof window.getRegisteredBooth === "function" && window.getRegisteredBooth()) ||
+          sessionStorage.getItem("election_booth_name") ||
+          localStorage.getItem("last_registered_booth") ||
+          "Teacher Station"
+        ).trim();
+
+        const nowIso = new Date().toISOString();
+        const cleanAdm = String(teacher.admissionNo || "").trim();
+
+        if (!Array.isArray(selections) || selections.length === 0) {
+          throw new Error("No candidate selections provided.");
+        }
+
+        if (this.mode === "supabase") {
+          // 1. Upload verification snapshot to storage
+          let photoRelPath = "";
+          if (photoDataUrl && photoDataUrl.startsWith("data:")) {
+            try {
+              const timeSlug = Date.now();
+              photoRelPath = `teachers/${cleanAdm}/${timeSlug}.jpg`;
+              await uploadPhotoToStorage(photoRelPath, photoDataUrl);
+            } catch (e) {
+              console.warn("Storage upload warning:", e);
+            }
+          }
+
+          // 2. Build ballot records for each selected position with guaranteed unique IDs across houses
+          const ballotDocs = selections.map((sel) => ({
+            id: `BLT-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${cleanAdm}-${sel.houseCode}-${sel.positionId}`,
+            election_id: ELECTION_ID,
+            admission_no: cleanAdm,
+            house_code: sel.houseCode,
+            position_id: sel.positionId,
+            position_name: sel.positionName,
+            candidate_id: sel.candidate.id,
+            candidate_name: sel.candidate.fullName,
+            photo_path: photoRelPath,
+            photo_field: "photo_path",
+            status: "accepted",
+            booth_name: finalBooth,
+            cast_at: nowIso,
+          }));
+
+          // Batch insert ballots with fallback if table schema differs (e.g. booth_name column)
+          try {
+            await sbRest("POST", "/rest/v1/ballots", ballotDocs);
+          } catch (ballotErr) {
+            const errMsg = String(ballotErr?.message || "");
+            if (errMsg.includes("booth_name")) {
+              const strippedBallots = ballotDocs.map(({ booth_name, ...rest }) => rest);
+              await sbRest("POST", "/rest/v1/ballots", strippedBallots);
+            } else if (errMsg.includes("ballots_one_accepted_per_voter_role_idx")) {
+              throw new Error(`Duplicate vote blocked: Faculty ${cleanAdm} already has accepted ballots.`);
+            } else {
+              console.error("Ballot insert error:", ballotErr);
+              throw ballotErr;
+            }
+          }
+
+          // 3. Upsert / update teacher voter record to Voted
+          const qAdm = encodeURIComponent(cleanAdm);
+          try {
+            const existingRows = await sbRest("GET", `/rest/v1/voters?admission_no=eq.${qAdm}&select=*`);
+            if (!existingRows || existingRows.length === 0) {
+              await sbRest("POST", "/rest/v1/voters", {
+                admission_no: cleanAdm,
+                full_name: teacher.fullName,
+                class_name: teacher.className || "Staff",
+                section: teacher.section || "Faculty",
+                house_code: "ALL",
+                house_name: "All Houses & Cabinet",
+                final_status: "Voted",
+                voted_for: `${ballotDocs.length} Roles Cast`,
+                position_name: "Universal Teacher Ballot",
+                cast_at: nowIso,
+                photo_path: photoRelPath,
+                is_active: true,
+                updated_at: nowIso,
+              }).catch((postErr) => {
+                console.warn("Voter insert note:", postErr);
+              });
+            } else {
+              await sbRest("PATCH", `/rest/v1/voters?admission_no=eq.${qAdm}`, {
+                final_status: "Voted",
+                voted_for: `${ballotDocs.length} Roles Cast`,
+                cast_at: nowIso,
+                photo_path: photoRelPath || existingRows[0].photo_path,
+                updated_at: nowIso,
+              }).catch((patchErr) => {
+                console.warn("Voter patch note:", patchErr);
+              });
+            }
+          } catch (vErr) {
+            console.warn("Voter status update note:", vErr);
+          }
+
+          // 4. Log non-repudiable audit entry
+          try {
+            await sbRest("POST", "/rest/v1/audit_logs", {
+              id: `AUD-${Date.now().toString(36).toUpperCase()}`,
+              action: "TEACHER_UNIVERSAL_BALLOT_CAST",
+              admission_no: cleanAdm,
+              student_name: teacher.fullName,
+              house_code: "ALL",
+              reason: `Cast ${ballotDocs.length} ballots across School Cabinet and all student houses`,
+              actor: finalBooth,
+              created_at: nowIso,
+            });
+          } catch (_) { }
+
+          // 5. Broadcast to cross-tab synchronizer
+          if (channel) {
+            channel.postMessage({ type: "store_updated", at: Date.now() });
+          }
+
+          return {
+            ok: true,
+            count: ballotDocs.length,
+            teacherName: teacher.fullName,
+            castAt: nowIso,
+          };
+        }
+
+        // Offline mock fallback
+        return {
+          ok: true,
+          count: selections.length,
           teacherName: teacher.fullName,
           castAt: nowIso,
         };
-      }
+      },
+    };
 
-      // Offline mock fallback
-      return {
-        ok: true,
-        count: selections.length,
-        teacherName: teacher.fullName,
-        castAt: nowIso,
-      };
-    },
-  };
-
-  // Re-evaluate backend if Supabase credentials updated in another tab
-  window.addEventListener("storage", (e) => {
-    if (e.key === SB_CFG_KEY) {
-      if (window.TeacherBackend) {
-        window.TeacherBackend._initPromise = null;
-        window.TeacherBackend.init();
+    // Re-evaluate backend if Supabase credentials updated in another tab
+    window.addEventListener("storage", (e) => {
+      if (e.key === SB_CFG_KEY) {
+        if (window.TeacherBackend) {
+          window.TeacherBackend._initPromise = null;
+          window.TeacherBackend.init();
+        }
       }
-    }
-  });
-})();
+    });
+  }) ();
 

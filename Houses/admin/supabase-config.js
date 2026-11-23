@@ -3,6 +3,7 @@
 (function () {
   const SB_CFG_KEY = "election_spr_2026_sb_cfg_v1";
   const DEFAULT_SB_URL = "https://rziptxcknaeuorekxwrl.supabase.co";
+  const DEFAULT_SB_KEY = "sb_publishable_jcyjkISfyHxcKPwVUloYYQ_4BfL3pUZ";
   const BUCKET = "voter-photos";
   const ELECTION_ID = window.ADMIN_DATA?.electionId || "spring-2026";
   const POSITION_ID = window.ADMIN_DATA?.positionId || "house_captain";
@@ -17,34 +18,82 @@
     localStorage.removeItem("election_spr_2026_store_v5");
   } catch (_) { }
 
+  function canonicalSection(s) {
+    if (!s) return "";
+    const str = String(s).trim().toUpperCase();
+    if (str.includes("MAHA") || str.includes("PRATAP") || str.includes("10-MP") || str === "MRP") return "MRP";
+    if (str.includes("SHIVAJI") || str.includes("10-CS") || str === "CS") return "CS";
+    if (str.includes("ASHOKA") || str.includes("10-AC") || str === "AC") return "AC";
+    if (str.includes("JHANSI") || str.includes("10-JL") || str === "JLB") return "JLB";
+    if (str.includes("AMBEDKAR") || str.includes("DR BR")) return "AMBEDKAR";
+    if (str.includes("LLR")) return "LLR";
+    if (str.includes("BCP")) return "BCP";
+    if (str.includes("BGT")) return "BGT";
+    if (str === "VS" || str.includes("VS ") || str.includes("6-VS")) return "VS";
+    if (str.includes("SITARAMA") || str.includes("ASR") || str.includes("7-AS")) return "ASR";
+    if (str.includes("BHAGATH") || str.includes("7-BS") || str === "BS") return "BS";
+    if (str.includes("CHANDRA SHEKAR") || str.includes("7-CA") || str === "CSA") return "CSA";
+    if (str.includes("RAJGURU") || str.includes("7-RG") || str === "RG") return "RG";
+    if (str.includes("SUBHASH") || str.includes("7-SB") || str === "SCB") return "SCB";
+    if (str.includes("CHANAKYA") || str.includes("8-CH") || str === "CK") return "CK";
+    if (str.includes("DAYANANDA") || str.includes("8-DS") || str === "DS") return "DS";
+    if (str.includes("HEDGEWAR") || str.includes("8-HW") || str === "HG") return "HG";
+    if (str.includes("GURUJI") || str.includes("8-SG") || str === "SG") return "SG";
+    if (str.includes("VIVEKANANDA") || str.includes("8-SV") || str === "SV") return "SV";
+    if (str.includes("KALAM") || str.includes("9-AK") || str === "APJ") return "APJ";
+    if (str.includes("ARYABHATTA") || str.includes("9-AB") || str === "AB") return "AB";
+    if (str.includes("CHAWLA") || str.includes("9-KC") || str === "KC") return "KC";
+    if (str.includes("DHAWAN") || str.includes("9-SD") || str === "SD") return "SD";
+    if (str.includes("SARABHAI") || str.includes("9-VS") || str === "VSB") return "VSB";
+    return str;
+  }
+
   function sbHeaders(key, extra = {}) {
     const h = { apikey: key, ...extra };
-    if (String(key || "").startsWith("eyJ") || String(key || "").startsWith("sb_secret_")) {
+    if (String(key || "").startsWith("eyJ") || String(key || "").startsWith("sb_secret_") || String(key || "").startsWith("sb_publishable_")) {
       h.Authorization = `Bearer ${key}`;
     }
     return h;
   }
 
   async function readBrowserSupabaseConfig() {
-    // 1. Browser saved config (e.g., entered in Admin Connect modal)
+    function isValidKey(k) {
+      if (!k || typeof k !== "string") return false;
+      const s = k.trim();
+      return s.length > 10 && !s.includes("...") && !s.includes("anon key") && s !== "paste-your-supabase-key-here";
+    }
+
+    if (isValidKey(DEFAULT_SB_KEY)) {
+      return { url: DEFAULT_SB_URL.replace(/\/+$/, ""), key: DEFAULT_SB_KEY.trim() };
+    }
+
     try {
       const saved = JSON.parse(localStorage.getItem(SB_CFG_KEY) || "null");
-      if (saved && saved.anonKey) {
-        return { url: (saved.url || DEFAULT_SB_URL).replace(/\/+$/, ""), key: saved.anonKey.trim() };
+      const k = (saved?.anonKey || saved?.secretKey || saved?.key || "").trim();
+      if (isValidKey(k)) {
+        return { url: (saved.url || DEFAULT_SB_URL).replace(/\/+$/, ""), key: k };
       }
-    } catch (_) { }
+    } catch (_) {}
 
-    // 2. Gitignored local file supabase.local.json (works on Live Server without exposing keys in git)
-    for (const rel of ["./supabase.local.json", "../supabase.local.json", "../../supabase.local.json"]) {
+    for (const rel of [
+      "./supabase.local.json",
+      "../supabase.local.json",
+      "../../supabase.local.json",
+      "/supabase.local.json",
+      "/Houses/supabase.local.json",
+      "/1supabase/supabase.local.json",
+      "../../1supabase/supabase.local.json",
+      "../1supabase/supabase.local.json"
+    ]) {
       try {
         const res = await fetch(rel, { cache: "no-store" });
         if (!res.ok) continue;
         const parsed = await res.json();
-        const k = String(parsed.anonKey || parsed.key || "").trim();
-        if (k && k !== "paste-your-supabase-key-here") {
+        const k = String(parsed.anonKey || parsed.secretKey || parsed.key || "").trim();
+        if (isValidKey(k)) {
           return { url: String(parsed.url || DEFAULT_SB_URL).replace(/\/+$/, ""), key: k };
         }
-      } catch (_) { }
+      } catch (_) {}
     }
     return { url: DEFAULT_SB_URL, key: "" };
   }
@@ -186,11 +235,6 @@
           "An sbp_... token is your Supabase Account Personal Access Token, not a Project API key. In Supabase -> Project Settings -> API Keys, copy the Publishable key (sb_publishable_... or legacy anon eyJ...)."
         );
       }
-      if (key.startsWith("sb_secret_")) {
-        throw new Error(
-          "Do NOT use an sb_secret_ key in browser JavaScript! Copy your Publishable (sb_publishable_... or anon) key from Supabase -> Project Settings -> API, OR set SUPABASE_KEY in Netlify Environment Variables."
-        );
-      }
       const res = await fetch(`${url}/rest/v1/voters?select=admission_no&limit=1`, {
         cache: "no-store",
         headers: sbHeaders(key),
@@ -258,9 +302,6 @@
         if (cfg.key.startsWith("sbp_")) {
           this.backendError =
             "Blocked sbp_ account token! Copy the project's Publishable key (sb_publishable_... or anon eyJ...) from Project Settings -> API Keys.";
-        } else if (cfg.key.startsWith("sb_secret_")) {
-          this.backendError =
-            "Blocked sb_secret_ key in browser! Use Publishable (anon / sb_publishable_) key in supabase.local.json or Netlify Env Vars.";
         } else {
           try {
             const res = await fetch(`${cfg.url}/rest/v1/voters?select=admission_no&limit=1`, {
@@ -336,7 +377,44 @@
           }
         });
 
-        const positions = window.ADMIN_DATA.positions || [{ id: POSITION_ID, code: "Vote_10_Boy", title: "House Captain" }];
+                  // Merge custom added students from localStorage
+          try {
+            const rawCustom = localStorage.getItem("spr_admin_custom_students");
+            if (rawCustom) {
+              JSON.parse(rawCustom).forEach((cs) => {
+                if (cs && cs.admissionNo && !byAdm.has(cs.admissionNo)) {
+                  byAdm.set(cs.admissionNo, {
+                    admissionNo: cs.admissionNo,
+                    fullName: cs.fullName || cs.admissionNo,
+                    fatherName: cs.fatherName || "",
+                    gender: cs.gender || "Boy",
+                    className: cs.className || "10",
+                    section: cs.section || "",
+                    houseCode: cs.houseCode || "BHEESHMA",
+                    isStaff: false,
+                    isActive: true,
+                    isCandidate: false,
+                    isCustom: true,
+                  });
+                }
+              });
+            }
+          } catch (_) {}
+
+                    // Apply student overrides from localStorage
+          try {
+            const rawOverrides = localStorage.getItem("spr_admin_student_overrides");
+            if (rawOverrides) {
+              const overrides = JSON.parse(rawOverrides);
+              byAdm.forEach((stu, adm) => {
+                if (overrides[adm]) {
+                  Object.assign(stu, overrides[adm]);
+                }
+              });
+            }
+          } catch (_) {}
+
+          const positions = window.ADMIN_DATA.positions || [{ id: POSITION_ID, code: "Vote_10_Boy", title: "House Captain" }];
         const voterStatus = {};
 
         // Initialize any overall status from voters first, then derive authoritative per-role status from ballots
@@ -441,6 +519,30 @@
               isApproved: db.is_approved !== false,
             });
           }
+        });
+
+        try {
+          const rawCustom = localStorage.getItem("spr_admin_custom_students");
+          if (rawCustom) {
+            const list = JSON.parse(rawCustom);
+            let modified = false;
+            list.forEach((cs) => {
+              if (cs && cs.section) {
+                const c = canonicalSection(cs.section);
+                if (c !== cs.section) {
+                  cs.section = c;
+                  modified = true;
+                }
+              }
+            });
+            if (modified) {
+              localStorage.setItem("spr_admin_custom_students", JSON.stringify(list));
+            }
+          }
+        } catch (_) {}
+
+        byAdm.forEach((s) => {
+          if (s.section) s.section = canonicalSection(s.section);
         });
 
         try {
@@ -765,6 +867,244 @@
       return { ok: true, deletedCount: ballotsList.length, admissionNo: cleanAdm };
     },
 
+    async addStudent({ fullName, fatherName, gender, className, section, houseCode, admissionNo }) {
+      const cleanName = String(fullName || "").trim();
+      if (!cleanName) throw new Error("Voter full name is required.");
+      const cleanAdm = String(admissionNo || "").trim().toUpperCase();
+      if (!cleanAdm) throw new Error("Voter ID is required.");
+      const isStaff = cleanAdm.startsWith("SPR") || String(houseCode || "").toUpperCase() === "ALL" || String(className || "").toLowerCase().includes("staff");
+      if (!isStaff && cleanAdm.length !== 6) throw new Error("Student Voter ID must be exactly 6 characters.");
+      const cleanHouse = isStaff ? "ALL" : String(houseCode || "BHEESHMA").toUpperCase().trim();
+      const cleanClass = isStaff ? "Staff" : String(className || "10").trim();
+      const cleanSec = isStaff ? String(section || "FACULTY").trim() : String(section || "").trim();
+      const cleanGender = String(gender || "Boy").trim();
+      const cleanFather = String(fatherName || "").trim();
+
+      if (!window.ADMIN_DATA.students) window.ADMIN_DATA.students = [];
+      const duplicate = window.ADMIN_DATA.students.find(
+        (s) => String(s.admissionNo || "").toUpperCase() === cleanAdm
+      );
+      if (duplicate) {
+        throw new Error(`Voter ID "${cleanAdm}" already exists for ${duplicate.fullName} (${duplicate.className}-${duplicate.section}). Please click Re-Roll.`);
+      }
+
+      const houseNameMap = {
+        BHEESHMA: "Bheeshma House",
+        GURUDRONA: "Gurudrona House",
+        HANUMAN: "Hanuman House",
+        KARNA: "Karna House",
+        VASISTHA: "Vasistha House",
+        VISHWAMITHRA: "Vishwamithra House",
+        CENTRAL: "School Cabinet",
+        ALL: "All Houses & Cabinet",
+      };
+      const houseName = houseNameMap[cleanHouse] || cleanHouse;
+      const nowIso = new Date().toISOString();
+
+      const newStudentDoc = {
+        admission_no: cleanAdm,
+        full_name: cleanName,
+        class_name: cleanClass,
+        section: cleanSec,
+        house_code: cleanHouse,
+        house_name: houseName,
+        final_status: "Not Voted",
+        voted_for: "",
+        vote_10_boy: "",
+        vote_10_girl: "",
+        vote_9_boy: "",
+        vote_9_girl: "",
+        position_name: isStaff ? "Universal Staff Electorate" : "House Captains & Vice Captains",
+        is_active: true,
+        updated_at: nowIso,
+      };
+
+      if (this.mode === "supabase") {
+        await sbRest("POST", "/rest/v1/voters", [newStudentDoc], "resolution=merge-duplicates,return=representation");
+      }
+
+      const studentObj = {
+        admissionNo: cleanAdm,
+        fullName: cleanName,
+        fatherName: cleanFather,
+        gender: cleanGender,
+        className: cleanClass,
+        section: cleanSec,
+        houseCode: cleanHouse,
+        isActive: true,
+        isCandidate: false,
+        positionName: null,
+        isStaff: isStaff,
+        photoUrl: isStaff ? "../assets/candidates/teacher_demo.jpg" : (cleanGender === "Girl" ? "../assets/candidates/girl_demo.jpg" : "../assets/candidates/student_demo.jpg"),
+      };
+
+      window.ADMIN_DATA.students.push(studentObj);
+
+      try {
+        const raw = localStorage.getItem("spr_admin_custom_students");
+        const customList = raw ? JSON.parse(raw) : [];
+        customList.push(studentObj);
+        localStorage.setItem("spr_admin_custom_students", JSON.stringify(customList));
+      } catch (e) {
+        console.warn("Could not save to localStorage:", e);
+      }
+
+      const actorName = (typeof sessionStorage !== "undefined" && (sessionStorage.getItem("spr_admin_email") || sessionStorage.getItem("spr_admin_name"))) || "rc4616105@gmail.com";
+      if (this.mode === "supabase") {
+        await sbRest("POST", "/rest/v1/audit_logs", {
+          id: `AUD-${Date.now().toString(36).toUpperCase()}`,
+          action: "STUDENT_ADDED",
+          ballot_id: null,
+          admission_no: cleanAdm,
+          student_name: cleanName,
+          house_code: cleanHouse,
+          reason: `Added missing student "${cleanName}" (${cleanClass}-${cleanSec}, ${houseName}) with Voter ID ${cleanAdm}`,
+          actor: actorName,
+          created_at: nowIso,
+        }).catch(() => {});
+      }
+
+      if (channel) channel.postMessage({ type: "store_updated", at: Date.now() });
+      return { ok: true, student: studentObj };
+    },
+
+        async updateStudent({ admissionNo, fullName, fatherName, gender, className, section, houseCode }) {
+      const cleanAdm = String(admissionNo || "").trim().toUpperCase();
+      if (!cleanAdm) throw new Error("Voter ID is required.");
+      const cleanName = String(fullName || "").trim();
+      if (!cleanName) throw new Error("Student full name is required.");
+      const cleanFather = String(fatherName || "").trim();
+      const cleanGender = String(gender || "Boy").trim();
+      const cleanClass = String(className || "10").trim();
+      const cleanSec = String(section || "").trim();
+      const cleanHouse = String(houseCode || "BHEESHMA").toUpperCase().trim();
+
+      const houseNameMap = {
+        BHEESHMA: "Bheeshma House",
+        GURUDRONA: "Gurudrona House",
+        HANUMAN: "Hanuman House",
+        KARNA: "Karna House",
+        VASISTHA: "Vasistha House",
+        VISHWAMITHRA: "Vishwamithra House",
+        CENTRAL: "School Cabinet",
+        ALL: "All Houses / Faculty",
+      };
+      const houseName = houseNameMap[cleanHouse] || cleanHouse;
+
+      const patchData = {
+        fullName: cleanName,
+        fatherName: cleanFather,
+        gender: cleanGender,
+        className: cleanClass,
+        section: cleanSec,
+        houseCode: cleanHouse,
+        houseName: houseName,
+      };
+
+      // 1. Save to spr_admin_student_overrides in localStorage
+      try {
+        const raw = localStorage.getItem("spr_admin_student_overrides");
+        const map = raw ? JSON.parse(raw) : {};
+        map[cleanAdm] = { ...(map[cleanAdm] || {}), ...patchData };
+        localStorage.setItem("spr_admin_student_overrides", JSON.stringify(map));
+      } catch (_) {}
+
+      // 2. If present in spr_admin_custom_students, update it there
+      try {
+        const rawCustom = localStorage.getItem("spr_admin_custom_students");
+        if (rawCustom) {
+          const list = JSON.parse(rawCustom);
+          const idx = list.findIndex((s) => String(s.admissionNo).toUpperCase() === cleanAdm);
+          if (idx !== -1) {
+            list[idx] = { ...list[idx], ...patchData };
+            localStorage.setItem("spr_admin_custom_students", JSON.stringify(list));
+          }
+        }
+      } catch (_) {}
+
+      // 3. Update memory data
+      if (window.ADMIN_DATA && window.ADMIN_DATA.students) {
+        const target = window.ADMIN_DATA.students.find((s) => String(s.admissionNo).toUpperCase() === cleanAdm);
+        if (target) Object.assign(target, patchData);
+      }
+
+      // 4. Update Supabase voters table if connected
+      if (this.mode === "supabase") {
+        try {
+          const nowIso = new Date().toISOString();
+          await sbRest("PATCH", `/rest/v1/voters?admission_no=eq.${encodeURIComponent(cleanAdm)}`, {
+            full_name: cleanName,
+            class_name: cleanClass,
+            section: cleanSec,
+            house_code: cleanHouse,
+            house_name: houseName,
+            updated_at: nowIso,
+          });
+
+          await sbRest("POST", "/rest/v1/audit_logs", {
+            id: `AUD-${Date.now().toString(36).toUpperCase()}`,
+            action: "STUDENT_UPDATED",
+            admission_no: cleanAdm,
+            student_name: cleanName,
+            house_code: cleanHouse,
+            reason: `Admin updated student details: Class ${cleanClass}-${cleanSec}, House: ${cleanHouse}`,
+            actor: this.userEmail || "Admin",
+            created_at: nowIso,
+          }).catch(() => {});
+        } catch (sbErr) {
+          console.warn("Supabase voter update warning:", sbErr);
+        }
+      }
+
+      return { success: true, student: { admissionNo: cleanAdm, ...patchData } };
+    },
+
+    async deleteStudent(admissionNo) {
+      const cleanAdm = String(admissionNo || "").trim().toUpperCase();
+      if (!cleanAdm) throw new Error("Voter ID is required.");
+      const qAdm = encodeURIComponent(cleanAdm);
+
+      if (this.mode === "supabase") {
+        await sbRest("DELETE", `/rest/v1/ballots?admission_no=eq.${qAdm}`, null, "return=representation").catch(() => {});
+        await sbRest("DELETE", `/rest/v1/voters?admission_no=eq.${qAdm}`, null, "return=representation").catch(() => {});
+      }
+
+      if (window.ADMIN_DATA && window.ADMIN_DATA.students) {
+        const idx = window.ADMIN_DATA.students.findIndex((s) => String(s.admissionNo || "").toUpperCase() === cleanAdm);
+        if (idx >= 0) window.ADMIN_DATA.students.splice(idx, 1);
+      }
+
+      try {
+        const raw = localStorage.getItem("spr_admin_custom_students");
+        if (raw) {
+          const list = JSON.parse(raw);
+          const filtered = list.filter((cs) => String(cs.admissionNo || "").toUpperCase() !== cleanAdm);
+          localStorage.setItem("spr_admin_custom_students", JSON.stringify(filtered));
+        }
+      } catch (e) {
+        console.warn("Could not update localStorage:", e);
+      }
+
+      const nowIso = new Date().toISOString();
+      const actorName = (typeof sessionStorage !== "undefined" && (sessionStorage.getItem("spr_admin_email") || sessionStorage.getItem("spr_admin_name"))) || "rc4616105@gmail.com";
+      if (this.mode === "supabase") {
+        await sbRest("POST", "/rest/v1/audit_logs", {
+          id: `AUD-${Date.now().toString(36).toUpperCase()}`,
+          action: "STUDENT_DELETED",
+          ballot_id: null,
+          admission_no: cleanAdm,
+          student_name: cleanAdm,
+          house_code: "",
+          reason: `Removed student with Voter ID ${cleanAdm} from voter roster`,
+          actor: actorName,
+          created_at: nowIso,
+        }).catch(() => {});
+      }
+
+      if (channel) channel.postMessage({ type: "store_updated", at: Date.now() });
+      return { ok: true, admissionNo: cleanAdm };
+    },
+
     async addCandidate({ fullName, className, section, houseCode, houseName, positionId, positionName, admissionNo, tagline }) {
       const cleanName = String(fullName || "").trim();
       if (!cleanName) throw new Error("Candidate full name is required.");
@@ -887,7 +1227,32 @@
         tagline: c.tagline,
         is_approved: c.isApproved !== false,
       }));
-      await sbRest("POST", "/rest/v1/candidates", candRows, "resolution=merge-duplicates");
+      // Purge dummy candidates from Supabase
+      const dummyCandidatesSet = [
+        "Arjun Verma", "Tushar Singhania", "Karthik Menon", "Ananya Iyer", "Shruti Deshpande", "Pallavi Rao",
+        "Rohan Nair", "Aryan Gupta", "Prateek Joshi", "Sneha Reddy", "Ishani Sen", "Kritika Bhat",
+        "Devrath Singh", "Harshavardhan Rao", "Manish Pandey", "Kavya Menon", "Sanya Malhotra", "Deepika Nair",
+        "Kunal Joshi", "Nikhil Saxena", "Tanmay Kulkarni", "Meera Sen", "Rhea Pillai", "Anushka Varma",
+        "Tejas Chawla", "Yuvraj Sharma", "Samar Chauhan", "Ishita Pillai", "Tara Nambiar", "Garima Saxena",
+        "Dhruv Kapoor", "Akshay Mehra", "Naveen Reddy", "Avni Sharma", "Bhavya Nair", "Kareena Joseph",
+        "Abhimanyu Das", "Raghav Vashisht", "Surya Prakash", "Tarini Mukherjee", "Priyanka Bose", "Aaradhya Sen",
+        "Siddharth Jain", "Jayesh Patel", "Chetan Anand", "Roshni Paul", "Diya Sengupta", "Maya Nambiar",
+        "Aditya Hegde", "Gautam Menon", "Pranav Joshi", "Pooja Kulkarni", "Nandita Rao", "Malavika Nair",
+        "Varun Bhat", "Naveen Iyer", "Rahul Somani", "Tanvi Saxena", "Divya Kamath", "Swati Mishra",
+        "Vikramaditya Roy", "Shaurya Singhal", "Anirudh Deshmukh", "Rhea Deshmukh", "Ayesha Khan", "Tanvi Sengupta",
+        "Samarth Rao", "Vivan Kapoor", "Tejas Nambiar", "Pari Chopra", "Ananya Roy", "Sana Sheikh",
+        "Kabir Mehta", "Ananya Sundaram", "Rishabh Tandon", "Manav Saxena", "Isha Nair", "Vivaan Goel",
+        "Siddharth Varma", "Kavya Ramanathan", "Nirav Shah", "Aayush Rawat", "Tanvi Bhardwaj", "Arman Gill",
+        "Zoya Akhtar", "Pranav Khandelwal", "Rhea Sengupta"
+      ];
+      for (const dName of dummyCandidatesSet) {
+        sbRest("DELETE", `/rest/v1/candidates?full_name=eq.${encodeURIComponent(dName)}`).catch(() => {});
+      }
+      sbRest("DELETE", `/rest/v1/candidates?section=like.*Option*`).catch(() => {});
+      sbRest("DELETE", `/rest/v1/candidates?tagline=like.*Option*`).catch(() => {});
+      
+      const cleanCandRows = candRows.filter(c => !dummyCandidatesSet.includes(c.full_name) && !(c.section || "").includes("Option "));
+      await sbRest("POST", "/rest/v1/candidates", cleanCandRows, "resolution=merge-duplicates");
 
       if (channel) channel.postMessage({ type: "store_updated", at: Date.now() });
       return { insertedVoters: toInsert.length, totalVoters: students.length, candidates: candRows.length };

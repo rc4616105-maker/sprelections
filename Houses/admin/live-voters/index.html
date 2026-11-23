@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Voters Feed — School House Elections 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css?v=20261123_WIDE_LAYOUT_COMPACT" />
+  <style>
+    :root {
+      --bg-cream: #fbf7ee;
+      --bg-card: #ffffff;
+      --border-default: #e5dccb;
+      --text-primary: #141413;
+      --text-secondary: #524f48;
+      --text-muted: #807a6f;
+      --accent-green: #10b981;
+    }
+
+    body {
+      background: #faf6ed radial-gradient(circle at 50% 0%, rgba(254, 240, 138, 0.22) 0%, rgba(250, 246, 237, 0.8) 60%);
+      color: var(--text-primary);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    .live-shell {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 1rem 1.25rem 3rem;
+      box-sizing: border-box;
+    }
+
+    /* Live Header */
+    .live-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-bottom: 0.85rem;
+      margin-bottom: 1rem;
+      border-bottom: 1.5px solid var(--border-default);
+    }
+
+    .live-header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.42rem 0.9rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: 9999px;
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-default);
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .back-btn:hover {
+      background: #f5ede0;
+      border-color: #059669;
+      transform: translateX(-2px);
+    }
+
+    .live-title-group h1 {
+      margin: 0;
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .live-title-group p {
+      margin: 0.15rem 0 0;
+      font-size: 0.84rem;
+      color: var(--text-secondary);
+    }
+
+    .live-header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+    }
+
+    .live-pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #065f46;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      animation: pulseGreen 1.8s infinite;
+    }
+
+    @keyframes pulseGreen {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    .live-btn {
+      padding: 0.42rem 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: 9999px;
+      border: 1.5px solid var(--border-default);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s ease;
+    }
+
+    .live-btn:hover {
+      background: #f5ede0;
+      border-color: #059669;
+    }
+
+    .live-btn.is-active {
+      background: #059669;
+      color: #ffffff;
+      border-color: #047857;
+    }
+
+    /* Live Stat KPI Banner */
+    .live-kpi-banner {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 900px) {
+      .live-kpi-banner { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .kpi-box {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-default);
+      border-radius: 14px;
+      padding: 0.85rem 1.15rem;
+      box-shadow: 0 4px 14px -6px rgba(45, 36, 20, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-box .kpi-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    .kpi-box .kpi-val {
+      font-family: 'Fraunces', serif;
+      font-size: 1.85rem;
+      font-weight: 700;
+      line-height: 1.15;
+      margin: 0.2rem 0;
+      color: var(--text-primary);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .kpi-box .kpi-sub {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+    }
+
+    .kpi-val.bump {
+      animation: numBump 0.4s ease;
+    }
+
+    @keyframes numBump {
+      0% { transform: scale(1); color: #059669; }
+      50% { transform: scale(1.15); color: #10b981; }
+      100% { transform: scale(1); color: inherit; }
+    }
+
+    /* Filter Bar */
+    .filter-section {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-default);
+      border-radius: 14px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .filter-row-top {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 240px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.5rem 0.85rem 0.5rem 2.2rem;
+      font-size: 0.88rem;
+      border: 1.5px solid var(--border-default);
+      border-radius: 10px;
+      background: #faf6ed;
+      color: var(--text-primary);
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: #059669;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .house-filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+    }
+
+    .house-pill-btn {
+      padding: 0.3rem 0.75rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      border-radius: 9999px;
+      border: 1.5px solid var(--border-default);
+      background: #faf6ed;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .house-pill-btn:hover {
+      border-color: var(--pill-accent, #059669);
+      color: var(--text-primary);
+    }
+
+    .house-pill-btn.is-active {
+      background: var(--pill-accent, #059669);
+      border-color: var(--pill-accent, #059669);
+      color: var(--pill-on-accent, #ffffff);
+      box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Live Feed Grid */
+    .feed-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .feed-count-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      background: #ede3d2;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+      color: var(--text-primary);
+    }
+
+    .live-feed-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 0.85rem;
+    }
+
+    /* Individual Live Voter Card */
+    .voter-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-default);
+      border-radius: 14px;
+      padding: 0.85rem 1rem;
+      box-shadow: 0 4px 12px -4px rgba(45, 36, 20, 0.06);
+      display: flex;
+      gap: 0.85rem;
+      align-items: flex-start;
+      position: relative;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
+    }
+
+    .voter-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--card-house-color, #059669);
+      box-shadow: 0 8px 20px -6px rgba(45, 36, 20, 0.12);
+    }
+
+    .voter-card.is-new-vote {
+      animation: liveVoterEnter 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards, greenGlowPulse 3s ease forwards;
+    }
+
+    @keyframes liveVoterEnter {
+      0% {
+        opacity: 0;
+        transform: translateY(-24px) scale(0.96);
+      }
+      60% {
+        transform: translateY(3px) scale(1.01);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes greenGlowPulse {
+      0% {
+        box-shadow: 0 0 0 4px #10b981, 0 10px 25px -5px rgba(16, 185, 129, 0.4);
+        border-color: #10b981;
+      }
+      70% {
+        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.4);
+      }
+      100% {
+        box-shadow: 0 4px 12px -4px rgba(45, 36, 20, 0.06);
+      }
+    }
+
+    .card-photo-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: #faf6ed;
+      border: 1.5px solid var(--border-default);
+      flex-shrink: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .card-photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-avatar-initials {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--card-house-color, #059669);
+    }
+
+    .card-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-top-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .card-house-tag {
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.12rem 0.45rem;
+      border-radius: 9999px;
+      color: var(--card-house-color, #059669);
+      background: var(--card-house-bg, rgba(5, 150, 105, 0.12));
+      border: 1px solid var(--card-house-border, rgba(5, 150, 105, 0.25));
+    }
+
+    .card-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .card-name {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.25;
+    }
+
+    .card-meta-line {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 0.25rem;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      flex-wrap: wrap;
+    }
+
+    .card-adm-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: #f0ebe1;
+      padding: 0.08rem 0.35rem;
+      border-radius: 6px;
+      color: var(--text-primary);
+    }
+
+    .card-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #047857;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      padding: 0.1rem 0.45rem;
+      border-radius: 9999px;
+      margin-top: 0.35rem;
+    }
+
+    .card-roles-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: #1e40af;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 0.1rem 0.4rem;
+      border-radius: 9999px;
+      margin-top: 0.35rem;
+    }
+
+    /* Floating +1 Tag */
+    .card-new-tag {
+      position: absolute;
+      top: 0.45rem;
+      right: 0.45rem;
+      background: #10b981;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 0.12rem 0.45rem;
+      border-radius: 9999px;
+      animation: floatTag 1.5s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatTag {
+      0% { opacity: 0; transform: translateY(6px) scale(0.8); }
+      20% { opacity: 1; transform: translateY(0) scale(1); }
+      75% { opacity: 1; transform: translateY(-4px); }
+      100% { opacity: 0; transform: translateY(-12px); }
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3.5rem 1rem;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      border: 1.5px dashed var(--border-default);
+      border-radius: 16px;
+      font-size: 0.95rem;
+    }
+
+    /* Photo Inspection Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 20, 19, 0.65);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-default);
+      border-radius: 18px;
+      padding: 1.45rem 1.65rem;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .modal-photo-preview {
+      width: 100%;
+      max-height: 380px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1.5px solid var(--border-default);
+      margin: 1rem 0;
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="live-shell">
+    <!-- Header -->
+    <header class="live-topbar">
+      <div class="live-header-left">
+        <a href="../index.html" class="back-btn">← Back to Admin</a>
+        <div class="live-title-group">
+          <h1>⚡ Live Voters Stream <span class="live-pill-badge"><span class="live-dot"></span> LIVE SYNC (2s)</span></h1>
+          <p>Real-time voter check-in &amp; ballot activity feed across all houses and faculty station.</p>
+        </div>
+      </div>
+      <div class="live-header-right">
+        <button type="button" id="sound-btn" class="live-btn" title="Toggle audio chime on incoming votes">🔊 Sound: ON</button>
+        <button type="button" id="fullscreen-btn" class="live-btn" title="Toggle Fullscreen Mode">⛶ Fullscreen</button>
+        <a href="../../Houses/graphs.html?from=admin" class="live-btn">📊 Turnout Graphs</a>
+      </div>
+    </header>
+
+    <!-- KPI Summary Row -->
+    <section class="live-kpi-banner">
+      <div class="kpi-box">
+        <div class="kpi-label">Total Votes Cast</div>
+        <div id="live-total-voted" class="kpi-val">0</div>
+        <div id="live-total-note" class="kpi-sub">0% overall turnout</div>
+      </div>
+      <div class="kpi-box" style="border-left: 4.5px solid #2563eb;">
+        <div class="kpi-label" style="color: #2563eb;">Boys Voted</div>
+        <div id="live-boys-voted" class="kpi-val" style="color: #2563eb;">0</div>
+        <div id="live-boys-note" class="kpi-sub">0% boys turnout</div>
+      </div>
+      <div class="kpi-box" style="border-left: 4.5px solid #db2777;">
+        <div class="kpi-label" style="color: #db2777;">Girls Voted</div>
+        <div id="live-girls-voted" class="kpi-val" style="color: #db2777;">0</div>
+        <div id="live-girls-note" class="kpi-sub">0% girls turnout</div>
+      </div>
+      <div class="kpi-box" style="border-left: 4.5px solid #059669;">
+        <div class="kpi-label" style="color: #059669;">Latest Voter</div>
+        <div id="live-latest-name" class="kpi-val" style="font-size: 1.15rem; font-family: var(--font-sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">—</div>
+        <div id="live-latest-time" class="kpi-sub">Waiting for first vote...</div>
+      </div>
+    </section>
+
+    <!-- Search & Filters -->
+    <section class="filter-section">
+      <div class="filter-row-top">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="search" id="live-search" class="search-input" placeholder="Search voter name, admission no, or class..." />
+        </div>
+        <div class="house-filter-pills" id="house-filter-pills">
+          <button type="button" class="house-pill-btn is-active" data-house="ALL" style="--pill-accent: #141413;">All Houses</button>
+          <button type="button" class="house-pill-btn" data-house="BHEESHMA" style="--pill-accent: #eab308; --pill-on-accent: #141413;">Bheeshma</button>
+          <button type="button" class="house-pill-btn" data-house="GURUDRONA" style="--pill-accent: #2563eb;">Gurudrona</button>
+          <button type="button" class="house-pill-btn" data-house="HANUMAN" style="--pill-accent: #f97316; --pill-on-accent: #141413;">Hanuman</button>
+          <button type="button" class="house-pill-btn" data-house="KARNA" style="--pill-accent: #b91c1c;">Karna</button>
+          <button type="button" class="house-pill-btn" data-house="VASISTHA" style="--pill-accent: #db2777;">Vasistha</button>
+          <button type="button" class="house-pill-btn" data-house="VISHWAMITHRA" style="--pill-accent: #7c3aed;">Vishwamithra</button>
+          <button type="button" class="house-pill-btn" data-house="CENTRAL" style="--pill-accent: #059669;">Staff / Cabinet</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Activity Stream -->
+    <div class="feed-header">
+      <div>Incoming Voter Stream (<span id="feed-showing-count">0</span> voters)</div>
+      <div class="feed-count-badge" id="feed-update-time">Synced just now</div>
+    </div>
+
+    <div class="live-feed-grid" id="live-feed-grid">
+      <div class="empty-state" id="feed-empty-state">
+        <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🗳️</div>
+        <strong>No ballots recorded yet.</strong>
+        <p style="margin: 0.35rem 0 0; font-size: 0.85rem;">As voters cast ballots across polling booths, their votes and verification captures will appear here lively.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo Modal -->
+  <div id="photo-modal" class="modal-overlay" hidden>
+    <div class="modal-card">
+      <h3 id="photo-modal-name" style="margin: 0; font-size: 1.15rem; font-weight: 800;">Voter Photo</h3>
+      <p id="photo-modal-meta" style="margin: 0.25rem 0 0.75rem; font-size: 0.82rem; color: var(--text-muted);"></p>
+      <img id="photo-modal-img" class="modal-photo-preview" alt="Verification photo" />
+      <button type="button" id="photo-modal-close" class="live-btn" style="width: 100%; justify-content: center;">Close Preview</button>
+    </div>
+  </div>
+
+  <script defer src="../data.js?v=20261123_WIDE_LAYOUT_COMPACT"></script>
+  <script defer src="../teachers.js?v=20261123_WIDE_LAYOUT_COMPACT"></script>
+  <script defer src="../supabase-config.js?v=20261123_WIDE_LAYOUT_COMPACT"></script>
+  <script defer src="../../assets/all-candidates.js?v=20261123_WIDE_LAYOUT_COMPACT"></script>
+  <script>
+    (function () {
+      const HOUSE_COLORS = {
+        BHEESHMA: { name: "Bheeshma", color: "#b45309", bg: "rgba(234, 179, 8, 0.14)", border: "rgba(234, 179, 8, 0.35)" },
+        GURUDRONA: { name: "Gurudrona", color: "#1d4ed8", bg: "rgba(37, 99, 235, 0.12)", border: "rgba(37, 99, 235, 0.28)" },
+        HANUMAN: { name: "Hanuman", color: "#c2410c", bg: "rgba(249, 115, 22, 0.14)", border: "rgba(249, 115, 22, 0.35)" },
+        KARNA: { name: "Karna", color: "#991b1b", bg: "rgba(185, 28, 28, 0.12)", border: "rgba(185, 28, 28, 0.28)" },
+        VASISTHA: { name: "Vasistha", color: "#be185d", bg: "rgba(219, 39, 119, 0.12)", border: "rgba(219, 39, 119, 0.28)" },
+        VISHWAMITHRA: { name: "Vishwamithra", color: "#6d28d9", bg: "rgba(124, 58, 237, 0.12)", border: "rgba(124, 58, 237, 0.28)" },
+        CENTRAL: { name: "Cabinet / Staff", color: "#065f46", bg: "rgba(5, 150, 105, 0.12)", border: "rgba(5, 150, 105, 0.3)" },
+        ALL: { name: "Faculty / Staff", color: "#065f46", bg: "rgba(5, 150, 105, 0.12)", border: "rgba(5, 150, 105, 0.3)" },
+      };
+
+      let soundEnabled = true;
+      let activeHouseFilter = "ALL";
+      let activeSearch = "";
+      let previousVotedAdmissions = new Set();
+      let latestSnapshot = null;
+      let audioCtx = null;
+
+      // Synthetic pleasant chime using Web Audio API
+      function playVoteChime() {
+        if (!soundEnabled) return;
+        try {
+          if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          if (audioCtx.state === "suspended") audioCtx.resume();
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+          osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.12); // A5
+          gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.36);
+        } catch (_) {}
+      }
+
+      function getInitials(name) {
+        return String(name || "?")
+          .trim()
+          .split(/\s+/)
+          .slice(0, 2)
+          .map((p) => p[0])
+          .join("")
+          .toUpperCase();
+      }
+
+      function timeAgo(dateString) {
+        if (!dateString) return "Recently";
+        const date = new Date(dateString);
+        const secs = Math.floor((Date.now() - date.getTime()) / 1000);
+        if (secs < 10) return "Just now";
+        if (secs < 60) return `${secs}s ago`;
+        const mins = Math.floor(secs / 60);
+        if (mins < 60) return `${mins}m ago`;
+        const hrs = Math.floor(mins / 60);
+        return `${hrs}h ago`;
+      }
+
+      const el = {
+        totalVoted: document.getElementById("live-total-voted"),
+        totalNote: document.getElementById("live-total-note"),
+        boysVoted: document.getElementById("live-boys-voted"),
+        boysNote: document.getElementById("live-boys-note"),
+        girlsVoted: document.getElementById("live-girls-voted"),
+        girlsNote: document.getElementById("live-girls-note"),
+        latestName: document.getElementById("live-latest-name"),
+        latestTime: document.getElementById("live-latest-time"),
+        search: document.getElementById("live-search"),
+        pills: Array.from(document.querySelectorAll(".house-pill-btn")),
+        grid: document.getElementById("live-feed-grid"),
+        empty: document.getElementById("feed-empty-state"),
+        showingCount: document.getElementById("feed-showing-count"),
+        updateTime: document.getElementById("feed-update-time"),
+        soundBtn: document.getElementById("sound-btn"),
+        fullscreenBtn: document.getElementById("fullscreen-btn"),
+        photoModal: document.getElementById("photo-modal"),
+        photoModalName: document.getElementById("photo-modal-name"),
+        photoModalMeta: document.getElementById("photo-modal-meta"),
+        photoModalImg: document.getElementById("photo-modal-img"),
+        photoModalClose: document.getElementById("photo-modal-close"),
+      };
+
+      // Sound button toggle
+      el.soundBtn.addEventListener("click", () => {
+        soundEnabled = !soundEnabled;
+        el.soundBtn.textContent = soundEnabled ? "🔊 Sound: ON" : "🔇 Sound: MUTED";
+        el.soundBtn.classList.toggle("is-active", soundEnabled);
+        if (soundEnabled) playVoteChime();
+      });
+
+      // Fullscreen toggle
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          document.exitFullscreen().catch(() => {});
+        }
+      }
+      el.fullscreenBtn.addEventListener("click", toggleFullscreen);
+      document.addEventListener("dblclick", (e) => {
+        if (e.target.closest("button, input, a")) return;
+        toggleFullscreen();
+      });
+
+      // House filter pills
+      el.pills.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          el.pills.forEach((b) => b.classList.remove("is-active"));
+          btn.classList.add("is-active");
+          activeHouseFilter = btn.dataset.house;
+          renderFeed();
+        });
+      });
+
+      // Search input
+      el.search.addEventListener("input", (e) => {
+        activeSearch = e.target.value.trim().toLowerCase();
+        renderFeed();
+      });
+
+      // Photo modal close
+      el.photoModalClose.addEventListener("click", () => {
+        el.photoModal.hidden = true;
+      });
+      el.photoModal.addEventListener("click", (e) => {
+        if (e.target === el.photoModal) el.photoModal.hidden = true;
+      });
+
+      function openPhoto(name, meta, photoUrl) {
+        if (!photoUrl) return;
+        el.photoModalName.textContent = name;
+        el.photoModalMeta.textContent = meta;
+        el.photoModalImg.src = photoUrl;
+        el.photoModal.hidden = false;
+      }
+
+      function processVoters(snap) {
+        if (!snap) return [];
+        const studentsByAdm = new Map((snap.students || []).map((s) => [String(s.admissionNo).toUpperCase(), s]));
+        const acceptedBallots = (snap.ballots || []).filter((b) => b.status === "accepted");
+
+        // Group ballots by voter admission
+        const voterGroups = new Map();
+        acceptedBallots.forEach((b) => {
+          const adm = String(b.admissionNo).toUpperCase();
+          if (!voterGroups.has(adm)) {
+            voterGroups.set(adm, {
+              admissionNo: adm,
+              ballots: [],
+              latestCastAt: b.castAt || b.cast_at,
+              photoUrl: b.voterPhotoUrl || b.voter_photo_url || null,
+              houseCode: b.houseCode || b.house_code,
+            });
+          }
+          const group = voterGroups.get(adm);
+          group.ballots.push(b);
+          const castTime = b.castAt || b.cast_at;
+          if (castTime && (!group.latestCastAt || new Date(castTime) > new Date(group.latestCastAt))) {
+            group.latestCastAt = castTime;
+            if (b.voterPhotoUrl || b.voter_photo_url) {
+              group.photoUrl = b.voterPhotoUrl || b.voter_photo_url;
+            }
+          }
+        });
+
+        // Enrich with student details
+        const enrichedList = [];
+        voterGroups.forEach((v) => {
+          const stu = studentsByAdm.get(v.admissionNo) || {};
+          const isStaff = Boolean(stu.isStaff || v.houseCode === "CENTRAL" || v.houseCode === "ALL" || stu.className === "Staff" || v.admissionNo.startsWith("SPR"));
+          const houseCode = isStaff ? "CENTRAL" : (stu.houseCode || v.houseCode || "BHEESHMA");
+
+          enrichedList.push({
+            admissionNo: v.admissionNo,
+            fullName: stu.fullName || v.admissionNo,
+            gender: stu.gender || "Any",
+            className: isStaff ? "Faculty" : (stu.className || "10"),
+            section: isStaff ? (stu.subject || "Staff") : (stu.section || "A"),
+            houseCode,
+            isStaff,
+            photoUrl: v.photoUrl || stu.photoUrl || null,
+            ballotsCount: v.ballots.length,
+            latestCastAt: v.latestCastAt,
+          });
+        });
+
+        // Sort newest first
+        enrichedList.sort((a, b) => new Date(b.latestCastAt || 0) - new Date(a.latestCastAt || 0));
+        return enrichedList;
+      }
+
+      function updateKPIs(votersList, snap) {
+        const totalEligible = (snap.students || []).filter((s) => s.isActive && s.admissionNo !== "0000").length;
+        const totalVotedCount = votersList.length;
+        const overallPct = totalEligible ? Math.round((totalVotedCount / totalEligible) * 100) : 0;
+
+        const isBoy = (v) => String(v.gender).toLowerCase().includes("boy") || String(v.gender).toLowerCase() === "male";
+        const isGirl = (v) => String(v.gender).toLowerCase().includes("girl") || String(v.gender).toLowerCase() === "female";
+
+        const boysVotedCount = votersList.filter(isBoy).length;
+        const girlsVotedCount = votersList.filter(isGirl).length;
+
+        const allBoys = (snap.students || []).filter((s) => s.isActive && isBoy(s)).length;
+        const allGirls = (snap.students || []).filter((s) => s.isActive && isGirl(s)).length;
+
+        const bPct = allBoys ? Math.round((boysVotedCount / allBoys) * 100) : 0;
+        const gPct = allGirls ? Math.round((girlsVotedCount / allGirls) * 100) : 0;
+
+        el.totalVoted.textContent = String(totalVotedCount);
+        el.totalNote.textContent = `${overallPct}% overall turnout (${totalVotedCount} of ${totalEligible})`;
+        el.boysVoted.textContent = String(boysVotedCount);
+        el.boysNote.textContent = `${bPct}% boys turnout (${boysVotedCount} of ${allBoys})`;
+        el.girlsVoted.textContent = String(girlsVotedCount);
+        el.girlsNote.textContent = `${gPct}% girls turnout (${girlsVotedCount} of ${allGirls})`;
+
+        if (votersList.length > 0) {
+          const latest = votersList[0];
+          el.latestName.textContent = latest.fullName;
+          el.latestTime.textContent = `${timeAgo(latest.latestCastAt)} · ${latest.isStaff ? "Faculty" : latest.houseCode}`;
+        }
+      }
+
+      function renderFeed() {
+        if (!latestSnapshot) return;
+        const allVoters = processVoters(latestSnapshot);
+        updateKPIs(allVoters, latestSnapshot);
+
+        const filtered = allVoters.filter((v) => {
+          if (activeHouseFilter !== "ALL") {
+            if (activeHouseFilter === "CENTRAL") {
+              if (!v.isStaff && v.houseCode !== "CENTRAL" && v.houseCode !== "ALL") return false;
+            } else if (v.houseCode !== activeHouseFilter) {
+              return false;
+            }
+          }
+          if (activeSearch) {
+            const haystack = `${v.fullName} ${v.admissionNo} ${v.className} ${v.section} ${v.houseCode}`.toLowerCase();
+            if (!haystack.includes(activeSearch)) return false;
+          }
+          return true;
+        });
+
+        el.showingCount.textContent = String(filtered.length);
+        el.updateTime.textContent = `Updated ${new Date().toLocaleTimeString()}`;
+
+        if (filtered.length === 0) {
+          el.grid.innerHTML = "";
+          el.grid.appendChild(el.empty);
+          el.empty.hidden = false;
+          return;
+        }
+
+        el.empty.hidden = true;
+        el.grid.innerHTML = "";
+
+        // Check for brand new voters to trigger animation & chime
+        const currentAdmissions = new Set(allVoters.map((v) => v.admissionNo));
+        let hasNewVoter = false;
+        allVoters.forEach((v) => {
+          if (previousVotedAdmissions.size > 0 && !previousVotedAdmissions.has(v.admissionNo)) {
+            hasNewVoter = true;
+          }
+        });
+
+        if (hasNewVoter) {
+          playVoteChime();
+          el.totalVoted.classList.add("bump");
+          setTimeout(() => el.totalVoted.classList.remove("bump"), 500);
+        }
+
+        filtered.forEach((v) => {
+          const isJustAdded = previousVotedAdmissions.size > 0 && !previousVotedAdmissions.has(v.admissionNo);
+          const houseMeta = HOUSE_COLORS[v.houseCode] || { name: v.houseCode, color: "#141413", bg: "#f5ede0", border: "#e5dccb" };
+
+          const card = document.createElement("div");
+          card.className = `voter-card ${isJustAdded ? "is-new-vote" : ""}`;
+          card.style.setProperty("--card-house-color", houseMeta.color);
+          card.style.setProperty("--card-house-bg", houseMeta.bg);
+          card.style.setProperty("--card-house-border", houseMeta.border);
+
+          const photoHtml = v.photoUrl
+            ? `<img src="${v.photoUrl}" alt="${v.fullName}" loading="lazy" />`
+            : `<span class="card-avatar-initials">${getInitials(v.fullName)}</span>`;
+
+          const metaClass = v.isStaff ? `${v.section || "Faculty"}` : `Class ${v.className} · Sec ${v.section}`;
+
+          card.innerHTML = `
+            ${isJustAdded ? '<span class="card-new-tag">⚡ JUST VOTED</span>' : ""}
+            <div class="card-photo-wrap" title="Click to inspect verification capture">
+              ${photoHtml}
+            </div>
+            <div class="card-info">
+              <div class="card-top-line">
+                <span class="card-house-tag">${houseMeta.name}</span>
+                <span class="card-time">${timeAgo(v.latestCastAt)}</span>
+              </div>
+              <h3 class="card-name">${v.fullName}</h3>
+              <div class="card-meta-line">
+                <span class="card-adm-badge">${v.admissionNo}</span>
+                <span>${metaClass}</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap;">
+                <span class="card-status-badge">✓ Ballot Accepted</span>
+                <span class="card-roles-badge">${v.ballotsCount} Role${v.ballotsCount > 1 ? "s" : ""}</span>
+              </div>
+            </div>
+          `;
+
+          const photoWrap = card.querySelector(".card-photo-wrap");
+          if (v.photoUrl && photoWrap) {
+            photoWrap.addEventListener("click", () => {
+              openPhoto(v.fullName, `${v.admissionNo} · ${houseMeta.name} · ${metaClass}`, v.photoUrl);
+            });
+          }
+
+          el.grid.appendChild(card);
+        });
+
+        previousVotedAdmissions = currentAdmissions;
+      }
+
+      async function refresh() {
+        try {
+          latestSnapshot = await window.AdminBackend.getSnapshot();
+          renderFeed();
+        } catch (err) {
+          console.warn("Live voters refresh error:", err);
+        }
+      }
+
+      async function boot() {
+        await window.AdminBackend.init();
+        await refresh();
+        window.AdminBackend.subscribeUpdates(async () => {
+          await refresh();
+        });
+        setInterval(refresh, 2000);
+      }
+
+      boot();
+    })();
+  </script>
+</body>
+</html>

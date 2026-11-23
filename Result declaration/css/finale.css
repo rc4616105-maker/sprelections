@@ -1,0 +1,252 @@
+/* Grand Finale & Student Council Presentation Styles - High-Impact Auditorium Layout */
+
+.finale-stage-container {
+  height: 100%;
+  max-height: 100%;
+  padding: 1.25rem 2.5rem 1.75rem;
+  max-width: 1560px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Subtle scrollbar for smaller displays */
+.finale-stage-container::-webkit-scrollbar {
+  width: 6px;
+}
+.finale-stage-container::-webkit-scrollbar-thumb {
+  background: #E5E7EB;
+  border-radius: 4px;
+}
+
+.finale-header {
+  text-align: center;
+  margin-bottom: 1.4rem;
+  flex-shrink: 0;
+}
+
+.finale-header h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2.35rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-top: 0.2rem;
+  margin-bottom: 0.35rem;
+  color: #111827;
+}
+
+.finale-header p {
+  font-size: 1.08rem;
+  color: var(--text-muted);
+}
+
+/* 6 House Panels Grid - Substantially Bigger & Prominent */
+.finale-cabinet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.6rem 2rem;
+  margin-bottom: 1.25rem;
+  flex: 1;
+}
+
+@media (max-width: 1200px) {
+  .finale-cabinet-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .finale-cabinet-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.finale-house-panel {
+  background: #FFFFFF;
+  border: 1px solid var(--border-subtle);
+  border-top: 7px solid #EAB308;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.finale-house-panel:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.finale-house-header {
+  padding: 1.1rem 1.6rem;
+  border-bottom: 1px solid var(--border-subtle);
+  background: #FAF7F2;
+}
+
+.finale-house-header h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.3px;
+  margin: 0;
+}
+
+.finale-leaders-list {
+  padding: 1.15rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  flex: 1;
+  justify-content: space-around;
+}
+
+/* Tabular Grid Row: Post Title (Col 1), Name (Col 2 - Straight Line), Grade (Col 3) */
+.finale-leader-row {
+  display: grid;
+  grid-template-columns: 145px 1fr auto;
+  align-items: center;
+  column-gap: 1.1rem;
+  padding: 0.75rem 0.65rem;
+  border-bottom: 1px solid #F3F4F6;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+}
+
+.finale-leader-row:hover {
+  background: #FDFBF7;
+}
+
+.finale-leader-row:last-child {
+  border-bottom: none;
+}
+
+/* Col 1: Fixed Post Title */
+.finale-post-col {
+  font-size: 0.88rem;
+  color: #6B7280;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Col 2: Winner Name - High Contrast, Bold, Left-Aligned Straight Column */
+.finale-name-col {
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: #111827;
+  text-align: left;
+  letter-spacing: -0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Col 3: Grade Pill Badge */
+.finale-grade-col {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.finale-grade-badge {
+  display: inline-block;
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  color: #4B5563;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 4px 11px;
+  border-radius: 20px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+/* Print Friendly Styles */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+  .top-navbar, #confettiCanvas {
+    display: none !important;
+  }
+  .finale-stage-container {
+    padding: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+  .finale-house-panel {
+    border: 1px solid #D1D5DB !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+}
+
+/* Cabinet Launch Banner between House Finale and Cabinet Ceremony */
+.cabinet-launch-banner {
+  background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
+  border-radius: 16px;
+  padding: 1.4rem 2.2rem;
+  margin-bottom: 1.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.35);
+  color: #FFFFFF;
+  animation: pulseCabinetBanner 2.5s infinite alternate;
+}
+
+@keyframes pulseCabinetBanner {
+  0% { box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.35); }
+  100% { box-shadow: 0 15px 35px 0px rgba(16, 185, 129, 0.5); }
+}
+
+.cabinet-banner-content h3 {
+  font-size: 1.55rem;
+  font-weight: 800;
+  margin: 0.25rem 0 0.35rem;
+  letter-spacing: -0.02em;
+}
+
+.cabinet-banner-content p {
+  font-size: 0.98rem;
+  color: #a7f3d0;
+  margin: 0;
+}
+
+.cabinet-mini-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  color: #6ee7b7;
+}
+
+.btn-cabinet-launch {
+  background: #FFFFFF !important;
+  color: #065f46 !important;
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  padding: 0.95rem 1.85rem !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  white-space: nowrap;
+}
+
+.btn-cabinet-launch:hover {
+  background: #f0fdf4 !important;
+  color: #047857 !important;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+}

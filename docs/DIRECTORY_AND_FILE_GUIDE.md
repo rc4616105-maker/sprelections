@@ -4,24 +4,34 @@ Below is the complete structural map of this repository with detailed descriptio
 
 ```
 Election Spr 2026/
+├── index.html                  # Root Instant Redirect to /Houses/index.html (Netlify & Web Server Root)
+├── netlify.toml                # Netlify Zero-Build Configuration with Root 302 Redirect
 ├── docs/                       # Official Comprehensive Documentation
-├── Houses/                     # All Frontend Voting Kiosks & Admin Interfaces
-│   ├── index.html              # Main Station Portal & Booth Registration Modal
-│   ├── graphs.html             # Live Candidate Comparison Graphs
+├── Houses/                     # All Frontend Voting Kiosks, Turnout Graphs & Admin Console
+│   ├── index.html              # Main Polling Station Portal (House & Teacher Booths, Graphs CTA)
+│   ├── graphs.html             # Live Realtime Double-Bar Turnout Graphs (Boys vs Girls, +1 Pulse)
 │   ├── assets/                 # Shared Station Assets & Core Drivers
-│   ├── admin/                  # Administrative Console & Ballot Management
-│   ├── bheeshma/               # Bheeshma House Polling Kiosk
-│   ├── central/                # School Cabinet (Teacher-Only) Polling Kiosk
-│   ├── gurudrona/              # Gurudrona House Polling Kiosk
-│   ├── hanuman/                # Hanuman House Polling Kiosk
-│   ├── karna/                  # Karna House Polling Kiosk
-│   ├── vasistha/               # Vasistha House Polling Kiosk
-│   └── vishwamithra/           # Vishwamithra House Polling Kiosk
+│   ├── admin/                  # Administrative Console, Ballot Workbench & Live Voters Stream
+│   │   ├── index.html          # Master Admin Dashboard (KPIs, Master Register, Audit Controls)
+│   │   ├── house.html          # House-Specific Admin Console (Compact Candidate Graphs, View Switcher)
+│   │   ├── house.js            # House Admin Controller (Strict 168 Roster Filter, Live Polling)
+│   │   ├── edit-votes.html     # Secret Ballot Management & Candidate Participation Workbench
+│   │   ├── live-voters/        # Dedicated Live Incoming Voters Stream
+│   │   │   └── index.html      # Realtime Voter Stream (Audio Chime, Pulse Animation, Photo Modal)
+│   │   ├── data.js             # Master Roster (1,085 Students & 140 Candidates)
+│   │   ├── teachers.js         # Master Faculty Roster (88 Teaching Staff Members)
+│   │   └── supabase-config.js  # Admin Supabase REST Adapter & Pendrive Local Backup Driver
+│   ├── bheeshma/               # Bheeshma House Kiosk (Gangotri Constituency - Amber)
+│   ├── central/                # School Cabinet Teacher-Only Kiosk (Emerald Green)
+│   ├── gurudrona/              # Gurudrona House Kiosk (Trimbakeshwar Constituency - Royal Blue)
+│   ├── hanuman/                # Hanuman House Kiosk (Yamunotri Constituency - Warm Orange)
+│   ├── karna/                  # Karna House Kiosk (Manasarovar Constituency - Crimson Red)
+│   ├── teachers/               # Universal Teacher Kiosk (29-Role Ballot across All Houses & Cabinet)
+│   ├── vasistha/               # Vasistha House Kiosk (Mahabaleshwar Constituency - Deep Rose)
+│   └── vishwamithra/           # Vishwamithra House Kiosk (Amarkantak Constituency - Royal Purple)
 ├── voter_cards/                # High-Res Printable Voter ID Cards & A4 Sheets
 ├── scripts/                    # Python Data Parsing & Card Generation Scripts
-├── 1supabase/                  # Supabase PostgreSQL Database Schemas
-├── server/                     # Optional Python OTP server (Reference only)
-├── 2026-27 staff details.xlsx  # Official Institutional Teaching Staff Roster
+├── 1supabase/                  # Supabase PostgreSQL Database Schemas & Constraints
 └── ELECTIONS HOUSES (1).xlsx   # Official Institutional Student Electoral Roll
 ```
 
@@ -29,9 +39,43 @@ Election Spr 2026/
 
 ## Detailed Directory Breakdown
 
+### 0. Project Root & Deployment
+- **`index.html`:** Root entry point. When hosted on Netlify, GitHub Pages, or a local server root, it instantly redirects incoming requests to `/Houses/index.html` with query parameters preserved.
+- **`netlify.toml`:** Production Netlify configuration instructing the edge router to publish the root directory and redirect `/` to `/Houses/index.html` with a 302 HTTP status.
+
+---
+
 ### 1. `Houses/` Root
-- **`index.html`:** The primary portal display. When a polling station computer is started, it prompts the officer to enter the **Booth Name** (e.g. "Booth 1", "Computer Lab A") and **Officer Name**. Contains cards linking to each house booth and admin portal.
-- **`graphs.html`:** Fullscreen, high-contrast bar graph visualizations showing real-time vote comparisons for each candidate across all positions.
+- **`index.html`:** The primary public election portal. Features high-contrast cards for all 6 Houses (displaying both the House name and its associated Constituency), the Teachers/Staff Cabin card, and the Live Turnout Graphs CTA.
+- **`graphs.html`:** Real-time turnout analytics dashboard showing side-by-side double bar charts (Boys vs Girls) for all 6 houses. Features:
+  - Total electorate KPIs (1,085 Total Voted, Boys Turnout, Girls Turnout, Pending to Vote).
+  - Floating green `+1` animation directly above the affected house column when a new vote arrives.
+  - Double-click anywhere on empty background space to toggle fullscreen mode cleanly.
+  - Clickable title navigation that seamlessly returns to `./index.html` (or `./admin/index.html` if navigated from the admin panel).
+
+---
+
+### 2. `Houses/admin/` (Administration & Live Operations)
+- **`index.html`:** The master administrative dashboard displaying overall turnout KPIs, Master Register table (with filtering by House, Booth, Class, Section), progress meters, and candidate seed controls.
+- **`house.html` & `house.js`:** Dedicated per-house admin console. Features compact KPI cards, quick view switcher buttons (`📊 Graphs`, `👥 Master Voters List`), and candidate vote comparison bar charts styled with authentic house colors without requiring vertical scrolling. Strictly isolates student voters (e.g. 168 Bheeshma students) from faculty.
+- **`live-voters/index.html`:** Dedicated Live Incoming Voters Stream screen designed for election monitoring screens. Features a Web Audio chime on every new vote, green slide-in pulse animation, voter admission/name/class/house details, live search, house filters, and a high-resolution photo verification modal.
+- **`edit-votes.html` & `edit-votes.js`:** Secret Ballot management workbench. Allows inspecting cast ballots, photo inspection, vote cancellation with officer attribution, and dynamic candidate participation additions.
+- **`supabase-config.js`:** Pure client-side static Supabase REST adapter pre-configured with project credentials for zero-prompt automatic loading. Also orchestrates USB pendrive local backup writes via Web File System Access API.
+
+---
+
+### 3. Universal Teacher Polling Booth (`Houses/teachers/`)
+- **`index.html` & `app.js`:** Dedicated 29-role unified polling booth for teaching faculty. Combines all 5 School Cabinet roles and all 24 House leadership roles (4 roles × 6 houses) into an interactive zero-scroll kiosk with dynamic house theme color switching.
+- **`data.js`:** Validated candidate dataset containing all 140 contesting candidates across all 29 posts with photos and symbols.
+
+---
+
+### 4. Individual House Polling Booths (`bheeshma/`, `gurudrona/`, etc.)
+Each house booth is a completely self-contained, 4-step EVM polling kiosk:
+- **`index.html`:** 4-step voting interface: Step 1 (Scan/Enter ID), Step 2 (Confirm Identity), Step 3 (Select Candidates & Cast), Step 4 (Vote Casted / 3-Second Auto Reset). Displays the house title and its assigned constituency name in a lighter shade of the house accent color.
+- **`app.js`:** Hardware barcode gun scanner input, camera warm-up, offline Pico.js face detection loop, and ballot submission.
+- **`supabase-config.js`:** Database client with pre-configured cloud credentials for instant connection.
+- **`styles.css`:** Tailored house color schemes (Golden Amber, Royal Blue, Warm Orange, Crimson Red, Deep Rose, Royal Purple).
 
 ---
 

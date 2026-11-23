@@ -16,7 +16,7 @@
   };
 
   const scannerState = {
-    mode: localStorage.getItem("election_voter_input_mode") || "manual",
+    mode: "manual",
     buffer: "",
     lastKeystrokeTime: 0,
     pairedDeviceName: localStorage.getItem("election_usb_scanner_name") || "",
@@ -441,9 +441,21 @@
         card.dataset.candidateId = cand.id;
         card.setAttribute("role", "radio");
         card.setAttribute("aria-checked", "false");
+        const photoHtml = cand.photoPath || cand.photoUrl
+          ? `<img src="${cand.photoPath || cand.photoUrl}" alt="${cand.fullName}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" />`
+          : `<span>${getInitials(cand.fullName)}</span>`;
+        const sym = cand.symbolObj || { name: "Candidate Choice", icon: "⭐" };
+        const symSlug = (sym.slug || sym.name || "star").toLowerCase().replace(/[\s-]+/g, "_");
+        const symImg = (sym.image || sym.imagePath || `../assets/symbols/${symSlug}.png`) + '?v=20261123N';
         card.innerHTML = `
           <div class="candidate-card-top">
-            <div class="candidate-avatar" aria-hidden="true">${getInitials(cand.fullName)}</div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="candidate-avatar" aria-hidden="true" style="overflow:hidden;">${photoHtml}</div>
+              <div class="candidate-symbol-box" title="Symbol: ${sym.name}" style="width:52px;height:52px;border-radius:10px;background:#fff;border:1px solid #cbd5e1;display:grid;place-items:center;padding:4px;box-sizing:border-box;">
+                <img src="${symImg}" alt="${sym.name}" style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';" />
+                <span style="display:none;font-size:1.5rem;">${sym.icon || "⭐"}</span>
+              </div>
+            </div>
             <span class="select-indicator" aria-hidden="true"></span>
           </div>
           <div>
@@ -524,6 +536,20 @@
     stopDelayedSpinner();
     clearInterval(state.resetInterval);
     clearTimeout(state.resetTimeout);
+
+    // ── 10-Vote Auto Cache Buster (Stays on this House kiosk with spinning wheel) ──
+    const totalVotes = parseInt(sessionStorage.getItem("kiosk_session_votes") || "0", 10);
+    const lastBust = parseInt(sessionStorage.getItem("kiosk_last_cache_bust") || "0", 10);
+    if (totalVotes > 0 && totalVotes % 10 === 0 && totalVotes !== lastBust) {
+      sessionStorage.setItem("kiosk_last_cache_bust", String(totalVotes));
+      if (el.loadingOverlayTitle) el.loadingOverlayTitle.textContent = "Refreshing Booth Cache...";
+      if (el.loadingOverlaySubtitle) el.loadingOverlaySubtitle.textContent = `${totalVotes} votes recorded · Optimizing booth for next voter...`;
+      if (el.loadingOverlay) el.loadingOverlay.hidden = false;
+      setTimeout(() => {
+        window.location.replace(window.location.pathname + "?v=" + Date.now());
+      }, 700);
+      return;
+    }
     closeFaceGuardModal();
     stopCamera();
     state.verifiedStudent = null;
@@ -649,9 +675,19 @@
 
     setLoading(el.verifyBtn, true);
     if (el.scannerKioskBox) el.scannerKioskBox.classList.add("is-scanning");
-    startDelayedSpinner("Verifying Voter...", "Please wait a moment...", 400);
+    startDelayedSpinner("Verifying Voter...", "Please wait a moment...", 800);
 
     try {
+      // Wait for boot() to finish (Supabase init) before verifying
+      if (window._electionBootReady) {
+        try { await window._electionBootReady; } catch (e) { /* continue anyway */ }
+      }
+      if (!window.ElectionBackend || typeof window.ElectionBackend.init !== "function") {
+        showStep1Error("System Error", "Kiosk backend failed to load. Please refresh the page.");
+        stopDelayedSpinner();
+        if (el.verifyBtn) el.verifyBtn.disabled = false;
+        return;
+      }
       await window.ElectionBackend.init();
       const result = await window.ElectionBackend.verifyStudent(
         cleanId,
@@ -671,15 +707,26 @@
       el.voterInitials.textContent = getInitials(result.student.fullName);
       el.voterName.textContent = result.student.fullName;
       el.voterIdBadge.textContent = `Voter ID ${result.student.admissionNo}`;
-      const isTeacher = result.student.isStaff === true || result.student.houseCode === "ALL" || result.student.admissionNo === "0000";
-      el.voterMeta.textContent = isTeacher
+      const isTeacher = result.student.isStaff === true && result.student.className !== "10" && result.student.className !== "9" && result.student.className !== "8" && result.student.className !== "7" && result.student.admissionNo !== "1C8492" && result.student.admissionNo !== "0000";
+      const isWinner = Boolean(result.student.isElectedWinner);
+      el.voterMeta.textContent = isWinner
+        ? `🎖️ ${result.student.winnerRoleTitle || "Elected House Captain"} · ${result.student.winnerHouseName || "House Council"}`
+        : isTeacher
         ? `${result.student.subject ? `${result.student.subject} Faculty` : "Teaching Staff"} · ${houseConfig.name}`
         : `Class ${result.student.className}-${result.student.section} · ${houseConfig.name} House`;
-      el.voterRoleTag.textContent = isTeacher
+      el.voterRoleTag.textContent = isWinner
+        ? "Authorized Electoral College Voter (1 of 24 House Leaders)"
+        : isTeacher
         ? "Authorized Teacher / Faculty"
         : result.student.isCandidate
         ? `Candidate · ${result.student.positionName || "House Leadership"}`
         : result.verificationNote || "Eligible Voter";
+      if (isWinner) {
+        el.voterRoleTag.style.background = "#dcfce7";
+        el.voterRoleTag.style.color = "#15803d";
+        el.voterRoleTag.style.border = "1px solid #86efac";
+        el.voterRoleTag.style.fontWeight = "800";
+      }
       el.voterReauthTag.hidden = result.voterStatus !== "cancelled";
 
       goToStep(2);
@@ -975,7 +1022,7 @@
       });
 
       if (window.PendriveStorage) {
-        await window.PendriveStorage.syncNow();
+        window.PendriveStorage.syncNow().catch(() => {});
       }
 
       const summaryList = selections
@@ -985,6 +1032,8 @@
         })
         .join(" · ");
       el.successSummary.textContent = `${state.verifiedStudent.fullName} (ID ${state.verifiedStudent.admissionNo}) — Recorded ${selections.length} vote${selections.length > 1 ? "s" : ""}: ${summaryList} (${houseConfig.name} House).`;
+            const prevVotes = parseInt(sessionStorage.getItem("kiosk_session_votes") || "0", 10);
+      sessionStorage.setItem("kiosk_session_votes", String(prevVotes + 1));
       goToStep(4);
       startAutoResetCountdown();
     } catch (err) {
@@ -1074,7 +1123,7 @@
     triggerAutoFocus();
     initWebHid();
     if (window.PendriveStorage) {
-      await window.PendriveStorage.mount({
+      window.PendriveStorage.mount({
         container: document.getElementById("local-storage-slot"),
         houseMeta: houseConfig,
         getSnapshot: () => window.ElectionBackend.getHouseSnapshot(houseConfig.code),
@@ -1094,9 +1143,11 @@
       window.ElectionBackend.subscribeHouseUpdates(houseConfig.code, () => {
         window.PendriveStorage.syncNow();
       });
-      await window.PendriveStorage.syncNow();
+      window.PendriveStorage.syncNow().catch(() => {});
     }
   }
 
-  boot();
+
+  // Store boot promise so executeVerification can await it
+  window._electionBootReady = boot();
 })();

@@ -124,7 +124,7 @@ def render_voter_card(person: dict, output_path: Path):
 
     is_staff = person.get("isStaff", False) or person.get("className") == "Staff"
     house_code = person.get("houseCode", "HANUMAN").upper()
-    is_demo = str(person.get("admissionNo")) == "0000" or (house_code == "ALL" and not is_staff)
+    is_demo = False  # Render full authentic student identity on all cards
 
     if is_staff:
         theme = HOUSE_THEMES["STAFF"]
@@ -309,7 +309,8 @@ def load_teachers_roster():
 
 def main():
     parser = argparse.ArgumentParser(description="Generate Voter Card Images")
-    parser.add_argument("--demo", action="store_true", help="Generate official Universal Demo User (0000) card in sample_cards")
+    parser.add_argument("--demo", action="store_true", help="Generate official Universal Demo User (0000) and Teacher Demo cards in sample_cards")
+    parser.add_argument("--teacher-demo", action="store_true", help="Generate official Universal Teacher Demo card in sample_cards")
     parser.add_argument("--teachers", action="store_true", help="Generate all teaching staff cards and A4 sheets")
     parser.add_argument("--sample", action="store_true", help="Generate sample cards for each house")
     parser.add_argument("--all", action="store_true", help="Generate all individual student cards")
@@ -317,23 +318,87 @@ def main():
     parser.add_argument("--sheets", action="store_true", help="Generate A4 printable 8-card sheet PNGs for students")
     args = parser.parse_args()
 
-    if args.demo:
+    if args.demo or args.teacher_demo:
         out_dirs = [
             ROOT / "Houses" / "sample_cards",
             ROOT / "sample_cards"
         ]
+        demo_st_6char = {
+            "admissionNo": "1C8492",
+            "fullName": "Aditya Vikram",
+            "className": "10",
+            "section": "CS (Chatrapathi Shivaji)",
+            "houseCode": "BHEESHMA",
+        }
         demo_st = {
             "admissionNo": "0000",
-            "fullName": "Demo User",
-            "className": "Demo",
-            "section": "All",
-            "houseCode": "ALL",
+            "fullName": "Aditya Vikram",
+            "className": "10",
+            "section": "CS (Chatrapathi Shivaji)",
+            "houseCode": "BHEESHMA",
+        }
+        demo_teacher = {
+            "admissionNo": "0000",
+            "fullName": "Dr. Rajesh Sharma (Demo Faculty)",
+            "subject": "SENIOR FACULTY / DEMO",
+            "contact": "9876543210",
+            "houseCode": "BHEESHMA",
+            "className": "Staff",
+            "section": "Faculty",
+            "isStaff": True,
+        }
+        demo_teacher_6000 = {
+            "admissionNo": "6000",
+            "fullName": "Dr. Rajesh Sharma (Demo Faculty)",
+            "subject": "SENIOR FACULTY / DEMO",
+            "contact": "9876543210",
+            "houseCode": "BHEESHMA",
+            "className": "Staff",
+            "section": "Faculty",
+            "isStaff": True,
         }
         for od in out_dirs:
             od.mkdir(parents=True, exist_ok=True)
-            out_path = od / "0000_Demo_User.png"
-            render_voter_card(demo_st, out_path)
-            print(f"Created clean New Format Universal Demo Card: {out_path}")
+            if args.demo:
+                out_path_6char = od / "1C8492_Demo_User.png"
+                render_voter_card(demo_st_6char, out_path_6char)
+                print(f"Created 6-Character Format Demo Card (1C8492): {out_path_6char}")
+
+                out_path_student = od / "0000_Demo_User.png"
+                render_voter_card(demo_st, out_path_student)
+                print(f"Created clean New Format Universal Student Demo Card: {out_path_student}")
+
+                out_path_alias = od / "demo_voter_card.png"
+                render_voter_card(demo_st_6char, out_path_alias)
+                print(f"Created default demo voter card: {out_path_alias}")
+            
+            # Generate Teacher Demo Cards
+            out_path_t0 = od / "0000_Demo_Teacher.png"
+            render_voter_card(demo_teacher, out_path_t0)
+            print(f"Created clean New Format Universal Teacher Demo Card (0000): {out_path_t0}")
+
+            out_path_t6 = od / "6000_Demo_Teacher.png"
+            render_voter_card(demo_teacher_6000, out_path_t6)
+            print(f"Created clean New Format Universal Teacher Demo Card (6000): {out_path_t6}")
+
+            out_path_t_alias = od / "teacher_demo_card.png"
+            render_voter_card(demo_teacher, out_path_t_alias)
+            print(f"Created Teacher Demo Card alias: {out_path_t_alias}")
+
+            # Also refresh sample_verified_6001_teacher.png to New Format
+            sample_6001 = {
+                "admissionNo": "6001",
+                "fullName": "MARUTHI KOMIREDDY",
+                "subject": "CORRESPONDENT",
+                "contact": "9908899987",
+                "houseCode": "BHEESHMA",
+                "className": "Staff",
+                "section": "Faculty",
+                "isStaff": True,
+            }
+            out_6001 = od / "sample_verified_6001_teacher.png"
+            render_voter_card(sample_6001, out_6001)
+            print(f"Refreshed sample teacher card (6001): {out_6001}")
         return
 
     if args.teachers:

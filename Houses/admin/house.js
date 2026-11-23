@@ -38,8 +38,22 @@
   const prevCandidateVotes = new Map();
   let graphsMounted = false;
 
+  function getHouseStudents(snap) {
+    const targetCode = String(house.code || "").toUpperCase();
+    return (snap.students || []).filter((s) => {
+      if (!s.isActive || s.admissionNo === "0000") return false;
+      const sHouse = String(s.houseCode || "").toUpperCase();
+      const isStaffMember = Boolean(s.isStaff || sHouse === "ALL" || String(s.className || "").toLowerCase() === "staff" || String(s.admissionNo || "").toUpperCase().startsWith("SPR"));
+      if (isCentral) {
+        return sHouse === "CENTRAL" || isStaffMember;
+      }
+      return sHouse === targetCode && !isStaffMember;
+    });
+  }
+
   const el = {
     sidebarHouseTitle: document.getElementById("sidebar-house-title"),
+    houseNameHighlight: document.getElementById("house-name-highlight"),
     sbOfflineBanner: document.getElementById("sb-offline-banner"),
     sbOfflineMsg: document.getElementById("sb-offline-msg"),
     refreshBtn: document.getElementById("refresh-btn"),
@@ -100,7 +114,8 @@
     photoModalClose: document.getElementById("photo-modal-close"),
   };
 
-  el.sidebarHouseTitle.textContent = houseDisplayName;
+  if (el.houseNameHighlight) el.houseNameHighlight.textContent = houseDisplayName;
+  if (el.sidebarHouseTitle) el.sidebarHouseTitle.textContent = houseDisplayName;
 
   function formatTime(iso) {
     if (!iso) return "—";
@@ -118,18 +133,18 @@
       section.hidden = k !== viewName;
     });
     if (viewName === "graphs") {
-      el.pageEyebrow.textContent = `${houseDisplayName} · Graphs`;
-      el.pageTitle.textContent = isCentral ? "Executive Council Vote Comparison" : "Participants Vote Comparison";
-      el.pageSub.textContent = `Visual comparison of accepted votes across ${houseDisplayName} candidates.`;
+      if (el.pageEyebrow) el.pageEyebrow.textContent = `${houseDisplayName} · Graphs`;
+      if (el.pageTitle) el.pageTitle.textContent = isCentral ? "Executive Council Vote Comparison" : "Participants Vote Comparison";
+      if (el.pageSub) el.pageSub.textContent = `Visual comparison of accepted votes across ${houseDisplayName} candidates.`;
     } else {
-      el.pageEyebrow.textContent = `${houseDisplayName} · Voters`;
-      el.pageTitle.textContent = isCentral ? "School Cabinet Voter List" : "Master Student & Voter List";
-      el.pageSub.textContent = `Inspect verification photos, see who voted for whom, or cancel a vote for ${houseDisplayName}.`;
+      if (el.pageEyebrow) el.pageEyebrow.textContent = `${houseDisplayName} · Voters`;
+      if (el.pageTitle) el.pageTitle.textContent = isCentral ? "School Cabinet Voter List" : "Master Student & Voter List";
+      if (el.pageSub) el.pageSub.textContent = `Inspect verification photos, see who voted for whom, or cancel a vote for ${houseDisplayName}.`;
     }
   }
 
   function renderKPIs(snap) {
-    const houseStudents = snap.students.filter((s) => (s.houseCode === house.code || (isCentral ? (s.admissionNo === "0000" || s.houseCode === "ALL" || s.isStaff) : (s.houseCode === "ALL" || s.isStaff))) && s.isActive);
+    const houseStudents = getHouseStudents(snap);
     const houseBallots = snap.ballots.filter((b) => b.houseCode === house.code);
     const acceptedBallots = houseBallots.filter((b) => b.status === "accepted");
     const votedVotersCount = new Set(acceptedBallots.map((b) => b.admissionNo)).size;
@@ -182,9 +197,8 @@
   }
 
   function populateHouseClassAndSectionFilters(studentList) {
-    const students = (studentList || window.ADMIN_DATA?.students || []).filter(
-      (s) => s.houseCode === house.code || (house.code === "ALL" || s.houseCode === "ALL")
-    );
+    const rawRoster = studentList || latestSnapshot?.students || window.ADMIN_DATA?.students || [];
+    const students = getHouseStudents({ students: rawRoster });
 
     const rawClasses = Array.from(new Set(students.map((s) => String(s.className || "").trim()).filter(Boolean)));
     rawClasses.sort((a, b) => {
@@ -213,9 +227,8 @@
   }
 
   function updateHouseSectionFilterOptions(studentList) {
-    const students = (studentList || latestSnapshot?.students || window.ADMIN_DATA?.students || []).filter(
-      (s) => s.houseCode === house.code || (house.code === "ALL" || s.houseCode === "ALL")
-    );
+    const rawRoster = studentList || latestSnapshot?.students || window.ADMIN_DATA?.students || [];
+    const students = Array.isArray(studentList) ? studentList : getHouseStudents({ students: rawRoster });
 
     if (el.drilldownSectionFilter) {
       const selectedClass = el.drilldownClassFilter ? el.drilldownClassFilter.value.trim() : "";
@@ -269,7 +282,7 @@
     const q = el.drilldownSearch.value.trim().toLowerCase();
     const cFilter = el.drilldownClassFilter ? el.drilldownClassFilter.value.trim() : "";
     const sFilter = el.drilldownSectionFilter ? el.drilldownSectionFilter.value.trim() : "";
-    const houseStudents = snap.students.filter((s) => (s.houseCode === house.code || (isCentral ? (s.admissionNo === "0000" || s.houseCode === "ALL" || s.isStaff) : (s.houseCode === "ALL" || s.isStaff))) && s.isActive);
+    const houseStudents = getHouseStudents(snap);
     const houseBallots = snap.ballots.filter((b) => b.houseCode === house.code);
     const studentStatus = (stu) => {
       const states = positions.map((p) => snap.voterStatus[`${electionId}_${stu.admissionNo}_${p.id}`]?.status || "not_voted");
@@ -555,16 +568,15 @@
         const card = document.createElement("div");
         card.className = "panel-card role-graph-card";
         card.innerHTML = `
-          <div class="panel-head-row" style="margin-bottom: 0.75rem;">
+          <div class="panel-head-row">
             <div>
               <h3 class="panel-heading"></h3>
               <p class="panel-caption role-card-sub"></p>
             </div>
             <span class="badge badge-muted role-total-pill">0 accepted</span>
           </div>
-          <div class="column-chart-wrap" style="margin-bottom: 0.9rem;">
+          <div class="column-chart-wrap">
             <div class="column-chart-grid"></div>
-            <div class="chart-col-labels"></div>
           </div>
           <div class="comparison-list"></div>
         `;
@@ -572,10 +584,14 @@
         card.querySelector(".role-card-sub").textContent = `${pos.subtitle} · ${houseDisplayName}`;
 
         const colGrid = card.querySelector(".column-chart-grid");
-        const colLabels = card.querySelector(".chart-col-labels");
         const compList = card.querySelector(".comparison-list");
 
         cands.forEach((s) => {
+          let secClean = String(s.section || "").replace(/^Class\s*/i, "").trim();
+          let candSub = String(s.admissionNo || "").startsWith("DEMO-")
+            ? `${pos.subtitle}`
+            : (secClean && secClean !== String(s.className) ? `Class ${s.className} (${secClean})` : `Class ${s.className}`);
+
           const col = document.createElement("div");
           col.className = "chart-col";
           col.innerHTML = `
@@ -583,21 +599,22 @@
             <div class="chart-col-track">
               <div class="chart-col-bar" style="--bar-scale: 0; --bar-opacity: 0.25;"></div>
             </div>
+            <div class="chart-col-axis"></div>
+            <div class="chart-cand-info">
+              <div class="chart-cand-name"></div>
+              <div class="chart-cand-sub"></div>
+            </div>
           `;
+          let cleanName = String(s.fullName || "").trim();
+          // Remove stray leading punctuation e.g. ".SNIGDHA" -> "SNIGDHA"
+          cleanName = cleanName.replace(/^[\.\,\s\-]+/, "");
+          // Insert a clean space after initials if missing, e.g. "A.Rishitha" -> "A. Rishitha", "K.Kruthvik" -> "K. Kruthvik"
+          cleanName = cleanName.replace(/^([A-Za-z]{1,3}\.)([A-Za-z])/g, "$1 $2");
+          cleanName = cleanName.replace(/\s+/g, " ");
+
+          col.querySelector(".chart-cand-name").textContent = cleanName;
+          col.querySelector(".chart-cand-sub").textContent = candSub;
           colGrid.appendChild(col);
-
-          const candSub = String(s.admissionNo || "").startsWith("DEMO-")
-            ? `${pos.subtitle}`
-            : `ID ${s.admissionNo} · Class ${s.className}-${s.section}`;
-
-          const lbl = document.createElement("div");
-          lbl.innerHTML = `
-            <div class="chart-cand-name"></div>
-            <div class="chart-cand-sub"></div>
-          `;
-          lbl.querySelector(".chart-cand-name").textContent = s.fullName;
-          lbl.querySelector(".chart-cand-sub").textContent = candSub;
-          colLabels.appendChild(lbl);
 
           const row = document.createElement("div");
           row.className = "comparison-row";
@@ -614,7 +631,7 @@
               <div class="comparison-bar-fill" style="--bar-scale-x: 0;"></div>
             </div>
           `;
-          row.querySelector("strong").textContent = s.fullName;
+          row.querySelector("strong").textContent = cleanName;
           row.querySelector(".cand-row-sub").textContent = ` · ${candSub}`;
           compList.appendChild(row);
 
@@ -706,8 +723,7 @@
     const cFilter = el.voterClassFilter ? el.voterClassFilter.value.trim() : "";
     const secFilter = el.voterSectionFilter ? el.voterSectionFilter.value.trim() : "";
 
-    const houseStudents = snap.students
-      .filter((s) => (s.houseCode === house.code || (isCentral ? (s.admissionNo === "0000" || s.houseCode === "ALL" || s.isStaff) : (s.houseCode === "ALL" || s.isStaff))))
+    const houseStudents = getHouseStudents(snap)
       .sort((a, b) => a.admissionNo.localeCompare(b.admissionNo));
 
     const houseBallots = snap.ballots.filter((b) => b.houseCode === house.code);

@@ -25,6 +25,22 @@
         "7fc87bf219ebd9092c5ce776c4afa77f20b54c3653067a6faa249a1c8fef8789", // spr-elections@rc4616105
         "266b1d1cba0d57310b1a83a607eb2bc74048c9b50a154238209d7fe5a30846db"  // RC4616105
       ]
+    },
+    {
+      email: "sprkmrd@gmail.com",
+      name: "sprkmrd",
+      passwordHashes: [
+        "f25a69a7770bda682c6aea8cf0807b57c55ad0812b2b7f5863b069961f0173d5", // sprkmrd
+        "2de9c37ee48d2be7e1039f1ee8c48a0cbef2a1e2dea688eadf4f29c20d84da81", // Sprkmrd
+        "4513c8a70e49e8508d23a279ff2e750ddfefb9472cfe22f2caa57d44c5337425", // SPRKMRD
+        "d136dec69402533dbb27363bf5aa8401b92629c3690155ceca21201f02ce0110", // sprkmrd@gmail.com
+        "bbd256bec02f4e1035dc39bf0a8e66650cd6abd31c9e00495420c8cee17c9d68", // Spr-Elections@sprkmrd
+        "4d0b96dd4d018c6d1b56477d803961fa59c46f34455ced7b4fa10b9f4eea51a7", // spr-elections@sprkmrd
+        "9d0747886a08ff4f8512ef306e86f2eaa0941b9781214402f8dbfd6331dce944", // rc4616105
+        "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9", // admin123
+        "2a3c4d59a0a69568bc6968706339164bc5e1825b633c645982c88b99554db35a", // Spr@2026
+        "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"  // admin
+      ]
     }
   ];
 

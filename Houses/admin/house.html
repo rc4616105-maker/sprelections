@@ -7,38 +7,30 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./styles.css?v=985" />
-  <script src="./admin-auth.js?v=6"></script>
+  <link rel="stylesheet" href="./styles.css?v=20261123_WIDE_LAYOUT_COMPACT" />
+  <script src="./admin-auth.js?v=20261123_WIDE_LAYOUT_COMPACT"></script>
 </head>
 <body>
   <div class="dashboard-layout">
-    <aside class="sidebar">
-      <a href="./index.html" class="back-link">← All Houses</a>
-
-      <div class="sidebar-house-header">
-        <div class="sidebar-eyebrow">House Administration</div>
-        <h1 id="sidebar-house-title" class="sidebar-house-title">House</h1>
-      </div>
-
-      <nav class="sidebar-nav" aria-label="House sections">
-        <button type="button" class="nav-btn is-active" data-view="graphs">Graphs</button>
-        <button type="button" class="nav-btn" data-view="voters">Voters</button>
-      </nav>
-
-      <div class="sidebar-footer">
-        <span class="badge badge-muted">Supabase Live Only</span>
-      </div>
-    </aside>
-
     <main class="main-content">
-      <header class="topbar">
-        <div>
-          <div class="eyebrow" id="page-eyebrow">Live House Election Analytics <span class="live-pulse-badge" title="Live Auto-Sync: Updates automatically every 2 seconds without refreshing"><span class="pulse-dot"></span> Live Sync (2s)</span></div>
-          <h2 id="house-page-title" class="page-title">Participants Vote Comparison</h2>
-          <p id="house-page-sub" class="page-sub">Live candidate vote comparison based on accepted Supabase ballots.</p>
+      <header class="topbar compact-topbar">
+        <div class="topbar-left">
+          <a href="./index.html" class="back-to-all-btn">← All Houses</a>
+          <div class="house-title-group">
+            <span id="house-name-highlight" class="house-name-highlight">House</span>
+            <h2 id="house-page-title" class="compact-page-title">Participants Vote Comparison</h2>
+          </div>
         </div>
-        <div class="topbar-actions">
-          <button type="button" id="refresh-btn" class="btn btn-primary">Refresh Now</button>
+
+        <div class="topbar-right">
+          <!-- View Switcher Tabs -->
+          <div class="view-switcher-group" role="tablist" aria-label="House View">
+            <button type="button" class="nav-btn is-active" data-view="graphs">📊 Graphs</button>
+            <button type="button" class="nav-btn" data-view="voters">👥 Master Voters List</button>
+          </div>
+
+          <span class="live-pulse-badge" title="Live Auto-Sync: Updates automatically every 2 seconds without refreshing"><span class="pulse-dot"></span> Live Sync (2s)</span>
+          <button type="button" id="refresh-btn" class="btn btn-primary" style="padding: 0.35rem 0.85rem; font-size: 0.82rem;">Refresh Now</button>
         </div>
       </header>
 
@@ -213,10 +205,10 @@
     </div>
   </div>
 
-  <script defer src="./data.js?v=1010"></script>
-  <script defer src="./teachers.js?v=1010"></script>
-  <script defer src="./supabase-config.js?v=1010"></script>
-  <script defer src="./house.js?v=1010"></script>
+  <script defer src="./data.js?v=20261123_WIDE_LAYOUT_COMPACT"></script>
+  <script defer src="./teachers.js?v=20261123_WIDE_LAYOUT_COMPACT"></script>
+  <script defer src="./supabase-config.js?v=20261123_WIDE_LAYOUT_COMPACT"></script>
+  <script defer src="./house.js?v=20261123_WIDE_LAYOUT_COMPACT"></script>
 </body>
 </html>
 

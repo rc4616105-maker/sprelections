@@ -8,19 +8,34 @@ The election combines physical voter accreditation (Voter ID cards with Code128 
 
 ---
 
-## Electoral Structure & Houses
+## Electoral Structure, Houses & Constituencies
 
-The school electorate is divided into **6 Student Houses** plus a **Central School Cabinet**:
+The school electorate is divided into **6 Student House Constituencies** plus a **Central School Cabinet**:
 
-| House / Unit | Slug | Accent Color | Ink / Text Color | Electorate Rules |
-| :--- | :--- | :--- | :--- | :--- |
-| **Bheeshma House** | `bheeshma` | `#eab308` (Golden Amber) | `#925c04` | Registered Bheeshma students + all Teachers |
-| **Gurudrona House** | `gurudrona` | `#2563eb` (Royal Blue) | `#1d4ed8` | Registered Gurudrona students + all Teachers |
-| **Hanuman House** | `hanuman` | `#f97316` (Warm Orange) | `#ea580c` | Registered Hanuman students + all Teachers |
-| **Karna House** | `karna` | `#b91c1c` (Crimson Red) | `#991b1b` | Registered Karna students + all Teachers |
-| **Vasistha House** | `vasistha` | `#db2777` (Deep Rose) | `#be185d` | Registered Vasistha students + all Teachers |
-| **Vishwamithra House** | `vishwamithra` | `#7c3aed` (Royal Purple) | `#6d28d9` | Registered Vishwamithra students + all Teachers |
-| **School Cabinet** | `central` | `#059669` (Emerald Green) | `#047857` | **Teachers & Faculty ONLY** (Students blocked) |
+| House / Unit | Constituency | Slug | Accent Color | Ink / Text Color | Total Voters | Boys | Girls | Electorate Rules |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Bheeshma House** | **Gangotri** | `bheeshma` | `#eab308` (Golden Amber) | `#925c04` | **168** | 86 | 82 | Registered Bheeshma students + all Teachers |
+| **Gurudrona House** | **Trimbakeshwar** | `gurudrona` | `#2563eb` (Royal Blue) | `#1d4ed8` | **181** | 95 | 86 | Registered Gurudrona students + all Teachers |
+| **Hanuman House** | **Yamunotri** | `hanuman` | `#f97316` (Warm Orange) | `#ea580c` | **181** | 95 | 86 | Registered Hanuman students + all Teachers |
+| **Karna House** | **Manasarovar** | `karna` | `#b91c1c` (Crimson Red) | `#991b1b` | **180** | 77 | 103 | Registered Karna students + all Teachers |
+| **Vasistha House** | **Mahabaleshwar** | `vasistha` | `#db2777` (Deep Rose) | `#be185d` | **184** | 87 | 97 | Registered Vasistha students + all Teachers |
+| **Vishwamithra House** | **Amarkantak** | `vishwamithra` | `#7c3aed` (Royal Purple) | `#6d28d9` | **191** | 95 | 96 | Registered Vishwamithra students + all Teachers |
+| **School Cabinet** | *Central Council* | `central` | `#059669` (Emerald Green) | `#047857` | **88** | - | - | **Teachers & Faculty ONLY** (Students blocked) |
+
+---
+
+## Electorate Demographics
+
+The verified total electorate comprises **1,173 registered voters**:
+
+- **1,085 Students across Classes 6 through 10:**
+  - **535 Boys**
+  - **550 Girls**
+  - Verified across 6 House Constituencies (Bheeshma: 168, Gurudrona: 181, Hanuman: 181, Karna: 180, Vasistha: 184, Vishwamithra: 191).
+- **88 Teaching & Administrative Faculty Members:**
+  - Authorized for universal voting across all houses and central cabinet positions (Voter IDs `SPRCOR872`, `SPRPRI...`, `6001`–`6087`).
+- **140 Contesting Candidates:**
+  - Contesting across 29 total leadership positions (5 School Cabinet + 24 House Captains/Vice Captains).
 
 ---
 

@@ -18,7 +18,7 @@
   };
 
   const scannerState = {
-    mode: localStorage.getItem("election_voter_input_mode") || "manual",
+    mode: "manual",
     buffer: "",
     lastKeystrokeTime: 0,
     pairedDeviceName: localStorage.getItem("election_usb_scanner_name") || "",
@@ -449,7 +449,6 @@
         const pickedCand = state.selectedByRole[currentPos.id] || (votedBallot ? { id: votedBallot.candidateId, fullName: votedBallot.candidateName } : null);
 
         roleCands.forEach((cand, candIdx) => {
-          const sym = cand.symbolObj || ELECTION_SYMBOLS[candIdx % ELECTION_SYMBOLS.length];
           const isPicked = pickedCand && pickedCand.id === cand.id;
           const serialFormatted = String(candIdx + 1).padStart(2, "0");
 
@@ -463,27 +462,35 @@
             ? `<img src="${cand.photoPath || cand.photoUrl}" alt="${cand.fullName}" />`
             : `<span>${getInitials(cand.fullName)}</span>`;
 
-          const subText = String(cand.admissionNo || "").startsWith("DEMO-")
-            ? cand.section
-            : (cand.className ? `Class ${cand.className} ${cand.section || ""}` : (cand.section || ""));
+          let subText = String(cand.section || "").trim();
+          if (!/^class\s+/i.test(subText)) {
+            subText = cand.className ? `Class ${cand.className} · ${subText}` : subText;
+          }
 
-          row.innerHTML = `
-            <div class="evm-cand-avatar">${photoHtml}</div>
-            <div class="evm-cand-info">
-              <h3 class="evm-cand-name">${cand.fullName}</h3>
-              <span class="evm-cand-sub">${subText}</span>
-            </div>
-            <div class="evm-right-cluster">
-              <div class="evm-symbol-badge" title="Election Symbol: ${sym.name}">
-                <span class="evm-symbol-icon">${sym.icon}</span>
-                <span class="evm-symbol-name">${sym.name}</span>
+                      const sym = cand.symbolObj || { name: "Candidate Choice", icon: "⭐" };
+            const symSlug = (sym.slug || sym.name || "star").toLowerCase().replace(/[\s-]+/g, "_");
+            const symImg = (sym.image || sym.imagePath || `../assets/symbols/${symSlug}.png`) + '?v=20261123N';
+
+            row.innerHTML = `
+              <div class="evm-cand-avatar">${photoHtml}</div>
+              <div class="evm-cand-symbol" title="Election Symbol: ${sym.name}">
+                <div class="evm-symbol-box">
+                  <img src="${symImg}" alt="${sym.name}" class="evm-symbol-img" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';" />
+                  <span class="evm-symbol-fallback" style="display:none;">${sym.icon || "⭐"}</span>
+                </div>
+                <span class="evm-symbol-caption">${sym.name}</span>
               </div>
-              <span class="evm-led-lamp"></span>
-              <button type="button" class="evm-vote-btn" tabindex="-1">
-                ${isPicked ? (votedBallot ? "RECORDED ✓" : "VOTED ✓") : "VOTE"}
-              </button>
-            </div>
-          `;
+              <div class="evm-cand-info">
+                <h3 class="evm-cand-name">${cand.fullName}</h3>
+                <span class="evm-cand-sub">${subText}</span>
+              </div>
+              <div class="evm-right-cluster">
+                <span class="evm-led-lamp"></span>
+                <button type="button" class="evm-vote-btn" tabindex="-1">
+                  ${isPicked ? (votedBallot ? "RECORDED ✓" : "VOTED ✓") : "VOTE"}
+                </button>
+              </div>
+            `;
 
           if (votedBallot) {
             row.style.pointerEvents = "none";
@@ -547,23 +554,35 @@
             ? `<img src="${picked.photoPath || picked.photoUrl}" alt="${picked.fullName}" />`
             : `<span>${getInitials(picked ? picked.fullName : "?")}</span>`;
 
-          const subText = picked
-            ? (String(picked.admissionNo || "").startsWith("DEMO-") ? picked.section : (picked.className ? `Class ${picked.className} ${picked.section || ""}` : (picked.section || "")))
-            : "No candidate chosen";
+          let subText = "No candidate chosen";
+          if (picked) {
+            subText = String(picked.section || "").trim();
+            if (!/^class\s+/i.test(subText)) {
+              subText = picked.className ? `Class ${picked.className} · ${subText}` : subText;
+            }
+          }
 
-          card.innerHTML = `
-            <div class="evm-review-card-left">
-              <div class="evm-cand-avatar">${photoHtml}</div>
-              <div>
-                <p class="evm-review-role-title">${pos.title}</p>
-                <h4 class="evm-review-cand-name" style="${!picked ? 'color:#dc2626;' : ''}">${picked ? picked.fullName : 'Not Selected'}</h4>
-                <p class="evm-review-cand-sub">${subText}</p>
+                      const pickedSym = picked ? (picked.symbolObj || { name: "", icon: "⭐" }) : null;
+            const pickedSymSlug = pickedSym ? (pickedSym.slug || pickedSym.name || "star").toLowerCase().replace(/[\s-]+/g, "_") : "";
+            const pickedSymImg = pickedSym && pickedSymSlug ? ((pickedSym.image || pickedSym.imagePath || `../assets/symbols/${pickedSymSlug}.png`) + "?v=20261123N") : "";
+            const symReviewHtml = pickedSym && pickedSym.name
+              ? `<div class="evm-review-cand-symbol" title="Symbol: ${pickedSym.name}"><div class="evm-symbol-box-sm"><img src="${pickedSymImg}" alt="${pickedSym.name}" class="evm-symbol-img-sm" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';" /><span class="evm-symbol-fallback-sm" style="display:none;">${pickedSym.icon || "⭐"}</span></div><span class="evm-symbol-caption-sm">${pickedSym.name}</span></div>`
+              : "";
+
+            card.innerHTML = `
+              <div class="evm-review-card-left">
+                <div class="evm-cand-avatar">${photoHtml}</div>
+                ${symReviewHtml}
+                <div class="evm-review-cand-info">
+                  <p class="evm-review-role-title">${pos.title}</p>
+                  <h4 class="evm-review-cand-name" style="${!picked ? 'color:#dc2626;' : ''}">${picked ? picked.fullName : 'Not Selected'}</h4>
+                  <p class="evm-review-cand-sub">${subText}</p>
+                </div>
               </div>
-            </div>
-            <button type="button" class="evm-review-change-btn" data-change-idx="${idx}">
-              Change
-            </button>
-          `;
+              <button type="button" class="evm-review-change-btn" data-change-idx="${idx}">
+                Change
+              </button>
+            `;
 
           const changeBtn = card.querySelector(".evm-review-change-btn");
           if (changeBtn) {
@@ -624,6 +643,20 @@
     stopDelayedSpinner();
     clearInterval(state.resetInterval);
     clearTimeout(state.resetTimeout);
+
+    // ── 10-Vote Auto Cache Buster (Stays on this House kiosk with spinning wheel) ──
+    const totalVotes = parseInt(sessionStorage.getItem("kiosk_session_votes") || "0", 10);
+    const lastBust = parseInt(sessionStorage.getItem("kiosk_last_cache_bust") || "0", 10);
+    if (totalVotes > 0 && totalVotes % 10 === 0 && totalVotes !== lastBust) {
+      sessionStorage.setItem("kiosk_last_cache_bust", String(totalVotes));
+      if (el.loadingOverlayTitle) el.loadingOverlayTitle.textContent = "Refreshing Booth Cache...";
+      if (el.loadingOverlaySubtitle) el.loadingOverlaySubtitle.textContent = `${totalVotes} votes recorded · Optimizing booth for next voter...`;
+      if (el.loadingOverlay) el.loadingOverlay.hidden = false;
+      setTimeout(() => {
+        window.location.replace(window.location.pathname + "?v=" + Date.now());
+      }, 700);
+      return;
+    }
     closeFaceGuardModal();
     stopCamera();
     state.verifiedStudent = null;
@@ -751,9 +784,19 @@
 
     setLoading(el.verifyBtn, true);
     if (el.scannerKioskBox) el.scannerKioskBox.classList.add("is-scanning");
-    startDelayedSpinner("Verifying Voter...", "Please wait a moment...", 400);
+    startDelayedSpinner("Verifying Voter...", "Please wait a moment...", 800);
 
     try {
+      // Wait for boot() to finish (Supabase init) before verifying
+      if (window._electionBootReady) {
+        try { await window._electionBootReady; } catch (e) { /* continue anyway */ }
+      }
+      if (!window.ElectionBackend || typeof window.ElectionBackend.init !== "function") {
+        showStep1Error("System Error", "Kiosk backend failed to load. Please refresh the page.");
+        stopDelayedSpinner();
+        if (el.verifyBtn) el.verifyBtn.disabled = false;
+        return;
+      }
       await window.ElectionBackend.init();
       const result = await window.ElectionBackend.verifyStudent(
         cleanId,
@@ -773,7 +816,7 @@
       el.voterInitials.textContent = getInitials(result.student.fullName);
       el.voterName.textContent = result.student.fullName;
       el.voterIdBadge.textContent = `Voter ID ${result.student.admissionNo}`;
-      const isTeacher = result.student.isStaff === true || result.student.houseCode === "ALL" || result.student.admissionNo === "0000";
+      const isTeacher = result.student.isStaff === true && result.student.className !== "10" && result.student.className !== "9" && result.student.className !== "8" && result.student.className !== "7" && result.student.admissionNo !== "1C8492" && result.student.admissionNo !== "0000";
       el.voterMeta.textContent = isTeacher
         ? `${result.student.subject ? `${result.student.subject} Faculty` : "Teaching Staff"} · ${houseConfig.name}`
         : `Class ${result.student.className}-${result.student.section} · ${houseConfig.name} House`;
@@ -1075,7 +1118,7 @@
       });
 
       if (window.PendriveStorage) {
-        await window.PendriveStorage.syncNow();
+        window.PendriveStorage.syncNow().catch(() => {});
       }
 
       const summaryList = selections
@@ -1085,6 +1128,8 @@
         })
         .join(" · ");
       el.successSummary.textContent = `${state.verifiedStudent.fullName} (ID ${state.verifiedStudent.admissionNo}) — Recorded ${selections.length} vote${selections.length > 1 ? "s" : ""}: ${summaryList} (${houseConfig.name} House).`;
+            const prevVotes = parseInt(sessionStorage.getItem("kiosk_session_votes") || "0", 10);
+      sessionStorage.setItem("kiosk_session_votes", String(prevVotes + 1));
       goToStep(4);
       startAutoResetCountdown();
     } catch (err) {
@@ -1225,29 +1270,44 @@
     triggerAutoFocus();
     initWebHid();
     if (window.PendriveStorage) {
-      await window.PendriveStorage.mount({
+      window.PendriveStorage.mount({
         container: document.getElementById("local-storage-slot"),
         houseMeta: houseConfig,
         getSnapshot: () => window.ElectionBackend.getHouseSnapshot(houseConfig.code),
       });
     }
-    const mode = await window.ElectionBackend.init();
-    const noteEl = document.getElementById("cloud-mode-note");
-    if (noteEl) {
+    function syncCloudStatusNote(m) {
+      const noteEl = document.getElementById("cloud-mode-note");
+      if (!noteEl) return;
       noteEl.hidden = false;
-      if (mode === "supabase") {
-        noteEl.textContent = "Supabase connected — all votes & photos save strictly to Supabase.";
+      if (m === "supabase") {
+        noteEl.className = "cloud-status-note is-connected";
+        noteEl.innerHTML = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#16a34a;margin-right:4px;"></span> Supabase connected — all votes &amp; photos save strictly to Supabase.`;
       } else {
-        noteEl.textContent = "Supabase NOT connected — voting is blocked until Supabase is connected in Admin (Connect & Sync Supabase).";
+        noteEl.className = "cloud-status-note is-disconnected";
+        noteEl.innerHTML = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#dc2626;margin-right:4px;"></span> Supabase NOT connected — connect Supabase in Admin to sync.`;
       }
     }
+    const mode = await window.ElectionBackend.init();
+    syncCloudStatusNote(mode);
+    window.addEventListener("storage", async (e) => {
+      if (e.key === "election_spr_2026_sb_cfg_v1" || e.key === "spr_supabase_direct_cfg_v1") {
+        if (window.ElectionBackend && typeof window.ElectionBackend.init === "function") {
+          window.ElectionBackend._initPromise = null;
+          const freshMode = await window.ElectionBackend.init();
+          syncCloudStatusNote(freshMode);
+        }
+      }
+    });
     if (window.PendriveStorage) {
       window.ElectionBackend.subscribeHouseUpdates(houseConfig.code, () => {
         window.PendriveStorage.syncNow();
       });
-      await window.PendriveStorage.syncNow();
+      window.PendriveStorage.syncNow().catch(() => {});
     }
   }
 
-  boot();
+
+  // Store boot promise so executeVerification can await it
+  window._electionBootReady = boot();
 })();

@@ -3,6 +3,7 @@
 (function () {
   const SB_CFG_KEY = "election_spr_2026_sb_cfg_v1";
   const DEFAULT_SB_URL = "https://rziptxcknaeuorekxwrl.supabase.co";
+  const DEFAULT_SB_KEY = "sb_publishable_jcyjkISfyHxcKPwVUloYYQ_4BfL3pUZ";
   const BUCKET = "voter-photos";
   const CHANNEL_NAME = "election_spr_2026_sync";
   const channel = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel(CHANNEL_NAME) : null;
@@ -27,13 +28,14 @@
   };
 
   const DEMO_ACCOUNTS = {
-    "0000": { admissionNo: "0000", fullName: "Universal Demo Voter", className: "10", section: "Demo", houseCode: "ALL", isStaff: true, isUniversal: true, isActive: true },
-    "0001": { admissionNo: "0001", fullName: "Bheeshma Demo Voter", className: "10", section: "Demo", houseCode: "BHEESHMA", isStaff: false, isUniversal: false, isActive: true },
-    "0002": { admissionNo: "0002", fullName: "Gurudrona Demo Voter", className: "10", section: "Demo", houseCode: "GURUDRONA", isStaff: false, isUniversal: false, isActive: true },
-    "0003": { admissionNo: "0003", fullName: "Hanuman Demo Voter", className: "10", section: "Demo", houseCode: "HANUMAN", isStaff: false, isUniversal: false, isActive: true },
-    "0004": { admissionNo: "0004", fullName: "Karna Demo Voter", className: "10", section: "Demo", houseCode: "KARNA", isStaff: false, isUniversal: false, isActive: true },
-    "0005": { admissionNo: "0005", fullName: "Vasistha Demo Voter", className: "10", section: "Demo", houseCode: "VASISTHA", isStaff: false, isUniversal: false, isActive: true },
-    "0006": { admissionNo: "0006", fullName: "Vishwamithra Demo Voter", className: "10", section: "Demo", houseCode: "VISHWAMITHRA", isStaff: false, isUniversal: false, isActive: true },
+    "1C8492": { admissionNo: "1C8492", fullName: "Aditya Vikram", fatherName: "R. K. Vikram", className: "10", section: "Chatrapathi Shivaji (10-CS)", houseCode: "BHEESHMA", isStaff: false, isUniversal: true, isActive: true, photoUrl: "../assets/candidates/student_demo.jpg", isDemoAccount: true },
+    "0000": { admissionNo: "0000", fullName: "Aditya Vikram", fatherName: "R. K. Vikram", className: "10", section: "Chatrapathi Shivaji (10-CS)", houseCode: "BHEESHMA", isStaff: false, isUniversal: true, isActive: true, photoUrl: "../assets/candidates/student_demo.jpg", isDemoAccount: true },
+    "0001": { admissionNo: "0001", fullName: "Arnav Saxena", fatherName: "S. Saxena", className: "10", section: "A", houseCode: "BHEESHMA", isStaff: false, isUniversal: false, isActive: true, photoUrl: "../assets/candidates/student_boy_1.jpg" },
+    "0002": { admissionNo: "0002", fullName: "Rohan Kulkarni", fatherName: "V. Kulkarni", className: "10", section: "B", houseCode: "GURUDRONA", isStaff: false, isUniversal: false, isActive: true, photoUrl: "../assets/candidates/student_boy_3.jpg" },
+    "0003": { admissionNo: "0003", fullName: "Siddharth Rao", fatherName: "M. Rao", className: "10", section: "C", houseCode: "HANUMAN", isStaff: false, isUniversal: false, isActive: true, photoUrl: "../assets/candidates/student_boy_4.jpg" },
+    "0004": { admissionNo: "0004", fullName: "Karan Malhotra", fatherName: "P. Malhotra", className: "10", section: "D", houseCode: "KARNA", isStaff: false, isUniversal: false, isActive: true, photoUrl: "../assets/candidates/student_boy_1.jpg" },
+    "0005": { admissionNo: "0005", fullName: "Pranav Nambiar", fatherName: "K. Nambiar", className: "10", section: "A", houseCode: "VASISTHA", isStaff: false, isUniversal: false, isActive: true, photoUrl: "../assets/candidates/student_boy_2.jpg" },
+    "0006": { admissionNo: "0006", fullName: "Dhruv Sen", fatherName: "A. Sen", className: "10", section: "B", houseCode: "VISHWAMITHRA", isStaff: false, isUniversal: false, isActive: true, photoUrl: "../assets/candidates/student_boy_4.jpg" },
   };
 
   function getPositionsList() {
@@ -44,27 +46,47 @@
 
   function sbHeaders(key, extra = {}) {
     const h = { apikey: key, ...extra };
-    if (String(key || "").startsWith("eyJ") || String(key || "").startsWith("sb_secret_")) {
+    if (String(key || "").startsWith("eyJ") || String(key || "").startsWith("sb_secret_") || String(key || "").startsWith("sb_publishable_")) {
       h.Authorization = `Bearer ${key}`;
     }
     return h;
   }
 
   async function readBrowserSupabaseConfig() {
+    function isValidKey(k) {
+      if (!k || typeof k !== "string") return false;
+      const s = k.trim();
+      return s.length > 10 && !s.includes("...") && !s.includes("anon key") && s !== "paste-your-supabase-key-here";
+    }
+
+    if (isValidKey(DEFAULT_SB_KEY)) {
+      return { url: DEFAULT_SB_URL.replace(/\/+$/, ""), key: DEFAULT_SB_KEY.trim() };
+    }
+
     try {
       const saved = JSON.parse(localStorage.getItem(SB_CFG_KEY) || "null");
-      if (saved && saved.anonKey) {
-        return { url: (saved.url || DEFAULT_SB_URL).replace(/\/+$/, ""), key: saved.anonKey.trim() };
+      const k = (saved?.anonKey || saved?.secretKey || saved?.key || "").trim();
+      if (isValidKey(k)) {
+        return { url: (saved.url || DEFAULT_SB_URL).replace(/\/+$/, ""), key: k };
       }
     } catch (_) {}
 
-    for (const rel of ["./supabase.local.json", "../supabase.local.json", "../../supabase.local.json"]) {
+    for (const rel of [
+      "./supabase.local.json",
+      "../supabase.local.json",
+      "../../supabase.local.json",
+      "/supabase.local.json",
+      "/Houses/supabase.local.json",
+      "/1supabase/supabase.local.json",
+      "../../1supabase/supabase.local.json",
+      "../1supabase/supabase.local.json"
+    ]) {
       try {
         const res = await fetch(rel, { cache: "no-store" });
         if (!res.ok) continue;
         const parsed = await res.json();
-        const k = String(parsed.anonKey || parsed.key || "").trim();
-        if (k && k !== "paste-your-supabase-key-here") {
+        const k = String(parsed.anonKey || parsed.secretKey || parsed.key || "").trim();
+        if (isValidKey(k)) {
           return { url: String(parsed.url || DEFAULT_SB_URL).replace(/\/+$/, ""), key: k };
         }
       } catch (_) {}
@@ -204,28 +226,30 @@
       if (this._initPromise) return this._initPromise;
       this._initPromise = (async () => {
         if (window.location.protocol !== "file:") {
-          try {
-            const ctl = new AbortController();
-            const tid = setTimeout(() => ctl.abort(), 1400);
-            const res = await fetch("/.netlify/functions/supabase?action=health", { cache: "no-store", signal: ctl.signal });
-            clearTimeout(tid);
-            if (res.ok) {
-              const h = await res.json();
-              if (h.backend === "supabase") {
-                runtime.transport = "netlify";
-                this.mode = "supabase";
-                this.backendError = null;
-                return "supabase";
+          const isLocalHost = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+          // On deployed (non-localhost): try Netlify proxy first
+          if (!isLocalHost) {
+            try {
+              const ctl = new AbortController();
+              const tid = setTimeout(() => ctl.abort(), 1400);
+              const res = await fetch("/.netlify/functions/supabase?action=health", { cache: "no-store", signal: ctl.signal });
+              clearTimeout(tid);
+              if (res.ok) {
+                const h = await res.json();
+                if (h.backend === "supabase") {
+                  runtime.transport = "netlify";
+                  this.mode = "supabase";
+                  this.backendError = null;
+                  return "supabase";
+                }
               }
-            }
-          } catch (_) {}
-
+            } catch (_) {}
+          }
+          // Both localhost AND non-localhost: try direct Supabase connection
           const cfg = await readBrowserSupabaseConfig();
           if (cfg.key) {
             if (cfg.key.startsWith("sbp_")) {
               this.backendError = "Blocked sbp_ account token; use Publishable (sb_publishable_... or anon) key from Project Settings -> API Keys.";
-            } else if (cfg.key.startsWith("sb_secret_")) {
-              this.backendError = "Blocked sb_secret_ key in browser JS; use Publishable (anon) key or Netlify Env Vars.";
             } else {
               try {
                 const res = await fetch(`${cfg.url}/rest/v1/voters?select=admission_no&limit=1`, {
@@ -269,10 +293,37 @@
       const { electionId, positionId, housesMeta, allStudents, houseConfig } = window.HOUSE_DATA;
       const positions = getPositionsList();
 
-
-
-      // Step 1: Check Admission No. against the student roster
+            // Step 1: Check Admission No. against the student roster or demo accounts
       let localMatch = DEMO_ACCOUNTS[cleanId] ? { ...DEMO_ACCOUNTS[cleanId] } : (allStudents.find((s) => s.admissionNo === cleanId) || null);
+      if (!localMatch) {
+        try {
+          const rawCustom = localStorage.getItem("spr_admin_custom_students");
+          if (rawCustom) {
+            const customList = JSON.parse(rawCustom);
+            const found = customList.find((s) => String(s.admissionNo).toUpperCase() === cleanId.toUpperCase());
+            if (found) localMatch = { ...found };
+          }
+        } catch (_) {}
+      }
+      if (!localMatch && this.mode === "supabase") {
+        try {
+          const rows = await sbFetchAll(`voters?admission_no=eq.${encodeURIComponent(cleanId)}`);
+          if (rows && rows.length > 0) {
+            const r = rows[0];
+            localMatch = {
+              admissionNo: r.admission_no,
+              fullName: r.full_name,
+              fatherName: r.father_name || "",
+              gender: r.gender || "Boy",
+              className: r.class_name,
+              section: r.section,
+              houseCode: r.house_code,
+              isActive: r.is_active !== false,
+              photoUrl: r.photo_url || (r.gender === "Girl" ? "../assets/candidates/girl_demo.jpg" : "../assets/candidates/student_demo.jpg"),
+            };
+          }
+        } catch (_) {}
+      }
       if (!localMatch) {
         return {
           ok: false,
@@ -286,9 +337,9 @@
       }
 
       // Teacher / Teaching Staff Identification:
-      // Staff IDs 6001–6087, isStaff === true, houseCode === "ALL", or cleanId === "0000"
+      // Staff IDs 6001–6087, isStaff === true, or houseCode === "ALL"
       const numId = parseInt(cleanId, 10);
-      const isTeacher = localMatch.isStaff === true || localMatch.houseCode === "ALL" || localMatch.isUniversal === true || cleanId === "0000" || (!isNaN(numId) && numId >= 6001 && numId <= 6087);
+      const isTeacher = localMatch.isStaff === true || localMatch.houseCode === "ALL" || localMatch.isUniversal === true || (cleanId === "1C8492" || cleanId === "0000") || (!isNaN(numId) && numId >= 6001 && numId <= 6087);
 
       // School Cabinet Polling Booth Restriction: TEACHERS & FACULTY ONLY
       if (requestedHouseCode === "CENTRAL") {
@@ -304,8 +355,7 @@
       }
 
       // House Booth Restriction:
-      // Regular students can ONLY vote in their designated house.
-      // Teachers have universal eligibility and can vote across all houses + Central.
+      // Regular students can ONLY vote in their designated house (0000 has universal house access).
       if (!isTeacher && requestedHouseCode !== "CENTRAL" && localMatch.houseCode !== requestedHouseCode) {
         const registeredName = housesMeta[localMatch.houseCode]?.name || localMatch.houseCode;
         const requestedName = housesMeta[requestedHouseCode]?.name || requestedHouseCode;
@@ -321,7 +371,7 @@
       if (this.mode === "supabase") {
         const qAdm = encodeURIComponent(cleanId);
         const [vRows, bRows] = await Promise.all([
-          sbRest("GET", `/rest/v1/voters?admission_no=eq.${qAdm}&select=*`),
+          sbRest("GET", `/rest/v1/voters?admission_no=eq.${qAdm}&select=final_status`),
           sbRest("GET", `/rest/v1/ballots?admission_no=eq.${qAdm}&select=id,position_id,position_name,candidate_id,candidate_name,status,house_code,cast_at,cancelled_at&order=cast_at.desc`),
         ]);
 
@@ -339,7 +389,6 @@
         const hasCancelledBallots = houseBallots.some((b) => b.status === "cancelled");
         const isVoterMarkedVoted = vRows.length > 0 && vRows[0].final_status === "Voted";
 
-        // Hard Double-Voting Block: If voter is already marked 'Voted' or has accepted ballots, and not cancelled, block immediately!
         // Hard Double-Voting Block (Applies strictly to ALL voters, including demo accounts):
         if (!isTeacher) {
           if ((isVoterMarkedVoted || hasAcceptedBallots) && !hasCancelledBallots) {
@@ -353,7 +402,7 @@
         }
 
         // Hard Double-Voting Block for Faculty: If already cast in this specific house/central booth, block duplicate attempt!
-        if (isTeacher) {
+        if (isTeacher && cleanId !== "1C8492" && cleanId !== "0000" && cleanId !== "000000") {
           const boothDisplayName = housesMeta[requestedHouseCode]?.name || houseConfig.name || requestedHouseCode;
           if (hasAcceptedBallots && !hasCancelledBallots) {
             return {
@@ -433,7 +482,115 @@
       };
     },
 
-    async getHouseCandidates(houseCode) {
+        async getHouseCandidates(houseCode) {
+      const DUMMY_CANDIDATE_NAMES = new Set([
+    "Arjun Verma",
+    "Tushar Singhania",
+    "Karthik Menon",
+    "Ananya Iyer",
+    "Shruti Deshpande",
+    "Pallavi Rao",
+    "Rohan Nair",
+    "Aryan Gupta",
+    "Prateek Joshi",
+    "Sneha Reddy",
+    "Ishani Sen",
+    "Kritika Bhat",
+    "Devrath Singh",
+    "Harshavardhan Rao",
+    "Manish Pandey",
+    "Kavya Menon",
+    "Sanya Malhotra",
+    "Deepika Nair",
+    "Kunal Joshi",
+    "Nikhil Saxena",
+    "Tanmay Kulkarni",
+    "Meera Sen",
+    "Rhea Pillai",
+    "Anushka Varma",
+    "Tejas Chawla",
+    "Yuvraj Sharma",
+    "Samar Chauhan",
+    "Ishita Pillai",
+    "Tara Nambiar",
+    "Garima Saxena",
+    "Dhruv Kapoor",
+    "Akshay Mehra",
+    "Naveen Reddy",
+    "Avni Sharma",
+    "Bhavya Nair",
+    "Kareena Joseph",
+    "Abhimanyu Das",
+    "Raghav Vashisht",
+    "Surya Prakash",
+    "Tarini Mukherjee",
+    "Priyanka Bose",
+    "Aaradhya Sen",
+    "Siddharth Jain",
+    "Jayesh Patel",
+    "Chetan Anand",
+    "Roshni Paul",
+    "Diya Sengupta",
+    "Maya Nambiar",
+    "Aditya Hegde",
+    "Gautam Menon",
+    "Pranav Joshi",
+    "Pooja Kulkarni",
+    "Nandita Rao",
+    "Malavika Nair",
+    "Varun Bhat",
+    "Naveen Iyer",
+    "Rahul Somani",
+    "Tanvi Saxena",
+    "Divya Kamath",
+    "Swati Mishra",
+    "Vikramaditya Roy",
+    "Shaurya Singhal",
+    "Anirudh Deshmukh",
+    "Rhea Deshmukh",
+    "Ayesha Khan",
+    "Tanvi Sengupta",
+    "Samarth Rao",
+    "Vivan Kapoor",
+    "Tejas Nambiar",
+    "Pari Chopra",
+    "Ananya Roy",
+    "Sana Sheikh",
+    "Kabir Mehta",
+    "Ananya Sundaram",
+    "Rishabh Tandon",
+    "Manav Saxena",
+    "Isha Nair",
+    "Vivaan Goel",
+    "Siddharth Varma",
+    "Kavya Ramanathan",
+    "Nirav Shah",
+    "Aayush Rawat",
+    "Tanvi Bhardwaj",
+    "Arman Gill",
+    "Zoya Akhtar",
+    "Pranav Khandelwal",
+    "Rhea Sengupta"
+  ]);
+
+      const isDummyCand = (c) => {
+        if (!c) return false;
+        const name = String(c.full_name || c.fullName || "").trim();
+        const sec = String(c.section || "").trim();
+        const tag = String(c.tagline || "").trim();
+        const adm = String(c.admission_no || c.admissionNo || "").trim();
+        return (
+          DUMMY_CANDIDATE_NAMES.has(name) ||
+          sec.includes("Option ") ||
+          tag.includes("Option ") ||
+          name.startsWith("Candidate ") ||
+          adm.startsWith("DEMO-")
+        );
+      };
+
+      const localCands = (window.HOUSE_DATA?.houseCandidates || []).filter((c) => !isDummyCand(c));
+      const localMap = new Map(localCands.map((c) => [c.id, c]));
+
       if (this.mode === "supabase") {
         try {
           const rows = await sbRest(
@@ -441,23 +598,43 @@
             `/rest/v1/candidates?house_code=eq.${encodeURIComponent(houseCode)}&is_approved=eq.true&select=*`
           );
           if (Array.isArray(rows) && rows.length > 0) {
-            return rows.map((c) => ({
-              id: c.id,
-              admissionNo: c.admission_no,
-              fullName: c.full_name,
-              className: c.class_name,
-              section: c.section,
-              houseCode: c.house_code,
-              positionId: c.position_id || "CAPTAIN_BOY",
-              positionName: c.position_name || "Boys Captain",
-              tagline: c.tagline || "",
-              isApproved: c.is_approved !== false,
-            }));
+            // Permanently purge any dummy rows found in Supabase
+            const dummyRows = rows.filter(isDummyCand);
+            if (dummyRows.length > 0) {
+              dummyRows.forEach((dr) => {
+                sbRest("DELETE", `/rest/v1/candidates?id=eq.${encodeURIComponent(dr.id)}`).catch(() => {});
+                if (dr.full_name) {
+                  sbRest("DELETE", `/rest/v1/candidates?full_name=eq.${encodeURIComponent(dr.full_name)}`).catch(() => {});
+                }
+              });
+            }
+
+            // Valid candidates only
+            const validRows = rows.filter((c) => !isDummyCand(c));
+            if (validRows.length > 0) {
+              return validRows.map((c) => {
+                const loc = localMap.get(c.id) || {};
+                return {
+                  id: c.id,
+                  admissionNo: c.admission_no || loc.admissionNo,
+                  fullName: c.full_name || loc.fullName,
+                  className: c.class_name || loc.className,
+                  section: c.section || loc.section,
+                  houseCode: c.house_code || loc.houseCode,
+                  positionId: c.position_id || loc.positionId || "CAPTAIN_BOY",
+                  positionName: c.position_name || loc.positionName || "Boys Captain",
+                  tagline: c.tagline || loc.tagline || "",
+                  symbolObj: loc.symbolObj || (c.symbol_name ? { name: c.symbol_name, icon: c.symbol_icon, image: `../assets/symbols/${(c.symbol_name||'star').toLowerCase().replace(/[\s-]+/g, '_')}.png`, imagePath: `../assets/symbols/${(c.symbol_name||'star').toLowerCase().replace(/[\s-]+/g, '_')}.png` } : null),
+                  photoUrl: loc.photoUrl || c.photo_url || "",
+                  photoPath: loc.photoPath || c.photo_url || "",
+                  isApproved: c.is_approved !== false,
+                };
+              });
+            }
           }
         } catch (_) {}
-        return window.HOUSE_DATA.houseCandidates;
       }
-      return window.HOUSE_DATA.houseCandidates;
+      return localCands;
     },
 
     async getHouseSnapshot(houseCode) {
@@ -637,7 +814,7 @@
         }
 
         const qAdm = encodeURIComponent(stu.admissionNo);
-        const existingRows = await sbRest("GET", `/rest/v1/voters?admission_no=eq.${qAdm}&select=*`);
+        const existingRows = await sbRest("GET", `/rest/v1/voters?admission_no=eq.${qAdm}&select=final_status`);
         let voterRow = existingRows[0] || null;
         if (!voterRow) {
           const created = await sbRest(
@@ -756,6 +933,7 @@
 
         let updatedVotedFor = summaryParts.join(" | ");
         let updatedFinalStatus = allRolesAccepted ? "Voted" : "Cancelled";
+        let positionName = allRolesAccepted ? `All ${positions.length} Roles` : lastBallot.position_name;
 
         if (isTeacher) {
           const prevVotedFor = String(voterRow?.voted_for || "").trim();
@@ -775,6 +953,7 @@
           );
           allHousesVoted.add(houseConfig.code.toUpperCase());
           const housesCount = allHousesVoted.size;
+          positionName = `Universal Faculty (${houseConfig.name} - ${housesCount}/7)`;
           // Keep final_status strictly within check constraint: "Not Voted", "Voted", "Cancelled"
           updatedFinalStatus = allRolesAccepted ? "Voted" : "Cancelled";
         }
@@ -784,7 +963,7 @@
           final_status: updatedFinalStatus,
           voted_for: updatedVotedFor,
           candidate_id: lastBallot.candidate_id,
-          position_name: isTeacher ? `Universal Faculty (${houseConfig.name} - ${housesCount}/7)` : (allRolesAccepted ? `All ${positions.length} Roles` : lastBallot.position_name),
+          position_name: positionName,
           ballot_id: lastBallot.id,
           cast_at: nowIso,
           cancelled_at: null,

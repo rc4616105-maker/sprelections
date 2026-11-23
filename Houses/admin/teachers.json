@@ -1,5 +1,33 @@
 [
   {
+    "sl": 0,
+    "admissionNo": "0000",
+    "fullName": "Dr. Rajesh Sharma (Demo Faculty)",
+    "gender": "MALE",
+    "subject": "SENIOR FACULTY / DEMO",
+    "contact": "9876543210",
+    "houseCode": "ALL",
+    "houseName": "All Houses & Cabinet",
+    "className": "Staff",
+    "section": "Faculty",
+    "isStaff": true,
+    "isActive": true
+  },
+  {
+    "sl": 0,
+    "admissionNo": "6000",
+    "fullName": "Dr. Rajesh Sharma (Demo Faculty)",
+    "gender": "MALE",
+    "subject": "SENIOR FACULTY / DEMO",
+    "contact": "9876543210",
+    "houseCode": "ALL",
+    "houseName": "All Houses & Cabinet",
+    "className": "Staff",
+    "section": "Faculty",
+    "isStaff": true,
+    "isActive": true
+  },
+  {
     "sl": 1,
     "admissionNo": "6001",
     "fullName": "MARUTHI KOMIREDDY",

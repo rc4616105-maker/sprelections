@@ -165,6 +165,43 @@
       border-color: #cc785c;
     }
 
+    .sync-supabase-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      min-height: 46px;
+      padding: 0.7rem 1.35rem;
+      border-radius: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      color: var(--text-primary);
+      font-size: 0.94rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 8px 20px -12px rgba(45, 36, 20, 0.14);
+      transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+    }
+
+    .sync-supabase-btn:hover {
+      transform: translateY(-2px);
+      background: #ffffff;
+      border-color: #3b82f6;
+      color: #1d4ed8;
+      box-shadow: 0 6px 16px rgba(59, 130, 246, 0.15);
+    }
+
+    .sync-supabase-btn:active {
+      transform: translateY(0);
+    }
+
+    .sync-supabase-btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
     .eyebrow {
       font-family: var(--font-mono);
       font-size: 0.76rem;
@@ -548,7 +585,6 @@
           <span class="booth-text">📍 Booth: <strong id="booth-station-name">—</strong><span id="booth-officer-badge" hidden> · Officer: <strong id="booth-officer-name">—</strong></span></span>
           <button type="button" id="change-booth-btn" class="booth-change-btn">Change</button>
         </div>
-        <div id="local-storage-slot"></div>
         <a href="./graphs.html" class="graphs-cta">Graphs</a>
       </div>
     </header>
@@ -572,32 +608,50 @@
       </a>
 
       <a href="./bheeshma/index.html" class="house-card" style="--card-accent:#eab308; --card-ink:#925c04;">
-        <h2 class="house-name">Bheeshma House</h2>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
+          <h2 class="house-name">Bheeshma House</h2>
+          <span style="font-size:0.75rem; font-weight:700; color:#925c04; background:rgba(234, 179, 8, 0.14); border:1px solid rgba(234, 179, 8, 0.35); padding:0.18rem 0.55rem; border-radius:9999px;">Gangotri</span>
+        </div>
         <span class="open-link"><span>Enter Bheeshma House Polling Booth</span> <span>→</span></span>
       </a>
 
       <a href="./gurudrona/index.html" class="house-card" style="--card-accent:#2563eb; --card-ink:#1d4ed8;">
-        <h2 class="house-name">Gurudrona House</h2>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
+          <h2 class="house-name">Gurudrona House</h2>
+          <span style="font-size:0.75rem; font-weight:700; color:#1d4ed8; background:rgba(37, 99, 235, 0.12); border:1px solid rgba(37, 99, 235, 0.28); padding:0.18rem 0.55rem; border-radius:9999px;">Trimbakeshwar</span>
+        </div>
         <span class="open-link"><span>Enter Gurudrona House Polling Booth</span> <span>→</span></span>
       </a>
 
       <a href="./hanuman/index.html" class="house-card" style="--card-accent:#f97316; --card-ink:#ea580c;">
-        <h2 class="house-name">Hanuman House</h2>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
+          <h2 class="house-name">Hanuman House</h2>
+          <span style="font-size:0.75rem; font-weight:700; color:#c2410c; background:rgba(249, 115, 22, 0.14); border:1px solid rgba(249, 115, 22, 0.35); padding:0.18rem 0.55rem; border-radius:9999px;">Yamunotri</span>
+        </div>
         <span class="open-link"><span>Enter Hanuman House Polling Booth</span> <span>→</span></span>
       </a>
 
       <a href="./karna/index.html" class="house-card" style="--card-accent:#b91c1c; --card-ink:#991b1b;">
-        <h2 class="house-name">Karna House</h2>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
+          <h2 class="house-name">Karna House</h2>
+          <span style="font-size:0.75rem; font-weight:700; color:#991b1b; background:rgba(185, 28, 28, 0.12); border:1px solid rgba(185, 28, 28, 0.28); padding:0.18rem 0.55rem; border-radius:9999px;">Manasarovar</span>
+        </div>
         <span class="open-link"><span>Enter Karna House Polling Booth</span> <span>→</span></span>
       </a>
 
       <a href="./vasistha/index.html" class="house-card" style="--card-accent:#db2777; --card-ink:#be185d;">
-        <h2 class="house-name">Vasistha House</h2>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
+          <h2 class="house-name">Vasistha House</h2>
+          <span style="font-size:0.75rem; font-weight:700; color:#be185d; background:rgba(219, 39, 119, 0.12); border:1px solid rgba(219, 39, 119, 0.28); padding:0.18rem 0.55rem; border-radius:9999px;">Mahabaleshwar</span>
+        </div>
         <span class="open-link"><span>Enter Vasistha House Polling Booth</span> <span>→</span></span>
       </a>
 
       <a href="./vishwamithra/index.html" class="house-card" style="--card-accent:#7c3aed; --card-ink:#6d28d9;">
-        <h2 class="house-name">Vishwamithra House</h2>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem;">
+          <h2 class="house-name">Vishwamithra House</h2>
+          <span style="font-size:0.75rem; font-weight:700; color:#6d28d9; background:rgba(124, 58, 237, 0.12); border:1px solid rgba(124, 58, 237, 0.28); padding:0.18rem 0.55rem; border-radius:9999px;">Amarkantak</span>
+        </div>
         <span class="open-link"><span>Enter Vishwamithra House Polling Booth</span> <span>→</span></span>
       </a>
     </section>
@@ -661,10 +715,7 @@
     </div>
   </div>
 
-  <script src="./assets/booth-session.js?v=1010"></script>
-  <script defer src="./admin/data.js?v=1010"></script>
-  <script defer src="./admin/teachers.js?v=1010"></script>
-  <script defer src="./admin/supabase-config.js?v=1010"></script>
+  <script src="./assets/booth-session.js?v=20261123GG"></script>
   <script>
     (function () {
       const modal = document.getElementById("booth-register-modal");
@@ -774,20 +825,6 @@
         }
       });
     })();
-  </script>
-  <script defer>
-    window.addEventListener("DOMContentLoaded", async () => {
-      if (!window.AdminBackend || !window.PendriveStorage) return;
-      await window.AdminBackend.init();
-      await window.PendriveStorage.mount({
-        container: document.getElementById("local-storage-slot"),
-        houseMeta: null,
-        getSnapshot: () => window.AdminBackend.getSnapshot(),
-      });
-      window.AdminBackend.subscribeUpdates(() => {
-        window.PendriveStorage.syncNow();
-      });
-    });
   </script>
 </body>
 </html>

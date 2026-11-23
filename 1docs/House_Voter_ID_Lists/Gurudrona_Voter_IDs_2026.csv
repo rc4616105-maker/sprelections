@@ -1,0 +1,182 @@
+﻿SL_NO,VOTER_ID,FULL_NAME,CLASS,SECTION,GENDER
+1,6A2653,B. Rishank Reddy,Class 6,AMBEDKAR,Boy
+2,6A3936,CH. Harshavardan,Class 6,AMBEDKAR,Boy
+3,6A8337,G. Srithan Chandra,Class 6,AMBEDKAR,Boy
+4,6A2941,Karthik Kouda,Class 6,AMBEDKAR,Boy
+5,6A3539,Medansh Tumma,Class 6,AMBEDKAR,Boy
+6,6A2525,Rishabh Gopi Krishna,Class 6,AMBEDKAR,Boy
+7,6A9598,Shiva Sai Mamidla,Class 6,AMBEDKAR,Boy
+8,6A3792,Sruthin Janagama,Class 6,AMBEDKAR,Boy
+9,6B4249,B. Nishitha Reddy,Class 6,BGT,Girl
+10,6B3127,B. Shruthi,Class 6,BGT,Girl
+11,6B4531,Ch. Persee,Class 6,BGT,Girl
+12,6B4727,E. Bilvika,Class 6,BGT,Girl
+13,6B7872,M. Manaswi,Class 6,BGT,Girl
+14,6B3711,N. Chaitra,Class 6,BGT,Girl
+15,6B1455,P. Shlokha,Class 6,BGT,Girl
+16,6B7481,S. Niharika,Class 6,BGT,Girl
+17,6B9130,S. Pranith,Class 6,BGT,Boy
+18,6B8970,S. Srinika,Class 6,BGT,Girl
+19,6B1057,S.Rithwik,Class 6,BGT,Boy
+20,6B2813,T. Samsriya,Class 6,BGT,Girl
+21,6B6934,U. Shanvi,Class 6,BGT,Girl
+22,6B9461,V. Charanteja,Class 6,BGT,Boy
+23,6L7598,A. Rithwik,Class 6,LLR,Boy
+24,6L6033,K. Karuna,Class 6,LLR,Girl
+25,6L1573,M. Samanvitha,Class 6,LLR,Girl
+26,6L5084,S. Shiva ram,Class 6,LLR,Boy
+27,6V2471,B. Shrikruthi,Class 6,VS,Girl
+28,6V5075,K. Sai Chidrupa,Class 6,VS,Girl
+29,6V5341,M. Sahith,Class 6,VS,Boy
+30,6V7389,Y. Vihan Reddy,Class 6,VS,Boy
+31,7A8353,B.Sathwik,Class 7,ASR,Boy
+32,7A1720,G.Sathwik,Class 7,ASR,Boy
+33,7A4820,G.Thanvi,Class 7,ASR,Girl
+34,7A1537,L.Samathwika,Class 7,ASR,Girl
+35,7A1772,M.Anudeep Goud,Class 7,ASR,Boy
+36,7A3765,M.Yashaswi,Class 7,ASR,Girl
+37,7B7601,B. Nihal,Class 7,BS,Boy
+38,7B6799,B.Akshith Reddy,Class 7,BS,Boy
+39,7B5275,B.Sahasra,Class 7,BS,Girl
+40,7B3593,D. Sannith,Class 7,BS,Boy
+41,7B7022,G. Sai Harsha,Class 7,BS,Boy
+42,7B7389,G.Goutham Krishna,Class 7,BS,Boy
+43,7B3274,G.Rishika Reddy,Class 7,BS,Girl
+44,7B7442,M.Harini,Class 7,BS,Girl
+45,7B3511,M.Jai Preeth,Class 7,BS,Boy
+46,7B2946,P.Ashwath,Class 7,BS,Boy
+47,7B9759,Sharan Arya,Class 7,BS,Boy
+48,7B9932,T. Shreyash,Class 7,BS,Boy
+49,7B6512,V. Vajrith,Class 7,BS,Boy
+50,7C7905,A. Riyansh Reddy,Class 7,CSA,Boy
+51,7C7191,A. Sahishnu,Class 7,CSA,Boy
+52,7C7772,Ch. Varun Tej,Class 7,CSA,Boy
+53,7C4752,J. Saahas,Class 7,CSA,Boy
+54,7C7333,K.Rithanya,Class 7,CSA,Girl
+55,7C2327,P.Mahaarvin Rao,Class 7,CSA,Boy
+56,7C8140,T. Prahasith Rao,Class 7,CSA,Boy
+57,7R9085,Ch. Shashi Preetham,Class 7,RG,Boy
+58,7R9068,G. Nuthan,Class 7,RG,Boy
+59,7R1902,K. Nakshatra,Class 7,RG,Girl
+60,7R2859,K. Rasamayee,Class 7,RG,Girl
+61,7R5641,N. Thanay,Class 7,RG,Boy
+62,7R8202,P. Amar Sadgun,Class 7,RG,Boy
+63,7R5736,V. Rinesh,Class 7,RG,Boy
+64,7R6774,Y. Deepak,Class 7,RG,Boy
+65,7S8338,J.Aaishwa Sai,Class 7,SCB,Boy
+66,7S6397,K.Hithiksha,Class 7,SCB,Girl
+67,7S5950,R.Sri Anish,Class 7,SCB,Boy
+68,8C5715,P. Sukeerth,Class 8,CK,Boy
+69,8D5687,Ch. Thanmai,Class 8,DS,Girl
+70,8D3997,G. Aadhya,Class 8,DS,Girl
+71,8D8576,G. Sudhiksha,Class 8,DS,Girl
+72,8D2353,M. Divith,Class 8,DS,Boy
+73,8D1512,P. Niroop,Class 8,DS,Boy
+74,8D2624,S. Yashwith Reddy,Class 8,DS,Boy
+75,8D1768,T. Asmitha,Class 8,DS,Girl
+76,8D1844,Y. Loukya,Class 8,DS,Girl
+77,8H1933,B. Harshavardhan,Class 8,HG,Boy
+78,8H6014,B. Ruthwika,Class 8,HG,Girl
+79,8H7297,B. Shivathmika,Class 8,HG,Girl
+80,8H7250,J. Bilvik,Class 8,HG,Boy
+81,8H5405,K. Lokesh Reddy,Class 8,HG,Boy
+82,8H7975,M. Raghavendra Goud,Class 8,HG,Boy
+83,8H6213,M. Sai Sahani,Class 8,HG,Girl
+84,8H6187,T. Rithika,Class 8,HG,Girl
+85,8H5531,V. Sri Mani Sai,Class 8,HG,Boy
+86,8S9905,B. Aryan,Class 8,SG,Boy
+87,8S2211,Cihakali. Samanvitha,Class 8,SG,Girl
+88,8S3162,D. Manvith,Class 8,SG,Boy
+89,8S4310,D. Vigneshwar,Class 8,SG,Boy
+90,8S2987,G. Vanajith,Class 8,SG,Boy
+91,8S2596,J. Nishith,Class 8,SG,Boy
+92,8S8734,K. Lakith,Class 8,SG,Boy
+93,8S4983,T. Roshan Goud,Class 8,SG,Boy
+94,8S5768,A. Adwaith,Class 8,SV,Boy
+95,8S7339,B. Ananya Sri,Class 8,SV,Girl
+96,8S5716,B. Srivalli,Class 8,SV,Girl
+97,8S2725,G. Aaradhya,Class 8,SV,Girl
+98,8S1490,G. Sahana,Class 8,SV,Girl
+99,8S2043,L. Lasya,Class 8,SV,Girl
+100,8S2053,N. Vishnuvardhan,Class 8,SV,Boy
+101,8S2014,S. Goutham,Class 8,SV,Boy
+102,8S4486,S. Sanjitha,Class 8,SV,Girl
+103,9A5882,A.Nikith,Class 9,AB,Boy
+104,9A8668,A.Sudeshna,Class 9,AB,Girl
+105,9A3772,D.Sreehas,Class 9,AB,Boy
+106,9A9012,G.Joshitha,Class 9,AB,Girl
+107,9A1753,K.Vidhya Pratham,Class 9,AB,Boy
+108,9A3248,V.Lokesh Kumar,Class 9,AB,Boy
+109,9A6250,A.Alekya,Class 9,APJ,Girl
+110,9A6994,B.Keerthana,Class 9,APJ,Girl
+111,9A2571,B.Rakshitha,Class 9,APJ,Girl
+112,9A3751,B.Sriteja,Class 9,APJ,Boy
+113,9A9613,Ch.Hrishinder,Class 9,APJ,Boy
+114,9A4196,D.Ashwath,Class 9,APJ,Boy
+115,9A2602,G.Ruthwika,Class 9,APJ,Girl
+116,9A5243,P.Anupana,Class 9,APJ,Girl
+117,9A6795,P.Samanvitha,Class 9,APJ,Girl
+118,9K9469,A.Siddharth Reddy,Class 9,KC,Boy
+119,9K7372,D.Haneesh,Class 9,KC,Boy
+120,9K5026,J.Bilvani,Class 9,KC,Girl
+121,9K7051,L.Rushil Rao,Class 9,KC,Boy
+122,9K8082,N.Anish,Class 9,KC,Boy
+123,9K8886,N.Hamshini,Class 9,KC,Girl
+124,9K7493,S.Nihanthika,Class 9,KC,Girl
+125,9K1640,V.Pradyumna,Class 9,KC,Boy
+126,9K3146,Y.Nitish Pritam,Class 9,KC,Boy
+127,9S6839,A.Sreekruthi,Class 9,SD,Girl
+128,9S3619,G.Bhuvana Sri,Class 9,SD,Girl
+129,9S2383,M.Vivekanada Rao,Class 9,SD,Boy
+130,9S5939,O.Hasini,Class 9,SD,Girl
+131,9S1315,P.Sridhanvi,Class 9,SD,Girl
+132,9S1552,P.Yagnashree,Class 9,SD,Girl
+133,9S6921,R.Suryansh,Class 9,SD,Boy
+134,9S9354,V.Maanvitha,Class 9,SD,Girl
+135,9V5904,G.Arjun Krishna,Class 9,VSB,Boy
+136,9V1462,G.Srinidhi,Class 9,VSB,Girl
+137,9V4333,K.Lakshya,Class 9,VSB,Girl
+138,9V8454,M.Shrunvi Ganga,Class 9,VSB,Girl
+139,9V1741,M.Virat,Class 9,VSB,Boy
+140,9V1030,P.Divija,Class 9,VSB,Girl
+141,9V7145,P.Mani Vardhan,Class 9,VSB,Boy
+142,9V1739,S.Sai Shanmukh,Class 9,VSB,Boy
+143,9V2680,T.Rithwik,Class 9,VSB,Boy
+144,1A4986,G. Reshwanth,Class 10,AC,Boy
+145,1A8674,G. Siddartha,Class 10,AC,Boy
+146,1A4805,G. Sushmitha,Class 10,AC,Girl
+147,1A5707,G. Vilohit Krishna,Class 10,AC,Boy
+148,1A1596,K. Lihasana,Class 10,AC,Girl
+149,1A5154,K. Rikwitha,Class 10,AC,Girl
+150,1A9035,K. Rishvika,Class 10,AC,Girl
+151,1A5568,V. Saharsra Priya,Class 10,AC,Girl
+152,1C2425,A. Megha Sanjana,Class 10,CS,Girl
+153,1C9885,A. Sri Lasya,Class 10,CS,Girl
+154,1C3740,CH. Ananya,Class 10,CS,Girl
+155,1C7046,J. Abhinav,Class 10,CS,Boy
+156,1C4999,J. Rishi Teja,Class 10,CS,Boy
+157,1C7345,J. Shiva Sai Krishna,Class 10,CS,Boy
+158,1C7166,K . Drithi Sarayu,Class 10,CS,Girl
+159,1C9906,K. Anagha,Class 10,CS,Girl
+160,1C1344,M. Meher Sai,Class 10,CS,Boy
+161,1C1481,M. Sahasraanjani,Class 10,CS,Girl
+162,1C1245,N. Manasvi reddy,Class 10,CS,Girl
+163,1C7024,N. Samhitha,Class 10,CS,Girl
+164,1C6170,P. Samhitha,Class 10,CS,Girl
+165,1C5914,S. Harini,Class 10,CS,Girl
+166,1C5650,T. Anvitha,Class 10,CS,Girl
+167,1J4115,B. Akshara,Class 10,JLB,Girl
+168,1J6443,B. Midhuna,Class 10,JLB,Girl
+169,1J8286,G. Aarush,Class 10,JLB,Boy
+170,1J2044,G.Abhigna Deshmuk,Class 10,JLB,Girl
+171,1J9410,H. Rishika,Class 10,JLB,Girl
+172,1J4624,K. Advaitha,Class 10,JLB,Girl
+173,1J4265,K. Suryakanth,Class 10,JLB,Boy
+174,1J7563,N. Haswitha Goud,Class 10,JLB,Girl
+175,1J3703,P. Navaneeth Reddy,Class 10,JLB,Boy
+176,1J2518,R. Aadya,Class 10,JLB,Girl
+177,1J3671,Y. Varshith Reddy,Class 10,JLB,Boy
+178,1M1962,B.Balaji,Class 10,MRP,Boy
+179,1M7453,CH. Sharanya,Class 10,MRP,Girl
+180,1M4892,M. Navatej,Class 10,MRP,Boy
+181,1M4209,N. Harshith Reddy,Class 10,MRP,Boy

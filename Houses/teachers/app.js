@@ -1,7 +1,12 @@
 // Teacher Universal Polling Booth — 5-Step Progressive Controller
 // Allows teachers to vote for School Cabinet (5 roles) + All 6 Student Houses (24 roles) in one unified flow.
 (function () {
-  const { houses, candidates, electionId } = window.TEACHER_BOOTH_DATA || { houses: [], candidates: [] };
+  const boothData = window.TEACHER_BOOTH_DATA || {};
+  const houses = boothData.houses || [];
+  const candidates = (boothData.candidates && boothData.candidates.length > 0)
+    ? boothData.candidates
+    : (window.ALL_CONTESTING_CANDIDATES || []);
+  const electionId = boothData.electionId || "ELECTION_2026";
   const totalAvailableRoles = houses.reduce((sum, h) => sum + (h.positions?.length || 0), 0);
 
   const ELECTION_SYMBOLS = [
@@ -570,15 +575,15 @@
       } else {
         roleCands.forEach((cand, candIdx) => {
           const isSelected = picked && picked.candidate.id === cand.id;
-          const sym = cand.symbolObj || ELECTION_SYMBOLS[candIdx % ELECTION_SYMBOLS.length];
 
           const photoHtml = cand.photoPath || cand.photoUrl
             ? `<img src="${cand.photoPath || cand.photoUrl}" alt="${cand.fullName}" />`
             : `<span>${getInitials(cand.fullName)}</span>`;
 
-          const subText = String(cand.admissionNo || "").startsWith("DEMO-")
-            ? (cand.section || "")
-            : (cand.className ? `Class ${cand.className} ${cand.section || ""}` : (cand.section || ""));
+          let subText = String(cand.section || "").trim();
+          if (!/^class\s+/i.test(subText)) {
+            subText = cand.className ? `Class ${cand.className} · ${subText}` : subText;
+          }
 
           const row = document.createElement("div");
           row.className = `evm-candidate-row${isSelected ? " is-selected" : ""}`;
@@ -586,24 +591,31 @@
           row.setAttribute("aria-checked", isSelected ? "true" : "false");
           row.dataset.candId = cand.id;
 
-          row.innerHTML = `
-            <div class="evm-cand-avatar" style="${!cand.photoPath && !cand.photoUrl ? `background:${houseSubtle}; border-color:${houseAccent}60; color:${houseText};` : ''}">${photoHtml}</div>
-            <div class="evm-cand-info">
-              <h3 class="evm-cand-name">${cand.fullName}</h3>
-              <span class="evm-cand-sub">${subText}</span>
-              ${cand.tagline ? `<span class="evm-cand-tagline">&ldquo;${cand.tagline}&rdquo;</span>` : ""}
-            </div>
-            <div class="evm-right-cluster">
-              <div class="evm-symbol-badge" title="Election Symbol: ${sym.name}">
-                <span class="evm-symbol-icon">${sym.icon}</span>
-                <span class="evm-symbol-name">${sym.name}</span>
+                      const sym = cand.symbolObj || { name: "Candidate Choice", icon: "⭐" };
+            const symSlug = (sym.slug || sym.name || "star").toLowerCase().replace(/[\s-]+/g, "_");
+            const symImg = (sym.image || sym.imagePath || `../assets/symbols/${symSlug}.png`) + '?v=20261123N';
+
+            row.innerHTML = `
+              <div class="evm-cand-avatar" style="${!cand.photoPath && !cand.photoUrl ? `background:${houseSubtle}; border-color:${houseAccent}60; color:${houseText};` : ''}">${photoHtml}</div>
+              <div class="evm-cand-symbol" title="Election Symbol: ${sym.name}">
+                <div class="evm-symbol-box">
+                  <img src="${symImg}" alt="${sym.name}" class="evm-symbol-img" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';" />
+                  <span class="evm-symbol-fallback" style="display:none;">${sym.icon || "⭐"}</span>
+                </div>
+                <span class="evm-symbol-caption">${sym.name}</span>
               </div>
-              <span class="evm-led-lamp"></span>
-              <button type="button" class="evm-vote-btn" tabindex="-1">
-                ${isSelected ? "VOTED ✓" : "VOTE"}
-              </button>
-            </div>
-          `;
+              <div class="evm-cand-info">
+                <h3 class="evm-cand-name">${cand.fullName}</h3>
+                <span class="evm-cand-sub">${subText}</span>
+                ${cand.tagline ? `<span class="evm-cand-tagline">&ldquo;${cand.tagline}&rdquo;</span>` : ""}
+              </div>
+              <div class="evm-right-cluster">
+                <span class="evm-led-lamp"></span>
+                <button type="button" class="evm-vote-btn" tabindex="-1">
+                  ${isSelected ? "VOTED ✓" : "VOTE"}
+                </button>
+              </div>
+            `;
 
           if (isSelected) {
             row.style.borderColor = houseAccent;
@@ -771,6 +783,8 @@
 
       // Advance to Step 4 (Success)
       el.successSummary.textContent = `Thank you, ${res.teacherName}. All ${res.count} ballots across School Cabinet and student houses have been securely recorded.`;
+            const prevVotes = parseInt(sessionStorage.getItem("kiosk_session_votes") || "0", 10);
+      sessionStorage.setItem("kiosk_session_votes", String(prevVotes + 1));
       setStep(4);
 
       // 5-second countdown timer
@@ -808,6 +822,20 @@
 
   function resetStation() {
     if (state.resetInterval) clearInterval(state.resetInterval);
+
+    // ── 10-Vote Auto Cache Buster (Stays on this Teacher kiosk with spinning wheel) ──
+    const totalVotes = parseInt(sessionStorage.getItem("kiosk_session_votes") || "0", 10);
+    const lastBust = parseInt(sessionStorage.getItem("kiosk_last_cache_bust") || "0", 10);
+    if (totalVotes > 0 && totalVotes % 10 === 0 && totalVotes !== lastBust) {
+      sessionStorage.setItem("kiosk_last_cache_bust", String(totalVotes));
+      if (el.loadingOverlayTitle) el.loadingOverlayTitle.textContent = "Refreshing Booth Cache...";
+      if (el.loadingOverlaySubtitle) el.loadingOverlaySubtitle.textContent = `${totalVotes} votes recorded · Optimizing booth for next teacher...`;
+      if (el.loadingOverlay) el.loadingOverlay.hidden = false;
+      setTimeout(() => {
+        window.location.replace(window.location.pathname + "?v=" + Date.now());
+      }, 700);
+      return;
+    }
     state.verifiedTeacher = null;
     state.votedRolesMap = {};
     state.selectedByRole = {};
@@ -820,6 +848,12 @@
     if (el.admissionInput) el.admissionInput.value = "";
     if (el.scannerStreamInput) el.scannerStreamInput.value = "";
     clearError();
+    if (el.tabManualMode && el.tabScanMode && el.paneBarcodeScan && el.paneManualEntry) {
+      el.tabManualMode.classList.add("is-active");
+      el.tabScanMode.classList.remove("is-active");
+      el.paneBarcodeScan.hidden = true;
+      el.paneManualEntry.hidden = false;
+    }
     setStep(1);
   }
 
@@ -1048,18 +1082,47 @@
   // Initialize
   document.addEventListener("DOMContentLoaded", async () => {
     initEvents();
+    if (el.tabManualMode && el.tabScanMode && el.paneBarcodeScan && el.paneManualEntry) {
+      el.tabManualMode.classList.add("is-active");
+      el.tabScanMode.classList.remove("is-active");
+      el.paneBarcodeScan.hidden = true;
+      el.paneManualEntry.hidden = false;
+    }
     setStep(1);
     warmUpCamera().catch(() => {});
     document.addEventListener("click", () => warmUpCamera().catch(() => {}), { once: true });
-    const mode = await window.TeacherBackend.init();
-    const noteSpan = document.querySelector(".auth-security-note span");
-    if (noteSpan) {
-      if (mode === "supabase") {
-        noteSpan.textContent = "Supabase connected — all votes & photos save strictly to Supabase.";
-      } else {
-        noteSpan.textContent = "Supabase NOT connected — connect Supabase in Admin Dashboard to sync.";
+    function syncTeacherCloudStatus(m) {
+      const noteSpan = document.querySelector(".auth-security-note span");
+      if (noteSpan) {
+        if (m === "supabase") {
+          noteSpan.textContent = "Supabase connected — all votes & photos save strictly to Supabase.";
+        } else {
+          noteSpan.textContent = "Supabase NOT connected — connect Supabase in Admin Dashboard to sync.";
+        }
+      }
+      const noteEl = document.getElementById("cloud-mode-note");
+      if (noteEl) {
+        noteEl.hidden = false;
+        if (m === "supabase") {
+          noteEl.className = "cloud-status-note is-connected";
+          noteEl.innerHTML = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#16a34a;margin-right:4px;"></span> Supabase connected — all votes &amp; photos save strictly to Supabase.`;
+        } else {
+          noteEl.className = "cloud-status-note is-disconnected";
+          noteEl.innerHTML = `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#dc2626;margin-right:4px;"></span> Supabase NOT connected — connect Supabase in Admin Dashboard to sync.`;
+        }
       }
     }
+    const mode = await window.TeacherBackend.init();
+    syncTeacherCloudStatus(mode);
+    window.addEventListener("storage", async (e) => {
+      if (e.key === "election_spr_2026_sb_cfg_v1" || e.key === "spr_supabase_direct_cfg_v1") {
+        if (window.TeacherBackend && typeof window.TeacherBackend.init === "function") {
+          window.TeacherBackend._initPromise = null;
+          const freshMode = await window.TeacherBackend.init();
+          syncTeacherCloudStatus(freshMode);
+        }
+      }
+    });
     loadPicoFaceClassifier();
   });
 })();

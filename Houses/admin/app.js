@@ -71,6 +71,45 @@
     sbModalSave: document.getElementById("sb-modal-save"),
   };
 
+  
+  function getDisplayVoterId(s) {
+    if (!s) return "--";
+    const adm = String(s.admissionNo || "").trim().toUpperCase();
+
+    // 1. Aditya Vikram demo voter code
+    if (adm === "1C8492" || adm === "0000") {
+      return adm;
+    }
+
+    // 2. Teacher / Faculty IDs (e.g. SPRCOM820, SPRTEL770, SPRFAC100) or staff
+    if (adm.startsWith("SPR") || s.isStaff || String(s.className || "").toLowerCase().includes("staff") || String(s.role || "").toLowerCase() === "faculty" || s.houseCode === "ALL") {
+      return adm;
+    }
+
+    // 3. Custom student object flag
+    if (s.isCustom) return adm.toUpperCase();
+
+    // 4. Stored custom registered students in localStorage
+    try {
+      const raw = localStorage.getItem("spr_admin_custom_students");
+      if (raw) {
+        const list = JSON.parse(raw);
+        if (list.some((cs) => String(cs.admissionNo || "").toUpperCase() === adm.toUpperCase())) {
+          return adm.toUpperCase();
+        }
+      }
+    } catch (_) {}
+
+    // 5. Matches official 6-character random format: 1 digit + 1 letter + 4 digits (e.g. 1M5168, 1C8492, 9K4821)
+    if (/^[0-9][A-Za-z][0-9]{4}$/.test(adm)) {
+      return adm.toUpperCase();
+    }
+
+    // For all other students who do not have an official 6-character random Voter ID created yet:
+    // Per school requirement: "FOR WHOM THEY NOT HAVE IDS IE NOT YET CREATED JUST KEEP -- FOR NOW LATER WE WILL ADD"
+    return "--";
+  }
+
   function formatHouseLabel(name) {
     if (!name) return "";
     const str = String(name).trim();
@@ -84,8 +123,38 @@
     return String(c || "").trim().toLowerCase().replace(/^class\s*/i, "");
   }
 
+  function canonicalSection(s) {
+    if (!s) return "";
+    const str = String(s).trim().toUpperCase();
+    if (str.includes("MAHA") || str.includes("PRATAP") || str.includes("10-MP") || str === "MRP") return "MRP";
+    if (str.includes("SHIVAJI") || str.includes("10-CS") || str === "CS") return "CS";
+    if (str.includes("ASHOKA") || str.includes("10-AC") || str === "AC") return "AC";
+    if (str.includes("JHANSI") || str.includes("10-JL") || str === "JLB") return "JLB";
+    if (str.includes("AMBEDKAR") || str.includes("DR BR")) return "AMBEDKAR";
+    if (str.includes("LLR")) return "LLR";
+    if (str.includes("BCP")) return "BCP";
+    if (str.includes("BGT")) return "BGT";
+    if (str === "VS" || str.includes("VS ") || str.includes("6-VS")) return "VS";
+    if (str.includes("SITARAMA") || str.includes("ASR") || str.includes("7-AS")) return "ASR";
+    if (str.includes("BHAGATH") || str.includes("7-BS") || str === "BS") return "BS";
+    if (str.includes("CHANDRA SHEKAR") || str.includes("7-CA") || str === "CSA") return "CSA";
+    if (str.includes("RAJGURU") || str.includes("7-RG") || str === "RG") return "RG";
+    if (str.includes("SUBHASH") || str.includes("7-SB") || str === "SCB") return "SCB";
+    if (str.includes("CHANAKYA") || str.includes("8-CH") || str === "CK") return "CK";
+    if (str.includes("DAYANANDA") || str.includes("8-DS") || str === "DS") return "DS";
+    if (str.includes("HEDGEWAR") || str.includes("8-HW") || str === "HG") return "HG";
+    if (str.includes("GURUJI") || str.includes("8-SG") || str === "SG") return "SG";
+    if (str.includes("VIVEKANANDA") || str.includes("8-SV") || str === "SV") return "SV";
+    if (str.includes("KALAM") || str.includes("9-AK") || str === "APJ") return "APJ";
+    if (str.includes("ARYABHATTA") || str.includes("9-AB") || str === "AB") return "AB";
+    if (str.includes("CHAWLA") || str.includes("9-KC") || str === "KC") return "KC";
+    if (str.includes("DHAWAN") || str.includes("9-SD") || str === "SD") return "SD";
+    if (str.includes("SARABHAI") || str.includes("9-VS") || str === "VSB") return "VSB";
+    return str;
+  }
+
   function normSection(s) {
-    return String(s || "").trim().toLowerCase();
+    return canonicalSection(s).toLowerCase();
   }
 
   function populateHouseFilter() {
@@ -140,7 +209,7 @@
       ? students.filter((s) => normClass(s.className) === normClass(selectedClass))
       : students;
 
-    const rawSections = Array.from(new Set(filteredStudents.map((s) => String(s.section || "").trim()).filter(Boolean)));
+    const rawSections = Array.from(new Set(filteredStudents.map((s) => canonicalSection(s.section)).filter(Boolean)));
     rawSections.sort((a, b) => a.localeCompare(b));
 
     el.drilldownSectionFilter.innerHTML = '<option value="">All Sections</option>';
@@ -151,8 +220,8 @@
       el.drilldownSectionFilter.appendChild(opt);
     });
 
-    if (currentSection && rawSections.includes(currentSection)) {
-      el.drilldownSectionFilter.value = currentSection;
+    if (currentSection && rawSections.includes(canonicalSection(currentSection))) {
+      el.drilldownSectionFilter.value = canonicalSection(currentSection);
     } else {
       el.drilldownSectionFilter.value = "";
     }
@@ -269,7 +338,7 @@
 
       el.drilldownThead.innerHTML = `
         <tr>
-          <th>Admission ID</th>
+          <th>Voter ID</th>
           <th>Student</th>
           <th>Class</th>
           <th>Sec</th>
@@ -287,12 +356,20 @@
           if (sFilter && normSection(s.section) !== normSection(sFilter)) return false;
           if (isRemaining && studentStatus(s) === "voted") return false;
           if (q) {
-            const hay = `${s.admissionNo} ${s.fullName} ${s.className}-${s.section}`.toLowerCase();
+            const vId = getDisplayVoterId(s);
+            const hay = `${vId !== "--" ? vId : ""} ${s.admissionNo} ${s.fullName} ${s.className}-${s.section}`.toLowerCase();
             if (!hay.includes(q)) return false;
           }
           return true;
         })
-        .sort((a, b) => a.admissionNo.localeCompare(b.admissionNo));
+        .sort((a, b) => {
+          const vA = getDisplayVoterId(a);
+          const vB = getDisplayVoterId(b);
+          if (vA !== "--" && vB === "--") return -1;
+          if (vA === "--" && vB !== "--") return 1;
+          if (vA !== "--" && vB !== "--") return vA.localeCompare(vB);
+          return (a.fullName || "").localeCompare(b.fullName || "");
+        });
 
       el.drilldownEmpty.hidden = rows.length > 0;
       rows.forEach((s) => {
@@ -317,11 +394,16 @@
           <td>${s.isCandidate ? s.positionName || "Candidate" : (s.isStaff ? "Faculty" : "Voter")}</td>
           <td>${badge}</td>
         `;
-        tr.children[0].textContent = s.admissionNo;
+        const vId = getDisplayVoterId(s);
+        if (vId === "--") {
+          tr.children[0].innerHTML = '<span style="color:var(--text-muted); font-weight:700;">--</span>';
+        } else {
+          tr.children[0].innerHTML = `<strong class="mono" style="color:#0369a1; font-weight:800; font-size:1.02rem;">${vId}</strong>`;
+        }
         tr.children[1].querySelector("strong").textContent = s.fullName;
         const clsLabel = s.className ? (s.className.toString().toLowerCase().startsWith("class") ? s.className : `Class ${s.className}`) : "--";
         tr.children[2].querySelector(".mono").textContent = clsLabel;
-        tr.children[3].textContent = s.section || "--";
+        tr.children[3].textContent = canonicalSection(s.section) || "--";
         el.drilldownTbody.appendChild(tr);
       });
       return;
@@ -333,7 +415,7 @@
 
       el.drilldownThead.innerHTML = `
         <tr>
-          <th>Admission ID</th>
+          <th>Voter ID</th>
           <th>Student</th>
           <th>Class</th>
           <th>Sec</th>
@@ -367,7 +449,14 @@
           }
           return true;
         })
-        .sort((a, b) => a.admissionNo.localeCompare(b.admissionNo));
+        .sort((a, b) => {
+          const vA = getDisplayVoterId(a);
+          const vB = getDisplayVoterId(b);
+          if (vA !== "--" && vB === "--") return -1;
+          if (vA === "--" && vB !== "--") return 1;
+          if (vA !== "--" && vB !== "--") return vA.localeCompare(vB);
+          return (a.fullName || "").localeCompare(b.fullName || "");
+        });
 
       el.drilldownEmpty.hidden = rows.length > 0;
       rows.forEach((s) => {
@@ -396,11 +485,16 @@
             <a href="./edit-votes.html?adm=${encodeURIComponent(s.admissionNo)}" class="btn btn-secondary" style="font-size:0.75rem; padding:0.25rem 0.55rem; min-height:auto;">Edit Ballots →</a>
           </td>
         `;
-        tr.children[0].textContent = s.admissionNo;
+        const vId = getDisplayVoterId(s);
+        if (vId === "--") {
+          tr.children[0].innerHTML = '<span style="color:var(--text-muted); font-weight:700;">--</span>';
+        } else {
+          tr.children[0].innerHTML = `<strong class="mono" style="color:#0369a1; font-weight:800; font-size:1.02rem;">${vId}</strong>`;
+        }
         tr.children[1].querySelector("strong").textContent = s.fullName;
         const clsLabel = s.className ? (s.className.toString().toLowerCase().startsWith("class") ? s.className : `Class ${s.className}`) : "--";
         tr.children[2].querySelector(".mono").textContent = clsLabel;
-        tr.children[3].textContent = s.section || "--";
+        tr.children[3].textContent = canonicalSection(s.section) || "--";
         el.drilldownTbody.appendChild(tr);
       });
 
@@ -492,7 +586,12 @@
             <a href="./edit-votes.html?adm=${encodeURIComponent(v.admissionNo)}" class="btn btn-secondary btn-sm" style="padding: 4px 10px; font-size: 0.78rem; text-decoration:none;">Manage →</a>
           </td>
         `;
-        tr.children[0].textContent = v.admissionNo;
+        const vId = getDisplayVoterId(v);
+        if (vId === "--") {
+          tr.children[0].innerHTML = '<span style="color:var(--text-muted); font-weight:700;">--</span>';
+        } else {
+          tr.children[0].innerHTML = `<strong class="mono" style="color:#0369a1; font-weight:800; font-size:1.02rem;">${vId}</strong>`;
+        }
         tr.children[1].querySelector("strong").textContent = v.fullName;
         const clsSecLabel = v.className ? `Class ${v.className}-${v.section || "--"}` : (v.section || "--");
         tr.children[1].querySelector(".stat-note").textContent = clsSecLabel;
@@ -620,6 +719,27 @@
     `;
     if (el.houseGrid) el.houseGrid.appendChild(editorCard);
 
+    // Tool Card 3: Live Voters Stream & Activity Feed
+    const liveVotersCard = document.createElement("a");
+    liveVotersCard.href = "./live-voters/index.html";
+    liveVotersCard.className = "admin-house-card admin-tool-card";
+    liveVotersCard.style.setProperty("--card-accent", "#059669");
+    liveVotersCard.style.setProperty("--card-ink", "#047857");
+    liveVotersCard.innerHTML = `
+      <div class="admin-house-top">
+        <h3 class="admin-house-title" style="color: #047857;">⚡ Live Voters Stream</h3>
+        <span class="badge" style="background:#ecfdf5; color:#047857; border:1px solid #a7f3d0; font-size:0.75rem;"><span class="pulse-dot" style="display:inline-block; vertical-align:middle; margin-right:3px;"></span> Live Feed</span>
+      </div>
+      <div class="house-bar-track">
+        <div class="house-bar-fill" style="width:100%; background:linear-gradient(90deg, #10b981, #059669);"></div>
+      </div>
+      <div class="admin-house-meta">
+        <span>Real-time incoming check-ins · Photos · Sound</span>
+        <span class="admin-house-cta" style="color: #047857;">Open Live Feed →</span>
+      </div>
+    `;
+    if (el.houseGrid) el.houseGrid.appendChild(liveVotersCard);
+
     renderDrilldown(snap);
   }
 
@@ -705,13 +825,13 @@
   if (el.refreshBtn) el.refreshBtn.addEventListener("click", refreshAll);
 
   function openSupabaseModal(msg) {
-    el.sbUrlInput.value = window.AdminBackend.getDefaultUrl();
+    el.sbUrlInput.value = window.AdminBackend?.getDefaultUrl ? window.AdminBackend.getDefaultUrl() : "https://rziptxcknaeuorekxwrl.supabase.co";
     let savedKey = "";
     try {
       const saved = JSON.parse(localStorage.getItem("election_spr_2026_sb_cfg_v1") || "null");
       if (saved && saved.anonKey) savedKey = saved.anonKey;
     } catch (_) {}
-    if (!savedKey && typeof window.AdminBackend.getKey === "function") {
+    if (!savedKey && typeof window.AdminBackend?.getKey === "function") {
       savedKey = window.AdminBackend.getKey();
     }
     el.sbKeyInput.value = savedKey;
@@ -730,12 +850,14 @@
   el.seedSupabaseBtn.addEventListener("click", async () => {
     try {
       el.seedSupabaseBtn.disabled = true;
-      let mode = window.AdminBackend.mode;
+      let mode = window.AdminBackend?.mode || "offline";
       if (mode !== "supabase") {
-        mode = await window.AdminBackend.init();
+        mode = (window.AdminBackend && typeof window.AdminBackend.init === "function")
+          ? await window.AdminBackend.init()
+          : "offline";
       }
       if (mode !== "supabase") {
-        openSupabaseModal(window.AdminBackend.backendError);
+        openSupabaseModal(window.AdminBackend?.backendError || "Supabase not connected.");
         return;
       }
       const res = await window.AdminBackend.syncRosterToSupabase();
@@ -846,6 +968,9 @@
   }
 
   async function boot() {
+    try {
+      localStorage.removeItem("spr_admin_snapshot_cache");
+    } catch (_) {}
     populateHouseFilter();
     populateClassAndSectionFilters();
     // Always paint initial roster KPIs & house cards immediately before awaiting network
@@ -866,6 +991,8 @@
     const seenAdms = new Set();
     const initialStudents = [];
     baseRoster.forEach((s) => {
+      // Exclude duplicate 0000 teacher demo account so Aditya Vikram appears only once as 1C8492
+      if (s.admissionNo === "0000") return;
       if (!seenAdms.has(s.admissionNo)) {
         seenAdms.add(s.admissionNo);
         initialStudents.push({ ...s });
@@ -880,7 +1007,9 @@
     };
     renderOverview(latestSnapshot);
 
-    const mode = await window.AdminBackend.init();
+    const mode = (window.AdminBackend && typeof window.AdminBackend.init === "function")
+      ? await window.AdminBackend.init()
+      : "offline";
     if (mode === "supabase") {
       el.seedSupabaseBtn.hidden = false;
       el.seedSupabaseBtn.textContent = "Sync Roster to Supabase";
@@ -889,18 +1018,20 @@
     } else {
       el.seedSupabaseBtn.hidden = false;
       el.seedSupabaseBtn.textContent = "Connect & Sync Supabase";
-      el.seedSupabaseBtn.title = window.AdminBackend.backendError || "Supabase not connected — click to paste your Publishable key";
+      el.seedSupabaseBtn.title = window.AdminBackend?.backendError || "Supabase not connected — click to paste your Publishable key";
       if (el.sbOfflineBanner) {
         el.sbOfflineBanner.hidden = false;
-        if (el.sbOfflineMsg && window.AdminBackend.backendError) {
+        if (el.sbOfflineMsg && window.AdminBackend?.backendError) {
           el.sbOfflineMsg.textContent = `${window.AdminBackend.backendError} Click Connect & Sync Supabase above.`;
         }
       }
     }
     await refreshAll();
-    window.AdminBackend.subscribeUpdates(async () => {
-      await refreshAll();
-    });
+    if (window.AdminBackend?.subscribeUpdates) {
+      window.AdminBackend.subscribeUpdates(async () => {
+        await refreshAll();
+      });
+    }
 
     // Guaranteed real-time auto-sync every 2 seconds without manual refresh
     setInterval(refreshAll, 2000);

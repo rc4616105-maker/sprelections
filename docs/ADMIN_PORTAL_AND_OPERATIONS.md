@@ -25,7 +25,7 @@ Access: [`http://127.0.0.1:5500/Houses/admin/index.html`](http://127.0.0.1:5500/
      - **Ballot Confidentiality Enforced:** Replaced the previous `Previous Choice` column with `Cancelled Status` showing:
        `<span class="badge badge-warning">Cancelled (4 Posts)</span>` and `Ballot Choice Confidential`.
        Candidate choices are never displayed!
-     - Displays **Cancelled By** (e.g. `👤 rc4616105@gmail.com`), timestamp, voter photo, and **Pending Re-vote** status.
+     - Displays **Cancelled By** (e.g. `👤 admin@school.edu`), timestamp, voter photo, and **Pending Re-vote** status.
      - Includes a direct link to **Manage in Edit Votes →**.
 3. **House Turnout Cards:**
    - Six individual House cards + Central School Cabinet card with progress meters and vote counters.

@@ -1,4 +1,0 @@
-function renderDrilldown(snap) {
-    populateBoothFilter(snap);
-
-    

@@ -10,8 +10,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="./styles.css?v=985" />
-  <script src="./admin-auth.js?v=6"></script>
+  <link rel="stylesheet" href="./styles.css?v=20261123_BHEESHMA_168_FIX" />
+  <script src="./admin-auth.js?v=20261123_BHEESHMA_168_FIX"></script>
 </head>
 
 <body>
@@ -26,14 +26,21 @@
           manage cancellations.</p>
       </div>
       <div class="topbar-actions">
+        <a href="./live-voters/index.html" class="btn btn-primary" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-color: #047857; text-decoration: none; font-weight: 800; display: inline-flex; align-items: center; gap: 0.35rem;" title="View Live Incoming Voter Activity Stream">⚡ Live Voters</a>
         <a href="../graphs.html?from=admin" class="btn btn-secondary">Graphs</a>
         <button type="button" id="print-results-btn" class="btn btn-secondary"
           title="Export complete election results and all candidates votes to Excel (.xlsx)">🖨️ Print Results</button>
-        <button type="button" id="seed-supabase-btn" class="btn btn-secondary">Sync Roster to Supabase</button>
-        <a href="../../Result declaration/index.html" class="btn btn-primary" id="result-declaration-btn"
-          title="Launch Interactive Result Declaration Ceremony (Spin Wheel & Scratch Cards)"
-          style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;">🎉 Result
-          Declaration</a>
+        <button type="button" id="open-candidates-btn" class="btn btn-secondary"
+          title="View all 140 contesting candidates across Houses and School Cabinet">👥 Contesting Candidates</button>
+        <button type="button" id="seed-supabase-btn" class="btn btn-secondary">Sync Register to Supabase</button>
+        <div class="wheel-btn-group" style="display: inline-flex; align-items: center; gap: 0.45rem; flex-shrink: 0;">
+          <a href="../../Result declaration/index.html?mode=houses" class="btn btn-primary" id="result-declaration-btn"
+            title="Launch House Results Wheel (6 Houses)"
+            style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem;">🎉 Houses Wheel</a>
+          <a href="../../Result declaration/index.html?mode=cabinet" class="btn btn-primary" id="cabinet-declaration-btn"
+            title="Launch School Cabinet Results Wheel (5 Posts)"
+            style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem; background: #059669; border-color: #047857;">⭐ Cabinet Wheel</a>
+        </div>
       </div>
     </header>
 
@@ -154,7 +161,7 @@
   <!-- Supabase Connection Modal (only shown when Netlify Env / supabase.local.json not configured) -->
   <div id="supabase-modal" class="modal-overlay" hidden>
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="supabase-modal-title">
-      <h3 id="supabase-modal-title" class="modal-title">Connect Supabase &amp; Sync Roster</h3>
+      <h3 id="supabase-modal-title" class="modal-title">Connect Supabase &amp; Sync Register</h3>
       <p class="modal-desc">
         Run <code>supabase/schema.sql</code> in Supabase SQL Editor first, then paste your project&apos;s
         <strong>Publishable (anon) key</strong> below (never paste an <code>sb_secret_</code> key in browser JS; on
@@ -174,12 +181,14 @@
     </div>
   </div>
 
-  <script defer src="./data.js?v=1010"></script>
-  <script defer src="./teachers.js?v=1010"></script>
-  <script defer src="./supabase-config.js?v=1010"></script>
+  <script defer src="./data.js?v=20261123_BHEESHMA_168_FIX"></script>
+  <script defer src="./teachers.js?v=20261123_BHEESHMA_168_FIX"></script>
+  <script defer src="../assets/all-candidates.js?v=20261123_BHEESHMA_168_FIX"></script>
+  <script defer src="../assets/candidates-modal.js?v=20261123_BHEESHMA_168_FIX"></script>
+  <script defer src="./supabase-config.js?v=20261123_BHEESHMA_168_FIX"></script>
   <script defer src="./vendor/xlsx.full.min.js"></script>
-  <script defer src="./export-excel.js?v=1010"></script>
-  <script defer src="./app.js?v=1010"></script>
+  <script defer src="./export-excel.js?v=20261123_BHEESHMA_168_FIX"></script>
+  <script defer src="./app.js?v=20261123_BHEESHMA_168_FIX"></script>
 </body>
 
 </html>

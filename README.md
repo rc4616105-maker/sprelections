@@ -12,7 +12,15 @@ A decentralized, production-grade electronic voting and election administration 
 
 ## 🏛️ System Overview
 
-The **School House Elections 2026** platform serves an electorate of **966 voters** (879 students across 6 Houses + 87 institutional teaching faculty) across **7 dedicated polling kiosks**:
+The **School House Elections 2026** platform serves an electorate of **1,173 registered voters** (1,085 students across 6 House Constituencies + 88 institutional teaching and administrative faculty members) across dedicated polling kiosks:
+
+- **Bheeshma House** &rarr; **Gangotri Constituency** (168 voters)
+- **Gurudrona House** &rarr; **Trimbakeshwar Constituency** (181 voters)
+- **Hanuman House** &rarr; **Yamunotri Constituency** (181 voters)
+- **Karna House** &rarr; **Manasarovar Constituency** (180 voters)
+- **Vasistha House** &rarr; **Mahabaleshwar Constituency** (184 voters)
+- **Vishwamithra House** &rarr; **Amarkantak Constituency** (191 voters)
+- **Teacher Universal Polling Booth** &rarr; 88 Faculty members voting across all 29 roles (5 Central Cabinet + 24 House Captains/Vice Captains)
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐

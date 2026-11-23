@@ -4,7 +4,7 @@
   const TEACHERS_ROSTER = [
   {
     "sl": 1,
-    "admissionNo": "6001",
+    "admissionNo": "SPRCOR872",
     "fullName": "MARUTHI KOMIREDDY",
     "gender": "MALE",
     "subject": "CORRESPONDENT",
@@ -18,7 +18,7 @@
   },
   {
     "sl": 2,
-    "admissionNo": "6002",
+    "admissionNo": "SPRAO689",
     "fullName": "AMMANNAGARI BHASKAR",
     "gender": "MALE",
     "subject": "AO",
@@ -32,7 +32,7 @@
   },
   {
     "sl": 3,
-    "admissionNo": "6003",
+    "admissionNo": "SPRTEL770",
     "fullName": "YELLESHAM GOLLA",
     "gender": "MALE",
     "subject": "TELUGU",
@@ -46,7 +46,7 @@
   },
   {
     "sl": 4,
-    "admissionNo": "6004",
+    "admissionNo": "SPRTEL605",
     "fullName": "VADLA RAVINDER",
     "gender": "MALE",
     "subject": "TELUGU",
@@ -60,7 +60,7 @@
   },
   {
     "sl": 5,
-    "admissionNo": "6005",
+    "admissionNo": "SPRTEL263",
     "fullName": "KARKA MANJULA",
     "gender": "FEMALE",
     "subject": "TELUGU",
@@ -74,7 +74,7 @@
   },
   {
     "sl": 6,
-    "admissionNo": "6006",
+    "admissionNo": "SPRTEL277",
     "fullName": "YERRAM SARITHA",
     "gender": "FEMALE",
     "subject": "TELUGU",
@@ -88,7 +88,7 @@
   },
   {
     "sl": 7,
-    "admissionNo": "6007",
+    "admissionNo": "SPRTEL932",
     "fullName": "SHIRISHA Y",
     "gender": "FEMALE",
     "subject": "TELUGU",
@@ -102,7 +102,7 @@
   },
   {
     "sl": 8,
-    "admissionNo": "6008",
+    "admissionNo": "SPRTEL673",
     "fullName": "GOURISHETTY LATHA",
     "gender": "FEMALE",
     "subject": "TELUGU",
@@ -116,7 +116,7 @@
   },
   {
     "sl": 9,
-    "admissionNo": "6009",
+    "admissionNo": "SPRTEL190",
     "fullName": "LEELA ENUGUPALLY",
     "gender": "FEMALE",
     "subject": "TELUGU",
@@ -130,7 +130,7 @@
   },
   {
     "sl": 10,
-    "admissionNo": "6010",
+    "admissionNo": "SPRTEL652",
     "fullName": "ODDEM ANITHA",
     "gender": "FEMALE",
     "subject": "TELUGU",
@@ -144,7 +144,7 @@
   },
   {
     "sl": 11,
-    "admissionNo": "6011",
+    "admissionNo": "SPRHIN973",
     "fullName": "BANOTH SHANKAR",
     "gender": "MALE",
     "subject": "HINDI",
@@ -158,7 +158,7 @@
   },
   {
     "sl": 12,
-    "admissionNo": "6012",
+    "admissionNo": "SPRHIN486",
     "fullName": "SANTHOSH KUMAR ALLAKONDA",
     "gender": "MALE",
     "subject": "HINDI",
@@ -172,7 +172,7 @@
   },
   {
     "sl": 13,
-    "admissionNo": "6013",
+    "admissionNo": "SPRHIN497",
     "fullName": "ARIFA BEGUM",
     "gender": "FEMALE",
     "subject": "HINDI",
@@ -186,7 +186,7 @@
   },
   {
     "sl": 14,
-    "admissionNo": "6014",
+    "admissionNo": "SPRHIN853",
     "fullName": "SRILATHA",
     "gender": "FEMALE",
     "subject": "HINDI",
@@ -200,7 +200,7 @@
   },
   {
     "sl": 15,
-    "admissionNo": "6015",
+    "admissionNo": "SPRHIN290",
     "fullName": "SHYAMALA",
     "gender": "FEMALE",
     "subject": "HINDI",
@@ -214,7 +214,7 @@
   },
   {
     "sl": 16,
-    "admissionNo": "6016",
+    "admissionNo": "SPRHIN130",
     "fullName": "N.KAVITHA",
     "gender": "FEMALE",
     "subject": "HINDI",
@@ -228,7 +228,7 @@
   },
   {
     "sl": 17,
-    "admissionNo": "6017",
+    "admissionNo": "SPRENG770",
     "fullName": "VADLA HARI PRASAD",
     "gender": "MALE",
     "subject": "ENGLISH",
@@ -242,7 +242,7 @@
   },
   {
     "sl": 18,
-    "admissionNo": "6018",
+    "admissionNo": "SPRENG175",
     "fullName": "CHAKALI SANJEEVULU",
     "gender": "MALE",
     "subject": "ENGLISH",
@@ -256,7 +256,7 @@
   },
   {
     "sl": 19,
-    "admissionNo": "6019",
+    "admissionNo": "SPRENG203",
     "fullName": "JUSTIN",
     "gender": "MALE",
     "subject": "ENGLISH",
@@ -270,7 +270,7 @@
   },
   {
     "sl": 20,
-    "admissionNo": "6020",
+    "admissionNo": "SPRENG534",
     "fullName": "ANIL",
     "gender": "MALE",
     "subject": "ENGLISH",
@@ -284,7 +284,7 @@
   },
   {
     "sl": 21,
-    "admissionNo": "6021",
+    "admissionNo": "SPRENG768",
     "fullName": "SRIVANI",
     "gender": "FEMALE",
     "subject": "ENGLISH",
@@ -298,7 +298,7 @@
   },
   {
     "sl": 22,
-    "admissionNo": "6022",
+    "admissionNo": "SPRENG378",
     "fullName": "SREE VIDHYA DEVI PITLA",
     "gender": "FEMALE",
     "subject": "ENGLISH",
@@ -312,7 +312,7 @@
   },
   {
     "sl": 23,
-    "admissionNo": "6023",
+    "admissionNo": "SPRENG844",
     "fullName": "SRI DIVYA",
     "gender": "FEMALE",
     "subject": "ENGLISH",
@@ -326,7 +326,7 @@
   },
   {
     "sl": 24,
-    "admissionNo": "6024",
+    "admissionNo": "SPRENG213",
     "fullName": "NANDALA RASHMITHA",
     "gender": "FEMALE",
     "subject": "ENGLISH",
@@ -340,7 +340,7 @@
   },
   {
     "sl": 25,
-    "admissionNo": "6025",
+    "admissionNo": "SPRMAT790",
     "fullName": "THOUTI NARESH",
     "gender": "MALE",
     "subject": "MATHS",
@@ -354,7 +354,7 @@
   },
   {
     "sl": 26,
-    "admissionNo": "6026",
+    "admissionNo": "SPRMAT923",
     "fullName": "KUNUKU SRI RAMA CHANDRA",
     "gender": "MALE",
     "subject": "MATHS",
@@ -368,7 +368,7 @@
   },
   {
     "sl": 27,
-    "admissionNo": "6027",
+    "admissionNo": "SPRMAT154",
     "fullName": "CH SREENIVAS",
     "gender": "MALE",
     "subject": "MATHS",
@@ -382,7 +382,7 @@
   },
   {
     "sl": 28,
-    "admissionNo": "6028",
+    "admissionNo": "SPRMAT388",
     "fullName": "VANGALA SHANTHI BHUSHAN",
     "gender": "MALE",
     "subject": "MATHS",
@@ -396,7 +396,7 @@
   },
   {
     "sl": 29,
-    "admissionNo": "6029",
+    "admissionNo": "SPRMAT450",
     "fullName": "AJAY T",
     "gender": "MALE",
     "subject": "MATHS",
@@ -410,7 +410,7 @@
   },
   {
     "sl": 30,
-    "admissionNo": "6030",
+    "admissionNo": "SPRMAT577",
     "fullName": "Y. NARESH",
     "gender": "MALE",
     "subject": "MATHS",
@@ -424,7 +424,7 @@
   },
   {
     "sl": 31,
-    "admissionNo": "6031",
+    "admissionNo": "SPRMAT776",
     "fullName": "VAIDYA SRAVANTHI",
     "gender": "FEMALE",
     "subject": "MATHS",
@@ -438,7 +438,7 @@
   },
   {
     "sl": 32,
-    "admissionNo": "6032",
+    "admissionNo": "SPRMAT434",
     "fullName": "MODUSU KAVITHA",
     "gender": "FEMALE",
     "subject": "MATHS",
@@ -452,7 +452,7 @@
   },
   {
     "sl": 33,
-    "admissionNo": "6033",
+    "admissionNo": "SPRMAT146",
     "fullName": "NIMMALA TEJA",
     "gender": "FEMALE",
     "subject": "MATHS",
@@ -466,7 +466,7 @@
   },
   {
     "sl": 34,
-    "admissionNo": "6034",
+    "admissionNo": "SPRMAT162",
     "fullName": "VIJAYA LAXMI",
     "gender": "FEMALE",
     "subject": "MATHS",
@@ -480,7 +480,7 @@
   },
   {
     "sl": 35,
-    "admissionNo": "6035",
+    "admissionNo": "SPRMAT876",
     "fullName": "SHILPA T",
     "gender": "FEMALE",
     "subject": "MATHS",
@@ -494,7 +494,7 @@
   },
   {
     "sl": 36,
-    "admissionNo": "6036",
+    "admissionNo": "SPRMAT378",
     "fullName": "BASHETTY ANUSHA",
     "gender": "FEMALE",
     "subject": "MATHS",
@@ -508,7 +508,7 @@
   },
   {
     "sl": 37,
-    "admissionNo": "6037",
+    "admissionNo": "SPRMAT151",
     "fullName": "MADHEBONI SAPNA",
     "gender": "FEMALE",
     "subject": "MATHS",
@@ -522,7 +522,7 @@
   },
   {
     "sl": 38,
-    "admissionNo": "6038",
+    "admissionNo": "SPRMAT582",
     "fullName": "ALEKYA REDDY AKITI",
     "gender": "FEMALE",
     "subject": "MATHS",
@@ -536,7 +536,7 @@
   },
   {
     "sl": 39,
-    "admissionNo": "6039",
+    "admissionNo": "SPRMAT942",
     "fullName": "PASHAPU SRAVANTHI",
     "gender": "FEMALE",
     "subject": "MATHS",
@@ -550,7 +550,7 @@
   },
   {
     "sl": 40,
-    "admissionNo": "6040",
+    "admissionNo": "SPRMAT984",
     "fullName": "NITHISHA",
     "gender": "FEMALE",
     "subject": "MATHS",
@@ -564,7 +564,7 @@
   },
   {
     "sl": 41,
-    "admissionNo": "6041",
+    "admissionNo": "SPRPHY875",
     "fullName": "SOUMYARANJAN JENNA",
     "gender": "MALE",
     "subject": "PHYSICS",
@@ -578,7 +578,7 @@
   },
   {
     "sl": 42,
-    "admissionNo": "6042",
+    "admissionNo": "SPRPHY678",
     "fullName": "PRASHANTH",
     "gender": "MALE",
     "subject": "PHYSICS",
@@ -592,7 +592,7 @@
   },
   {
     "sl": 43,
-    "admissionNo": "6043",
+    "admissionNo": "SPRPHY340",
     "fullName": "VELPULA SRIKANTH",
     "gender": "MALE",
     "subject": "PHYSICS",
@@ -606,7 +606,7 @@
   },
   {
     "sl": 44,
-    "admissionNo": "6044",
+    "admissionNo": "SPRCHE300",
     "fullName": "NARSIMLU MARRI",
     "gender": "MALE",
     "subject": "CHEMISTRY",
@@ -620,7 +620,7 @@
   },
   {
     "sl": 45,
-    "admissionNo": "6045",
+    "admissionNo": "SPRCHE948",
     "fullName": "MANAS RANJAN",
     "gender": "MALE",
     "subject": "CHEMISTRY",
@@ -634,7 +634,7 @@
   },
   {
     "sl": 46,
-    "admissionNo": "6046",
+    "admissionNo": "SPRCHE843",
     "fullName": "APOORVA",
     "gender": "FEMALE",
     "subject": "CHEMISTRY",
@@ -648,7 +648,7 @@
   },
   {
     "sl": 47,
-    "admissionNo": "6047",
+    "admissionNo": "SPRBIO588",
     "fullName": "KUTHURI VIDHYA RANI",
     "gender": "FEMALE",
     "subject": "BIOLOGY",
@@ -662,7 +662,7 @@
   },
   {
     "sl": 48,
-    "admissionNo": "6048",
+    "admissionNo": "SPRBIO703",
     "fullName": "DOKOORI RAMESH",
     "gender": "MALE",
     "subject": "BIOLOGY",
@@ -676,7 +676,7 @@
   },
   {
     "sl": 49,
-    "admissionNo": "6049",
+    "admissionNo": "SPRBIO216",
     "fullName": "MADHURI",
     "gender": "FEMALE",
     "subject": "BIOLOGY",
@@ -690,7 +690,7 @@
   },
   {
     "sl": 50,
-    "admissionNo": "6050",
+    "admissionNo": "SPRBIO851",
     "fullName": "VANITHA",
     "gender": "FEMALE",
     "subject": "BIOLOGY",
@@ -704,7 +704,7 @@
   },
   {
     "sl": 51,
-    "admissionNo": "6051",
+    "admissionNo": "SPREVS752",
     "fullName": "NAGULAGANI RAMYA",
     "gender": "FEMALE",
     "subject": "EVS",
@@ -718,7 +718,7 @@
   },
   {
     "sl": 52,
-    "admissionNo": "6052",
+    "admissionNo": "SPREVS429",
     "fullName": "DAMMANNAGARI RAVALIKA",
     "gender": "FEMALE",
     "subject": "EVS",
@@ -732,7 +732,7 @@
   },
   {
     "sl": 53,
-    "admissionNo": "6053",
+    "admissionNo": "SPREVS918",
     "fullName": "POOJITHA",
     "gender": "FEMALE",
     "subject": "EVS",
@@ -746,7 +746,7 @@
   },
   {
     "sl": 54,
-    "admissionNo": "6054",
+    "admissionNo": "SPRSOC519",
     "fullName": "SHARADA B",
     "gender": "FEMALE",
     "subject": "SOCIAL",
@@ -760,7 +760,7 @@
   },
   {
     "sl": 55,
-    "admissionNo": "6055",
+    "admissionNo": "SPRSOC514",
     "fullName": "NARENDER",
     "gender": "MALE",
     "subject": "SOCIAL",
@@ -774,7 +774,7 @@
   },
   {
     "sl": 56,
-    "admissionNo": "6056",
+    "admissionNo": "SPRSOC631",
     "fullName": "DOMALA KISHAN",
     "gender": "MALE",
     "subject": "SOCIAL",
@@ -788,7 +788,7 @@
   },
   {
     "sl": 57,
-    "admissionNo": "6057",
+    "admissionNo": "SPRSOC478",
     "fullName": "PARNANDHI SUPRAJA",
     "gender": "FEMALE",
     "subject": "SOCIAL",
@@ -802,7 +802,7 @@
   },
   {
     "sl": 58,
-    "admissionNo": "6058",
+    "admissionNo": "SPRSOC696",
     "fullName": "KOTHAKONDA SUNITHA",
     "gender": "FEMALE",
     "subject": "SOCIAL",
@@ -816,7 +816,7 @@
   },
   {
     "sl": 59,
-    "admissionNo": "6059",
+    "admissionNo": "SPRSOC767",
     "fullName": "SRAVANTHI",
     "gender": "FEMALE",
     "subject": "SOCIAL",
@@ -830,7 +830,7 @@
   },
   {
     "sl": 60,
-    "admissionNo": "6060",
+    "admissionNo": "SPRPRE529",
     "fullName": "GAVVALAPALLY SANDHYA RANI",
     "gender": "FEMALE",
     "subject": "PRE PRIMARY",
@@ -844,7 +844,7 @@
   },
   {
     "sl": 61,
-    "admissionNo": "6061",
+    "admissionNo": "SPRPRE502",
     "fullName": "BANDAMIDHI SWATHI",
     "gender": "FEMALE",
     "subject": "PRE PRIMARY",
@@ -858,7 +858,7 @@
   },
   {
     "sl": 62,
-    "admissionNo": "6062",
+    "admissionNo": "SPRPRE841",
     "fullName": "SOWMYA DANDAVATHI",
     "gender": "FEMALE",
     "subject": "PRE PRIMARY",
@@ -872,7 +872,7 @@
   },
   {
     "sl": 63,
-    "admissionNo": "6063",
+    "admissionNo": "SPRPRE148",
     "fullName": "JANGITI SWAPNA",
     "gender": "FEMALE",
     "subject": "PRE PRIMARY",
@@ -886,7 +886,7 @@
   },
   {
     "sl": 64,
-    "admissionNo": "6064",
+    "admissionNo": "SPRPRE650",
     "fullName": "KAIRAMKONDA ANUSHA",
     "gender": "FEMALE",
     "subject": "PRE PRIMARY",
@@ -900,7 +900,7 @@
   },
   {
     "sl": 65,
-    "admissionNo": "6065",
+    "admissionNo": "SPRPRE624",
     "fullName": "VISHWANATHA BHAVANI",
     "gender": "FEMALE",
     "subject": "PRE PRIMARY",
@@ -914,7 +914,7 @@
   },
   {
     "sl": 66,
-    "admissionNo": "6066",
+    "admissionNo": "SPRPRE948",
     "fullName": "KAMUNI RADHA",
     "gender": "FEMALE",
     "subject": "PRE PRIMARY",
@@ -928,7 +928,7 @@
   },
   {
     "sl": 67,
-    "admissionNo": "6067",
+    "admissionNo": "SPRPRE754",
     "fullName": "JAYALAXMI",
     "gender": "FEMALE",
     "subject": "PRE PRIMARY",
@@ -942,7 +942,7 @@
   },
   {
     "sl": 68,
-    "admissionNo": "6068",
+    "admissionNo": "SPRPET630",
     "fullName": "AMBEER PRAVEEN RAO",
     "gender": "MALE",
     "subject": "PET",
@@ -956,7 +956,7 @@
   },
   {
     "sl": 69,
-    "admissionNo": "6069",
+    "admissionNo": "SPRPET369",
     "fullName": "D NARENDAR",
     "gender": "MALE",
     "subject": "PET",
@@ -970,7 +970,7 @@
   },
   {
     "sl": 70,
-    "admissionNo": "6070",
+    "admissionNo": "SPRPET416",
     "fullName": "GUNDREDDY HARSHA VARDHAN REDDY",
     "gender": "MALE",
     "subject": "PET",
@@ -984,7 +984,7 @@
   },
   {
     "sl": 71,
-    "admissionNo": "6071",
+    "admissionNo": "SPRPET406",
     "fullName": "HARISH",
     "gender": "MALE",
     "subject": "PET",
@@ -998,7 +998,7 @@
   },
   {
     "sl": 72,
-    "admissionNo": "6072",
+    "admissionNo": "SPRPET229",
     "fullName": "ARE NAVITHA",
     "gender": "FEMALE",
     "subject": "PET",
@@ -1012,7 +1012,7 @@
   },
   {
     "sl": 73,
-    "admissionNo": "6073",
+    "admissionNo": "SPRPET156",
     "fullName": "SUNITHA",
     "gender": "FEMALE",
     "subject": "PET",
@@ -1026,7 +1026,7 @@
   },
   {
     "sl": 74,
-    "admissionNo": "6074",
+    "admissionNo": "SPRYOG437",
     "fullName": "BHARATH",
     "gender": "MALE",
     "subject": "YOGA",
@@ -1040,7 +1040,7 @@
   },
   {
     "sl": 75,
-    "admissionNo": "6075",
+    "admissionNo": "SPRDAN790",
     "fullName": "MADHU",
     "gender": "MALE",
     "subject": "DANCE",
@@ -1054,7 +1054,7 @@
   },
   {
     "sl": 76,
-    "admissionNo": "6076",
+    "admissionNo": "SPROFF504",
     "fullName": "JALLADAR SIR",
     "gender": "MALE",
     "subject": "OFFOCE",
@@ -1068,7 +1068,7 @@
   },
   {
     "sl": 77,
-    "admissionNo": "6077",
+    "admissionNo": "SPROFF606",
     "fullName": "ANITHA OFFICE",
     "gender": "FEMALE",
     "subject": "OFFOCE",
@@ -1082,7 +1082,7 @@
   },
   {
     "sl": 78,
-    "admissionNo": "6078",
+    "admissionNo": "SPROFF788",
     "fullName": "MADHU SIR",
     "gender": "MALE",
     "subject": "OFFOCE",
@@ -1096,7 +1096,7 @@
   },
   {
     "sl": 79,
-    "admissionNo": "6079",
+    "admissionNo": "SPRCOM820",
     "fullName": "SRIKANTH K",
     "gender": "MALE",
     "subject": "COMPUTER",
@@ -1110,7 +1110,7 @@
   },
   {
     "sl": 80,
-    "admissionNo": "6080",
+    "admissionNo": "SPRCOM821",
     "fullName": "SRIKANTH Y",
     "gender": "MALE",
     "subject": "COMPUTER",
@@ -1124,7 +1124,7 @@
   },
   {
     "sl": 81,
-    "admissionNo": "6081",
+    "admissionNo": "SPRCOM327",
     "fullName": "KRISHNA G",
     "gender": "MALE",
     "subject": "COMPUTER",
@@ -1138,7 +1138,7 @@
   },
   {
     "sl": 82,
-    "admissionNo": "6082",
+    "admissionNo": "SPRATL374",
     "fullName": "RAVI CHANDRA",
     "gender": "MALE",
     "subject": "ATL LAB",
@@ -1152,7 +1152,7 @@
   },
   {
     "sl": 83,
-    "admissionNo": "6083",
+    "admissionNo": "SPRLIB115",
     "fullName": "NIKITHA",
     "gender": "FEMALE",
     "subject": "LIBRARY",
@@ -1166,7 +1166,7 @@
   },
   {
     "sl": 84,
-    "admissionNo": "6084",
+    "admissionNo": "SPRPET918",
     "fullName": "Nagaraju",
     "gender": "MALE",
     "subject": "P.E.T",
@@ -1180,7 +1180,7 @@
   },
   {
     "sl": 85,
-    "admissionNo": "6085",
+    "admissionNo": "SPRART532",
     "fullName": "H.Manisha",
     "gender": "FEMALE",
     "subject": "ART&CRAFT",
@@ -1194,7 +1194,7 @@
   },
   {
     "sl": 86,
-    "admissionNo": "6086",
+    "admissionNo": "SPRPET994",
     "fullName": "MEENA",
     "gender": "FEMALE",
     "subject": "PET",
@@ -1208,7 +1208,7 @@
   },
   {
     "sl": 87,
-    "admissionNo": "6087",
+    "admissionNo": "SPRART579",
     "fullName": "SAI LATHA",
     "gender": "FEMALE",
     "subject": "ART&CRAFT",
@@ -1217,6 +1217,20 @@
     "houseName": "All Houses & Cabinet",
     "className": "Staff",
     "section": "Faculty",
+    "isStaff": true,
+    "isActive": true
+  },
+  {
+    "sl": 88,
+    "admissionNo": "SPRCOM748",
+    "fullName": "R. ANITHA",
+    "gender": "FEMALE",
+    "subject": "COMPUTER",
+    "contact": "9848012345",
+    "houseCode": "ALL",
+    "houseName": "All Houses & Cabinet",
+    "className": "Staff",
+    "section": "COMPUTER",
     "isStaff": true,
     "isActive": true
   }

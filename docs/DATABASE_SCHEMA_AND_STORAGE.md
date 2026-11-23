@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS public.audit_logs (
 - **Purpose:** Stores the biometric verification photo captured at the moment of voting.
 - **Path Pattern:**  
   `{house_slug}/{admission_no}/{timestamp}.jpg`  
-  *Example:* `hanuman/6082/1731776523910.jpg`
+  *Example:* `hanuman/6082/1700000000.jpg`
 - **MIME Type:** `image/jpeg`
 - **Upload Method:** Base64 Data URL converted to a binary `Blob` uploaded with header `x-upsert: true`.
 - **Retrieval:** Kiosks and the admin dashboard request a 1-hour signed URL via:
@@ -134,8 +134,8 @@ To protect against committing API keys into source control, the frontend reads c
    The key `election_spr_2026_sb_cfg_v1` stores:
    ```json
    {
-     "url": "https://rziptxcknaeuorekxwrl.supabase.co",
-     "anonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+     "url": "https://<your-project-id>.supabase.co",
+     "anonKey": "<your-publishable-anon-key>"
    }
    ```
    *Any admin can paste their Supabase URL and Publishable anon key into the Admin Dashboard login card, which persists across all tabs on that browser origin.*
