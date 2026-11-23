@@ -889,21 +889,23 @@
     }
   });
 
-  // Two-Stage Electoral Lifecycle: Freeze House Polling & Tally 24 House Winners
+  // Two-Stage Electoral Lifecycle: Pause/Resume House Polling & Tally 24 House Winners
   function updateFreezeButtonState() {
     if (!el.freezeHousePollingBtn) return;
     const isClosed = localStorage.getItem("ELECTION_HOUSE_POLLING_CLOSED") === "true";
     if (isClosed) {
       if (el.freezeBtnIcon) el.freezeBtnIcon.textContent = "▶️";
-      if (el.freezeBtnText) el.freezeBtnText.textContent = "Re-open House Polling";
-      el.freezeHousePollingBtn.style.background = "#fef3c7";
-      el.freezeHousePollingBtn.style.color = "#92400e";
-      el.freezeHousePollingBtn.style.borderColor = "#f59e0b";
+      if (el.freezeBtnText) el.freezeBtnText.textContent = "Resume House Polling";
+      el.freezeHousePollingBtn.title = "Click to resume house voting for students";
+      el.freezeHousePollingBtn.style.background = "#dcfce7";
+      el.freezeHousePollingBtn.style.color = "#15803d";
+      el.freezeHousePollingBtn.style.borderColor = "#22c55e";
       el.freezeHousePollingBtn.style.fontWeight = "700";
       if (el.houseClosedBanner) el.houseClosedBanner.hidden = false;
     } else {
       if (el.freezeBtnIcon) el.freezeBtnIcon.textContent = "⏸️";
-      if (el.freezeBtnText) el.freezeBtnText.textContent = "Close House Polling & Tally Winners";
+      if (el.freezeBtnText) el.freezeBtnText.textContent = "Pause House Polling & Tally";
+      el.freezeHousePollingBtn.title = "Pause house voting kiosks, tally 24 winners, and unlock School Cabinet";
       el.freezeHousePollingBtn.style.background = "";
       el.freezeHousePollingBtn.style.color = "";
       el.freezeHousePollingBtn.style.borderColor = "";
@@ -1027,7 +1029,7 @@
       const isCurrentlyClosed = localStorage.getItem("ELECTION_HOUSE_POLLING_CLOSED") === "true";
       if (!isCurrentlyClosed) {
         const confirmed = confirm(
-          "⚠️ CONCLUDE & FREEZE HOUSE POLLING?\n\nThis will:\n1. Lock the 6 House Voting Kiosks (preventing any more student votes).\n2. Automatically tally the votes across all houses.\n3. Lock the 24 elected House Captains & Vice Captains.\n4. Authorize the 24 winners to vote inside the School Cabinet booth.\n5. Load the winners into the Scratch Card Ceremony.\n\nProceed to close house polling?"
+          "⏸️ PAUSE HOUSE POLLING & TALLY WINNERS?\n\nThis will:\n1. Pause the 6 student house voting booths.\n2. Automatically tally the votes across all houses.\n3. Lock the 24 elected House Captains & Vice Captains.\n4. Authorize the 24 winners to vote inside the School Cabinet booth.\n5. Load the winners into the Scratch Card Ceremony.\n\n(You can resume house polling anytime by clicking 'Resume House Polling'.)\n\nProceed to pause house polling?"
         );
         if (!confirmed) return;
 
@@ -1036,16 +1038,16 @@
           const winners = await tallyAndLockHouseWinners();
           updateFreezeButtonState();
           alert(
-            `🎉 House Polling Concluded!\n\n• Successfully tallied and locked ${winners.length} House Captains & Vice Captains.\n• The 6 House Booths are now closed.\n• The 24 winners are now authorized to vote in the School Cabinet booth!\n• The Scratch Card & Houses Wheel ceremony is ready to reveal them.`
+            `⏸️ House Polling Paused!\n\n• Successfully tallied and locked ${winners.length} House Captains & Vice Captains.\n• The 6 House Booths are now paused.\n• The 24 winners are now authorized to vote in the School Cabinet booth!\n• The Scratch Card & Houses Wheel ceremony is ready to reveal them.\n\n(The button has now switched to '▶️ Resume House Polling' if you ever need to resume).`
           );
         } catch (err) {
-          alert(`Error concluding house polling: ${err.message}`);
+          alert(`Error pausing house polling: ${err.message}`);
         } finally {
           el.freezeHousePollingBtn.disabled = false;
         }
       } else {
         const confirmed = confirm(
-          "Do you want to RE-OPEN House Polling for student kiosks?\n\nThis will allow students to resume voting in the 6 House Booths."
+          "▶️ RESUME HOUSE POLLING?\n\nThis will re-open the 6 House Booths and allow students to resume voting.\n\nProceed to resume?"
         );
         if (!confirmed) return;
 
@@ -1057,7 +1059,7 @@
           } catch (_) {}
         }
         updateFreezeButtonState();
-        alert("▶️ House Polling has been re-opened.");
+        alert("▶️ House Polling Resumed! Students can now vote in all 6 House Booths.");
       }
     });
   }
