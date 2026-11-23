@@ -33,6 +33,9 @@
         <button type="button" id="open-candidates-btn" class="btn btn-secondary"
           title="View all 140 contesting candidates across Houses and School Cabinet">👥 Contesting Candidates</button>
         <button type="button" id="seed-supabase-btn" class="btn btn-secondary">Sync Register to Supabase</button>
+        <button type="button" id="freeze-house-polling-btn" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.35rem;" title="Conclude House polling, freeze house kiosks, tally 24 winners, and unlock School Cabinet">
+          <span id="freeze-btn-icon">⏸️</span> <span id="freeze-btn-text">Close House Polling &amp; Tally Winners</span>
+        </button>
         <div class="wheel-btn-group" style="display: inline-flex; align-items: center; gap: 0.45rem; flex-shrink: 0;">
           <a href="../../Result declaration/index.html?mode=houses" class="btn btn-primary" id="result-declaration-btn"
             title="Launch House Results Wheel (6 Houses)"
@@ -48,6 +51,18 @@
       <div>
         <strong>Supabase Not Connected</strong> — <span id="sb-offline-msg">Votes are saved &amp; loaded strictly from
           Supabase. Click <strong>Connect &amp; Sync Supabase</strong> to connect your project.</span>
+      </div>
+    </div>
+
+    <div id="house-closed-banner" class="sb-offline-banner" style="background: #fef3c7; color: #92400e; border: 1px solid #f59e0b;" role="alert" hidden>
+      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; flex-wrap: wrap; gap: 0.5rem;">
+        <div>
+          <strong>⏸️ House Polling is Concluded</strong> — The 6 House Booths are closed. <strong>24 House Winners</strong> are tallied and authorized to vote in the <strong>School Cabinet</strong>.
+        </div>
+        <div style="display: flex; gap: 0.45rem;">
+          <a href="../../Result declaration/index.html?mode=houses" class="btn btn-sm btn-primary" style="text-decoration: none; padding: 0.3rem 0.65rem; font-size: 0.82rem; background: #92400e; border-color: #78350f;">Launch Scratch Reveal 🎉</a>
+          <a href="../central/index.html" target="_blank" class="btn btn-sm btn-secondary" style="text-decoration: none; padding: 0.3rem 0.65rem; font-size: 0.82rem; background: #fff;">Open Cabinet Booth 🗳️</a>
+        </div>
       </div>
     </div>
 

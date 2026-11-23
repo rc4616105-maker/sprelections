@@ -18,6 +18,10 @@
 
   const el = {
     seedSupabaseBtn: document.getElementById("seed-supabase-btn"),
+    freezeHousePollingBtn: document.getElementById("freeze-house-polling-btn"),
+    freezeBtnIcon: document.getElementById("freeze-btn-icon"),
+    freezeBtnText: document.getElementById("freeze-btn-text"),
+    houseClosedBanner: document.getElementById("house-closed-banner"),
     refreshBtn: document.getElementById("refresh-btn"),
     printResultsBtn: document.getElementById("print-results-btn"),
     sbOfflineBanner: document.getElementById("sb-offline-banner"),
@@ -767,6 +771,17 @@
     try {
       latestSnapshot = await window.AdminBackend.getSnapshot();
       renderOverview(latestSnapshot);
+    updateFreezeButtonState();
+    if (typeof BroadcastChannel !== "undefined") {
+      try {
+        const chan = new BroadcastChannel("election_spr_2026_sync");
+        chan.addEventListener("message", (e) => {
+          if (e.data && (e.data.type === "house_polling_closed" || e.data.type === "house_polling_opened")) {
+            updateFreezeButtonState();
+          }
+        });
+      } catch (_) {}
+    }
     } catch (err) {
       console.warn("Unable to load election snapshot:", err);
       const sub = document.querySelector(".page-sub");
@@ -873,6 +888,179 @@
       el.seedSupabaseBtn.disabled = false;
     }
   });
+
+  // Two-Stage Electoral Lifecycle: Freeze House Polling & Tally 24 House Winners
+  function updateFreezeButtonState() {
+    if (!el.freezeHousePollingBtn) return;
+    const isClosed = localStorage.getItem("ELECTION_HOUSE_POLLING_CLOSED") === "true";
+    if (isClosed) {
+      if (el.freezeBtnIcon) el.freezeBtnIcon.textContent = "▶️";
+      if (el.freezeBtnText) el.freezeBtnText.textContent = "Re-open House Polling";
+      el.freezeHousePollingBtn.style.background = "#fef3c7";
+      el.freezeHousePollingBtn.style.color = "#92400e";
+      el.freezeHousePollingBtn.style.borderColor = "#f59e0b";
+      el.freezeHousePollingBtn.style.fontWeight = "700";
+      if (el.houseClosedBanner) el.houseClosedBanner.hidden = false;
+    } else {
+      if (el.freezeBtnIcon) el.freezeBtnIcon.textContent = "⏸️";
+      if (el.freezeBtnText) el.freezeBtnText.textContent = "Close House Polling & Tally Winners";
+      el.freezeHousePollingBtn.style.background = "";
+      el.freezeHousePollingBtn.style.color = "";
+      el.freezeHousePollingBtn.style.borderColor = "";
+      el.freezeHousePollingBtn.style.fontWeight = "";
+      if (el.houseClosedBanner) el.houseClosedBanner.hidden = true;
+    }
+  }
+
+  async function tallyAndLockHouseWinners() {
+    const { houses, positions, candidates } = window.ADMIN_DATA;
+    const houseList = houses.filter((h) => h.code !== "CENTRAL");
+    const roleList = positions.filter((p) => p.id !== "CENTRAL" && !p.id.startsWith("HEAD_") && p.id !== "SPORTS_CAPTAIN");
+
+    let ballots = [];
+    try {
+      const snap = await window.AdminBackend.getSnapshot();
+      ballots = snap.ballots || [];
+    } catch (_) {}
+
+    const acceptedBallots = (ballots || []).filter((b) => b.status === "accepted");
+    const twentyFourWinners = [];
+    const customTemplateHouses = [];
+
+    houseList.forEach((house) => {
+      const houseCodeUpper = String(house.code).toUpperCase().trim();
+      const houseBallots = acceptedBallots.filter(
+        (b) => String(b.house_code || "").toUpperCase().trim() === houseCodeUpper
+      );
+      const houseCandidates = candidates.filter(
+        (c) => String(c.houseCode || "").toUpperCase().trim() === houseCodeUpper
+      );
+
+      const houseCustomCandidates = {};
+
+      roleList.forEach((roleDef) => {
+        const roleCands = houseCandidates.filter(
+          (c) => c.positionId === roleDef.id || c.positionId === roleDef.code
+        );
+
+        const candsWithVotes = roleCands.map((c) => {
+          const votes = houseBallots.filter(
+            (b) => b.candidate_id === c.id || (b.candidate_name && c.fullName && b.candidate_name.trim().toLowerCase() === c.fullName.trim().toLowerCase())
+          ).length;
+          return {
+            ...c,
+            votes
+          };
+        });
+
+        candsWithVotes.sort((a, b) => b.votes - a.votes || (a.fullName || "").localeCompare(b.fullName || ""));
+
+        const winner = candsWithVotes[0] || roleCands[0];
+        if (winner) {
+          const winnerObj = {
+            admissionNo: winner.admissionNo || winner.id || "",
+            fullName: winner.fullName || "",
+            name: winner.fullName || "",
+            postTitle: roleDef.title || roleDef.name || "House Leader",
+            role: roleDef.title || roleDef.name || "House Leader",
+            roleKey: roleDef.id,
+            houseCode: house.code,
+            houseName: house.name,
+            house: house.name,
+            votes: winner.votes || 0,
+            className: winner.className || "10",
+            section: winner.section || "",
+            photoUrl: winner.photoUrl || winner.photoPath || "",
+            symbolName: winner.symbolObj?.name || "",
+            symbolIcon: winner.symbolObj?.icon || "⭐"
+          };
+          twentyFourWinners.push(winnerObj);
+
+          const roleKey = roleDef.id === "CAPTAIN_BOY" ? "boys_captain"
+            : roleDef.id === "CAPTAIN_GIRL" ? "girls_captain"
+            : roleDef.id === "VICE_CAPTAIN_BOY" ? "boys_vc"
+            : "girls_vc";
+
+          houseCustomCandidates[roleKey] = {
+            name: winner.fullName,
+            grade: winner.className ? `Grade ${winner.className}` : "Grade 10",
+            section: winner.section || "",
+            photo: winner.photoUrl || winner.photoPath || "",
+            symbol: winner.symbolObj?.name || "",
+            symbolIcon: winner.symbolObj?.icon || "⭐",
+            symbolImage: winner.symbolObj?.image || "",
+            votes: winner.votes || 0,
+            totalVotes: houseBallots.length,
+            percentage: houseBallots.length > 0 ? Math.round((winner.votes / houseBallots.length) * 100) : 0,
+            tagline: winner.tagline || ""
+          };
+        }
+      });
+
+      customTemplateHouses.push({
+        id: house.slug || house.code.toLowerCase(),
+        name: house.name,
+        fullName: `${house.name} House`,
+        color: house.accent,
+        colorDark: house.accentText,
+        theme: house.slug || house.code.toLowerCase(),
+        candidates: houseCustomCandidates
+      });
+    });
+
+    localStorage.setItem("ELECTED_HOUSE_WINNERS_2026", JSON.stringify(twentyFourWinners));
+    localStorage.setItem("SCHOOL_ELECTION_2026_CUSTOM_DATA_V5", JSON.stringify(customTemplateHouses));
+    localStorage.setItem("ELECTION_HOUSE_POLLING_CLOSED", "true");
+
+    if (typeof BroadcastChannel !== "undefined") {
+      try {
+        const chan = new BroadcastChannel("election_spr_2026_sync");
+        chan.postMessage({ type: "house_polling_closed", winnersCount: twentyFourWinners.length, at: Date.now() });
+      } catch (_) {}
+    }
+
+    return twentyFourWinners;
+  }
+
+  if (el.freezeHousePollingBtn) {
+    el.freezeHousePollingBtn.addEventListener("click", async () => {
+      const isCurrentlyClosed = localStorage.getItem("ELECTION_HOUSE_POLLING_CLOSED") === "true";
+      if (!isCurrentlyClosed) {
+        const confirmed = confirm(
+          "⚠️ CONCLUDE & FREEZE HOUSE POLLING?\n\nThis will:\n1. Lock the 6 House Voting Kiosks (preventing any more student votes).\n2. Automatically tally the votes across all houses.\n3. Lock the 24 elected House Captains & Vice Captains.\n4. Authorize the 24 winners to vote inside the School Cabinet booth.\n5. Load the winners into the Scratch Card Ceremony.\n\nProceed to close house polling?"
+        );
+        if (!confirmed) return;
+
+        try {
+          el.freezeHousePollingBtn.disabled = true;
+          const winners = await tallyAndLockHouseWinners();
+          updateFreezeButtonState();
+          alert(
+            `🎉 House Polling Concluded!\n\n• Successfully tallied and locked ${winners.length} House Captains & Vice Captains.\n• The 6 House Booths are now closed.\n• The 24 winners are now authorized to vote in the School Cabinet booth!\n• The Scratch Card & Houses Wheel ceremony is ready to reveal them.`
+          );
+        } catch (err) {
+          alert(`Error concluding house polling: ${err.message}`);
+        } finally {
+          el.freezeHousePollingBtn.disabled = false;
+        }
+      } else {
+        const confirmed = confirm(
+          "Do you want to RE-OPEN House Polling for student kiosks?\n\nThis will allow students to resume voting in the 6 House Booths."
+        );
+        if (!confirmed) return;
+
+        localStorage.removeItem("ELECTION_HOUSE_POLLING_CLOSED");
+        if (typeof BroadcastChannel !== "undefined") {
+          try {
+            const chan = new BroadcastChannel("election_spr_2026_sync");
+            chan.postMessage({ type: "house_polling_opened", at: Date.now() });
+          } catch (_) {}
+        }
+        updateFreezeButtonState();
+        alert("▶️ House Polling has been re-opened.");
+      }
+    });
+  }
 
   el.sbModalClose.addEventListener("click", () => {
     el.sbModal.hidden = true;
@@ -1006,6 +1194,17 @@
       auditLogs: [],
     };
     renderOverview(latestSnapshot);
+    updateFreezeButtonState();
+    if (typeof BroadcastChannel !== "undefined") {
+      try {
+        const chan = new BroadcastChannel("election_spr_2026_sync");
+        chan.addEventListener("message", (e) => {
+          if (e.data && (e.data.type === "house_polling_closed" || e.data.type === "house_polling_opened")) {
+            updateFreezeButtonState();
+          }
+        });
+      } catch (_) {}
+    }
 
     const mode = (window.AdminBackend && typeof window.AdminBackend.init === "function")
       ? await window.AdminBackend.init()

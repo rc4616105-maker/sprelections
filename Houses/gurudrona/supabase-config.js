@@ -341,6 +341,22 @@
       const numId = parseInt(cleanId, 10);
       const isTeacher = localMatch.isStaff === true || localMatch.houseCode === "ALL" || localMatch.isUniversal === true || (cleanId === "1C8492" || cleanId === "0000") || (!isNaN(numId) && numId >= 6001 && numId <= 6087);
 
+      // House Polling Concluded Check:
+      if (requestedHouseCode !== "CENTRAL" && !isTeacher) {
+        let isClosed = false;
+        try {
+          isClosed = localStorage.getItem("ELECTION_HOUSE_POLLING_CLOSED") === "true";
+        } catch (_) {}
+        if (isClosed && cleanId !== "0000" && cleanId !== "1C8492") {
+          return {
+            ok: false,
+            code: "HOUSE_POLLING_CLOSED",
+            title: "House Polling Concluded",
+            message: "Polling for House Elections has concluded. The Election Commission is currently tallying results for the Result Declaration Ceremony.",
+          };
+        }
+      }
+
       // School Cabinet Polling Booth Restriction: TEACHERS & FACULTY ONLY
       if (requestedHouseCode === "CENTRAL") {
         if (!isTeacher) {
