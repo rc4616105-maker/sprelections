@@ -416,23 +416,25 @@
         return { isWinner: false };
       };
 
-      // School Cabinet Polling Booth Restriction: 24 ELECTED HOUSE CAPTAINS & VICE CAPTAINS ONLY
+      // School Cabinet Polling Booth Restriction: 24 ELECTED HOUSE CAPTAINS & VICE CAPTAINS + TEACHERS ONLY
       let isElectedCaptain = false;
       if (requestedHouseCode === "CENTRAL") {
-        const winnerCheck = await isElectedHouseCaptainOrWinner(cleanId, localMatch);
-        if (!winnerCheck.isWinner) {
-          const registeredName = housesMeta[localMatch.houseCode]?.name || localMatch.houseCode || "House";
-          return {
-            ok: false,
-            code: "ELECTORAL_COLLEGE_RESTRICTED",
-            title: "House Captains Only",
-            message: `Voter ID ${cleanId} belongs to ${localMatch.fullName} (${registeredName} House). School Cabinet voting is restricted exclusively to the 24 elected House Captains & Vice Captains from the 6 Houses (Electoral College).`,
-          };
+        if (!isTeacher) {
+          const winnerCheck = await isElectedHouseCaptainOrWinner(cleanId, localMatch);
+          if (!winnerCheck.isWinner) {
+            const registeredName = housesMeta[localMatch.houseCode]?.name || localMatch.houseCode || "House";
+            return {
+              ok: false,
+              code: "ELECTORAL_COLLEGE_RESTRICTED",
+              title: "House Captains Only",
+              message: `Voter ID ${cleanId} belongs to ${localMatch.fullName} (${registeredName} House). School Cabinet voting is restricted exclusively to the 24 elected House Captains & Vice Captains from the 6 Houses (Electoral College).`,
+            };
+          }
+          isElectedCaptain = true;
+          localMatch.isElectedWinner = true;
+          localMatch.winnerRoleTitle = winnerCheck.roleTitle;
+          localMatch.winnerHouseName = winnerCheck.houseName;
         }
-        isElectedCaptain = true;
-        localMatch.isElectedWinner = true;
-        localMatch.winnerRoleTitle = winnerCheck.roleTitle;
-        localMatch.winnerHouseName = winnerCheck.houseName;
       }
 
       // House Booth Restriction:
@@ -897,11 +899,12 @@
 
         const numId = parseInt(stu.admissionNo, 10);
         const isTeacher = stu.isStaff === true || stu.houseCode === "ALL" || stu.isUniversal === true || stu.admissionNo === "0000" || (!isNaN(numId) && numId >= 6001 && numId <= 6087);
+        const isWinner = Boolean(stu.isElectedWinner || student.isElectedWinner || (await isElectedHouseCaptainOrWinner(stu.admissionNo, stu)).isWinner);
 
-        if (!isTeacher && houseConfig.code === "CENTRAL") {
-          throw new Error("Voting for School Cabinet is strictly reserved for Teachers and Faculty.");
+        if (!isTeacher && !isWinner && houseConfig.code === "CENTRAL") {
+          throw new Error("Voting for School Cabinet is strictly reserved for Teachers and the 24 Elected House Captains.");
         }
-        if (!isTeacher && stu.houseCode !== houseConfig.code) {
+        if (!isTeacher && !isWinner && stu.houseCode !== houseConfig.code) {
           throw new Error("Student does not belong to this house roster.");
         }
 
@@ -917,8 +920,8 @@
               full_name: stu.fullName,
               class_name: stu.className,
               section: stu.section,
-              house_code: isTeacher ? "ALL" : houseConfig.code,
-              house_name: isTeacher ? "All Houses & Cabinet" : houseConfig.name,
+              house_code: isTeacher ? "ALL" : (isWinner ? "CENTRAL" : houseConfig.code),
+              house_name: isTeacher ? "All Houses & Cabinet" : (isWinner ? "Elected House Captains · Central Cabinet" : houseConfig.name),
               final_status: "Not Voted",
               voted_for: "",
               vote_10_boy: "",
@@ -1027,7 +1030,7 @@
         let updatedFinalStatus = allRolesAccepted ? "Voted" : "Cancelled";
         let positionName = allRolesAccepted ? `All ${positions.length} Roles` : lastBallot.position_name;
 
-        if (isTeacher) {
+        if (isTeacher || isWinner) {
           const prevVotedFor = String(voterRow?.voted_for || "").trim();
           const houseTag = `[${houseConfig.name}]: ${summaryParts.join(", ")}`;
           const escapedName = houseConfig.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

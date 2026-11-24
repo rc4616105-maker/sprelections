@@ -155,59 +155,187 @@
       border-color: #047857;
     }
 
-    /* Live Stat KPI Banner */
-    .live-kpi-banner {
+    /* Top KPI Turnout Dashboard */
+    .live-kpi-banner-v2 {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 0.75rem;
-      margin-bottom: 1rem;
+      grid-template-columns: 290px 1fr 290px;
+      gap: 0.85rem;
+      margin-bottom: 1.15rem;
+      align-items: stretch;
     }
 
-    @media (max-width: 900px) {
-      .live-kpi-banner { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 1140px) {
+      .live-kpi-banner-v2 {
+        grid-template-columns: 1fr 1fr;
+      }
+      .kpi-card-houses {
+        grid-column: 1 / -1;
+      }
     }
 
-    .kpi-box {
+    @media (max-width: 640px) {
+      .live-kpi-banner-v2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .kpi-card-v2 {
       background: var(--bg-card);
       border: 1.5px solid var(--border-default);
-      border-radius: 14px;
-      padding: 0.85rem 1.15rem;
+      border-radius: 16px;
+      padding: 1rem 1.15rem;
       box-shadow: 0 4px 14px -6px rgba(45, 36, 20, 0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       position: relative;
-      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
     }
 
-    .kpi-box .kpi-label {
-      font-size: 0.72rem;
-      font-weight: 700;
+    .kpi-card-v2:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.1);
+      border-color: #cbd5e1;
+    }
+
+    .kpi-card-houses {
+      cursor: default;
+    }
+    .kpi-card-houses:hover {
+      transform: none;
+      box-shadow: 0 4px 14px -6px rgba(45, 36, 20, 0.08);
+    }
+
+    .kpi-card-head {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.6rem;
+    }
+
+    .kpi-tag-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      padding: 0.18rem 0.55rem;
+      border-radius: 9999px;
+      border: 1px solid transparent;
+    }
+
+    .kpi-card-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .kpi-head-counter {
+      margin-left: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
       color: var(--text-muted);
     }
 
-    .kpi-box .kpi-val {
+    .kpi-card-val-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .kpi-card-val {
       font-family: 'Fraunces', serif;
-      font-size: 1.85rem;
-      font-weight: 700;
-      line-height: 1.15;
-      margin: 0.2rem 0;
+      font-size: 1.75rem;
+      font-weight: 800;
       color: var(--text-primary);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      line-height: 1.1;
     }
 
-    .kpi-box .kpi-sub {
-      font-size: 0.72rem;
+    .kpi-card-pct {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #059669;
+    }
+
+    .kpi-card-sub {
+      font-size: 0.76rem;
       color: var(--text-secondary);
+      margin-bottom: 0.6rem;
     }
 
-    .kpi-val.bump {
-      animation: numBump 0.4s ease;
+    .kpi-progress-bar {
+      height: 6px;
+      background: #f1f5f9;
+      border-radius: 9999px;
+      overflow: hidden;
+      margin-top: auto;
     }
 
-    @keyframes numBump {
-      0% { transform: scale(1); color: #059669; }
-      50% { transform: scale(1.15); color: #10b981; }
-      100% { transform: scale(1); color: inherit; }
+    .kpi-progress-fill {
+      height: 100%;
+      border-radius: 9999px;
+      transition: width 0.5s ease;
+    }
+
+    /* House-Wise Mini Chips Grid */
+    .house-chips-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+    }
+
+    @media (max-width: 720px) {
+      .house-chips-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .house-kpi-chip {
+      background: var(--h-bg, #f8fafc);
+      border: 1.5px solid var(--h-border, #e2e8f0);
+      border-radius: 10px;
+      padding: 0.45rem 0.65rem;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      font-family: inherit;
+    }
+
+    .house-kpi-chip:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.12);
+      border-color: var(--h-accent);
+    }
+
+    .chip-h-name {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--h-accent, #334155);
+      letter-spacing: 0.03em;
+    }
+
+    .chip-h-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .chip-h-pct {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--h-accent, #64748b);
     }
 
     /* Filter Bar */
@@ -567,37 +695,87 @@
         <a href="../index.html" class="back-btn">← Back to Admin</a>
         <div class="live-title-group">
           <h1>⚡ Live Voters Stream <span class="live-pill-badge"><span class="live-dot"></span> LIVE SYNC (2s)</span></h1>
-          <p>Real-time voter check-in &amp; ballot activity feed across all houses and faculty station.</p>
+          <p>Real-time voter check-in &amp; ballot activity feed across all houses and school cabin.</p>
         </div>
       </div>
       <div class="live-header-right">
-        <button type="button" id="sound-btn" class="live-btn" title="Toggle audio chime on incoming votes">🔊 Sound: ON</button>
-        <button type="button" id="fullscreen-btn" class="live-btn" title="Toggle Fullscreen Mode">⛶ Fullscreen</button>
         <a href="../../Houses/graphs.html?from=admin" class="live-btn">📊 Turnout Graphs</a>
       </div>
     </header>
 
-    <!-- KPI Summary Row -->
-    <section class="live-kpi-banner">
-      <div class="kpi-box">
-        <div class="kpi-label">Total Votes Cast</div>
-        <div id="live-total-voted" class="kpi-val">0</div>
-        <div id="live-total-note" class="kpi-sub">0% overall turnout</div>
+    <!-- 3 Turnout Metric Cards: Total Voters, House-Wise Voters, and School Cabin -->
+    <section class="live-kpi-banner-v2" aria-label="Turnout Overview">
+      <!-- 1. Total Voters Card -->
+      <div class="kpi-card-v2 kpi-card-total" data-filter="ALL" title="Click to view all voters">
+        <div class="kpi-card-head">
+          <span class="kpi-tag-pill" style="background:#ecfdf5; color:#065f46; border-color:#a7f3d0;">ALL VOTERS</span>
+          <span class="kpi-card-title">Total Voters</span>
+        </div>
+        <div class="kpi-card-val-row">
+          <div id="live-total-voted" class="kpi-card-val">0 / 1175</div>
+          <div id="live-total-pct" class="kpi-card-pct">0%</div>
+        </div>
+        <div id="live-total-note" class="kpi-card-sub">0% overall school turnout (0 of 1175 cast)</div>
+        <div class="kpi-progress-bar">
+          <div id="live-total-bar" class="kpi-progress-fill" style="width: 0%; background: #10b981;"></div>
+        </div>
       </div>
-      <div class="kpi-box" style="border-left: 4.5px solid #2563eb;">
-        <div class="kpi-label" style="color: #2563eb;">Boys Voted</div>
-        <div id="live-boys-voted" class="kpi-val" style="color: #2563eb;">0</div>
-        <div id="live-boys-note" class="kpi-sub">0% boys turnout</div>
+
+      <!-- 2. House-Wise Voters Card (All 6 Houses) -->
+      <div class="kpi-card-v2 kpi-card-houses">
+        <div class="kpi-card-head">
+          <span class="kpi-tag-pill" style="background:#fef3c7; color:#92400e; border-color:#fde68a;">6 HOUSES</span>
+          <span class="kpi-card-title">House-Wise Voters</span>
+          <span id="live-houses-total-summary" class="kpi-head-counter">0 / 1085 (0%)</span>
+        </div>
+        <div class="house-chips-grid">
+          <button type="button" class="house-kpi-chip" data-house="BHEESHMA" style="--h-accent: #b45309; --h-bg: rgba(234, 179, 8, 0.12); --h-border: rgba(234, 179, 8, 0.35);" title="Filter to Bheeshma House">
+            <span class="chip-h-name">Bheeshma</span>
+            <span id="kpi-bh-val" class="chip-h-count">0 / 168</span>
+            <span id="kpi-bh-pct" class="chip-h-pct">0%</span>
+          </button>
+          <button type="button" class="house-kpi-chip" data-house="GURUDRONA" style="--h-accent: #1d4ed8; --h-bg: rgba(37, 99, 235, 0.1); --h-border: rgba(37, 99, 235, 0.3);" title="Filter to Gurudrona House">
+            <span class="chip-h-name">Gurudrona</span>
+            <span id="kpi-gd-val" class="chip-h-count">0 / 181</span>
+            <span id="kpi-gd-pct" class="chip-h-pct">0%</span>
+          </button>
+          <button type="button" class="house-kpi-chip" data-house="HANUMAN" style="--h-accent: #c2410c; --h-bg: rgba(249, 115, 22, 0.12); --h-border: rgba(249, 115, 22, 0.35);" title="Filter to Hanuman House">
+            <span class="chip-h-name">Hanuman</span>
+            <span id="kpi-hn-val" class="chip-h-count">0 / 181</span>
+            <span id="kpi-hn-pct" class="chip-h-pct">0%</span>
+          </button>
+          <button type="button" class="house-kpi-chip" data-house="KARNA" style="--h-accent: #991b1b; --h-bg: rgba(185, 28, 28, 0.1); --h-border: rgba(185, 28, 28, 0.3);" title="Filter to Karna House">
+            <span class="chip-h-name">Karna</span>
+            <span id="kpi-kr-val" class="chip-h-count">0 / 188</span>
+            <span id="kpi-kr-pct" class="chip-h-pct">0%</span>
+          </button>
+          <button type="button" class="house-kpi-chip" data-house="VASISTHA" style="--h-accent: #be185d; --h-bg: rgba(219, 39, 119, 0.1); --h-border: rgba(219, 39, 119, 0.3);" title="Filter to Vasistha House">
+            <span class="chip-h-name">Vasistha</span>
+            <span id="kpi-vs-val" class="chip-h-count">0 / 184</span>
+            <span id="kpi-vs-pct" class="chip-h-pct">0%</span>
+          </button>
+          <button type="button" class="house-kpi-chip" data-house="VISHWAMITHRA" style="--h-accent: #6d28d9; --h-bg: rgba(124, 58, 237, 0.1); --h-border: rgba(124, 58, 237, 0.3);" title="Filter to Vishwamithra House">
+            <span class="chip-h-name">Vishwamithra</span>
+            <span id="kpi-vm-val" class="chip-h-count">0 / 191</span>
+            <span id="kpi-vm-pct" class="chip-h-pct">0%</span>
+          </button>
+        </div>
       </div>
-      <div class="kpi-box" style="border-left: 4.5px solid #db2777;">
-        <div class="kpi-label" style="color: #db2777;">Girls Voted</div>
-        <div id="live-girls-voted" class="kpi-val" style="color: #db2777;">0</div>
-        <div id="live-girls-note" class="kpi-sub">0% girls turnout</div>
-      </div>
-      <div class="kpi-box" style="border-left: 4.5px solid #059669;">
-        <div class="kpi-label" style="color: #059669;">Latest Voter</div>
-        <div id="live-latest-name" class="kpi-val" style="font-size: 1.15rem; font-family: var(--font-sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">—</div>
-        <div id="live-latest-time" class="kpi-sub">Waiting for first vote...</div>
+
+      <!-- 3. School Cabin Card -->
+      <div class="kpi-card-v2 kpi-card-cabin" data-filter="CENTRAL" title="Click to view School Cabin voters">
+        <div class="kpi-card-head">
+          <span class="kpi-tag-pill" style="background:#ecfdf5; color:#047857; border-color:#a7f3d0;">CENTRAL CABIN</span>
+          <span class="kpi-card-title">School Cabin</span>
+        </div>
+        <div class="kpi-card-val-row">
+          <div id="live-cabin-voted" class="kpi-card-val" style="color:#047857;">0 / 90</div>
+          <div id="live-cabin-pct" class="kpi-card-pct" style="color:#047857;">0%</div>
+        </div>
+        <div id="live-cabin-note" class="kpi-card-sub">Faculty &amp; 24 Elected House Leaders</div>
+        <div class="kpi-progress-bar">
+          <div id="live-cabin-bar" class="kpi-progress-fill" style="width: 0%; background: #059669;"></div>
+        </div>
       </div>
     </section>
 
@@ -714,21 +892,32 @@
 
       const el = {
         totalVoted: document.getElementById("live-total-voted"),
+        totalPct: document.getElementById("live-total-pct"),
         totalNote: document.getElementById("live-total-note"),
-        boysVoted: document.getElementById("live-boys-voted"),
-        boysNote: document.getElementById("live-boys-note"),
-        girlsVoted: document.getElementById("live-girls-voted"),
-        girlsNote: document.getElementById("live-girls-note"),
-        latestName: document.getElementById("live-latest-name"),
-        latestTime: document.getElementById("live-latest-time"),
+        totalBar: document.getElementById("live-total-bar"),
+        housesSummary: document.getElementById("live-houses-total-summary"),
+        kpiBhVal: document.getElementById("kpi-bh-val"),
+        kpiBhPct: document.getElementById("kpi-bh-pct"),
+        kpiGdVal: document.getElementById("kpi-gd-val"),
+        kpiGdPct: document.getElementById("kpi-gd-pct"),
+        kpiHnVal: document.getElementById("kpi-hn-val"),
+        kpiHnPct: document.getElementById("kpi-hn-pct"),
+        kpiKrVal: document.getElementById("kpi-kr-val"),
+        kpiKrPct: document.getElementById("kpi-kr-pct"),
+        kpiVsVal: document.getElementById("kpi-vs-val"),
+        kpiVsPct: document.getElementById("kpi-vs-pct"),
+        kpiVmVal: document.getElementById("kpi-vm-val"),
+        kpiVmPct: document.getElementById("kpi-vm-pct"),
+        cabinVoted: document.getElementById("live-cabin-voted"),
+        cabinPct: document.getElementById("live-cabin-pct"),
+        cabinNote: document.getElementById("live-cabin-note"),
+        cabinBar: document.getElementById("live-cabin-bar"),
         search: document.getElementById("live-search"),
         pills: Array.from(document.querySelectorAll(".house-pill-btn")),
         grid: document.getElementById("live-feed-grid"),
         empty: document.getElementById("feed-empty-state"),
         showingCount: document.getElementById("feed-showing-count"),
         updateTime: document.getElementById("feed-update-time"),
-        soundBtn: document.getElementById("sound-btn"),
-        fullscreenBtn: document.getElementById("fullscreen-btn"),
         photoModal: document.getElementById("photo-modal"),
         photoModalName: document.getElementById("photo-modal-name"),
         photoModalMeta: document.getElementById("photo-modal-meta"),
@@ -736,15 +925,29 @@
         photoModalClose: document.getElementById("photo-modal-close"),
       };
 
-      // Sound button toggle
-      el.soundBtn.addEventListener("click", () => {
-        soundEnabled = !soundEnabled;
-        el.soundBtn.textContent = soundEnabled ? "🔊 Sound: ON" : "🔇 Sound: MUTED";
-        el.soundBtn.classList.toggle("is-active", soundEnabled);
-        if (soundEnabled) playVoteChime();
+      // Card filter click listeners
+      document.querySelector(".kpi-card-total")?.addEventListener("click", () => {
+        el.pills.forEach((b) => b.classList.toggle("is-active", b.dataset.house === "ALL"));
+        activeHouseFilter = "ALL";
+        renderFeed();
       });
 
-      // Fullscreen toggle
+      document.querySelector(".kpi-card-cabin")?.addEventListener("click", () => {
+        el.pills.forEach((b) => b.classList.toggle("is-active", b.dataset.house === "CENTRAL"));
+        activeHouseFilter = "CENTRAL";
+        renderFeed();
+      });
+
+      document.querySelectorAll(".house-kpi-chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          const h = chip.dataset.house;
+          el.pills.forEach((b) => b.classList.toggle("is-active", b.dataset.house === h));
+          activeHouseFilter = h;
+          renderFeed();
+        });
+      });
+
+      // Fullscreen toggle on double-click
       function toggleFullscreen() {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen().catch(() => {});
@@ -752,7 +955,6 @@
           document.exitFullscreen().catch(() => {});
         }
       }
-      el.fullscreenBtn.addEventListener("click", toggleFullscreen);
       document.addEventListener("dblclick", (e) => {
         if (e.target.closest("button, input, a")) return;
         toggleFullscreen();
@@ -846,34 +1048,64 @@
       }
 
       function updateKPIs(votersList, snap) {
-        const totalEligible = (snap.students || []).filter((s) => s.isActive && s.admissionNo !== "0000").length;
+        const totalEligible = 1175; // 1,085 House students + 90 Faculty/Cabinet
         const totalVotedCount = votersList.length;
         const overallPct = totalEligible ? Math.round((totalVotedCount / totalEligible) * 100) : 0;
 
-        const isBoy = (v) => String(v.gender).toLowerCase().includes("boy") || String(v.gender).toLowerCase() === "male";
-        const isGirl = (v) => String(v.gender).toLowerCase().includes("girl") || String(v.gender).toLowerCase() === "female";
+        if (el.totalVoted) el.totalVoted.textContent = `${totalVotedCount} / ${totalEligible}`;
+        if (el.totalPct) el.totalPct.textContent = `${overallPct}%`;
+        if (el.totalNote) el.totalNote.textContent = `${overallPct}% overall school turnout (${totalVotedCount} cast · ${Math.max(0, totalEligible - totalVotedCount)} remaining)`;
+        if (el.totalBar) el.totalBar.style.width = `${Math.min(100, overallPct)}%`;
 
-        const boysVotedCount = votersList.filter(isBoy).length;
-        const girlsVotedCount = votersList.filter(isGirl).length;
+        // House-Wise Breakdown (6 Houses)
+        const HOUSE_CAPS = {
+          BHEESHMA: 168,
+          GURUDRONA: 181,
+          HANUMAN: 181,
+          KARNA: 188,
+          VASISTHA: 184,
+          VISHWAMITHRA: 191
+        };
 
-        const allBoys = (snap.students || []).filter((s) => s.isActive && isBoy(s)).length;
-        const allGirls = (snap.students || []).filter((s) => s.isActive && isGirl(s)).length;
+        const houseCounts = {
+          BHEESHMA: votersList.filter((v) => v.houseCode === "BHEESHMA").length,
+          GURUDRONA: votersList.filter((v) => v.houseCode === "GURUDRONA").length,
+          HANUMAN: votersList.filter((v) => v.houseCode === "HANUMAN").length,
+          KARNA: votersList.filter((v) => v.houseCode === "KARNA").length,
+          VASISTHA: votersList.filter((v) => v.houseCode === "VASISTHA").length,
+          VISHWAMITHRA: votersList.filter((v) => v.houseCode === "VISHWAMITHRA").length,
+        };
 
-        const bPct = allBoys ? Math.round((boysVotedCount / allBoys) * 100) : 0;
-        const gPct = allGirls ? Math.round((girlsVotedCount / allGirls) * 100) : 0;
+        const totalHousesVoted = Object.values(houseCounts).reduce((a, b) => a + b, 0);
+        const totalHousesEligible = 1085;
+        const housesOverallPct = Math.round((totalHousesVoted / totalHousesEligible) * 100);
 
-        el.totalVoted.textContent = String(totalVotedCount);
-        el.totalNote.textContent = `${overallPct}% overall turnout (${totalVotedCount} of ${totalEligible})`;
-        el.boysVoted.textContent = String(boysVotedCount);
-        el.boysNote.textContent = `${bPct}% boys turnout (${boysVotedCount} of ${allBoys})`;
-        el.girlsVoted.textContent = String(girlsVotedCount);
-        el.girlsNote.textContent = `${gPct}% girls turnout (${girlsVotedCount} of ${allGirls})`;
+        if (el.housesSummary) el.housesSummary.textContent = `${totalHousesVoted} / ${totalHousesEligible} (${housesOverallPct}%)`;
 
-        if (votersList.length > 0) {
-          const latest = votersList[0];
-          el.latestName.textContent = latest.fullName;
-          el.latestTime.textContent = `${timeAgo(latest.latestCastAt)} · ${latest.isStaff ? "Faculty" : latest.houseCode}`;
-        }
+        const updateHouseChip = (code, valEl, pctEl) => {
+          const cap = HOUSE_CAPS[code] || 1;
+          const count = houseCounts[code] || 0;
+          const pct = Math.round((count / cap) * 100);
+          if (valEl) valEl.textContent = `${count} / ${cap}`;
+          if (pctEl) pctEl.textContent = `${pct}%`;
+        };
+
+        updateHouseChip("BHEESHMA", el.kpiBhVal, el.kpiBhPct);
+        updateHouseChip("GURUDRONA", el.kpiGdVal, el.kpiGdPct);
+        updateHouseChip("HANUMAN", el.kpiHnVal, el.kpiHnPct);
+        updateHouseChip("KARNA", el.kpiKrVal, el.kpiKrPct);
+        updateHouseChip("VASISTHA", el.kpiVsVal, el.kpiVsPct);
+        updateHouseChip("VISHWAMITHRA", el.kpiVmVal, el.kpiVmPct);
+
+        // School Cabin
+        const cabinEligible = 90;
+        const cabinVotedCount = votersList.filter((v) => v.houseCode === "CENTRAL" || v.isStaff).length;
+        const cabinPct = Math.round((cabinVotedCount / cabinEligible) * 100);
+
+        if (el.cabinVoted) el.cabinVoted.textContent = `${cabinVotedCount} / ${cabinEligible}`;
+        if (el.cabinPct) el.cabinPct.textContent = `${cabinPct}%`;
+        if (el.cabinNote) el.cabinNote.textContent = `${cabinPct}% cabin turnout (Faculty & 24 Leaders)`;
+        if (el.cabinBar) el.cabinBar.style.width = `${Math.min(100, cabinPct)}%`;
       }
 
       function renderFeed() {

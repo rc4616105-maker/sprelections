@@ -633,27 +633,27 @@
       </div>
     </header>
 
-    <!-- 4 KPI Summary Cards -->
+    <!-- 4 KPI Summary Cards: Total Voters, House-Wise Voters, School Cabin, and Remaining -->
     <section class="summary-grid" aria-label="School turnout totals">
       <div class="stat-card">
-        <div class="stat-label">Total Voted</div>
-        <div id="g-voted" class="stat-value">0 / 0</div>
-        <div id="g-pct" class="stat-note">0% overall turnout (0 students voted)</div>
+        <div class="stat-label">Total Voters</div>
+        <div id="g-voted" class="stat-value">0 / 1175</div>
+        <div id="g-pct" class="stat-note">0% overall school turnout</div>
       </div>
-      <div class="stat-card" style="border-left: 4.5px solid #2563eb;">
-        <div class="stat-label" style="color: #2563eb;">Boys Turnout</div>
-        <div id="g-boys-voted" class="stat-value" style="color: #2563eb;">0 / 0</div>
-        <div id="g-boys-pct" class="stat-note">0% boys turnout</div>
+      <div class="stat-card" style="border-left: 4.5px solid #d97706;">
+        <div class="stat-label" style="color: #d97706;">House-Wise Voters</div>
+        <div id="g-houses-voted" class="stat-value" style="color: #d97706;">0 / 1085</div>
+        <div id="g-houses-pct" class="stat-note">0% across 6 Houses (1085 students)</div>
       </div>
-      <div class="stat-card" style="border-left: 4.5px solid #db2777;">
-        <div class="stat-label" style="color: #db2777;">Girls Turnout</div>
-        <div id="g-girls-voted" class="stat-value" style="color: #db2777;">0 / 0</div>
-        <div id="g-girls-pct" class="stat-note">0% girls turnout</div>
+      <div class="stat-card" style="border-left: 4.5px solid #059669;">
+        <div class="stat-label" style="color: #059669;">School Cabin</div>
+        <div id="g-cabin-voted" class="stat-value" style="color: #059669;">0 / 90</div>
+        <div id="g-cabin-pct" class="stat-note">0% cabin turnout (Faculty &amp; 24 Leaders)</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Pending to Vote</div>
-        <div id="g-remaining" class="stat-value">0</div>
-        <div class="stat-note">Students remaining</div>
+        <div id="g-remaining" class="stat-value">1175</div>
+        <div class="stat-note">Total voters remaining</div>
       </div>
     </section>
 
@@ -733,10 +733,10 @@
       const el = {
         voted: document.getElementById("g-voted"),
         pct: document.getElementById("g-pct"),
-        boysVoted: document.getElementById("g-boys-voted"),
-        boysPct: document.getElementById("g-boys-pct"),
-        girlsVoted: document.getElementById("g-girls-voted"),
-        girlsPct: document.getElementById("g-girls-pct"),
+        housesVoted: document.getElementById("g-houses-voted"),
+        housesPct: document.getElementById("g-houses-pct"),
+        cabinVoted: document.getElementById("g-cabin-voted"),
+        cabinPct: document.getElementById("g-cabin-pct"),
         remaining: document.getElementById("g-remaining"),
 
         chartGrid: document.getElementById("unified-chart-grid"),
@@ -857,44 +857,46 @@
 
       function updateGraphInPlace(snap) {
         const sixHouseCodes = new Set(sixHouses.map((h) => h.code));
-        const students = (snap && snap.students && snap.students.length > 0) ? snap.students : (window.ADMIN_DATA?.students || []);
-        
-        // Filter strictly to active students of the 6 Houses (excluding staff/teachers)
-        const activeStudents = students.filter(
+        const allStudents = (snap && snap.students && snap.students.length > 0) ? snap.students : (window.ADMIN_DATA?.students || []);
+        const allAcceptedBallots = (snap.ballots || []).filter((b) => b.status === "accepted");
+        const allAcceptedVotersSet = new Set(allAcceptedBallots.map((b) => String(b.admissionNo).toUpperCase()));
+
+        // Active students strictly belonging to the 6 houses
+        const activeStudents = allStudents.filter(
           (s) => s.isActive && s.admissionNo !== "0000" && !s.isStaff && sixHouseCodes.has(s.houseCode)
         );
 
-        const acceptedAll = (snap.ballots || []).filter(
-          (b) => b.status === "accepted" && sixHouseCodes.has(b.houseCode)
+        // 1. House-Wise Totals (6 Houses)
+        const housesEligible = 1085; // exactly 168+181+181+188+184+191
+        const housesVoted = activeStudents.filter((s) => allAcceptedVotersSet.has(String(s.admissionNo).toUpperCase())).length;
+        const housesPct = Math.round((housesVoted / housesEligible) * 100);
+
+        // 2. School Cabin Totals (Faculty + Central)
+        const cabinEligible = 90;
+        const cabinAccepted = allAcceptedBallots.filter(
+          (b) => b.houseCode === "CENTRAL" || b.house_code === "CENTRAL" || (b.admissionNo && (String(b.admissionNo).startsWith("SPR") || (parseInt(b.admissionNo, 10) >= 6001 && parseInt(b.admissionNo, 10) <= 6087)))
         );
-        const acceptedVotersSet = new Set(acceptedAll.map((b) => String(b.admissionNo).toUpperCase()));
+        const cabinAcceptedSet = new Set(cabinAccepted.map((b) => String(b.admissionNo).toUpperCase()));
+        const cabinVoted = cabinAcceptedSet.size;
+        const cabinPct = Math.round((cabinVoted / cabinEligible) * 100);
 
-        // Global Totals for all 6 Houses
-        const totalEligible = activeStudents.length;
-        const totalVoted = activeStudents.filter((s) => acceptedVotersSet.has(String(s.admissionNo).toUpperCase())).length;
-        const overallPct = totalEligible ? Math.round((totalVoted / totalEligible) * 100) : 0;
-
-        // Boys Global
-        const boysEligible = activeStudents.filter((s) => isBoyStudent(s)).length;
-        const boysVoted = activeStudents.filter((s) => isBoyStudent(s) && acceptedVotersSet.has(String(s.admissionNo).toUpperCase())).length;
-        const boysPct = boysEligible ? Math.round((boysVoted / boysEligible) * 100) : 0;
-
-        // Girls Global
-        const girlsEligible = activeStudents.filter((s) => isGirlStudent(s)).length;
-        const girlsVoted = activeStudents.filter((s) => isGirlStudent(s) && acceptedVotersSet.has(String(s.admissionNo).toUpperCase())).length;
-        const girlsPct = girlsEligible ? Math.round((girlsVoted / girlsEligible) * 100) : 0;
+        // 3. Global Total (All 1,175 voters)
+        const totalEligible = 1175;
+        const totalVoted = allAcceptedVotersSet.size;
+        const overallPct = Math.round((totalVoted / totalEligible) * 100);
+        const remainingCount = Math.max(0, totalEligible - totalVoted);
 
         // Update Top KPIs
-        el.voted.textContent = `${totalVoted} / ${totalEligible}`;
-        el.pct.textContent = `${overallPct}% overall turnout (${totalVoted} students voted)`;
-        el.boysVoted.textContent = `${boysVoted} / ${boysEligible}`;
-        el.boysPct.textContent = `${boysPct}% boys turnout`;
-        el.girlsVoted.textContent = `${girlsVoted} / ${girlsEligible}`;
-        el.girlsPct.textContent = `${girlsPct}% girls turnout`;
-        el.remaining.textContent = String(Math.max(0, totalEligible - totalVoted));
+        if (el.voted) el.voted.textContent = `${totalVoted} / ${totalEligible}`;
+        if (el.pct) el.pct.textContent = `${overallPct}% overall school turnout (${totalVoted} cast)`;
+        if (el.housesVoted) el.housesVoted.textContent = `${housesVoted} / ${housesEligible}`;
+        if (el.housesPct) el.housesPct.textContent = `${housesPct}% across 6 Houses (1085 students)`;
+        if (el.cabinVoted) el.cabinVoted.textContent = `${cabinVoted} / ${cabinEligible}`;
+        if (el.cabinPct) el.cabinPct.textContent = `${cabinPct}% cabin turnout (Faculty & Leaders)`;
+        if (el.remaining) el.remaining.textContent = String(remainingCount);
 
         if (prevTotalVoted !== null && totalVoted !== prevTotalVoted) {
-          triggerPulse([el.voted, el.remaining, el.boysVoted, el.girlsVoted], "is-bumping", 360);
+          triggerPulse([el.voted, el.remaining, el.housesVoted, el.cabinVoted], "is-bumping", 360);
         }
         prevTotalVoted = totalVoted;
 
