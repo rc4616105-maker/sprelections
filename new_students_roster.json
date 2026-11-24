@@ -4433,7 +4433,11 @@
     "section": "VSB",
     "houseCode": "HANUMAN",
     "houseName": "Hanuman",
-    "admissionNo": "9V7995"
+    "admissionNo": "9V7995",
+    "isCandidate": true,
+    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+    "positionId": "VICE_PRESIDENT",
+    "photoUrl": "../assets/candidates/central_gaadhya.jpg"
   },
   {
     "fullName": "M.Manideep",
@@ -6070,7 +6074,7 @@
     "admissionNo": "9S1539"
   },
   {
-    "fullName": "Y.Bhavya Sri",
+    "fullName": "Y.Bhagya Sri",
     "gender": "Girl",
     "className": "9",
     "section": "SD",
@@ -6246,13 +6250,17 @@
     "admissionNo": "9K6197"
   },
   {
-    "fullName": "V.Ananya",
+    "fullName": "V.Ananya Reddy",
     "gender": "Girl",
     "className": "9",
     "section": "VSB",
     "houseCode": "KARNA",
     "houseName": "Karna",
-    "admissionNo": "9V1576"
+    "admissionNo": "9V1576",
+    "isCandidate": true,
+    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+    "positionId": "VICE_PRESIDENT",
+    "photoUrl": "../assets/candidates/central_vananyareddy.jpg"
   },
   {
     "fullName": "P.Aneesh",
@@ -7797,13 +7805,17 @@
     "admissionNo": "9V4756"
   },
   {
-    "fullName": "M.Anvitha",
+    "fullName": "M.Anvitha Sharma",
     "gender": "Girl",
     "className": "9",
     "section": "VSB",
     "houseCode": "VASISTHA",
     "houseName": "Vasistha",
-    "admissionNo": "9V4182"
+    "admissionNo": "9V4182",
+    "isCandidate": true,
+    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+    "positionId": "VICE_PRESIDENT",
+    "photoUrl": "../assets/candidates/central_manvithasharma.jpg"
   },
   {
     "fullName": "T.Sai Preetham",
@@ -9670,7 +9682,11 @@
     "section": "VSB",
     "houseCode": "VISHWAMITHRA",
     "houseName": "Vishwamithra",
-    "admissionNo": "9V1966"
+    "admissionNo": "9V1966",
+    "isCandidate": true,
+    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+    "positionId": "VICE_PRESIDENT",
+    "photoUrl": "../assets/candidates/central_khadvitha.jpg"
   },
   {
     "fullName": "N.Maharshi",
@@ -9686,13 +9702,17 @@
     "admissionNo": "9K3140"
   },
   {
-    "fullName": "K.Iswarya",
+    "fullName": "K.Ishwarya",
     "gender": "Girl",
     "className": "9",
     "section": "VSB",
     "houseCode": "VISHWAMITHRA",
     "houseName": "Vishwamithra",
-    "admissionNo": "9V4045"
+    "admissionNo": "9V4045",
+    "isCandidate": true,
+    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+    "positionId": "VICE_PRESIDENT",
+    "photoUrl": "../assets/candidates/central_kishwarya.jpg"
   },
   {
     "fullName": "N.Vardhin",
