@@ -216,7 +216,7 @@
               The Election Commission is tallying ballots to declare the 24 House Captains &amp; Vice Captains.
             </p>
             <div class="paused-status-badge">
-              <span>🔒 Kiosk Status: Polling Closed · No Votes Allowed</span>
+              <span>🔒 Polling Closed · No Votes Allowed</span>
             </div>
             <div class="paused-footer-note">
               This screen will automatically unlock if the Election Presiding Officer / Administrator resumes house polling from the Admin Dashboard.
