@@ -1,6 +1,16 @@
 {
   "cleanUrls": true,
   "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "(.*)admin(.*)"
+        }
+      ],
+      "destination": "/Houses/admin/index.html"
+    },
     { "source": "/", "destination": "/Houses/index.html" },
     { "source": "/admin", "destination": "/Houses/admin/index.html" },
     { "source": "/edit-votes", "destination": "/Houses/admin/edit-votes.html" },
