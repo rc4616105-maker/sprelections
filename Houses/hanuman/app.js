@@ -931,10 +931,19 @@
     }
   });
 
-  el.admissionForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    executeVerification(el.admissionInput.value);
-  });
+  if (el.admissionForm) {
+    el.admissionForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      executeVerification(el.admissionInput ? el.admissionInput.value : "");
+    });
+  }
+
+  if (el.verifyBtn) {
+    el.verifyBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      executeVerification(el.admissionInput ? el.admissionInput.value : "");
+    });
+  }
 
   // Channel 4: Global Barcode Gun Listener (Catches rapid bursts even if blur occurred)
   let globalBufferTimer = null;
@@ -1319,6 +1328,19 @@
       });
       window.PendriveStorage.syncNow().catch(() => {});
     }
+
+    // Auto-detect URL parameter (e.g. ?admissionNo=1A2738) and verify immediately
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const qAdm = urlParams.get("admissionNo") || urlParams.get("voterId");
+      if (qAdm && qAdm.trim()) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+        if (el.admissionInput) el.admissionInput.value = qAdm.trim();
+        setTimeout(() => {
+          executeVerification(qAdm.trim());
+        }, 120);
+      }
+    } catch (_) {}
   }
 
 

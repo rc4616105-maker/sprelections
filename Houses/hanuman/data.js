@@ -2293,28 +2293,28 @@ window.HOUSE_DATA = {
   ],
   "houseCandidates": [
     {
-      {
-    "id": "CAND_HANUMAN_CAPTAIN_GIRL_BPRADEEPTHI",
-    "admissionNo": "1M6408",
-    "fullName": "B.Pradeepthi Sai",
-    "className": "10",
-    "section": "Class 10 \u00b7 MRP",
-    "houseCode": "HANUMAN",
-    "positionId": "CAPTAIN_GIRL",
-    "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Hanuman House",
-    "symbolObj": {
+      "id": "CAND_HANUMAN_CAPTAIN_GIRL_BPRADEEPTHI",
+      "admissionNo": "1M6408",
+      "fullName": "B.Pradeepthi Sai",
+      "className": "10",
+      "section": "Class 10 \u00b7 MRP",
+      "houseCode": "HANUMAN",
+      "positionId": "CAPTAIN_GIRL",
+      "positionName": "Girls Captain (Class 10 Girl)",
+      "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Hanuman House",
+      "symbolObj": {
         "name": "Mango",
         "icon": "\ud83e\udd6d",
         "slug": "mango",
         "image": "../assets/symbols/mango.png",
         "imagePath": "../assets/symbols/mango.png"
+      },
+      "photoUrl": "../assets/candidates/hanuman_bpradeepthisai.png",
+      "photoPath": "../assets/candidates/hanuman_bpradeepthisai.png",
+      "isApproved": true
     },
-    "photoUrl": "../assets/candidates/hanuman_bpradeepthisai.png",
-    "photoPath": "../assets/candidates/hanuman_bpradeepthisai.png",
-    "isApproved": true
-},
-    "id": "CAND_HANUMAN_CAPTAIN_GIRL_ARISHITH",
+    {
+      "id": "CAND_HANUMAN_CAPTAIN_GIRL_ARISHITH",
       "admissionNo": "CAND-10-ARIS",
       "fullName": "A.Rishitha",
       "className": "10",

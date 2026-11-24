@@ -128,7 +128,7 @@
 
           <!-- Pane 2: Manual Voter ID Entry -->
           <div id="pane-manual-entry" class="auth-pane is-active">
-            <form id="admission-form" novalidate>
+            <form id="admission-form" onsubmit="event.preventDefault(); return false;" novalidate>
               <div class="form-group">
                 <label for="admission-input" class="form-label">
                   <span>Enter Voter ID</span>
@@ -137,7 +137,7 @@
                   placeholder="Enter Voter ID" class="form-control" required />
               </div>
 
-              <button type="submit" id="verify-btn" class="btn btn-primary btn-block">
+              <button type="button" id="verify-btn" class="btn btn-primary btn-block">
                 <span>Verify Faculty ID &rarr;</span>
               </button>
             </form>

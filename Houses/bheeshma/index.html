@@ -156,7 +156,7 @@
 
           <!-- Pane 2: Manual Voter ID Entry -->
           <div id="pane-manual-entry" class="auth-pane is-active" role="tabpanel">
-            <form id="admission-form" class="admission-form" novalidate>
+            <form id="admission-form" onsubmit="event.preventDefault(); return false;" class="admission-form" novalidate>
               <div class="form-group">
                 <label for="admission-input" class="form-label">
                   <span>Enter Voter ID</span>
@@ -164,7 +164,7 @@
                 <input id="admission-input" name="admissionNo" type="text" inputmode="numeric" autocomplete="off" autofocus placeholder="Enter Voter ID" class="form-control form-control-lg mono-input" required />
               </div>
 
-              <button type="submit" id="verify-btn" class="btn btn-primary btn-block btn-lg">
+              <button type="button" id="verify-btn" class="btn btn-primary btn-block btn-lg">
                 <span class="btn-text">Verify Voter ID</span>
                 <span class="spinner" aria-hidden="true" hidden></span>
               </button>
