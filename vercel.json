@@ -1,22 +1,29 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    {
-      "source": "/",
-      "has": [
-        {
-          "type": "host",
-          "value": "(.*)admin(.*)"
-        }
-      ],
-      "destination": "/Houses/admin/index.html"
-    },
     { "source": "/", "destination": "/Houses/index.html" },
     { "source": "/admin", "destination": "/Houses/admin/index.html" },
+    { "source": "/admin/:path*", "destination": "/Houses/admin/:path*" },
     { "source": "/edit-votes", "destination": "/Houses/admin/edit-votes.html" },
     { "source": "/results", "destination": "/Houses/admin/results.html" },
     { "source": "/teachers", "destination": "/Houses/teachers/index.html" },
+    { "source": "/teachers/:path*", "destination": "/Houses/teachers/:path*" },
+    { "source": "/bheeshma", "destination": "/Houses/bheeshma/index.html" },
+    { "source": "/bheeshma/:path*", "destination": "/Houses/bheeshma/:path*" },
+    { "source": "/gurudrona", "destination": "/Houses/gurudrona/index.html" },
+    { "source": "/gurudrona/:path*", "destination": "/Houses/gurudrona/:path*" },
+    { "source": "/hanuman", "destination": "/Houses/hanuman/index.html" },
+    { "source": "/hanuman/:path*", "destination": "/Houses/hanuman/:path*" },
+    { "source": "/karna", "destination": "/Houses/karna/index.html" },
+    { "source": "/karna/:path*", "destination": "/Houses/karna/:path*" },
+    { "source": "/vasistha", "destination": "/Houses/vasistha/index.html" },
+    { "source": "/vasistha/:path*", "destination": "/Houses/vasistha/:path*" },
+    { "source": "/vishwamithra", "destination": "/Houses/vishwamithra/index.html" },
+    { "source": "/vishwamithra/:path*", "destination": "/Houses/vishwamithra/:path*" },
+    { "source": "/central", "destination": "/Houses/central/index.html" },
+    { "source": "/central/:path*", "destination": "/Houses/central/:path*" },
     { "source": "/graphs", "destination": "/Houses/graphs.html" },
-    { "source": "/ceremony", "destination": "/Result declaration/index.html" }
+    { "source": "/ceremony", "destination": "/Result declaration/index.html" },
+    { "source": "/declaration", "destination": "/Result declaration/index.html" }
   ]
 }
