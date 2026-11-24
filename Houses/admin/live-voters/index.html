@@ -443,212 +443,229 @@
       color: var(--text-primary);
     }
 
-    .live-feed-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 0.85rem;
-    }
-
-    /* Individual Live Voter Card */
-    .voter-card {
+    /* Table Container and Responsive Table */
+    .table-container {
       background: var(--bg-card);
       border: 1.5px solid var(--border-default);
-      border-radius: 14px;
+      border-radius: 16px;
+      overflow-x: auto;
+      box-shadow: 0 4px 14px -6px rgba(45, 36, 20, 0.08);
+      margin-bottom: 2rem;
+    }
+
+    .live-voters-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+      min-width: 860px;
+    }
+
+    .live-voters-table thead tr {
+      background: #faf6ed;
+      border-bottom: 2px solid var(--border-default);
+    }
+
+    .live-voters-table th {
       padding: 0.85rem 1rem;
-      box-shadow: 0 4px 12px -4px rgba(45, 36, 20, 0.06);
-      display: flex;
-      gap: 0.85rem;
-      align-items: flex-start;
-      position: relative;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      white-space: nowrap;
     }
 
-    .voter-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--card-house-color, #059669);
-      box-shadow: 0 8px 20px -6px rgba(45, 36, 20, 0.12);
+    .live-voters-table tbody tr {
+      border-bottom: 1px solid #f1ece1;
+      transition: background-color 0.2s ease, transform 0.2s ease;
     }
 
-    .voter-card.is-new-vote {
-      animation: liveVoterEnter 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards, greenGlowPulse 3s ease forwards;
+    .live-voters-table tbody tr:hover {
+      background-color: rgba(254, 249, 238, 0.7);
     }
 
-    @keyframes liveVoterEnter {
+    .live-voters-table td {
+      padding: 0.75rem 1rem;
+      vertical-align: middle;
+    }
+
+    /* S.No column */
+    .td-sno {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-align: center;
+      font-size: 0.82rem;
+    }
+
+    /* Animated New Vote Row (Prepend Animation) */
+    tr.is-new-vote-row {
+      animation: liveRowEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1), liveRowGlow 2.5s ease-out;
+      background-color: rgba(16, 185, 129, 0.12) !important;
+    }
+
+    @keyframes liveRowEnter {
       0% {
         opacity: 0;
-        transform: translateY(-24px) scale(0.96);
-      }
-      60% {
-        transform: translateY(3px) scale(1.01);
+        transform: translateY(-16px);
       }
       100% {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
       }
     }
 
-    @keyframes greenGlowPulse {
+    @keyframes liveRowGlow {
       0% {
-        box-shadow: 0 0 0 4px #10b981, 0 10px 25px -5px rgba(16, 185, 129, 0.4);
-        border-color: #10b981;
-      }
-      70% {
-        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.4);
+        background-color: rgba(16, 185, 129, 0.28);
       }
       100% {
-        box-shadow: 0 4px 12px -4px rgba(45, 36, 20, 0.06);
+        background-color: transparent;
       }
     }
 
-    .card-photo-wrap {
-      width: 52px;
-      height: 52px;
-      border-radius: 12px;
-      background: #faf6ed;
+    /* Photo Thumbnail */
+    .td-photo-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
       border: 1.5px solid var(--border-default);
-      flex-shrink: 0;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
+      background: #faf6ed;
       cursor: pointer;
       position: relative;
+      margin: 0 auto;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
     }
-
-    .card-photo-wrap img {
+    .td-photo-thumb:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      border-color: #10b981;
+    }
+    .td-photo-thumb img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-
-    .card-avatar-initials {
+    .td-photo-initials {
       font-family: 'Fraunces', serif;
-      font-size: 1.15rem;
       font-weight: 700;
-      color: var(--card-house-color, #059669);
-    }
-
-    .card-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .card-top-line {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.4rem;
-      margin-bottom: 0.2rem;
-    }
-
-    .card-house-tag {
-      font-size: 0.65rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      padding: 0.12rem 0.45rem;
-      border-radius: 9999px;
-      color: var(--card-house-color, #059669);
-      background: var(--card-house-bg, rgba(5, 150, 105, 0.12));
-      border: 1px solid var(--card-house-border, rgba(5, 150, 105, 0.25));
-    }
-
-    .card-time {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .card-name {
-      margin: 0;
       font-size: 0.95rem;
-      font-weight: 800;
-      color: var(--text-primary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      line-height: 1.25;
+      color: var(--text-secondary);
     }
 
-    .card-meta-line {
+    /* Voter Name & ID */
+    .voter-name-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .voter-full-name {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 0.92rem;
       display: flex;
       align-items: center;
-      gap: 0.45rem;
-      margin-top: 0.25rem;
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      flex-wrap: wrap;
+      gap: 0.4rem;
     }
-
-    .card-adm-badge {
+    .voter-adm-pill {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.72rem;
       font-weight: 700;
-      background: #f0ebe1;
-      padding: 0.08rem 0.35rem;
-      border-radius: 6px;
-      color: var(--text-primary);
+      color: var(--text-muted);
+    }
+    .just-voted-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.64rem;
+      font-weight: 800;
+      color: #065f46;
+      background: #d1fae5;
+      border: 1px solid #6ee7b7;
+      padding: 0.1rem 0.4rem;
+      border-radius: 999px;
+      animation: pulseGreen 1.5s infinite;
     }
 
-    .card-status-badge {
+    /* Class & Sec */
+    .class-sec-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #334155;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 0.2rem 0.55rem;
+      border-radius: 8px;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    /* House Badge */
+    .table-house-badge {
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      display: inline-block;
+      white-space: nowrap;
+      color: var(--h-color, #1e293b);
+      background: var(--h-bg, #f1f5f9);
+      border: 1.5px solid var(--h-border, #cbd5e1);
+    }
+
+    /* Voted For All 4 Status */
+    .voted-all-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.25rem;
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: #047857;
-      background: #ecfdf5;
-      border: 1px solid #a7f3d0;
-      padding: 0.1rem 0.45rem;
+      gap: 0.35rem;
+      padding: 0.3rem 0.75rem;
       border-radius: 9999px;
-      margin-top: 0.35rem;
-    }
-
-    .card-roles-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      color: #1e40af;
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      padding: 0.1rem 0.4rem;
-      border-radius: 9999px;
-      margin-top: 0.35rem;
-    }
-
-    /* Floating +1 Tag */
-    .card-new-tag {
-      position: absolute;
-      top: 0.45rem;
-      right: 0.45rem;
-      background: #10b981;
-      color: #ffffff;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
+      font-size: 0.8rem;
       font-weight: 800;
-      padding: 0.12rem 0.45rem;
-      border-radius: 9999px;
-      animation: floatTag 1.5s ease-out forwards;
-      pointer-events: none;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .voted-all-badge.is-complete {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1.5px solid #a7f3d0;
+    }
+    .voted-all-badge.is-partial {
+      background: #fffbeb;
+      color: #b45309;
+      border: 1.5px solid #fde68a;
     }
 
-    @keyframes floatTag {
-      0% { opacity: 0; transform: translateY(6px) scale(0.8); }
-      20% { opacity: 1; transform: translateY(0) scale(1); }
-      75% { opacity: 1; transform: translateY(-4px); }
-      100% { opacity: 0; transform: translateY(-12px); }
-    }
-
-    .empty-state {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 3.5rem 1rem;
+    /* Time cell */
+    .time-cell {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
       color: var(--text-muted);
-      background: var(--bg-card);
-      border: 1.5px dashed var(--border-default);
-      border-radius: 16px;
-      font-size: 0.95rem;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    /* Empty state row */
+    .empty-row td {
+      padding: 3.5rem 1rem !important;
+      text-align: center;
+    }
+    .empty-state-box {
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .empty-state-box p {
+      margin: 0.4rem 0 0;
+      font-size: 0.85rem;
+      line-height: 1.5;
     }
 
     /* Photo Inspection Modal */
@@ -799,18 +816,42 @@
       </div>
     </section>
 
-    <!-- Activity Stream -->
+    <!-- Activity Stream Table -->
     <div class="feed-header">
-      <div>Incoming Voter Stream (<span id="feed-showing-count">0</span> voters)</div>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span class="live-dot" style="display: inline-block;"></span>
+        <strong style="font-size: 0.95rem;">Incoming Voter Audit Stream</strong>
+        <span style="color: var(--text-muted); font-size: 0.82rem;">(<span id="feed-showing-count">0</span> recorded voters · Newest at top)</span>
+      </div>
       <div class="feed-count-badge" id="feed-update-time">Synced just now</div>
     </div>
 
-    <div class="live-feed-grid" id="live-feed-grid">
-      <div class="empty-state" id="feed-empty-state">
-        <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🗳️</div>
-        <strong>No ballots recorded yet.</strong>
-        <p style="margin: 0.35rem 0 0; font-size: 0.85rem;">As voters cast ballots across polling booths, their votes and verification captures will appear here lively.</p>
-      </div>
+    <div class="table-container">
+      <table class="live-voters-table" id="live-voters-table">
+        <thead>
+          <tr>
+            <th style="width: 55px; text-align: center;">S.No</th>
+            <th style="width: 60px; text-align: center;">Photo</th>
+            <th style="min-width: 170px;">Voter Name</th>
+            <th style="width: 120px;">Voter ID</th>
+            <th style="width: 110px;">Class &amp; Sec</th>
+            <th style="width: 140px;">House</th>
+            <th style="min-width: 200px;">Voting Status (All 4 Roles)</th>
+            <th style="width: 120px; text-align: right;">Time Cast</th>
+          </tr>
+        </thead>
+        <tbody id="live-table-body">
+          <tr id="table-empty-row" class="empty-row">
+            <td colspan="8">
+              <div class="empty-state-box">
+                <div style="font-size: 2.2rem; margin-bottom: 0.4rem;">🗳️</div>
+                <strong style="font-size: 1rem; color: var(--text-primary);">No ballots recorded yet.</strong>
+                <p>As voters cast ballots across polling booths, each new ballot will appear at row #1 here in real-time, pushing older ballots down.</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
@@ -914,8 +955,8 @@
         cabinBar: document.getElementById("live-cabin-bar"),
         search: document.getElementById("live-search"),
         pills: Array.from(document.querySelectorAll(".house-pill-btn")),
-        grid: document.getElementById("live-feed-grid"),
-        empty: document.getElementById("feed-empty-state"),
+        tbody: document.getElementById("live-table-body"),
+        emptyRow: document.getElementById("table-empty-row"),
         showingCount: document.getElementById("feed-showing-count"),
         updateTime: document.getElementById("feed-update-time"),
         photoModal: document.getElementById("photo-modal"),
@@ -1132,14 +1173,21 @@
         el.updateTime.textContent = `Updated ${new Date().toLocaleTimeString()}`;
 
         if (filtered.length === 0) {
-          el.grid.innerHTML = "";
-          el.grid.appendChild(el.empty);
-          el.empty.hidden = false;
+          el.tbody.innerHTML = `
+            <tr id="table-empty-row" class="empty-row">
+              <td colspan="8">
+                <div class="empty-state-box">
+                  <div style="font-size: 2.2rem; margin-bottom: 0.4rem;">🗳️</div>
+                  <strong style="font-size: 1rem; color: var(--text-primary);">No ballots matching filter.</strong>
+                  <p>No recorded voters found for the selected house or search criteria.</p>
+                </div>
+              </td>
+            </tr>
+          `;
           return;
         }
 
-        el.empty.hidden = true;
-        el.grid.innerHTML = "";
+        el.tbody.innerHTML = "";
 
         // Check for brand new voters to trigger animation & chime
         const currentAdmissions = new Set(allVoters.map((v) => v.admissionNo));
@@ -1156,52 +1204,70 @@
           setTimeout(() => el.totalVoted.classList.remove("bump"), 500);
         }
 
-        filtered.forEach((v) => {
+        filtered.forEach((v, idx) => {
           const isJustAdded = previousVotedAdmissions.size > 0 && !previousVotedAdmissions.has(v.admissionNo);
           const houseMeta = HOUSE_COLORS[v.houseCode] || { name: v.houseCode, color: "#141413", bg: "#f5ede0", border: "#e5dccb" };
 
-          const card = document.createElement("div");
-          card.className = `voter-card ${isJustAdded ? "is-new-vote" : ""}`;
-          card.style.setProperty("--card-house-color", houseMeta.color);
-          card.style.setProperty("--card-house-bg", houseMeta.bg);
-          card.style.setProperty("--card-house-border", houseMeta.border);
-
           const photoHtml = v.photoUrl
-            ? `<img src="${v.photoUrl}" alt="${v.fullName}" loading="lazy" />`
-            : `<span class="card-avatar-initials">${getInitials(v.fullName)}</span>`;
+            ? `<div class="td-photo-thumb" title="Click to inspect verification capture"><img src="${v.photoUrl}" alt="${v.fullName}" loading="lazy" /></div>`
+            : `<div class="td-photo-thumb" title="No photo capture"><span class="td-photo-initials">${getInitials(v.fullName)}</span></div>`;
 
-          const metaClass = v.isStaff ? `${v.section || "Faculty"}` : `Class ${v.className} · Sec ${v.section}`;
+          const metaClass = v.isStaff
+            ? `<span class="class-sec-badge" style="background: #ecfdf5; color: #047857; border-color: #a7f3d0;">Faculty</span>`
+            : `<span class="class-sec-badge">Class ${v.className} · ${v.section}</span>`;
 
-          card.innerHTML = `
-            ${isJustAdded ? '<span class="card-new-tag">⚡ JUST VOTED</span>' : ""}
-            <div class="card-photo-wrap" title="Click to inspect verification capture">
-              ${photoHtml}
-            </div>
-            <div class="card-info">
-              <div class="card-top-line">
-                <span class="card-house-tag">${houseMeta.name}</span>
-                <span class="card-time">${timeAgo(v.latestCastAt)}</span>
+          // Check if voted for all 4 roles
+          let votedStatusHtml = "";
+          if (v.houseCode === "CENTRAL" || v.isStaff) {
+            const isAll3 = v.ballotsCount >= 3;
+            votedStatusHtml = isAll3
+              ? `<span class="voted-all-badge is-complete">✓ Central Cabinet (3/3)</span>`
+              : `<span class="voted-all-badge is-partial">⚠️ ${v.ballotsCount} of 3 Cabinet roles</span>`;
+          } else {
+            const isAll4 = v.ballotsCount >= 4;
+            votedStatusHtml = isAll4
+              ? `<span class="voted-all-badge is-complete">✓ Voted for all 4 roles</span>`
+              : `<span class="voted-all-badge is-partial">⚠️ ${v.ballotsCount} of 4 roles voted</span>`;
+          }
+
+          const tr = document.createElement("tr");
+          if (isJustAdded) {
+            tr.className = "is-new-vote-row";
+          }
+
+          tr.innerHTML = `
+            <td class="td-sno">${idx + 1}</td>
+            <td style="text-align: center;">${photoHtml}</td>
+            <td>
+              <div class="voter-name-cell">
+                <span class="voter-full-name">
+                  ${v.fullName}
+                  ${isJustAdded ? '<span class="just-voted-badge">⚡ NEW</span>' : ""}
+                </span>
+                <span class="voter-adm-pill">Adm No: ${v.admissionNo}</span>
               </div>
-              <h3 class="card-name">${v.fullName}</h3>
-              <div class="card-meta-line">
-                <span class="card-adm-badge">${v.admissionNo}</span>
-                <span>${metaClass}</span>
-              </div>
-              <div style="display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap;">
-                <span class="card-status-badge">✓ Ballot Accepted</span>
-                <span class="card-roles-badge">${v.ballotsCount} Role${v.ballotsCount > 1 ? "s" : ""}</span>
-              </div>
-            </div>
+            </td>
+            <td><span class="voter-adm-pill" style="font-weight: 800; color: #1e293b; font-size: 0.8rem;">${v.admissionNo}</span></td>
+            <td>${metaClass}</td>
+            <td>
+              <span class="table-house-badge" style="--h-color: ${houseMeta.color}; --h-bg: ${houseMeta.bg}; --h-border: ${houseMeta.border};">
+                ${houseMeta.name}
+              </span>
+            </td>
+            <td>${votedStatusHtml}</td>
+            <td class="time-cell" title="${v.latestCastAt ? new Date(v.latestCastAt).toLocaleString() : ''}">
+              ${timeAgo(v.latestCastAt)}
+            </td>
           `;
 
-          const photoWrap = card.querySelector(".card-photo-wrap");
-          if (v.photoUrl && photoWrap) {
-            photoWrap.addEventListener("click", () => {
-              openPhoto(v.fullName, `${v.admissionNo} · ${houseMeta.name} · ${metaClass}`, v.photoUrl);
+          const photoThumb = tr.querySelector(".td-photo-thumb");
+          if (v.photoUrl && photoThumb) {
+            photoThumb.addEventListener("click", () => {
+              openPhoto(v.fullName, `${v.admissionNo} · ${houseMeta.name} · ${v.isStaff ? "Faculty" : `Class ${v.className}-${v.section}`}`, v.photoUrl);
             });
           }
 
-          el.grid.appendChild(card);
+          el.tbody.appendChild(tr);
         });
 
         previousVotedAdmissions = currentAdmissions;
