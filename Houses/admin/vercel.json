@@ -1,0 +1,12 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/edit-votes", "destination": "/edit-votes.html" },
+    { "source": "/results", "destination": "/results.html" },
+    { "source": "/house", "destination": "/house.html" },
+    { "source": "/print-teachers", "destination": "/print_teachers.html" },
+    { "source": "/print-voter-ids", "destination": "/print_voter_ids.html" },
+    { "source": "/live-voters", "destination": "/live-voters.html" }
+  ]
+}
