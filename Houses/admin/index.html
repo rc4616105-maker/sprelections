@@ -54,15 +54,27 @@
       </div>
     </div>
 
-    <div id="house-closed-banner" class="sb-offline-banner" style="background: #fef3c7; color: #92400e; border: 1px solid #f59e0b;" role="alert" hidden>
-      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; flex-wrap: wrap; gap: 0.5rem;">
-        <div>
-          <strong>⏸️ House Polling is Concluded</strong> — The 6 House Booths are closed. <strong>24 House Winners</strong> are tallied and authorized to vote in the <strong>School Cabinet</strong>.
+    <!-- House Polling Concluded Status Banner -->
+    <div id="house-closed-banner" class="concluded-executive-banner" role="alert" hidden>
+      <div class="banner-content-left">
+        <div class="banner-status-badge">
+          <span class="banner-status-dot"></span>
+          <span>House Polling Concluded</span>
         </div>
-        <div style="display: flex; gap: 0.45rem;">
-          <a href="../../Result declaration/index.html?mode=houses" class="btn btn-sm btn-primary" style="text-decoration: none; padding: 0.3rem 0.65rem; font-size: 0.82rem; background: #92400e; border-color: #78350f;">Launch Scratch Reveal 🎉</a>
-          <a href="../central/index.html" target="_blank" class="btn btn-sm btn-secondary" style="text-decoration: none; padding: 0.3rem 0.65rem; font-size: 0.82rem; background: #fff;">Open Cabinet Booth 🗳️</a>
+        <div class="banner-text-group">
+          <h2 class="banner-main-title">6 House Booths Frozen · 24 Winners Declared</h2>
+          <p class="banner-subtitle">
+            House voting is closed. The 24 elected Captains &amp; Vice Captains are authorized and unlocked to vote in the School Cabinet.
+          </p>
         </div>
+      </div>
+      <div class="banner-actions-right">
+        <a href="../../Result declaration/index.html?mode=houses" class="banner-action-btn btn-reveal" title="Open the Scratch Card Ceremony">
+          <span>🎭</span> Launch Scratch Reveal
+        </a>
+        <a href="../central/index.html" target="_blank" class="banner-action-btn btn-cabinet" title="Open School Cabinet Polling Booth">
+          <span>🏛️</span> Open Cabinet Booth
+        </a>
       </div>
     </div>
 

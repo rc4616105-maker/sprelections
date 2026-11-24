@@ -2220,3 +2220,125 @@ tr[hidden],
   animation: spinWheel 0.75s linear infinite;
   margin: 0 auto 0.85rem;
 }
+
+/* Concluded Executive Banner */
+.concluded-executive-banner {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 1.5px solid #f59e0b;
+  border-radius: 16px;
+  padding: 1.15rem 1.45rem;
+  margin: 1.15rem 0 1.35rem;
+  box-shadow: 0 4px 18px -4px rgba(217, 119, 6, 0.16), 0 1px 3px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  animation: bannerSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes bannerSlideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.banner-content-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+  min-width: 280px;
+}
+
+.banner-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #92400e;
+  background: rgba(245, 158, 11, 0.18);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  width: fit-content;
+}
+
+.banner-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #d97706;
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.25);
+}
+
+.banner-main-title {
+  margin: 0.15rem 0 0;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #78350f;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.banner-subtitle {
+  margin: 0;
+  font-size: 0.86rem;
+  color: #92400e;
+  line-height: 1.35;
+  font-weight: 500;
+}
+
+.banner-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.banner-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.48rem 1rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.banner-action-btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-reveal {
+  background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
+  color: #ffffff !important;
+  border: 1.5px solid #78350f;
+}
+
+.btn-reveal:hover {
+  box-shadow: 0 4px 12px rgba(180, 83, 9, 0.35);
+  background: linear-gradient(135deg, #92400e 0%, #78350f 100%);
+}
+
+.btn-cabinet {
+  background: #ffffff;
+  color: #1e293b !important;
+  border: 1.5px solid #cbd5e1;
+}
+
+.btn-cabinet:hover {
+  border-color: #059669;
+  color: #059669 !important;
+  background: #f0fdf4;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+}
