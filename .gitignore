@@ -11,6 +11,7 @@ supabase/.temp/
 # Temporary files and scratch scripts
 scratch/
 rep_4733.js
-*.txt
 .DS_Store
 Thumbs.db
+~$*.xlsx
+~$*.docx
