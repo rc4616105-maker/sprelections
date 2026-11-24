@@ -1,0 +1,12 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/Houses/index.html" },
+    { "source": "/admin", "destination": "/Houses/admin/index.html" },
+    { "source": "/edit-votes", "destination": "/Houses/admin/edit-votes.html" },
+    { "source": "/results", "destination": "/Houses/admin/results.html" },
+    { "source": "/teachers", "destination": "/Houses/teachers/index.html" },
+    { "source": "/graphs", "destination": "/Houses/graphs.html" },
+    { "source": "/ceremony", "destination": "/Result declaration/index.html" }
+  ]
+}
