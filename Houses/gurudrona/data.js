@@ -15988,7 +15988,7 @@ window.HOUSE_DATA = {
     {
       "id": "CAND_GURUDRONA_VICE_CAPTAIN_GIRL_PANUPAMA",
       "admissionNo": "CAND-9-PANU",
-      "fullName": "P. Anupama",
+      "fullName": "P.Anupama",
       "className": "9",
       "section": "Class 9 \u00b7 VSB",
       "houseCode": "GURUDRONA",

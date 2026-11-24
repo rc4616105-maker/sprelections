@@ -2623,7 +2623,7 @@ window.HOUSE_DATA = {
     {
       "id": "CAND_VISHWAMITHRA_VICE_CAPTAIN_BOY_KRITHWIK",
       "admissionNo": "CAND-9-KRIT",
-      "fullName": "K.Rithwik",
+      "fullName": "R.Rithwik",
       "className": "9",
       "section": "Class 9",
       "houseCode": "VISHWAMITHRA",
