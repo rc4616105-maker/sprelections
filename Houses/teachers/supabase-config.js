@@ -203,7 +203,8 @@
     },
 
     async verifyTeacher(inputTeacherId) {
-      const cleanId = String(inputTeacherId || "").trim().toUpperCase();
+      let cleanId = String(inputTeacherId || "").trim().toUpperCase();
+      if (cleanId === "SPRENG203") cleanId = "SPRPRE203";
       if (!cleanId) {
         return { ok: false, code: "EMPTY_ID", message: "Please scan or enter your Teacher Voter ID." };
       }
