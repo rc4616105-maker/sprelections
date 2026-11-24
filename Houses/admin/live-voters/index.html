@@ -31,73 +31,47 @@
     .live-shell {
       max-width: 1440px;
       margin: 0 auto;
-      padding: 1rem 1.25rem 3rem;
+      padding: 0.45rem 1.15rem 2rem;
       box-sizing: border-box;
     }
 
-    /* Live Header */
+    /* Compact Live Header */
     .live-topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-      padding-bottom: 0.85rem;
-      margin-bottom: 1rem;
-      border-bottom: 1.5px solid var(--border-default);
+      gap: 0.75rem;
+      padding-bottom: 0.35rem;
+      margin-bottom: 0.55rem;
+      border-bottom: 1.5px solid rgba(20, 20, 19, 0.08);
     }
 
-    .live-header-left {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      flex-wrap: wrap;
-    }
-
-    .back-btn {
+    .back-arrow-btn {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      padding: 0.42rem 0.9rem;
-      font-size: 0.82rem;
-      font-weight: 700;
+      padding: 0.28rem 0.65rem;
+      font-size: 0.8rem;
+      font-weight: 800;
       border-radius: 9999px;
       background: var(--bg-card);
       border: 1.5px solid var(--border-default);
       color: var(--text-primary);
       text-decoration: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
       transition: all 0.2s ease;
     }
 
-    .back-btn:hover {
+    .back-arrow-btn:hover {
       background: #f5ede0;
       border-color: #059669;
       transform: translateX(-2px);
     }
 
-    .live-title-group h1 {
-      margin: 0;
-      font-family: 'Fraunces', serif;
-      font-size: clamp(1.4rem, 2.5vw, 1.85rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .live-title-group p {
-      margin: 0.15rem 0 0;
-      font-size: 0.84rem;
-      color: var(--text-secondary);
-    }
-
-    .live-header-right {
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
-      flex-wrap: wrap;
+    .back-arrow-btn .arrow-icon {
+      font-size: 1.05rem;
+      line-height: 1;
+      font-weight: 800;
     }
 
     .live-pill-badge {
@@ -160,7 +134,7 @@
       display: grid;
       grid-template-columns: 290px 1fr 290px;
       gap: 0.85rem;
-      margin-bottom: 1.15rem;
+      margin-bottom: 0.65rem;
       align-items: stretch;
     }
 
@@ -183,7 +157,7 @@
       background: var(--bg-card);
       border: 1.5px solid var(--border-default);
       border-radius: 16px;
-      padding: 1rem 1.15rem;
+      padding: 0.7rem 0.95rem;
       box-shadow: 0 4px 14px -6px rgba(45, 36, 20, 0.08);
       display: flex;
       flex-direction: column;
@@ -343,8 +317,8 @@
       background: var(--bg-card);
       border: 1.5px solid var(--border-default);
       border-radius: 14px;
-      padding: 0.75rem 1rem;
-      margin-bottom: 1.15rem;
+      padding: 0.5rem 0.85rem;
+      margin-bottom: 0.65rem;
       display: flex;
       flex-direction: column;
       gap: 0.65rem;
@@ -428,7 +402,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.45rem;
       font-size: 0.85rem;
       font-weight: 700;
       color: var(--text-secondary);
@@ -706,18 +680,14 @@
 </head>
 <body>
   <div class="live-shell">
-    <!-- Header -->
+    <!-- Compact Header -->
     <header class="live-topbar">
-      <div class="live-header-left">
-        <a href="../index.html" class="back-btn">← Back to Admin</a>
-        <div class="live-title-group">
-          <h1>⚡ Live Voters Stream <span class="live-pill-badge"><span class="live-dot"></span> LIVE SYNC (2s)</span></h1>
-          <p>Real-time voter check-in &amp; ballot activity feed across all houses and school cabin.</p>
-        </div>
+      <div class="live-status-wrap">
+        <span class="live-pill-badge"><span class="live-dot"></span> LIVE SYNC (2s)</span>
       </div>
-      <div class="live-header-right">
-        <a href="../../Houses/graphs.html?from=admin" class="live-btn">📊 Turnout Graphs</a>
-      </div>
+      <a href="../index.html" class="back-arrow-btn" title="Back to Admin" aria-label="Back to Admin">
+        <span class="arrow-icon">←</span> <span class="back-txt">Admin</span>
+      </a>
     </header>
 
     <!-- 3 Turnout Metric Cards: Total Voters, House-Wise Voters, and School Cabin -->
