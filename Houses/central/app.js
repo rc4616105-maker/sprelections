@@ -709,19 +709,22 @@
       el.voterIdBadge.textContent = `Voter ID ${result.student.admissionNo}`;
       const isTeacher = result.student.isStaff === true && result.student.className !== "10" && result.student.className !== "9" && result.student.className !== "8" && result.student.className !== "7" && result.student.admissionNo !== "1C8492" && result.student.admissionNo !== "0000";
       const isWinner = Boolean(result.student.isElectedWinner);
+      const isCabinetContestant = Boolean(result.student.isCabinetContestant);
       el.voterMeta.textContent = isWinner
         ? `🎖️ ${result.student.winnerRoleTitle || "Elected House Captain"} · ${result.student.winnerHouseName || "House Council"}`
         : isTeacher
         ? `${result.student.subject ? `${result.student.subject} Faculty` : "Teaching Staff"} · ${houseConfig.name}`
         : `Class ${result.student.className}-${result.student.section} · ${houseConfig.name} House`;
-      el.voterRoleTag.textContent = isWinner
+      el.voterRoleTag.textContent = isCabinetContestant
+        ? "🎖️ Authorized Voter (School Cabinet Contestant)"
+        : isWinner
         ? "Authorized Electoral College Voter (1 of 24 House Leaders)"
         : isTeacher
         ? "Authorized Teacher / Faculty"
         : result.student.isCandidate
         ? `Candidate · ${result.student.positionName || "House Leadership"}`
         : result.verificationNote || "Eligible Voter";
-      if (isWinner) {
+      if (isWinner || isCabinetContestant) {
         el.voterRoleTag.style.background = "#dcfce7";
         el.voterRoleTag.style.color = "#15803d";
         el.voterRoleTag.style.border = "1px solid #86efac";

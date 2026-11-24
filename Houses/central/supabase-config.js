@@ -341,12 +341,43 @@
       const numId = parseInt(cleanId, 10);
       const isTeacher = localMatch.isStaff === true || localMatch.houseCode === "ALL" || localMatch.isUniversal === true || (cleanId === "1C8492" || cleanId === "0000") || (!isNaN(numId) && numId >= 6001 && numId <= 6087);
 
-      // Helper: Verify whether voter is one of the 24 elected House Captains & Vice Captains
+      // Helper: Verify whether voter is one of the 24 elected House Captains & Vice Captains OR a School Cabinet Contestant
       const isElectedHouseCaptainOrWinner = async (admId, voter) => {
         const idNorm = String(admId || "").trim().toUpperCase();
         if (idNorm === "0000" || idNorm === "1C8492" || idNorm === "000000") {
           return { isWinner: true, roleTitle: "Elected House Captain (Demo)", houseName: "All Houses" };
         }
+
+        // Check 0: School Cabinet Contestants (President, Vice President, Sports, Lit, Cultural Secretary)
+        // Authorized to vote in School Cabinet irrespective of winners!
+        try {
+          const allCands = (typeof window.ALL_CONTESTING_CANDIDATES !== "undefined" && Array.isArray(window.ALL_CONTESTING_CANDIDATES))
+            ? window.ALL_CONTESTING_CANDIDATES
+            : (window.HOUSE_DATA?.houseCandidates || []);
+          const cabContestants = allCands.filter((c) =>
+            c.houseCode === "CENTRAL" ||
+            c.positionId === "PRESIDENT" ||
+            c.positionId === "VICE_PRESIDENT" ||
+            c.positionId === "SPORTS_SECRETARY" ||
+            c.positionId === "LITERARY_SECRETARY" ||
+            c.positionId === "SOCIAL_CULTURAL_SECRETARY"
+          );
+
+          const vName = voter && voter.fullName ? voter.fullName.trim().toLowerCase() : "";
+          const matchCab = cabContestants.find((c) => {
+            const cAdm = String(c.admissionNo || "").trim().toUpperCase();
+            const cName = String(c.fullName || "").trim().toLowerCase();
+            return (cAdm && cAdm === idNorm) || (cName && vName && (cName === vName || cName.includes(vName) || vName.includes(cName)));
+          });
+          if (matchCab) {
+            return {
+              isWinner: true,
+              isCabinetContestant: true,
+              roleTitle: `Cabinet Contestant · ${matchCab.positionName || "Executive Role"}`,
+              houseName: matchCab.section || "School Cabinet Contestant",
+            };
+          }
+        } catch (_) {}
 
         // Check 1: Declared winners list saved by the Result Declaration Wheel
         try {
@@ -427,11 +458,12 @@
               ok: false,
               code: "ELECTORAL_COLLEGE_RESTRICTED",
               title: "House Captains Only",
-              message: `Voter ID ${cleanId} belongs to ${localMatch.fullName} (${registeredName} House). School Cabinet voting is restricted exclusively to the 24 elected House Captains & Vice Captains from the 6 Houses (Electoral College).`,
+              message: `Voter ID ${cleanId} belongs to ${localMatch.fullName} (${registeredName} House). School Cabinet voting is authorized for Teachers, the 24 elected House Captains, and School Cabinet Contestants.`,
             };
           }
           isElectedCaptain = true;
           localMatch.isElectedWinner = true;
+          localMatch.isCabinetContestant = Boolean(winnerCheck.isCabinetContestant);
           localMatch.winnerRoleTitle = winnerCheck.roleTitle;
           localMatch.winnerHouseName = winnerCheck.houseName;
         }
@@ -902,7 +934,7 @@
         const isWinner = Boolean(stu.isElectedWinner || student.isElectedWinner || (await isElectedHouseCaptainOrWinner(stu.admissionNo, stu)).isWinner);
 
         if (!isTeacher && !isWinner && houseConfig.code === "CENTRAL") {
-          throw new Error("Voting for School Cabinet is strictly reserved for Teachers and the 24 Elected House Captains.");
+          throw new Error("Voting for School Cabinet is strictly reserved for Teachers, the 24 Elected House Captains, and School Cabinet Contestants.");
         }
         if (!isTeacher && !isWinner && stu.houseCode !== houseConfig.code) {
           throw new Error("Student does not belong to this house roster.");

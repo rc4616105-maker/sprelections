@@ -1,6 +1,3 @@
-// Official SPR School Elections 2026 — Master Contesting Candidates Roster
-// 140 Verified Candidates across 6 Houses and Central Cabinet
-// Photos, names, and symbols reconciled from 1docs/contestets
 window.ALL_CONTESTING_CANDIDATES = [
   {
     "id": "CAND_BHEESHMA_CAPTAIN_GIRL_ANIKSHIT",
@@ -1197,6 +1194,27 @@ window.ALL_CONTESTING_CANDIDATES = [
     },
     "photoUrl": "../assets/candidates/hanuman_tsragvi.jpg",
     "photoPath": "../assets/candidates/hanuman_tsragvi.jpg",
+    "isApproved": true
+  },
+  {
+    "id": "CAND_HANUMAN_CAPTAIN_GIRL_BPRADEEPTHI",
+    "admissionNo": "1M6408",
+    "fullName": "B.Pradeepthi Sai",
+    "className": "10",
+    "section": "Class 10 \u00b7 MRP",
+    "houseCode": "HANUMAN",
+    "positionId": "CAPTAIN_GIRL",
+    "positionName": "Girls Captain (Class 10 Girl)",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Hanuman House",
+    "symbolObj": {
+      "name": "Mango",
+      "icon": "\ud83e\udd6d",
+      "slug": "mango",
+      "image": "../assets/symbols/mango.png",
+      "imagePath": "../assets/symbols/mango.png"
+    },
+    "photoUrl": "../assets/candidates/hanuman_bpradeepthisai.png",
+    "photoPath": "../assets/candidates/hanuman_bpradeepthisai.png",
     "isApproved": true
   },
   {
@@ -2943,37 +2961,3 @@ window.ALL_CONTESTING_CANDIDATES = [
     "isApproved": true
   }
 ];
-
-window.findCandidateMeta = function (name, houseCode) {
-  if (!window.ALL_CONTESTING_CANDIDATES || !Array.isArray(window.ALL_CONTESTING_CANDIDATES)) return null;
-  const cleanName = String(name || "").trim().toLowerCase();
-  if (!cleanName) return null;
-  const simplified = cleanName.replace(/[\.\s]+/g, "");
-
-  // 1. Exact match
-  let found = window.ALL_CONTESTING_CANDIDATES.find((c) => {
-    const cName = String(c.fullName || "").trim().toLowerCase();
-    const cSimp = cName.replace(/[\.\s]+/g, "");
-    if (cName === cleanName || cSimp === simplified) {
-      if (houseCode && c.houseCode && c.houseCode.toUpperCase() !== String(houseCode).toUpperCase()) return false;
-      return true;
-    }
-    return false;
-  });
-
-  // 2. Substring match
-  if (!found) {
-    found = window.ALL_CONTESTING_CANDIDATES.find((c) => {
-      const cName = String(c.fullName || "").trim().toLowerCase();
-      const cSimp = cName.replace(/[\.\s]+/g, "");
-      const match = cName.includes(cleanName) || cleanName.includes(cName) || cSimp.includes(simplified) || simplified.includes(cSimp);
-      if (match) {
-        if (houseCode && c.houseCode && c.houseCode.toUpperCase() !== String(houseCode).toUpperCase()) return false;
-        return true;
-      }
-      return false;
-    });
-  }
-  return found || null;
-};
-
