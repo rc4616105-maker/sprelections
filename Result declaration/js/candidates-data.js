@@ -2940,6 +2940,111 @@ window.ALL_CONTESTING_CANDIDATES = [
     "isApproved": true
   },
   {
+  "id": "CAND_CENTRAL_VICE_PRESIDENT_34",
+  "admissionNo": "9V4182",
+  "fullName": "M.Anvitha Sharma",
+  "className": "9",
+  "section": "Class 9 \u00b7 Vikram Sarabhai",
+  "houseCode": "CENTRAL",
+  "positionId": "VICE_PRESIDENT",
+  "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+  "tagline": "Dedicated service and inclusive student leadership \u00b7 School Cabinet",
+  "symbolObj": {
+    "name": "Dolphin",
+    "icon": "\ud83d\udc2c",
+    "slug": "dolphin",
+    "image": "../assets/symbols/dolphin.png",
+    "imagePath": "../assets/symbols/dolphin.png"
+  },
+  "photoUrl": "../assets/candidates/central_manvithasharma.jpg",
+  "photoPath": "../assets/candidates/central_manvithasharma.jpg",
+  "isApproved": true
+},
+{
+  "id": "CAND_CENTRAL_VICE_PRESIDENT_35",
+  "admissionNo": "9V1966",
+  "fullName": "K.Hadvitha",
+  "className": "9",
+  "section": "Class 9 \u00b7 Vikram Sarabhai",
+  "houseCode": "CENTRAL",
+  "positionId": "VICE_PRESIDENT",
+  "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+  "tagline": "Empowering students with integrity and vision \u00b7 School Cabinet",
+  "symbolObj": {
+    "name": "Ganga River",
+    "icon": "\ud83c\udf0a",
+    "slug": "ganga_river",
+    "image": "../assets/symbols/ganga_river.png",
+    "imagePath": "../assets/symbols/ganga_river.png"
+  },
+  "photoUrl": "../assets/candidates/central_khadvitha.jpg",
+  "photoPath": "../assets/candidates/central_khadvitha.jpg",
+  "isApproved": true
+},
+{
+  "id": "CAND_CENTRAL_VICE_PRESIDENT_36",
+  "admissionNo": "9V4045",
+  "fullName": "K.Ishwarya",
+  "className": "9",
+  "section": "Class 9 \u00b7 Vikram Sarabhai",
+  "houseCode": "CENTRAL",
+  "positionId": "VICE_PRESIDENT",
+  "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+  "tagline": "Inspiring action, fostering teamwork and progress \u00b7 School Cabinet",
+  "symbolObj": {
+    "name": "Indian Currency",
+    "icon": "\u20b9",
+    "slug": "indian_currency",
+    "image": "../assets/symbols/indian_currency.png",
+    "imagePath": "../assets/symbols/indian_currency.png"
+  },
+  "photoUrl": "../assets/candidates/central_kishwarya.jpg",
+  "photoPath": "../assets/candidates/central_kishwarya.jpg",
+  "isApproved": true
+},
+{
+  "id": "CAND_CENTRAL_VICE_PRESIDENT_37",
+  "admissionNo": "9V7995",
+  "fullName": "G.Aadhya",
+  "className": "9",
+  "section": "Class 9 \u00b7 Vikram Sarabhai",
+  "houseCode": "CENTRAL",
+  "positionId": "VICE_PRESIDENT",
+  "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+  "tagline": "Grace, unity, and excellence in student leadership \u00b7 School Cabinet",
+  "symbolObj": {
+    "name": "Peacock",
+    "icon": "\ud83e\udd9a",
+    "slug": "peacock",
+    "image": "../assets/symbols/peacock.png",
+    "imagePath": "../assets/symbols/peacock.png"
+  },
+  "photoUrl": "../assets/candidates/central_gaadhya.jpg",
+  "photoPath": "../assets/candidates/central_gaadhya.jpg",
+  "isApproved": true
+},
+{
+  "id": "CAND_CENTRAL_VICE_PRESIDENT_38",
+  "admissionNo": "9V1576",
+  "fullName": "V.Ananya Reddy",
+  "className": "9",
+  "section": "Class 9 \u00b7 Vikram Sarabhai",
+  "houseCode": "CENTRAL",
+  "positionId": "VICE_PRESIDENT",
+  "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+  "tagline": "Strength, determination, and visionary governance \u00b7 School Cabinet",
+  "symbolObj": {
+    "name": "Royal Bengal Tiger",
+    "icon": "\ud83d\udc05",
+    "slug": "royal_bengal_tiger",
+    "image": "../assets/symbols/tiger.png",
+    "imagePath": "../assets/symbols/tiger.png"
+  },
+  "photoUrl": "../assets/candidates/central_vananyareddy.jpg",
+  "photoPath": "../assets/candidates/central_vananyareddy.jpg",
+  "isApproved": true
+},
+  {
     "id": "CAND_VISHWAMITHRA_CAPTAIN_BOY_JHARSHITH",
     "admissionNo": "10031",
     "fullName": "J.Harshith",
@@ -2955,111 +3060,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
-    },
-{
-        "id": "CAND_CENTRAL_VICE_PRESIDENT_34",
-        "admissionNo": "9V4182",
-        "fullName": "M.Anvitha Sharma",
-        "className": "9",
-        "section": "Class 9 \u00b7 Vikram Sarabhai",
-        "houseCode": "CENTRAL",
-        "positionId": "VICE_PRESIDENT",
-        "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-        "tagline": "Dedicated service and inclusive student leadership \u00b7 School Cabinet",
-        "symbolObj": {
-            "name": "Dolphin",
-            "icon": "\ud83d\udc2c",
-            "slug": "dolphin",
-            "image": "../assets/symbols/dolphin.png",
-            "imagePath": "../assets/symbols/dolphin.png"
-        },
-        "photoUrl": "../assets/candidates/central_manvithasharma.jpg",
-        "photoPath": "../assets/candidates/central_manvithasharma.jpg",
-        "isApproved": true
-    },
-    {
-        "id": "CAND_CENTRAL_VICE_PRESIDENT_35",
-        "admissionNo": "9V1966",
-        "fullName": "K.Hadvitha",
-        "className": "9",
-        "section": "Class 9 \u00b7 Vikram Sarabhai",
-        "houseCode": "CENTRAL",
-        "positionId": "VICE_PRESIDENT",
-        "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-        "tagline": "Empowering students with integrity and vision \u00b7 School Cabinet",
-        "symbolObj": {
-            "name": "Ganga River",
-            "icon": "\ud83c\udf0a",
-            "slug": "ganga_river",
-            "image": "../assets/symbols/ganga_river.png",
-            "imagePath": "../assets/symbols/ganga_river.png"
-        },
-        "photoUrl": "../assets/candidates/central_khadvitha.jpg",
-        "photoPath": "../assets/candidates/central_khadvitha.jpg",
-        "isApproved": true
-    },
-    {
-        "id": "CAND_CENTRAL_VICE_PRESIDENT_36",
-        "admissionNo": "9V4045",
-        "fullName": "K.Ishwarya",
-        "className": "9",
-        "section": "Class 9 \u00b7 Vikram Sarabhai",
-        "houseCode": "CENTRAL",
-        "positionId": "VICE_PRESIDENT",
-        "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-        "tagline": "Inspiring action, fostering teamwork and progress \u00b7 School Cabinet",
-        "symbolObj": {
-            "name": "Indian Currency",
-            "icon": "\u20b9",
-            "slug": "indian_currency",
-            "image": "../assets/symbols/indian_currency.png",
-            "imagePath": "../assets/symbols/indian_currency.png"
-        },
-        "photoUrl": "../assets/candidates/central_kishwarya.jpg",
-        "photoPath": "../assets/candidates/central_kishwarya.jpg",
-        "isApproved": true
-    },
-    {
-        "id": "CAND_CENTRAL_VICE_PRESIDENT_37",
-        "admissionNo": "9V7995",
-        "fullName": "G.Aadhya",
-        "className": "9",
-        "section": "Class 9 \u00b7 Vikram Sarabhai",
-        "houseCode": "CENTRAL",
-        "positionId": "VICE_PRESIDENT",
-        "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-        "tagline": "Grace, unity, and excellence in student leadership \u00b7 School Cabinet",
-        "symbolObj": {
-            "name": "Peacock",
-            "icon": "\ud83e\udd9a",
-            "slug": "peacock",
-            "image": "../assets/symbols/peacock.png",
-            "imagePath": "../assets/symbols/peacock.png"
-        },
-        "photoUrl": "../assets/candidates/central_gaadhya.jpg",
-        "photoPath": "../assets/candidates/central_gaadhya.jpg",
-        "isApproved": true
-    },
-    {
-        "id": "CAND_CENTRAL_VICE_PRESIDENT_38",
-        "admissionNo": "9V1576",
-        "fullName": "V.Ananya Reddy",
-        "className": "9",
-        "section": "Class 9 \u00b7 Vikram Sarabhai",
-        "houseCode": "CENTRAL",
-        "positionId": "VICE_PRESIDENT",
-        "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-        "tagline": "Strength, determination, and visionary governance \u00b7 School Cabinet",
-        "symbolObj": {
-            "name": "Royal Bengal Tiger",
-            "icon": "\ud83d\udc05",
-            "slug": "royal_bengal_tiger",
-            "image": "../assets/symbols/tiger.png",
-            "imagePath": "../assets/symbols/tiger.png"
-        },
-        "photoUrl": "../assets/candidates/central_vananyareddy.jpg",
-        "photoPath": "../assets/candidates/central_vananyareddy.jpg",
-        "isApproved": true
     },
     "photoUrl": "../assets/candidates/vishwamithra_jharshith.jpg",
     "photoPath": "../assets/candidates/vishwamithra_jharshith.jpg",

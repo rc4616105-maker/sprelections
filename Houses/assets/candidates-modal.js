@@ -390,6 +390,33 @@
       return this.resolvePhoto(img);
     }
 
+    countFor(house) {
+      if (!Array.isArray(this.candidates) || this.candidates.length === 0) return 0;
+      if (house === "ALL") return this.candidates.length;
+      return this.candidates.filter(c => String(c.houseCode || "").toUpperCase() === house).length;
+    }
+
+    updateTabCounts() {
+      if (!this.modalEl) return;
+      const tabs = this.modalEl.querySelectorAll(".cand-tab-pill");
+      tabs.forEach(tab => {
+        const h = tab.getAttribute("data-house");
+        const count = this.countFor(h);
+        if (h === "ALL") tab.textContent = `All (${count})`;
+        else if (h === "CENTRAL") tab.textContent = `⭐ Cabinet (${count})`;
+        else if (h === "BHEESHMA") tab.textContent = `🦁 Bheeshma (${count})`;
+        else if (h === "GURUDRONA") tab.textContent = `🏹 Gurudrona (${count})`;
+        else if (h === "HANUMAN") tab.textContent = `⚡ Hanuman (${count})`;
+        else if (h === "KARNA") tab.textContent = `⚔️ Karna (${count})`;
+        else if (h === "VASISTHA") tab.textContent = `🌿 Vasistha (${count})`;
+        else if (h === "VISHWAMITHRA") tab.textContent = `🔥 Vishwamithra (${count})`;
+      });
+      const sub = this.modalEl.querySelector("#cand-summary-sub");
+      if (sub && this.candidates.length > 0) {
+        sub.textContent = `Total ${this.candidates.length} Verified Candidates across 6 Houses and School Cabinet`;
+      }
+    }
+
     loadCandidates() {
       if (Array.isArray(window.ALL_CONTESTING_CANDIDATES) && window.ALL_CONTESTING_CANDIDATES.length > 0) {
         this.candidates = window.ALL_CONTESTING_CANDIDATES;
@@ -458,14 +485,14 @@
             </div>
 
             <div class="cand-house-tabs" id="cand-house-tabs">
-              <button type="button" class="cand-tab-pill active" data-house="ALL">All (${this.candidates.length || 140})</button>
-              <button type="button" class="cand-tab-pill" data-house="CENTRAL">⭐ Cabinet (33)</button>
-              <button type="button" class="cand-tab-pill" data-house="BHEESHMA">🦁 Bheeshma (20)</button>
-              <button type="button" class="cand-tab-pill" data-house="GURUDRONA">🏹 Gurudrona (16)</button>
-              <button type="button" class="cand-tab-pill" data-house="HANUMAN">⚡ Hanuman (21)</button>
-              <button type="button" class="cand-tab-pill" data-house="KARNA">⚔️ Karna (17)</button>
-              <button type="button" class="cand-tab-pill" data-house="VASISTHA">🌿 Vasistha (14)</button>
-              <button type="button" class="cand-tab-pill" data-house="VISHWAMITHRA">🔥 Vishwamithra (19)</button>
+              <button type="button" class="cand-tab-pill active" data-house="ALL">All (${this.countFor("ALL")})</button>
+              <button type="button" class="cand-tab-pill" data-house="CENTRAL">⭐ Cabinet (${this.countFor("CENTRAL")})</button>
+              <button type="button" class="cand-tab-pill" data-house="BHEESHMA">🦁 Bheeshma (${this.countFor("BHEESHMA")})</button>
+              <button type="button" class="cand-tab-pill" data-house="GURUDRONA">🏹 Gurudrona (${this.countFor("GURUDRONA")})</button>
+              <button type="button" class="cand-tab-pill" data-house="HANUMAN">⚡ Hanuman (${this.countFor("HANUMAN")})</button>
+              <button type="button" class="cand-tab-pill" data-house="KARNA">⚔️ Karna (${this.countFor("KARNA")})</button>
+              <button type="button" class="cand-tab-pill" data-house="VASISTHA">🌿 Vasistha (${this.countFor("VASISTHA")})</button>
+              <button type="button" class="cand-tab-pill" data-house="VISHWAMITHRA">🔥 Vishwamithra (${this.countFor("VISHWAMITHRA")})</button>
             </div>
           </div>
 
@@ -609,10 +636,12 @@
     }
 
     open(initialHouse = "ALL") {
-      if (!this.isInitialized) {
-        this.buildModal();
-      }
       this.loadCandidates();
+      if (!this.isInitialized || !this.modalEl) {
+        this.buildModal();
+      } else {
+        this.updateTabCounts();
+      }
       this.currentHouse = initialHouse;
 
       if (this.modalEl) {
