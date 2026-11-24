@@ -16334,6 +16334,27 @@ window.ADMIN_DATA = {
       "photoPath": "../assets/candidates/central_vananyareddy.jpg",
       "isApproved": true
     },
+        {
+      "id": "CAND_CENTRAL_VICE_PRESIDENT_39",
+      "admissionNo": "9S8038",
+      "fullName": "Y.Bhagya Sri",
+      "className": "9",
+      "section": "Class 9 \u00b7 Satish Dhawan",
+      "houseCode": "CENTRAL",
+      "positionId": "VICE_PRESIDENT",
+      "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+      "tagline": "Graceful leadership, articulation, and student dedication \u00b7 School Cabinet",
+      "symbolObj": {
+        "name": "Peacock",
+        "icon": "\ud83e\udd9a",
+        "slug": "peacock",
+        "image": "../assets/symbols/peacock.png",
+        "imagePath": "../assets/symbols/peacock.png"
+      },
+      "photoUrl": "../assets/candidates/central_ybhagyasri.jpg",
+      "photoPath": "../assets/candidates/central_ybhagyasri.jpg",
+      "isApproved": true
+    },
     {
       "id": "CAND_VISHWAMITHRA_CAPTAIN_BOY_JHARSHITH",
       "admissionNo": "10031",
