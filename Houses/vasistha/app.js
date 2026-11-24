@@ -776,6 +776,10 @@
 
   async function executeVerification(voterId) {
     clearStep1Error();
+    if (localStorage.getItem("ELECTION_HOUSE_POLLING_CLOSED") === "true") {
+      showStep1Error("House Polling Paused", "House Elections have concluded and polling is paused. No further votes can be cast at this booth.");
+      return;
+    }
     const cleanId = String(voterId || "").trim();
     if (!cleanId) {
       showStep1Error("Voter ID Required", "Please scan a voter barcode or enter a valid Voter ID number.");
@@ -976,6 +980,11 @@
   });
 
   el.nextToVoteBtn.addEventListener("click", async () => {
+    if (localStorage.getItem("ELECTION_HOUSE_POLLING_CLOSED") === "true") {
+      alert("House Elections have concluded and polling is paused. No further votes can be cast.");
+      resetBoothToStep1();
+      return;
+    }
     await renderCandidatesStep();
     goToStep(3);
   });
@@ -1144,6 +1153,11 @@
   }
 
   el.castVoteBtn.addEventListener("click", async () => {
+    if (localStorage.getItem("ELECTION_HOUSE_POLLING_CLOSED") === "true") {
+      alert("House Elections have concluded and polling is paused. No further votes can be cast.");
+      resetBoothToStep1();
+      return;
+    }
     const posList = getPositionsList();
     const pendingIds = state.pendingRoleIds.length ? state.pendingRoleIds : posList.map((p) => p.id);
     const missingIds = pendingIds.filter((pid) => !state.selectedByRole[pid]);
