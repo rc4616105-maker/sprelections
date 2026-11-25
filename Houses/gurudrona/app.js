@@ -1176,6 +1176,7 @@
           .join(", ");
         el.step3ErrorMsg.textContent = `Please select a candidate for: ${missingNames}.`;
         el.step3Error.hidden = false;
+        alert("Cannot cast ballot: This post is empty!\n\nMissing vote for: " + missingNames + ".\n\nPlease select a candidate for all posts before submitting.");
       }
       return;
     }
@@ -1197,13 +1198,29 @@
 
   if (el.evmIndicators) {
     el.evmIndicators.forEach((pill, idx) => {
-      pill.style.cursor = "pointer";
       pill.addEventListener("click", () => {
         const posList = getPositionsList();
+        if (idx > state.evmPostIndex) {
+          const curPos = posList[state.evmPostIndex];
+          if (curPos && !state.selectedByRole[curPos.id] && !state.votedRoles[curPos.id]) {
+            alert("This post is empty! Please select a candidate for " + curPos.title + " before moving ahead.");
+            return;
+          }
+          const missingBefore = posList.slice(0, idx).find((p) => !state.selectedByRole[p.id] && !state.votedRoles[p.id]);
+          if (missingBefore) {
+            alert("Cannot skip: " + missingBefore.title + " is empty! Please vote for " + missingBefore.title + " first.");
+            return;
+          }
+        }
         if (idx < posList.length) {
           state.evmPostIndex = idx;
           renderEvmView();
         } else if (idx === posList.length) {
+          const missingAny = posList.find((p) => !state.selectedByRole[p.id] && !state.votedRoles[p.id]);
+          if (missingAny) {
+            alert("Cannot go to Review & Cast: " + missingAny.title + " is empty! Please vote for all posts first.");
+            return;
+          }
           state.evmPostIndex = posList.length;
           renderEvmView();
         }
@@ -1223,6 +1240,11 @@
   if (el.evmNextBtn) {
     el.evmNextBtn.addEventListener("click", () => {
       const posList = getPositionsList();
+      const curPos = posList[state.evmPostIndex];
+      if (curPos && !state.selectedByRole[curPos.id] && !state.votedRoles[curPos.id]) {
+        alert("This post is empty! Please select a candidate for " + curPos.title + " before moving to the next post.");
+        return;
+      }
       if (state.evmPostIndex < posList.length) {
         state.evmPostIndex++;
         renderEvmView();
@@ -1240,6 +1262,18 @@
 
   if (el.evmFinalCastBtn) {
     el.evmFinalCastBtn.addEventListener("click", () => {
+      const posList = getPositionsList();
+      const missingPos = posList.filter((p) => !state.selectedByRole[p.id] && !state.votedRoles[p.id]);
+      if (missingPos.length > 0) {
+        const missingNames = missingPos.map((p) => p.title).join(", ");
+        alert("Cannot cast ballot: This post is empty!\n\nMissing vote for: " + missingNames + ".\n\nPlease select a candidate for all posts before submitting.");
+        const firstMissingIdx = posList.findIndex((p) => !state.selectedByRole[p.id] && !state.votedRoles[p.id]);
+        if (firstMissingIdx !== -1) {
+          state.evmPostIndex = firstMissingIdx;
+          renderEvmView();
+        }
+        return;
+      }
       if (el.castVoteBtn) {
         el.castVoteBtn.click();
       }

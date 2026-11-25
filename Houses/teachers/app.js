@@ -770,6 +770,22 @@
   // --- Submission & Finalization ---
   async function submitUniversalBallot() {
     if (state.isSubmitting) return;
+
+    const { selected, total } = countTotalProgress();
+    if (selected < total) {
+      const emptyRoles = [];
+      houses.forEach((h) => {
+        (h.positions || []).forEach((r) => {
+          const rk = `${h.code}_${r.id}`;
+          if (!state.selectedByRole[rk] && !state.votedRolesMap[rk]) {
+            emptyRoles.push(`${h.shortName || h.name} - ${r.shortTitle || r.title}`);
+          }
+        });
+      });
+      alert(`Cannot cast ballot: Some posts are empty!\n\nMissing selections for:\n• ${emptyRoles.slice(0, 5).join('\n• ')}${emptyRoles.length > 5 ? `\n...and ${emptyRoles.length - 5} more` : ''}\n\nPlease vote for all posts before submitting.`);
+      return;
+    }
+
     state.isSubmitting = true;
 
     try {

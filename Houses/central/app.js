@@ -1067,6 +1067,7 @@
           .join(", ");
         el.step3ErrorMsg.textContent = `Please select a candidate for: ${missingNames}.`;
         el.step3Error.hidden = false;
+        alert("Cannot cast ballot: This post is empty!\n\nMissing vote for: " + missingNames + ".\n\nPlease select a candidate for all posts before submitting.");
       }
       return;
     }
