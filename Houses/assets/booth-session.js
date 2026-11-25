@@ -82,6 +82,11 @@
     return houseList.some(function (h) { return p.includes("/" + h + "/"); });
   }
 
+  function isCentralBoothPage() {
+    const p = (window.location.pathname || "").toLowerCase();
+    return p.includes("/central/");
+  }
+
   function ensurePauseStyles() {
     if (document.getElementById("booth-pause-styles")) return;
     const style = document.createElement("style");
@@ -188,7 +193,6 @@
   }
 
   function applyKioskPauseGuard() {
-    if (!isHouseBoothPage()) return;
     let isClosed = false;
     try {
       isClosed = localStorage.getItem("ELECTION_HOUSE_POLLING_CLOSED") === "true";
@@ -196,6 +200,48 @@
 
     const boothCard = document.querySelector(".booth-card") || document.querySelector("main") || document.body;
     if (!boothCard) return;
+
+    // 1. Central Booth (School Cabinet for 24 House Winners):
+    // Only accessible when House Polling is PAUSED and 24 winners are declared!
+    if (isCentralBoothPage()) {
+      if (!isClosed) {
+        ensurePauseStyles();
+        let overlay = document.getElementById("central-locked-screen");
+        if (!overlay) {
+          overlay = document.createElement("div");
+          overlay.id = "central-locked-screen";
+          overlay.className = "booth-paused-overlay";
+          overlay.setAttribute("role", "alertdialog");
+          overlay.setAttribute("aria-live", "assertive");
+          overlay.innerHTML = `
+            <div class="booth-paused-card">
+              <div class="paused-icon-ring" aria-hidden="true" style="background:rgba(37,99,235,0.12); color:#2563eb; border-color:rgba(37,99,235,0.3);">🔒</div>
+              <span class="paused-badge" style="background:#dbeafe; color:#1e40af; border-color:#93c5fd;">School Cabinet Voting Locked</span>
+              <h2 class="paused-title">House Polling In Progress</h2>
+              <p class="paused-subtitle">
+                School Cabinet voting is reserved exclusively for the <strong>24 Elected House Captains &amp; Vice Captains</strong>.
+                <br><br>
+                This booth will automatically unlock once <strong>House Polling is paused and house results are declared</strong> in the Admin Dashboard.
+              </p>
+              <div class="paused-status-badge" style="background:#f1f5f9; color:#475569; border-color:#cbd5e1;">
+                <span>⏳ Awaiting House Results Declaration</span>
+              </div>
+              <div style="margin-top: 1.35rem;">
+                <a href="../index.html" class="btn btn-secondary" style="display:inline-flex; align-items:center; gap:0.5rem; text-decoration:none; padding:0.65rem 1.35rem; border-radius:10px; font-weight:700; background:#f8fafc; border:1px solid #cbd5e1; color:#1e293b;">&larr; Back to Houses Portal</a>
+              </div>
+            </div>
+          `;
+          boothCard.appendChild(overlay);
+        }
+      } else {
+        const overlay = document.getElementById("central-locked-screen");
+        if (overlay) overlay.remove();
+      }
+      return;
+    }
+
+    // 2. Regular 6 House Booths:
+    if (!isHouseBoothPage()) return;
 
     if (isClosed) {
       ensurePauseStyles();

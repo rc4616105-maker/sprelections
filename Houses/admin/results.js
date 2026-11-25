@@ -154,7 +154,7 @@
     const acceptedBallotsAll = (snap.ballots || []).filter((b) => b.status === "accepted");
     const allPosts = getAllElectionPosts(snap.candidates);
 
-    return allPosts.map((post) => {
+    const results = allPosts.map((post) => {
       const candsWithVotes = post.candidates.map((c) => {
         const votes = acceptedBallotsAll.filter((b) => {
           const matchCand = b.candidateId === c.id || b.candidateName === c.fullName;
@@ -207,6 +207,30 @@
         isTied,
       };
     });
+
+    // Auto-sync declared house winners to ELECTED_HOUSE_WINNERS_2026
+    try {
+      const houseWinners = [];
+      results.forEach((r) => {
+        if (!r.post.isCentral && r.winner && !Array.isArray(r.winner)) {
+          houseWinners.push({
+            admissionNo: r.winner.admissionNo || r.winner.id || "",
+            fullName: r.winner.fullName || r.winner.name || "",
+            name: r.winner.fullName || r.winner.name || "",
+            postTitle: r.post.title || "",
+            role: r.post.title || "",
+            houseName: r.post.houseName || "",
+            houseCode: r.post.houseCode || "",
+            votes: r.winner.votes || 0,
+          });
+        }
+      });
+      if (houseWinners.length > 0) {
+        localStorage.setItem("ELECTED_HOUSE_WINNERS_2026", JSON.stringify(houseWinners));
+      }
+    } catch (_) {}
+
+    return results;
   }
 
   function renderView(snap) {

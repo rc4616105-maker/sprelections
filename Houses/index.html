@@ -656,8 +656,8 @@
           </span>
         </a>
 
-        <!-- 2. 👑 School Cabinet Polling Booth (For House Winners) -->
-        <a href="./central/index.html" class="house-card cabinet-card" style="--card-accent:#2563eb; --card-ink:#1d4ed8; background: linear-gradient(135deg, var(--bg-card) 0%, #eff6ff 100%); border: 2px solid #93c5fd; box-shadow: 0 10px 28px -6px rgba(37, 99, 235, 0.15);">
+        <!-- 2. 👑 School Cabinet Polling Booth (For House Winners - Shown Only When House Polling is Paused) -->
+        <a href="./central/index.html" id="cabinet-house-winners-card" class="house-card cabinet-card" style="display:none; --card-accent:#2563eb; --card-ink:#1d4ed8; background: linear-gradient(135deg, var(--bg-card) 0%, #eff6ff 100%); border: 2px solid #93c5fd; box-shadow: 0 10px 28px -6px rgba(37, 99, 235, 0.15);">
           <div class="cabinet-content">
             <div class="cabinet-pill-row">
               <span class="cabinet-badge" style="background:#2563eb; color:#fff; font-weight:800;">👑 FOR HOUSE WINNERS</span>
@@ -874,7 +874,22 @@
         });
       }
 
+      // -------------------------------------------------------------
+      // Reactive visibility for School Cabinet (For House Winners) card:
+      // Appears ONLY when house polling is paused / closed and results are declared!
+      // -------------------------------------------------------------
+      function syncWinnersCabinetCard() {
+        const card = document.getElementById("cabinet-house-winners-card");
+        if (!card) return;
+        let isClosed = false;
+        try {
+          isClosed = localStorage.getItem("ELECTION_HOUSE_POLLING_CLOSED") === "true";
+        } catch (_) {}
+        card.style.display = isClosed ? "flex" : "none";
+      }
+
       window.addEventListener("DOMContentLoaded", () => {
+        syncWinnersCabinetCard();
         const currentBooth = typeof window.getRegisteredBooth === "function" ? window.getRegisteredBooth() : "";
         const currentOfficer = typeof window.getRegisteredOfficer === "function" ? window.getRegisteredOfficer() : "";
         if (!currentBooth) {
@@ -891,6 +906,20 @@
           }
         }
       });
+
+      syncWinnersCabinetCard();
+      window.addEventListener("storage", (e) => {
+        if (!e.key || e.key === "ELECTION_HOUSE_POLLING_CLOSED") {
+          syncWinnersCabinetCard();
+        }
+      });
+      if (typeof BroadcastChannel !== "undefined") {
+        try {
+          const bc = new BroadcastChannel("election_spr_2026_sync");
+          bc.onmessage = () => syncWinnersCabinetCard();
+        } catch (_) {}
+      }
+      setInterval(syncWinnersCabinetCard, 1000);
     })();
   </script>
 </body>

@@ -127,6 +127,34 @@ This document serves as the **official centralized error registry**, detailing:
 
 ---
 
+### ERR-09: Live Sync Indicator Disappearance on House Graphs Page
+- **Symptom:** Turnout graphs failed to render and the live sync indicator vanished.
+- **Root Cause:** A syntax error (double comma `},,`) in `admin/data.js` prevented Chart.js and data loaders from initializing.
+- **Solution:** Repaired syntax, verified with AST parser, added CSS grid and responsive canvas container.
+
+---
+
+### ERR-10: School Cabinet Contestant House Voting Enforcement
+- **Symptom:** Contestants running for School Cabinet roles (President, Vice President, etc.) attempted to access the School Cabinet executive booth.
+- **Root Cause:** Unclear separation between elected house winners and central cabinet contestants.
+- **Solution:** Enforced strict rule: School Cabinet candidates can ONLY vote in their registered student house for their respective house positions. Only the 24 elected House Captains & Vice Captains are authorized to vote in the School Cabinet booth.
+
+---
+
+### ERR-11: Central Booth Voter Verification Crash (`Cannot read properties of undefined (reading 'find')`) & Paused Guard
+- **Symptom:** Entering voter ID `1C2425` (Gurudrona Girls Captain winner `A. Megha Sanjana`) in `Houses/central/index.html` threw `Database Connection Error: Cannot read properties of undefined (reading 'find')`.
+- **Root Cause:**
+  1. `allStudents` was missing from `window.HOUSE_DATA` in `Houses/central/data.js`, causing line 691 (`allStudents.find(...)`) in `supabase-config.js` to crash.
+  2. Candidate nominated names (`A.Megha Sanjana`, no space) differed from student roster names (`A. Megha Sanjana`, space after dot), and candidate admission number was `CAND-10-AMEG` instead of student admission number `1C2425`.
+  3. The School Cabinet voting booth card on `Houses/index.html` and booth page were accessible before House Polling was paused and results declared.
+- **Solution:**
+  1. Injected the complete 1,084 student roster into `Houses/central/data.js` under `window.HOUSE_DATA.allStudents` and added defensive fallback `Array.isArray(window.HOUSE_DATA?.allStudents) ? window.HOUSE_DATA.allStudents : (window.ADMIN_DATA?.students || [])`.
+  2. Implemented normalized name matching: `normStr = s => String(s || "").toLowerCase().replace(/[\s\.\-_]+/g, "")` across `ELECTED_HOUSE_WINNERS_2026`, nominated candidates, and live ballots so `A. Megha Sanjana` matches `A.Megha Sanjana` 100%.
+  3. Added dynamic pause visibility guard to `Houses/index.html`: `cabinet-house-winners-card` is hidden (`display: none`) while House Polling is active and only appears (`display: flex`) once House Polling is paused (`ELECTION_HOUSE_POLLING_CLOSED === "true"`).
+  4. Added locked overlay in `Houses/assets/booth-session.js`: direct navigation to `Houses/central/index.html` while polling is active displays a secure lock screen: *"School Cabinet Voting Locked: House Polling In Progress. This booth unlocks once House Polling is paused and house results are declared."*
+
+---
+
 ## 4. Operational Best Practices & Defensive Engineering Rules
 
 To ensure total system stability during live voting:

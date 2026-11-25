@@ -684,11 +684,17 @@
         return { ok: false, code: "EMPTY_ID", title: "Voter ID Required", message: "Please scan a voter card or enter a valid Voter ID number." };
       }
 
-      const { electionId, positionId, housesMeta, allStudents, houseConfig } = window.HOUSE_DATA;
+      const houseData = window.HOUSE_DATA || {};
+      const { electionId, positionId, housesMeta, houseConfig } = houseData;
+      const allStudents = Array.isArray(houseData.allStudents)
+        ? houseData.allStudents
+        : (Array.isArray(window.ADMIN_DATA?.students) ? window.ADMIN_DATA.students : []);
       const positions = getPositionsList();
 
-            // Step 1: Check Admission No. against the student roster or demo accounts
-      let localMatch = DEMO_ACCOUNTS[cleanId] ? { ...DEMO_ACCOUNTS[cleanId] } : (allStudents.find((s) => s.admissionNo === cleanId) || null);
+      // Step 1: Check Admission No. against the student roster or demo accounts
+      let localMatch = DEMO_ACCOUNTS[cleanId]
+        ? { ...DEMO_ACCOUNTS[cleanId] }
+        : ((Array.isArray(allStudents) ? allStudents.find((s) => String(s.admissionNo).toUpperCase() === cleanId.toUpperCase()) : null) || null);
       if (!localMatch) {
         try {
           const rawCustom = localStorage.getItem("spr_admin_custom_students");
@@ -767,18 +773,20 @@
           return { isWinner: true, roleTitle: "Elected House Captain (Demo)", houseName: "All Houses" };
         }
 
-                // Check 0: School Cabinet Contestants Check
+        const normStr = (s) => String(s || "").toLowerCase().replace(/[\s\.\-_]+/g, "");
+        const vNameNorm = voter && voter.fullName ? normStr(voter.fullName) : "";
+
+        // Check 0: School Cabinet Contestants Check
         // Rule: Candidates contesting for School Cabinet (President, Vice President, etc.)
         // CANNOT vote for School Cabinet; they can ONLY vote in their own House!
-        const vName = voter && voter.fullName ? voter.fullName.trim().toLowerCase() : "";
         const regEntry = SCHOOL_CABINET_REGISTRY.find((entry) => {
           const cAdm = String(entry.candidateAdm || "").trim().toUpperCase();
           const vId = String(entry.voterId || "").trim().toUpperCase();
-          const eName = String(entry.candidateName || "").trim().toLowerCase();
+          const eName = normStr(entry.candidateName);
           return (
             (cAdm && cAdm === idNorm) ||
             (vId && vId === idNorm) ||
-            (vName && eName && (vName === eName || vName.includes(eName) || eName.includes(vName)))
+            (vNameNorm && eName && (vNameNorm === eName || vNameNorm.includes(eName) || eName.includes(vNameNorm)))
           );
         });
 
@@ -791,18 +799,21 @@
           };
         }
 
-        // Check 1: Declared winners list saved by the Result Declaration Wheel
+        // Check 1: Declared winners list saved by the Result Declaration Wheel or Admin Pause
         try {
           const raw = localStorage.getItem("ELECTED_HOUSE_WINNERS_2026") || localStorage.getItem("SCHOOL_ELECTION_2026_CUSTOM_DATA_V5");
           if (raw) {
             const parsed = JSON.parse(raw);
             if (Array.isArray(parsed)) {
               // Direct winners list
-              const match = parsed.find((w) =>
-                (w.admissionNo && String(w.admissionNo).toUpperCase() === idNorm) ||
-                (w.fullName && voter && w.fullName.trim().toLowerCase() === voter.fullName.trim().toLowerCase()) ||
-                (w.name && voter && w.name.trim().toLowerCase() === voter.fullName.trim().toLowerCase())
-              );
+              const match = parsed.find((w) => {
+                const wAdm = String(w.admissionNo || "").trim().toUpperCase();
+                const wNameNorm = normStr(w.fullName || w.name);
+                return (
+                  (wAdm && (wAdm === idNorm || (voter && wAdm === String(voter.admissionNo || "").toUpperCase()))) ||
+                  (wNameNorm && vNameNorm && (wNameNorm === vNameNorm || vNameNorm.includes(wNameNorm) || wNameNorm.includes(vNameNorm)))
+                );
+              });
               if (match) {
                 return {
                   isWinner: true,
@@ -814,12 +825,19 @@
               for (const h of parsed) {
                 for (const pk of ["boys_captain", "girls_captain", "boys_vc", "girls_vc"]) {
                   const c = h.candidates?.[pk];
-                  if (c && voter && c.name && c.name.trim().toLowerCase() === voter.fullName.trim().toLowerCase()) {
-                    return {
-                      isWinner: true,
-                      roleTitle: c.postTitle || "Elected House Captain",
-                      houseName: h.fullName || h.name || "House Council",
-                    };
+                  if (c) {
+                    const cAdm = String(c.admissionNo || "").trim().toUpperCase();
+                    const cNameNorm = normStr(c.name || c.fullName);
+                    if (
+                      (cAdm && (cAdm === idNorm || (voter && cAdm === String(voter.admissionNo || "").toUpperCase()))) ||
+                      (cNameNorm && vNameNorm && (cNameNorm === vNameNorm || vNameNorm.includes(cNameNorm) || cNameNorm.includes(vNameNorm)))
+                    ) {
+                      return {
+                        isWinner: true,
+                        roleTitle: c.postTitle || "Elected House Captain",
+                        houseName: h.fullName || h.name || "House Council",
+                      };
+                    }
                   }
                 }
               }
@@ -827,7 +845,33 @@
           }
         } catch (_) {}
 
-        // Check 2: Live Supabase check across house candidates
+        // Check 2: Check against nominated candidates roster (e.g. A. Megha Sanjana / CAND-10-AMEG for Girls Captain)
+        try {
+          const allCands = (typeof window !== "undefined" && window.ADMIN_DATA && window.ADMIN_DATA.candidates)
+            ? window.ADMIN_DATA.candidates
+            : (typeof DEFAULT_HOUSES !== "undefined" ? [] : []);
+          
+          const candMatch = (allCands || []).find((c) => {
+            if (c.houseCode === "CENTRAL") return false;
+            const cAdm = String(c.admissionNo || "").trim().toUpperCase();
+            const cNameNorm = normStr(c.fullName || c.name);
+            return (
+              (cAdm && (cAdm === idNorm || (voter && cAdm === String(voter.admissionNo || "").toUpperCase()))) ||
+              (cNameNorm && vNameNorm && (cNameNorm === vNameNorm || vNameNorm.includes(cNameNorm) || cNameNorm.includes(vNameNorm)))
+            );
+          });
+
+          if (candMatch) {
+            const hMeta = (housesMeta && housesMeta[candMatch.houseCode]) || {};
+            return {
+              isWinner: true,
+              roleTitle: candMatch.positionName || candMatch.positionId || "House Captain",
+              houseName: hMeta.name ? `${hMeta.name} House` : `${candMatch.houseCode} House`,
+            };
+          }
+        } catch (_) {}
+
+        // Check 3: Live Supabase check across house candidates
         try {
           const candRows = await sbFetchAll(`candidates?admission_no=eq.${encodeURIComponent(admId)}&house_code=neq.CENTRAL&is_approved=eq.true`);
           if (candRows && candRows.length > 0) {
@@ -840,12 +884,12 @@
           }
         } catch (_) {}
 
-        // Check 3: Check DEFAULT_HOUSES candidates
-        if (typeof DEFAULT_HOUSES !== "undefined" && voter && voter.fullName) {
+        // Check 4: Check DEFAULT_HOUSES candidates
+        if (typeof DEFAULT_HOUSES !== "undefined" && vNameNorm) {
           for (const h of DEFAULT_HOUSES) {
             for (const pk of ["boys_captain", "girls_captain", "boys_vc", "girls_vc"]) {
               const c = h.candidates?.[pk];
-              if (c && c.name && c.name.trim().toLowerCase() === voter.fullName.trim().toLowerCase()) {
+              if (c && normStr(c.name) === vNameNorm) {
                 return {
                   isWinner: true,
                   roleTitle: c.postTitle || "Elected House Captain",
