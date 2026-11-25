@@ -309,16 +309,26 @@
     }
 
     async function fetchAcceptedBallotsFast() {
-      // Ultra-lightweight endpoint fetch (only returns accepted ballots, ~200ms)
-      const res = await fetch(`${SB_URL}/rest/v1/ballots?select=admission_no,status&status=eq.accepted`, {
-        cache: "no-store",
-        headers: {
-          apikey: SB_KEY,
-          Authorization: `Bearer ${SB_KEY}`,
-        },
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json();
+      // Paginated lightweight endpoint fetch (only admission_no & status, handles >1000 ballots cleanly)
+      const all = [];
+      let offset = 0;
+      const pageSize = 1000;
+      while (true) {
+        const res = await fetch(`${SB_URL}/rest/v1/ballots?select=admission_no,status&status=eq.accepted&order=id.asc`, {
+          cache: "no-store",
+          headers: {
+            apikey: SB_KEY,
+            Authorization: `Bearer ${SB_KEY}`,
+            Range: `${offset}-${offset + pageSize - 1}`,
+          },
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const rows = await res.json();
+        all.push(...rows);
+        if (rows.length < pageSize) break;
+        offset += pageSize;
+      }
+      return all;
     }
 
     let isRefreshing = false;
