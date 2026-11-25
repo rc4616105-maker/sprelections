@@ -1922,11 +1922,11 @@ window.TEACHER_BOOTH_DATA = {
       "positionName": "Girls Captain (Class 10 Girl)",
       "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Karna House",
       "symbolObj": {
-        "name": "Star",
-        "icon": "\u2b50",
-        "slug": "star",
-        "image": "../assets/symbols/star.png",
-        "imagePath": "../assets/symbols/star.png"
+        "name": "Konark Wheel",
+        "icon": "\u2638\ufe0f",
+        "slug": "konark_wheel",
+        "image": "../assets/symbols/konark_wheel.png",
+        "imagePath": "../assets/symbols/konark_wheel.png"
       },
       "photoUrl": "../assets/candidates/karna_vamrutha.jpg",
       "photoPath": "../assets/candidates/karna_vamrutha.jpg",
