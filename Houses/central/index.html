@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="./styles.css?v=20261125_NO_SYM_NAME" />
+  <link rel="stylesheet" href="./styles.css?v=20261125_HOUSE_HIGHLIGHT_OK" />
 </head>
 <body>
   <a href="#booth-main" class="skip-link">Skip to voting form</a>
@@ -52,8 +52,8 @@
         <!-- STEP 1: Voter ID / Barcode Verification -->
         <div id="step-1" class="step-panel is-visible">
           <div class="panel-header">
-            <span class="badge badge-house" style="background: rgba(5, 150, 105, 0.15); color: #047857; font-weight: 800; border: 1px solid rgba(5, 150, 105, 0.3);">🏛️ Electoral College · 24 Elected House Captains Only</span>
-            <h2 class="panel-title">House Leaders Verification</h2>
+            <span class="badge badge-house" style="background: rgba(5, 150, 105, 0.15); color: #047857; font-weight: 800; border: 1px solid rgba(5, 150, 105, 0.3);">🏛️ School Cabinet Voting · Contestants &amp; Leaders</span>
+            <h2 class="panel-title">School Cabinet Voter Verification</h2>
           </div>
 
           <!-- Dual Verification Modes: Barcode Scanner vs Manual Typing -->
@@ -149,7 +149,7 @@
               </div>
 
               <button type="button" id="verify-btn" class="btn btn-primary btn-block btn-lg">
-                <span class="btn-text">Verify House Leader ID</span>
+                <span class="btn-text">Verify Contestant / Voter ID</span>
                 <span class="spinner" aria-hidden="true" hidden></span>
               </button>
             </form>
@@ -171,7 +171,17 @@
           <div class="panel-header">
             <span class="badge badge-success">Voter Eligibility Confirmed</span>
             <h2 class="panel-title">Confirm Voter Identity</h2>
-            <p class="panel-subtitle">Review the voter details below and press <strong>Next</strong> to open the ballot.</p>
+            <p class="panel-subtitle">Review the voter details below and press <strong>Next: Vote into School Cabinet</strong> to open the ballot.</p>
+          </div>
+
+          <!-- Prominent Registered House Display (First it will show his house) -->
+          <div class="voter-house-highlight-card" id="voter-house-highlight-card">
+            <div class="voter-house-badge-row">
+              <span class="voter-house-tag-pill">🏛️ Registered House</span>
+              <span class="voter-house-constituency-pill" id="voter-house-constituency-pill">Constituency</span>
+            </div>
+            <div class="voter-house-main-name" id="voter-house-main-name">Student House</div>
+            <div class="voter-house-sub-info" id="voter-house-sub-info">Class -- · Contestant for School Cabinet</div>
           </div>
 
           <div class="voter-summary-card">
@@ -196,7 +206,7 @@
           <div class="step-footer-actions">
             <button type="button" id="back-to-step1-btn" class="btn btn-secondary">Back</button>
             <button type="button" id="next-to-vote-btn" class="btn btn-primary btn-lg">
-              Next: View Candidates
+              Next: Vote into School Cabinet →
             </button>
           </div>
         </div>
@@ -303,10 +313,10 @@
     </div>
   </div>
 
-<script src="../assets/booth-session.js?v=20261125_CABINET_CLEANUP"></script>
-  <script defer src="./pico.js?v=20261125_CABINET_CLEANUP"></script>
-  <script defer src="./data.js?v=20261125_CABINET_CLEANUP"></script>
-  <script defer src="./supabase-config.js?v=20261125_CABINET_CLEANUP"></script>
-  <script defer src="./app.js?v=20261125_CLASS_ONLY"></script>
+<script src="../assets/booth-session.js?v=20261125_HOUSE_HIGHLIGHT_OK"></script>
+  <script defer src="./pico.js?v=20261125_HOUSE_HIGHLIGHT_OK"></script>
+  <script defer src="./data.js?v=20261125_HOUSE_HIGHLIGHT_OK"></script>
+  <script defer src="./supabase-config.js?v=20261125_HOUSE_HIGHLIGHT_OK"></script>
+  <script defer src="./app.js?v=20261125_HOUSE_HIGHLIGHT_OK"></script>
 </body>
 </html>

@@ -27,6 +27,400 @@
     VICE_CAPTAIN_GIRL: "vote_9_girl",
   };
 
+
+  const SCHOOL_CABINET_REGISTRY = [
+  {
+    "candidateAdm": "7083",
+    "candidateName": "M.Rithvik",
+    "voterId": "1C6305",
+    "houseCode": "VISHWAMITHRA",
+    "houseTitle": "Vishwamithra House",
+    "constituency": "Amarkantak",
+    "roleTitle": "School President",
+    "classSec": "Class 10 \u00b7 CS"
+  },
+  {
+    "candidateAdm": "7222",
+    "candidateName": "M.Vaishnavi",
+    "voterId": "1C2457",
+    "houseCode": "VISHWAMITHRA",
+    "houseTitle": "Vishwamithra House",
+    "constituency": "Amarkantak",
+    "roleTitle": "School President",
+    "classSec": "Class 10 \u00b7 CS"
+  },
+  {
+    "candidateAdm": "10055",
+    "candidateName": "S.Harini Reddy",
+    "voterId": "1C3135",
+    "houseCode": "VASISTHA",
+    "houseTitle": "Vasistha House",
+    "constituency": "Mahabaleshwar",
+    "roleTitle": "School President",
+    "classSec": "Class 10 \u00b7 CS"
+  },
+  {
+    "candidateAdm": "10189",
+    "candidateName": "V.Janaki Koushik",
+    "voterId": "1M5135",
+    "houseCode": "VASISTHA",
+    "houseTitle": "Vasistha House",
+    "constituency": "Mahabaleshwar",
+    "roleTitle": "School President",
+    "classSec": "Class 10 \u00b7 MRP"
+  },
+  {
+    "candidateAdm": "10091",
+    "candidateName": "Y.Srinith",
+    "voterId": "1C6361",
+    "houseCode": "HANUMAN",
+    "houseTitle": "Hanuman House",
+    "constituency": "Yamunotri",
+    "roleTitle": "School President",
+    "classSec": "Class 10 \u00b7 CS"
+  },
+  {
+    "candidateAdm": "9901",
+    "candidateName": "N.Enriqe Iglesias",
+    "voterId": "9K6281",
+    "houseCode": "GURUDRONA",
+    "houseTitle": "Gurudrona House",
+    "constituency": "Trimbakeshwar",
+    "roleTitle": "School Vice President",
+    "classSec": "Class 9 \u00b7 KC"
+  },
+  {
+    "candidateAdm": "9167",
+    "candidateName": "G.Badrinath",
+    "voterId": "9S5116",
+    "houseCode": "HANUMAN",
+    "houseTitle": "Hanuman House",
+    "constituency": "Yamunotri",
+    "roleTitle": "School Vice President",
+    "classSec": "Class 9 \u00b7 SD"
+  },
+  {
+    "candidateAdm": "9037",
+    "candidateName": "J.Sampath Kumar",
+    "voterId": "9A8173",
+    "houseCode": "VASISTHA",
+    "houseTitle": "Vasistha House",
+    "constituency": "Mahabaleshwar",
+    "roleTitle": "School Vice President",
+    "classSec": "Class 9 \u00b7 APJ"
+  },
+  {
+    "candidateAdm": "9093",
+    "candidateName": "K.Ambika",
+    "voterId": "9K1995",
+    "houseCode": "KARNA",
+    "houseTitle": "Karna House",
+    "constituency": "Manasarovar",
+    "roleTitle": "School Vice President",
+    "classSec": "Class 9 \u00b7 KC"
+  },
+  {
+    "candidateAdm": "9183",
+    "candidateName": "M.Vivekananda Rao",
+    "voterId": "9S2383",
+    "houseCode": "GURUDRONA",
+    "houseTitle": "Gurudrona House",
+    "constituency": "Trimbakeshwar",
+    "roleTitle": "School Vice President",
+    "classSec": "Class 9 \u00b7 SD"
+  },
+  {
+    "candidateAdm": "9088",
+    "candidateName": "G. Srunith Goud",
+    "voterId": "9A5019",
+    "houseCode": "BHEESHMA",
+    "houseTitle": "Bheeshma House",
+    "constituency": "Gangotri",
+    "roleTitle": "School Vice President",
+    "classSec": "Class 9 \u00b7 AB"
+  },
+  {
+    "candidateAdm": "9V4182",
+    "candidateName": "M.Anvitha Sharma",
+    "voterId": "9V4182",
+    "houseCode": "VASISTHA",
+    "houseTitle": "Vasistha House",
+    "constituency": "Mahabaleshwar",
+    "roleTitle": "School Vice President",
+    "classSec": "Class 9 \u00b7 VSB"
+  },
+  {
+    "candidateAdm": "9V1966",
+    "candidateName": "K.Hadvitha",
+    "voterId": "9V1966",
+    "houseCode": "VISHWAMITHRA",
+    "houseTitle": "Vishwamithra House",
+    "constituency": "Amarkantak",
+    "roleTitle": "School Vice President",
+    "classSec": "Class 9 \u00b7 VSB"
+  },
+  {
+    "candidateAdm": "9V4045",
+    "candidateName": "K.Ishwarya",
+    "voterId": "9V4045",
+    "houseCode": "VISHWAMITHRA",
+    "houseTitle": "Vishwamithra House",
+    "constituency": "Amarkantak",
+    "roleTitle": "School Vice President",
+    "classSec": "Class 9 \u00b7 VSB"
+  },
+  {
+    "candidateAdm": "9V7995",
+    "candidateName": "G.Aadhya",
+    "voterId": "9V7995",
+    "houseCode": "HANUMAN",
+    "houseTitle": "Hanuman House",
+    "constituency": "Yamunotri",
+    "roleTitle": "School Vice President",
+    "classSec": "Class 9 \u00b7 VSB"
+  },
+  {
+    "candidateAdm": "9V1576",
+    "candidateName": "V.Ananya Reddy",
+    "voterId": "9V1576",
+    "houseCode": "KARNA",
+    "houseTitle": "Karna House",
+    "constituency": "Manasarovar",
+    "roleTitle": "School Vice President",
+    "classSec": "Class 9 \u00b7 VSB"
+  },
+  {
+    "candidateAdm": "9069",
+    "candidateName": "Ch.Bala Thrusha Datta",
+    "voterId": "9A9164",
+    "houseCode": "VASISTHA",
+    "houseTitle": "Vasistha House",
+    "constituency": "Mahabaleshwar",
+    "roleTitle": "Sports Secretary",
+    "classSec": "Class 9 \u00b7 APJ"
+  },
+  {
+    "candidateAdm": "9172",
+    "candidateName": "Ch.Kowshik",
+    "voterId": "9S2374",
+    "houseCode": "BHEESHMA",
+    "houseTitle": "Bheeshma House",
+    "constituency": "Gangotri",
+    "roleTitle": "Sports Secretary",
+    "classSec": "Class 9 \u00b7 SD"
+  },
+  {
+    "candidateAdm": "8008",
+    "candidateName": "K.Krithika",
+    "voterId": "9S6145",
+    "houseCode": "BHEESHMA",
+    "houseTitle": "Bheeshma House",
+    "constituency": "Gangotri",
+    "roleTitle": "Sports Secretary",
+    "classSec": "Class 9 \u00b7 SD"
+  },
+  {
+    "candidateAdm": "9227",
+    "candidateName": "R.Srikshith",
+    "voterId": "9V1574",
+    "houseCode": "HANUMAN",
+    "houseTitle": "Hanuman House",
+    "constituency": "Yamunotri",
+    "roleTitle": "Sports Secretary",
+    "classSec": "Class 9 \u00b7 VSB"
+  },
+  {
+    "candidateAdm": "9178",
+    "candidateName": "S.Rithvik Reddy",
+    "voterId": "9S3094",
+    "houseCode": "BHEESHMA",
+    "houseTitle": "Bheeshma House",
+    "constituency": "Gangotri",
+    "roleTitle": "Sports Secretary",
+    "classSec": "Class 9 \u00b7 SD"
+  },
+  {
+    "candidateAdm": "9200",
+    "candidateName": "S.Sahasra",
+    "voterId": "9V9804",
+    "houseCode": "HANUMAN",
+    "houseTitle": "Hanuman House",
+    "constituency": "Yamunotri",
+    "roleTitle": "Sports Secretary",
+    "classSec": "Class 9 \u00b7 VSB"
+  },
+  {
+    "candidateAdm": "9062",
+    "candidateName": "Shubhi Patel",
+    "voterId": "9A6327",
+    "houseCode": "KARNA",
+    "houseTitle": "Karna House",
+    "constituency": "Manasarovar",
+    "roleTitle": "Sports Secretary",
+    "classSec": "Class 9 \u00b7 AB"
+  },
+  {
+    "candidateAdm": "9198",
+    "candidateName": "Balla Raga Sri",
+    "voterId": "9V8471",
+    "houseCode": "VISHWAMITHRA",
+    "houseTitle": "Vishwamithra House",
+    "constituency": "Amarkantak",
+    "roleTitle": "Literary Secretary",
+    "classSec": "Class 9 \u00b7 VSB"
+  },
+  {
+    "candidateAdm": "8102",
+    "candidateName": "D. Samanvitha",
+    "voterId": "1J6758",
+    "houseCode": "BHEESHMA",
+    "houseTitle": "Bheeshma House",
+    "constituency": "Gangotri",
+    "roleTitle": "Literary Secretary",
+    "classSec": "Class 9 \u00b7 JLB"
+  },
+  {
+    "candidateAdm": "8074",
+    "candidateName": "G.Harsha Vardhan Rao",
+    "voterId": "9S2280",
+    "houseCode": "HANUMAN",
+    "houseTitle": "Hanuman House",
+    "constituency": "Yamunotri",
+    "roleTitle": "Literary Secretary",
+    "classSec": "Class 9 \u00b7 SD"
+  },
+  {
+    "candidateAdm": "9192",
+    "candidateName": "Indu Priya",
+    "voterId": "9S2952",
+    "houseCode": "BHEESHMA",
+    "houseTitle": "Bheeshma House",
+    "constituency": "Gangotri",
+    "roleTitle": "Literary Secretary",
+    "classSec": "Class 9 \u00b7 SD"
+  },
+  {
+    "candidateAdm": "9157",
+    "candidateName": "M.Srivaishnavi",
+    "voterId": "9V1932",
+    "houseCode": "BHEESHMA",
+    "houseTitle": "Bheeshma House",
+    "constituency": "Gangotri",
+    "roleTitle": "Literary Secretary",
+    "classSec": "Class 9 \u00b7 VSB"
+  },
+  {
+    "candidateAdm": "9052",
+    "candidateName": "N.Malala",
+    "voterId": "9K6281",
+    "houseCode": "VISHWAMITHRA",
+    "houseTitle": "Vishwamithra House",
+    "constituency": "Amarkantak",
+    "roleTitle": "Literary Secretary",
+    "classSec": "Class 9 \u00b7 KC"
+  },
+  {
+    "candidateAdm": "9138",
+    "candidateName": "Y Bhagya Sri",
+    "voterId": "9S8038",
+    "houseCode": "KARNA",
+    "houseTitle": "Karna House",
+    "constituency": "Manasarovar",
+    "roleTitle": "Literary Secretary",
+    "classSec": "Class 9 \u00b7 SD"
+  },
+  {
+    "candidateAdm": "9K7051",
+    "candidateName": "L.Rushil",
+    "voterId": "9K7051",
+    "houseCode": "GURUDRONA",
+    "houseTitle": "Gurudrona House",
+    "constituency": "Trimbakeshwar",
+    "roleTitle": "Literary Secretary",
+    "classSec": "Class 9 \u00b7 KC"
+  },
+  {
+    "candidateAdm": "7071",
+    "candidateName": "G.Ashwath",
+    "voterId": "9S5700",
+    "houseCode": "HANUMAN",
+    "houseTitle": "Hanuman House",
+    "constituency": "Yamunotri",
+    "roleTitle": "Social & Cultural Secretary",
+    "classSec": "Class 9 \u00b7 SD"
+  },
+  {
+    "candidateAdm": "7198",
+    "candidateName": "K.Akshara",
+    "voterId": "9V1412",
+    "houseCode": "BHEESHMA",
+    "houseTitle": "Bheeshma House",
+    "constituency": "Gangotri",
+    "roleTitle": "Social & Cultural Secretary",
+    "classSec": "Class 9 \u00b7 VSB"
+  },
+  {
+    "candidateAdm": "8096",
+    "candidateName": "K.Rasagna",
+    "voterId": "8D6913",
+    "houseCode": "BHEESHMA",
+    "houseTitle": "Bheeshma House",
+    "constituency": "Gangotri",
+    "roleTitle": "Social & Cultural Secretary",
+    "classSec": "Class 8 \u00b7 DS"
+  },
+  {
+    "candidateAdm": "9190",
+    "candidateName": "P.Divija",
+    "voterId": "9V1030",
+    "houseCode": "GURUDRONA",
+    "houseTitle": "Gurudrona House",
+    "constituency": "Trimbakeshwar",
+    "roleTitle": "Social & Cultural Secretary",
+    "classSec": "Class 9 \u00b7 VSB"
+  },
+  {
+    "candidateAdm": "9104",
+    "candidateName": "P.Meghana",
+    "voterId": "9K7833",
+    "houseCode": "KARNA",
+    "houseTitle": "Karna House",
+    "constituency": "Manasarovar",
+    "roleTitle": "Social & Cultural Secretary",
+    "classSec": "Class 9 \u00b7 KC"
+  },
+  {
+    "candidateAdm": "9189",
+    "candidateName": "V.Chaithra",
+    "voterId": "9V7410",
+    "houseCode": "VASISTHA",
+    "houseTitle": "Vasistha House",
+    "constituency": "Mahabaleshwar",
+    "roleTitle": "Social & Cultural Secretary",
+    "classSec": "Class 9 \u00b7 VSB"
+  },
+  {
+    "candidateAdm": "9170",
+    "candidateName": "V.Himavardhan",
+    "voterId": "9S7692",
+    "houseCode": "BHEESHMA",
+    "houseTitle": "Bheeshma House",
+    "constituency": "Gangotri",
+    "roleTitle": "Social & Cultural Secretary",
+    "classSec": "Class 9 \u00b7 SD"
+  },
+  {
+    "candidateAdm": "9195",
+    "candidateName": "Nithya Sree.Y",
+    "voterId": "9S2952",
+    "houseCode": "BHEESHMA",
+    "houseTitle": "Bheeshma House",
+    "constituency": "Gangotri",
+    "roleTitle": "Social & Cultural Secretary",
+    "classSec": "Class 9 \u00b7 SD"
+  }
+];
+
   const DEMO_ACCOUNTS = {
     "1C8492": { admissionNo: "1C8492", fullName: "Aditya Vikram", fatherName: "R. K. Vikram", className: "10", section: "Chatrapathi Shivaji (10-CS)", houseCode: "BHEESHMA", isStaff: false, isUniversal: true, isActive: true, photoUrl: "../assets/candidates/student_demo.jpg", isDemoAccount: true },
     "0000": { admissionNo: "0000", fullName: "Aditya Vikram", fatherName: "R. K. Vikram", className: "10", section: "Chatrapathi Shivaji (10-CS)", houseCode: "BHEESHMA", isStaff: false, isUniversal: true, isActive: true, photoUrl: "../assets/candidates/student_demo.jpg", isDemoAccount: true },
@@ -324,6 +718,31 @@
           }
         } catch (_) {}
       }
+            if (!localMatch) {
+        const cabReg = SCHOOL_CABINET_REGISTRY.find((e) =>
+          e.candidateAdm.toUpperCase() === cleanId.toUpperCase() ||
+          e.voterId.toUpperCase() === cleanId.toUpperCase()
+        );
+        if (cabReg) {
+          localMatch = {
+            admissionNo: cleanId,
+            fullName: cabReg.candidateName,
+            fatherName: "",
+            gender: "Student",
+            className: cabReg.classSec.includes("10") ? "10" : "9",
+            section: cabReg.classSec,
+            houseCode: cabReg.houseCode,
+            isActive: true,
+            isCabinetContestant: true,
+            registeredHouseCode: cabReg.houseCode,
+            registeredHouseTitle: cabReg.houseTitle,
+            constituency: cabReg.constituency,
+            winnerRoleTitle: `Cabinet Contestant · ${cabReg.roleTitle}`,
+            winnerHouseName: cabReg.houseTitle,
+            classSec: cabReg.classSec
+          };
+        }
+      }
       if (!localMatch) {
         return {
           ok: false,
@@ -348,36 +767,31 @@
           return { isWinner: true, roleTitle: "Elected House Captain (Demo)", houseName: "All Houses" };
         }
 
-        // Check 0: School Cabinet Contestants (President, Vice President, Sports, Lit, Cultural Secretary)
-        // Authorized to vote in School Cabinet irrespective of winners!
-        try {
-          const allCands = (typeof window.ALL_CONTESTING_CANDIDATES !== "undefined" && Array.isArray(window.ALL_CONTESTING_CANDIDATES))
-            ? window.ALL_CONTESTING_CANDIDATES
-            : (window.HOUSE_DATA?.houseCandidates || []);
-          const cabContestants = allCands.filter((c) =>
-            c.houseCode === "CENTRAL" ||
-            c.positionId === "PRESIDENT" ||
-            c.positionId === "VICE_PRESIDENT" ||
-            c.positionId === "SPORTS_SECRETARY" ||
-            c.positionId === "LITERARY_SECRETARY" ||
-            c.positionId === "SOCIAL_CULTURAL_SECRETARY"
+                // Check 0: Official School Cabinet Contestants Registry
+        const vName = voter && voter.fullName ? voter.fullName.trim().toLowerCase() : "";
+        const regEntry = SCHOOL_CABINET_REGISTRY.find((entry) => {
+          const cAdm = String(entry.candidateAdm || "").trim().toUpperCase();
+          const vId = String(entry.voterId || "").trim().toUpperCase();
+          const eName = String(entry.candidateName || "").trim().toLowerCase();
+          return (
+            (cAdm && cAdm === idNorm) ||
+            (vId && vId === idNorm) ||
+            (vName && eName && (vName === eName || vName.includes(eName) || eName.includes(vName)))
           );
+        });
 
-          const vName = voter && voter.fullName ? voter.fullName.trim().toLowerCase() : "";
-          const matchCab = cabContestants.find((c) => {
-            const cAdm = String(c.admissionNo || "").trim().toUpperCase();
-            const cName = String(c.fullName || "").trim().toLowerCase();
-            return (cAdm && cAdm === idNorm) || (cName && vName && (cName === vName || cName.includes(vName) || vName.includes(cName)));
-          });
-          if (matchCab) {
-            return {
-              isWinner: true,
-              isCabinetContestant: true,
-              roleTitle: `Cabinet Contestant · ${matchCab.positionName || "Executive Role"}`,
-              houseName: matchCab.section || "School Cabinet Contestant",
-            };
-          }
-        } catch (_) {}
+        if (regEntry) {
+          return {
+            isWinner: true,
+            isCabinetContestant: true,
+            roleTitle: `Cabinet Contestant · ${regEntry.roleTitle}`,
+            houseCode: regEntry.houseCode,
+            houseTitle: regEntry.houseTitle,
+            houseName: regEntry.houseTitle,
+            constituency: regEntry.constituency,
+            classSec: regEntry.classSec,
+          };
+        }
 
         // Check 1: Declared winners list saved by the Result Declaration Wheel
         try {
@@ -461,11 +875,15 @@
               message: `Voter ID ${cleanId} belongs to ${localMatch.fullName} (${registeredName} House). School Cabinet voting is authorized for Teachers, the 24 elected House Captains, and School Cabinet Contestants.`,
             };
           }
-          isElectedCaptain = true;
+                    isElectedCaptain = true;
           localMatch.isElectedWinner = true;
           localMatch.isCabinetContestant = Boolean(winnerCheck.isCabinetContestant);
           localMatch.winnerRoleTitle = winnerCheck.roleTitle;
-          localMatch.winnerHouseName = winnerCheck.houseName;
+          localMatch.winnerHouseName = winnerCheck.houseTitle || winnerCheck.houseName;
+          localMatch.registeredHouseCode = winnerCheck.houseCode || localMatch.houseCode;
+          localMatch.registeredHouseTitle = winnerCheck.houseTitle || `${winnerCheck.houseCode} House`;
+          localMatch.constituency = winnerCheck.constituency || "";
+          localMatch.classSec = winnerCheck.classSec || `Class ${localMatch.className}-${localMatch.section}`;
         }
       }
 

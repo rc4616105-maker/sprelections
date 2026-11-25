@@ -706,8 +706,24 @@
       const isTeacher = result.student.isStaff === true && result.student.className !== "10" && result.student.className !== "9" && result.student.className !== "8" && result.student.className !== "7" && result.student.admissionNo !== "1C8492" && result.student.admissionNo !== "0000";
       const isWinner = Boolean(result.student.isElectedWinner);
       const isCabinetContestant = Boolean(result.student.isCabinetContestant);
+
+      // Prominent Registered House Display (FIRST IT WILL SHOW HIS HOUSE)
+      const registeredHouseTitle = result.student.registeredHouseTitle || result.student.winnerHouseName || (result.student.houseCode ? `${result.student.houseCode} House` : "Student House");
+      const registeredConstituency = result.student.constituency || "";
+      const contestantRole = result.student.winnerRoleTitle || (isCabinetContestant ? "School Cabinet Contestant" : "House Leader");
+      const studentClassSec = result.student.classSec || (result.student.className ? `Class ${result.student.className}-${result.student.section}` : "");
+
+      const houseMainEl = document.getElementById("voter-house-main-name");
+      const houseConstEl = document.getElementById("voter-house-constituency-pill");
+      const houseSubEl = document.getElementById("voter-house-sub-info");
+      const houseCardEl = document.getElementById("voter-house-highlight-card");
+      if (houseMainEl) houseMainEl.textContent = registeredHouseTitle;
+      if (houseConstEl) houseConstEl.textContent = registeredConstituency ? `${registeredConstituency} Constituency` : "Official Constituency";
+      if (houseSubEl) houseSubEl.textContent = `${studentClassSec ? `${studentClassSec} · ` : ""}${contestantRole}`;
+      if (houseCardEl) houseCardEl.hidden = false;
+
       el.voterMeta.textContent = isWinner
-        ? `🎖️ ${result.student.winnerRoleTitle || "Elected House Captain"} · ${result.student.winnerHouseName || "House Council"}`
+        ? `🏛️ ${registeredHouseTitle}${registeredConstituency ? ` (${registeredConstituency})` : ""} · ${contestantRole}`
         : isTeacher
         ? `${result.student.subject ? `${result.student.subject} Faculty` : "Teaching Staff"} · ${houseConfig.name}`
         : `Class ${result.student.className}-${result.student.section} · ${houseConfig.name} House`;
