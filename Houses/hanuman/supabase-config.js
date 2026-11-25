@@ -371,6 +371,10 @@
       }
 
       // House Booth Restriction:
+      // School Cabinet contestants (houseCode === "CENTRAL") are students and are fully authorized to vote in their house!
+      if (localMatch.houseCode === "CENTRAL") {
+        localMatch.houseCode = requestedHouseCode;
+      }
       // Regular students can ONLY vote in their designated house (0000 has universal house access).
       if (!isTeacher && requestedHouseCode !== "CENTRAL" && localMatch.houseCode !== requestedHouseCode) {
         const registeredName = housesMeta[localMatch.houseCode]?.name || localMatch.houseCode;

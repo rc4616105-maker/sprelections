@@ -283,6 +283,7 @@
   let lastVerifiedPhoto = "";
   let faceCheckInterval = null;
   let noCamFallbackTimer = null;
+  let manualUnlockTimer = null;
 
   function analyzeCameraFrame(ctx, w, h) {
     const imgData = ctx.getImageData(0, 0, w, h);
@@ -299,25 +300,29 @@
     const stdDev = Math.sqrt(Math.max(0, variance));
 
     // Complete dark / finger taped over lens:
-    if (mean < 14) {
+    if (mean < 6.0) {
       return { ok: false, obstructed: true, reason: "Camera is completely covered or too dark. Please remove your hand from the lens." };
     }
     // Palm / hand pressed flat against the lens:
-    if (stdDev < 8.5) {
+    if (stdDev < 3.2) {
       return { ok: false, obstructed: true, reason: "Camera is blocked by hand or object. Please uncover the lens." };
     }
     return { ok: true, obstructed: false, mean, stdDev, imgData };
   }
 
   async function detectHumanFace(videoEl, canvasEl) {
-    if (!videoEl || videoEl.readyState < 2 || videoEl.videoWidth === 0) {
+    const video = (videoEl && videoEl.readyState >= 2 && videoEl.videoWidth > 0)
+      ? videoEl
+      : ((el.cameraVideo && el.cameraVideo.readyState >= 2 && el.cameraVideo.videoWidth > 0) ? el.cameraVideo : null);
+
+    if (!video) {
       return { ok: false, reason: "Webcam is warming up... please look at the screen.", obstructed: false };
     }
     const w = 320, h = 240;
     canvasEl.width = w;
     canvasEl.height = h;
     const ctx = canvasEl.getContext("2d");
-    ctx.drawImage(videoEl, 0, 0, w, h);
+    ctx.drawImage(video, 0, 0, w, h);
 
     const frameAnalysis = analyzeCameraFrame(ctx, w, h);
     if (!frameAnalysis.ok) {
@@ -333,7 +338,7 @@
           return {
             ok: true,
             faceCount: nativeFaces.length,
-            photoDataUrl: canvasEl.toDataURL("image/jpeg", 0.78),
+            photoDataUrl: canvasEl.toDataURL("image/jpeg", 0.8),
           };
         }
       } catch (_) { }
@@ -352,18 +357,18 @@
       const image = { pixels: gray, nrows: h, ncols: w, ldim: w };
       const params = {
         shiftfactor: 0.1,
-        minsize: 36,
-        maxsize: 210,
+        minsize: 20,
+        maxsize: 260,
         scalefactor: 1.1,
       };
       let dets = pico.run_cascade(image, classifier, params);
       dets = pico.cluster_detections(dets, 0.2);
-      const validFaces = dets.filter((d) => d[3] > 36.0);
+      const validFaces = dets.filter((d) => d[3] > 16.0);
       if (validFaces.length > 0) {
         return {
           ok: true,
           faceCount: validFaces.length,
-          photoDataUrl: canvasEl.toDataURL("image/jpeg", 0.78),
+          photoDataUrl: canvasEl.toDataURL("image/jpeg", 0.8),
         };
       }
     }
@@ -399,10 +404,14 @@
     }
   }
 
-  function openFaceGuardModal(initialReason, isObstructed) {
+  async function openFaceGuardModal(initialReason, isObstructed) {
     if (!el.faceGuardModal) return;
     el.faceGuardModal.hidden = false;
     updateFaceGuardUI(initialReason || "Please look directly at the camera.", isObstructed, false);
+
+    if (!state.mediaStream) {
+      await warmUpCamera();
+    }
 
     if (el.faceLiveVideo && state.mediaStream) {
       el.faceLiveVideo.srcObject = state.mediaStream;
@@ -424,27 +433,45 @@
       }, 1500);
     }
 
+    // Safety timeout: enable confirm button after 2.2 seconds so faculty is never locked out
+    if (manualUnlockTimer) clearTimeout(manualUnlockTimer);
+    manualUnlockTimer = setTimeout(() => {
+      if (el.faceGuardConfirmBtn && !state.isSubmitting) {
+        el.faceGuardConfirmBtn.disabled = false;
+        if (steadyFaceCount === 0) {
+          updateFaceGuardUI("Faculty in view — press Cast Vote to finalize.", false, true);
+        }
+      }
+    }, 2200);
+
     clearInterval(faceCheckInterval);
     faceCheckInterval = setInterval(async () => {
       if (state.isSubmitting) return;
       if (!state.mediaStream) return;
-      const res = await detectHumanFace(el.faceLiveVideo || el.cameraVideo, el.cameraCanvas);
+      const targetVideo = (el.faceLiveVideo && el.faceLiveVideo.readyState >= 2 && el.faceLiveVideo.videoWidth > 0)
+        ? el.faceLiveVideo
+        : el.cameraVideo;
+      const res = await detectHumanFace(targetVideo, el.cameraCanvas);
       if (res.ok) {
         steadyFaceCount++;
         lastVerifiedPhoto = res.photoDataUrl;
         updateFaceGuardUI("✓ Face Detected! Hold still...", false, true);
         if (el.faceGuardConfirmBtn) el.faceGuardConfirmBtn.disabled = false;
-        if (steadyFaceCount >= 2 && !state.isSubmitting) {
+        if (steadyFaceCount >= 1 && !state.isSubmitting) {
           clearInterval(faceCheckInterval);
           if (noCamFallbackTimer) clearTimeout(noCamFallbackTimer);
-          await submitUniversalBallot(lastVerifiedPhoto);
+          if (manualUnlockTimer) clearTimeout(manualUnlockTimer);
+          setTimeout(async () => {
+            if (!state.isSubmitting) {
+              await submitUniversalBallot(lastVerifiedPhoto);
+            }
+          }, 280);
         }
       } else {
         steadyFaceCount = 0;
         updateFaceGuardUI(res.reason, res.obstructed, false);
-        if (el.faceGuardConfirmBtn) el.faceGuardConfirmBtn.disabled = true;
       }
-    }, 200);
+    }, 180);
   }
 
   function closeFaceGuardModal() {
@@ -453,6 +480,10 @@
     if (noCamFallbackTimer) {
       clearTimeout(noCamFallbackTimer);
       noCamFallbackTimer = null;
+    }
+    if (manualUnlockTimer) {
+      clearTimeout(manualUnlockTimer);
+      manualUnlockTimer = null;
     }
     if (el.faceGuardModal) el.faceGuardModal.hidden = true;
     if (el.faceLiveVideo) el.faceLiveVideo.srcObject = null;
@@ -1186,11 +1217,14 @@
       renderEvmView();
     });
 
-    el.evmFinalCastBtn?.addEventListener("click", () => {
+    el.evmFinalCastBtn?.addEventListener("click", async () => {
       const { selected, total } = countTotalProgress();
       if (selected < total) {
         submitUniversalBallot();
         return;
+      }
+      if (!state.mediaStream) {
+        await warmUpCamera();
       }
       openFaceGuardModal("Please look at the camera to verify faculty identity.");
     });
