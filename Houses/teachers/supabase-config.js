@@ -149,24 +149,7 @@
           return "offline";
         }
 
-        // 1. Check Netlify function proxy first if deployed
-        try {
-          const ctl = new AbortController();
-          const tid = setTimeout(() => ctl.abort(), 1400);
-          const res = await fetch("/.netlify/functions/supabase?action=health", { cache: "no-store", signal: ctl.signal });
-          clearTimeout(tid);
-          if (res.ok) {
-            const h = await res.json();
-            if (h.backend === "supabase") {
-              runtime.transport = "netlify";
-              this.mode = "supabase";
-              this.backendError = null;
-              return "supabase";
-            }
-          }
-        } catch (_) { }
-
-        // 2. Read browser / local config
+        // 1. Read browser / local config
         const cfg = await readBrowserSupabaseConfig();
         if (cfg.key) {
           if (cfg.key.startsWith("sbp_")) {
@@ -212,7 +195,16 @@
       await this.init();
 
       const allTeachers = window.TEACHER_BOOTH_DATA?.teachers || [];
-      let teacher = allTeachers.find((t) => String(t.admissionNo).trim().toUpperCase() === cleanId);
+      let teacher = allTeachers.find((t) => {
+        const adm = String(t.admissionNo || "").trim().toUpperCase();
+        const slNum = t.sl !== undefined && t.sl !== null ? String(t.sl) : "";
+        const alias6k = t.sl ? String(6000 + Number(t.sl)) : "";
+        return adm === cleanId || slNum === cleanId || alias6k === cleanId;
+      });
+
+      if (teacher && teacher.admissionNo) {
+        cleanId = String(teacher.admissionNo).trim().toUpperCase();
+      }
 
         // Support universal test accounts
         if ((cleanId === "0000" || cleanId === "6000" || cleanId === "SPRFAC100") && !teacher) {

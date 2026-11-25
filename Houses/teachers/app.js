@@ -988,8 +988,13 @@
     // Keep scanner stream focused if clicked anywhere on scanner box
     document.querySelector(".scanner-kiosk-box")?.addEventListener("click", focusScannerInput);
 
-    // Manual form submit
+    // Manual form submit & button click
     el.admissionForm?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const id = el.admissionInput.value.trim();
+      handleTeacherIdVerification(id);
+    });
+    el.verifyBtn?.addEventListener("click", (e) => {
       e.preventDefault();
       const id = el.admissionInput.value.trim();
       handleTeacherIdVerification(id);

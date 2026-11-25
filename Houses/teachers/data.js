@@ -2143,15 +2143,15 @@ window.TEACHER_BOOTH_DATA = {
       "isApproved": true
     },
     {
-      "id": "CAND_VASISTHA_CAPTAIN_BOY_NSRITEJA",
+      "id": "CAND_VASISTHA_CAPTAIN_GIRL_NSRITEJA",
       "admissionNo": "CAND-10-NSRI",
       "fullName": "N.Sriteja",
       "className": "10",
       "section": "Class 10",
       "houseCode": "VASISTHA",
-      "positionId": "CAPTAIN_BOY",
-      "positionName": "Boys Captain (Class 10 Boy)",
-      "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Vasistha House",
+      "positionId": "CAPTAIN_GIRL",
+      "positionName": "Girls Captain (Class 10 Girl)",
+      "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Vasistha House",
       "symbolObj": {
         "name": "Ashoka Chakra",
         "icon": "\u2638\ufe0f",

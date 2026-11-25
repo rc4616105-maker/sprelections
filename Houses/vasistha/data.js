@@ -2534,15 +2534,15 @@ window.HOUSE_DATA = {
       "isApproved": true
     },
     {
-      "id": "CAND_VASISTHA_CAPTAIN_BOY_NSRITEJA",
+      "id": "CAND_VASISTHA_CAPTAIN_GIRL_NSRITEJA",
       "admissionNo": "CAND-10-NSRI",
       "fullName": "N.Sriteja",
       "className": "10",
       "section": "Class 10",
       "houseCode": "VASISTHA",
-      "positionId": "CAPTAIN_BOY",
-      "positionName": "Boys Captain (Class 10 Boy)",
-      "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Vasistha House",
+      "positionId": "CAPTAIN_GIRL",
+      "positionName": "Girls Captain (Class 10 Girl)",
+      "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Vasistha House",
       "symbolObj": {
         "name": "Ashoka Chakra",
         "icon": "\u2638\ufe0f",
@@ -15831,14 +15831,14 @@ window.HOUSE_DATA = {
       "isApproved": true
     },
     {
-      "id": "CAND_VASISTHA_VICE_CAPTAIN_GIRL_CHRUTHVI",
+      "id": "CAND_VASISTHA_VICE_CAPTAIN_BOY_CHRUTHVI",
       "admissionNo": "CAND-9-CHRU",
       "fullName": "Ch.Ruthvish",
       "className": "9",
       "section": "Class 9 \u00b7 SD",
       "houseCode": "VASISTHA",
-      "positionId": "VICE_CAPTAIN_GIRL",
-      "positionName": "Girls Vice Captain (Class 9 Girl)",
+      "positionId": "VICE_CAPTAIN_BOY",
+      "positionName": "Boys Vice Captain (Class 9 Boy)",
       "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Vasistha House",
       "symbolObj": {
         "name": "Mango",
