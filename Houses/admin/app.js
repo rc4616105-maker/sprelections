@@ -21,6 +21,9 @@
     freezeHousePollingBtn: document.getElementById("freeze-house-polling-btn"),
     freezeBtnIcon: document.getElementById("freeze-btn-icon"),
     freezeBtnText: document.getElementById("freeze-btn-text"),
+    freezeCabinetPollingBtn: document.getElementById("freeze-cabinet-polling-btn"),
+    freezeCabinetIcon: document.getElementById("freeze-cabinet-icon"),
+    freezeCabinetText: document.getElementById("freeze-cabinet-text"),
     houseClosedBanner: document.getElementById("house-closed-banner"),
     refreshBtn: document.getElementById("refresh-btn"),
     printResultsBtn: document.getElementById("print-results-btn"),
@@ -912,6 +915,29 @@
       el.freezeHousePollingBtn.style.fontWeight = "";
       if (el.houseClosedBanner) el.houseClosedBanner.hidden = true;
     }
+    updateCabinetFreezeButtonState();
+  }
+
+  function updateCabinetFreezeButtonState() {
+    if (!el.freezeCabinetPollingBtn) return;
+    const isCabClosed = localStorage.getItem("ELECTION_CABINET_POLLING_CLOSED") === "true";
+    if (isCabClosed) {
+      if (el.freezeCabinetIcon) el.freezeCabinetIcon.textContent = "▶️";
+      if (el.freezeCabinetText) el.freezeCabinetText.textContent = "Resume Cabinet Polling";
+      el.freezeCabinetPollingBtn.title = "Click to resume School Cabinet voting";
+      el.freezeCabinetPollingBtn.style.background = "#dbeafe";
+      el.freezeCabinetPollingBtn.style.color = "#1d4ed8";
+      el.freezeCabinetPollingBtn.style.borderColor = "#3b82f6";
+      el.freezeCabinetPollingBtn.style.fontWeight = "700";
+    } else {
+      if (el.freezeCabinetIcon) el.freezeCabinetIcon.textContent = "⏸️";
+      if (el.freezeCabinetText) el.freezeCabinetText.textContent = "Pause Cabinet Polling";
+      el.freezeCabinetPollingBtn.title = "Pause School Cabinet polling and unlock the Cabinet Result Wheel";
+      el.freezeCabinetPollingBtn.style.background = "";
+      el.freezeCabinetPollingBtn.style.color = "";
+      el.freezeCabinetPollingBtn.style.borderColor = "";
+      el.freezeCabinetPollingBtn.style.fontWeight = "";
+    }
   }
 
   async function tallyAndLockHouseWinners() {
@@ -1060,6 +1086,41 @@
         }
         updateFreezeButtonState();
         alert("▶️ House Polling Resumed! Students can now vote in all 6 House Booths.");
+      }
+    });
+  }
+
+  if (el.freezeCabinetPollingBtn) {
+    el.freezeCabinetPollingBtn.addEventListener("click", () => {
+      const isCabClosed = localStorage.getItem("ELECTION_CABINET_POLLING_CLOSED") === "true";
+      if (!isCabClosed) {
+        const confirmed = confirm(
+          "⏸️ PAUSE SCHOOL CABINET POLLING?\n\nThis will:\n1. Pause the School Cabinet voting booth.\n2. Unlock the School Cabinet Result Declaration Wheel (President, Vice President & Secretaries).\n\nProceed to pause School Cabinet polling?"
+        );
+        if (!confirmed) return;
+        localStorage.setItem("ELECTION_CABINET_POLLING_CLOSED", "true");
+        if (typeof BroadcastChannel !== "undefined") {
+          try {
+            const chan = new BroadcastChannel("election_spr_2026_sync");
+            chan.postMessage({ type: "cabinet_polling_closed", at: Date.now() });
+          } catch (_) {}
+        }
+        updateCabinetFreezeButtonState();
+        alert("⏸️ School Cabinet Polling Paused! The School Cabinet Result Wheel is now unlocked.");
+      } else {
+        const confirmed = confirm(
+          "▶️ RESUME SCHOOL CABINET POLLING?\n\nThis will re-open the School Cabinet voting booth.\n\nProceed to resume?"
+        );
+        if (!confirmed) return;
+        localStorage.removeItem("ELECTION_CABINET_POLLING_CLOSED");
+        if (typeof BroadcastChannel !== "undefined") {
+          try {
+            const chan = new BroadcastChannel("election_spr_2026_sync");
+            chan.postMessage({ type: "cabinet_polling_opened", at: Date.now() });
+          } catch (_) {}
+        }
+        updateCabinetFreezeButtonState();
+        alert("▶️ School Cabinet Polling Resumed!");
       }
     });
   }

@@ -202,8 +202,45 @@
     if (!boothCard) return;
 
     // 1. Central Booth (School Cabinet for 24 House Winners):
-    // Only accessible when House Polling is PAUSED and 24 winners are declared!
+    // Only accessible when House Polling is PAUSED and Cabinet Polling is NOT paused!
     if (isCentralBoothPage()) {
+      let isCabClosed = false;
+      try {
+        isCabClosed = localStorage.getItem("ELECTION_CABINET_POLLING_CLOSED") === "true";
+      } catch (_) {}
+
+      if (isCabClosed) {
+        const lockOv = document.getElementById("central-locked-screen");
+        if (lockOv) lockOv.remove();
+        ensurePauseStyles();
+        let pauseOv = document.getElementById("booth-paused-screen");
+        if (!pauseOv) {
+          pauseOv = document.createElement("div");
+          pauseOv.id = "booth-paused-screen";
+          pauseOv.className = "booth-paused-overlay";
+          pauseOv.setAttribute("role", "alertdialog");
+          pauseOv.setAttribute("aria-live", "assertive");
+          pauseOv.innerHTML = `
+            <div class="booth-paused-card">
+              <div class="paused-icon-ring" aria-hidden="true">⏸️</div>
+              <span class="paused-badge">Election Commission · Official Notice</span>
+              <h2 class="paused-title">School Cabinet Polling Paused</h2>
+              <p class="paused-subtitle">
+                Voting for School Cabinet (President, Vice President &amp; Secretaries) has been <strong>PAUSED / CONCLUDED</strong>.
+              </p>
+              <div class="paused-status-badge">
+                <span>🔒 Cabinet Polling Closed · Results Ready</span>
+              </div>
+            </div>
+          `;
+          boothCard.appendChild(pauseOv);
+        }
+        return;
+      } else {
+        const pauseOv = document.getElementById("booth-paused-screen");
+        if (pauseOv) pauseOv.remove();
+      }
+
       if (!isClosed) {
         ensurePauseStyles();
         let overlay = document.getElementById("central-locked-screen");

@@ -884,9 +884,14 @@ class ElectionApp {
 function syncResultPauseLock() {
   const lockOverlay = document.getElementById("result-pause-lock-overlay");
   if (!lockOverlay) return false;
+  const params = new URLSearchParams(window.location.search);
+  const mode = (params.get("mode") || "").toLowerCase();
+  const isCabinetMode = mode === "cabinet" || (window.app && window.app.ceremonyPhase === "cabinet");
   let isClosed = false;
   try {
-    isClosed = localStorage.getItem("ELECTION_HOUSE_POLLING_CLOSED") === "true";
+    isClosed = isCabinetMode
+      ? localStorage.getItem("ELECTION_CABINET_POLLING_CLOSED") === "true"
+      : localStorage.getItem("ELECTION_HOUSE_POLLING_CLOSED") === "true";
   } catch (_) {}
   lockOverlay.hidden = isClosed;
   lockOverlay.style.display = isClosed ? "none" : "flex";
@@ -896,18 +901,18 @@ function syncResultPauseLock() {
 window.addEventListener("DOMContentLoaded", () => {
   let wasClosed = syncResultPauseLock();
   window.app = new ElectionApp();
+  wasClosed = syncResultPauseLock();
 
   const onSync = () => {
     const isClosedNow = syncResultPauseLock();
     if (!wasClosed && isClosedNow) {
-      // Newly paused & tallied by Admin — reload to pull fresh 24 winners!
       window.location.reload();
     }
     wasClosed = isClosedNow;
   };
 
   window.addEventListener("storage", (e) => {
-    if (!e.key || e.key === "ELECTION_HOUSE_POLLING_CLOSED" || e.key === "SCHOOL_ELECTION_2026_CUSTOM_DATA_V5") {
+    if (!e.key || e.key === "ELECTION_HOUSE_POLLING_CLOSED" || e.key === "ELECTION_CABINET_POLLING_CLOSED" || e.key === "SCHOOL_ELECTION_2026_CUSTOM_DATA_V5") {
       onSync();
     }
   });

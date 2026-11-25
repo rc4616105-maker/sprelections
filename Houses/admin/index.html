@@ -36,6 +36,9 @@
         <button type="button" id="freeze-house-polling-btn" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.35rem;" title="Pause House polling, tally 24 winners, and unlock School Cabinet">
           <span id="freeze-btn-icon">⏸️</span> <span id="freeze-btn-text">Pause House Polling &amp; Tally</span>
         </button>
+        <button type="button" id="freeze-cabinet-polling-btn" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 0.35rem;" title="Pause School Cabinet polling and unlock the Cabinet Result Wheel">
+          <span id="freeze-cabinet-icon">⏸️</span> <span id="freeze-cabinet-text">Pause Cabinet Polling</span>
+        </button>
         <div class="wheel-btn-group" style="display: inline-flex; align-items: center; gap: 0.45rem; flex-shrink: 0;">
           <a href="../../Result declaration/index.html?mode=houses" class="btn btn-primary" id="result-declaration-btn"
             title="Launch House Results Wheel (6 Houses)"
@@ -215,7 +218,7 @@
   <script defer src="./supabase-config.js?v=20261125_FIX_DATA_SYNTAX_OK"></script>
   <script defer src="./vendor/xlsx.full.min.js"></script>
   <script defer src="./export-excel.js?v=20261125_EXCEL_WINNER_MAJORITY"></script>
-  <script defer src="./app.js?v=20261125_FIX_DATA_SYNTAX_OK"></script>
+  <script defer src="./app.js?v=20261125_CABINET_PAUSE_V1"></script>
 </body>
 
 </html>
