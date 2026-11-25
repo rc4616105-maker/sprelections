@@ -8,10 +8,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Bheeshma House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -29,10 +29,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Bheeshma House",
     "symbolObj": {
       "name": "Royal Bengal Tiger",
-      "icon": "\ud83d\udc05",
+      "icon": "🐅",
       "slug": "royal_bengal_tiger",
       "image": "../assets/symbols/royal_bengal_tiger.png",
       "imagePath": "../assets/symbols/royal_bengal_tiger.png"
@@ -50,10 +50,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Bheeshma House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -71,10 +71,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Bheeshma House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -92,10 +92,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Bheeshma House",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -113,10 +113,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Bheeshma House",
     "symbolObj": {
       "name": "Dolphin",
-      "icon": "\ud83d\udc2c",
+      "icon": "🐬",
       "slug": "dolphin",
       "image": "../assets/symbols/dolphin.png",
       "imagePath": "../assets/symbols/dolphin.png"
@@ -134,10 +134,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Bheeshma House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -155,10 +155,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Bheeshma House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -176,10 +176,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Bheeshma House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -197,10 +197,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Bheeshma House",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -218,10 +218,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Bheeshma House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -239,10 +239,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Bheeshma House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -260,10 +260,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Bheeshma House",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -281,10 +281,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Bheeshma House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -302,10 +302,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Bheeshma House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -323,10 +323,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Bheeshma House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -344,10 +344,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Bheeshma House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -365,10 +365,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Bheeshma House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -386,10 +386,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Bheeshma House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -407,10 +407,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "BHEESHMA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Bheeshma House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Bheeshma House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -428,10 +428,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Gurudrona House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -449,10 +449,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Gurudrona House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -470,10 +470,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Gurudrona House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -491,10 +491,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Gurudrona House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -512,10 +512,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Gurudrona House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -533,10 +533,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Gurudrona House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -554,10 +554,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Gurudrona House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -575,10 +575,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Gurudrona House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -596,10 +596,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Gurudrona House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -617,10 +617,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Gurudrona House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -638,10 +638,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Gurudrona House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -659,10 +659,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Gurudrona House",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -680,10 +680,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Gurudrona House",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -701,10 +701,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Gurudrona House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -722,10 +722,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Gurudrona House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -743,10 +743,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "GURUDRONA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Gurudrona House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Gurudrona House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -764,10 +764,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Hanuman House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Hanuman House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -785,10 +785,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Hanuman House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Hanuman House",
     "symbolObj": {
       "name": "River",
-      "icon": "\ud83c\udf0a",
+      "icon": "🌊",
       "slug": "river",
       "image": "../assets/symbols/river.png",
       "imagePath": "../assets/symbols/river.png"
@@ -806,10 +806,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Hanuman House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Hanuman House",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -827,10 +827,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Hanuman House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Hanuman House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -848,10 +848,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Hanuman House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Hanuman House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -869,10 +869,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Hanuman House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Hanuman House",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -890,10 +890,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Hanuman House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Hanuman House",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -911,10 +911,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Hanuman House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Hanuman House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -932,10 +932,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Hanuman House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Hanuman House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -953,10 +953,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Hanuman House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Hanuman House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -974,10 +974,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Hanuman House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Hanuman House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -995,10 +995,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Hanuman House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Hanuman House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -1016,10 +1016,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Hanuman House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Hanuman House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -1037,10 +1037,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Hanuman House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Hanuman House",
     "symbolObj": {
       "name": "Royal Bengal Tiger",
-      "icon": "\ud83d\udc05",
+      "icon": "🐅",
       "slug": "royal_bengal_tiger",
       "image": "../assets/symbols/royal_bengal_tiger.png",
       "imagePath": "../assets/symbols/royal_bengal_tiger.png"
@@ -1058,10 +1058,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Hanuman House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Hanuman House",
     "symbolObj": {
       "name": "Royal Bengal Tiger",
-      "icon": "\ud83d\udc05",
+      "icon": "🐅",
       "slug": "royal_bengal_tiger",
       "image": "../assets/symbols/royal_bengal_tiger.png",
       "imagePath": "../assets/symbols/royal_bengal_tiger.png"
@@ -1079,10 +1079,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Hanuman House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Hanuman House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -1100,10 +1100,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Hanuman House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Hanuman House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -1121,10 +1121,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Hanuman House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Hanuman House",
     "symbolObj": {
       "name": "Royal Bengal Tiger",
-      "icon": "\ud83d\udc05",
+      "icon": "🐅",
       "slug": "royal_bengal_tiger",
       "image": "../assets/symbols/royal_bengal_tiger.png",
       "imagePath": "../assets/symbols/royal_bengal_tiger.png"
@@ -1142,10 +1142,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Hanuman House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Hanuman House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -1163,10 +1163,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Hanuman House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Hanuman House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -1184,10 +1184,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "HANUMAN",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Hanuman House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Hanuman House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -1201,14 +1201,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "1M6408",
     "fullName": "B.Pradeepthi Sai",
     "className": "10",
-    "section": "Class 10 \u00b7 MRP",
+    "section": "Class 10 · MRP",
     "houseCode": "HANUMAN",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Hanuman House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Hanuman House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -1226,10 +1226,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Karna House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Karna House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -1247,10 +1247,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Karna House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Karna House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -1268,10 +1268,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Karna House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Karna House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -1289,10 +1289,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Karna House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Karna House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -1310,10 +1310,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Karna House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Karna House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -1331,10 +1331,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Karna House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Karna House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -1352,10 +1352,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Karna House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Karna House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -1373,10 +1373,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Karna House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Karna House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -1394,10 +1394,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Karna House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Karna House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -1415,10 +1415,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Karna House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Karna House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -1436,10 +1436,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Karna House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Karna House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -1457,10 +1457,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Karna House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Karna House",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -1478,10 +1478,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Karna House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Karna House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -1499,10 +1499,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Karna House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Karna House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -1520,10 +1520,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Karna House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Karna House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -1541,10 +1541,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Karna House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Karna House",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -1562,10 +1562,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "KARNA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Karna House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Karna House",
     "symbolObj": {
       "name": "Star",
-      "icon": "\u2b50",
+      "icon": "⭐",
       "slug": "star",
       "image": "../assets/symbols/star.png",
       "imagePath": "../assets/symbols/star.png"
@@ -1583,10 +1583,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VASISTHA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Vasistha House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Vasistha House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -1604,10 +1604,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VASISTHA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Vasistha House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Vasistha House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -1625,10 +1625,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VASISTHA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Vasistha House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Vasistha House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -1646,10 +1646,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VASISTHA",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Vasistha House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Vasistha House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -1667,10 +1667,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VASISTHA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Vasistha House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Vasistha House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -1688,10 +1688,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VASISTHA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Vasistha House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Vasistha House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -1709,10 +1709,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VASISTHA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Vasistha House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Vasistha House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -1730,10 +1730,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VASISTHA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Vasistha House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Vasistha House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -1751,10 +1751,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VASISTHA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Vasistha House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Vasistha House",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -1772,10 +1772,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VASISTHA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Vasistha House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Vasistha House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -1793,10 +1793,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VASISTHA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Vasistha House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Vasistha House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -1814,10 +1814,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VASISTHA",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Vasistha House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Vasistha House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -1835,10 +1835,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VASISTHA",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Vasistha House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Vasistha House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -1856,10 +1856,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VASISTHA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Vasistha House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Vasistha House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -1877,10 +1877,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Vishwamithra House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -1898,10 +1898,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Vishwamithra House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -1919,10 +1919,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Vishwamithra House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -1940,10 +1940,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Vishwamithra House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -1961,10 +1961,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Vishwamithra House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -1982,10 +1982,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Vishwamithra House",
     "symbolObj": {
       "name": "Royal Bengal Tiger",
-      "icon": "\ud83d\udc05",
+      "icon": "🐅",
       "slug": "royal_bengal_tiger",
       "image": "../assets/symbols/royal_bengal_tiger.png",
       "imagePath": "../assets/symbols/royal_bengal_tiger.png"
@@ -2003,10 +2003,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Vishwamithra House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -2024,10 +2024,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Vishwamithra House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -2045,10 +2045,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Vishwamithra House",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -2066,10 +2066,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Vishwamithra House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -2087,10 +2087,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Vishwamithra House",
     "symbolObj": {
       "name": "Pumpkin",
-      "icon": "\ud83c\udf83",
+      "icon": "🎃",
       "slug": "pumpkin",
       "image": "../assets/symbols/pumpkin.png",
       "imagePath": "../assets/symbols/pumpkin.png"
@@ -2108,10 +2108,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Vishwamithra House",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -2129,10 +2129,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "VICE_CAPTAIN_GIRL",
     "positionName": "Girls Vice Captain (Class 9 Girl)",
-    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) · Vishwamithra House",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -2150,10 +2150,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Vishwamithra House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -2171,10 +2171,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Vishwamithra House",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -2192,10 +2192,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Vishwamithra House",
     "symbolObj": {
       "name": "Royal Bengal Tiger",
-      "icon": "\ud83d\udc05",
+      "icon": "🐅",
       "slug": "royal_bengal_tiger",
       "image": "../assets/symbols/royal_bengal_tiger.png",
       "imagePath": "../assets/symbols/royal_bengal_tiger.png"
@@ -2213,10 +2213,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "VICE_CAPTAIN_BOY",
     "positionName": "Boys Vice Captain (Class 9 Boy)",
-    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) · Vishwamithra House",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -2234,10 +2234,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "CAPTAIN_GIRL",
     "positionName": "Girls Captain (Class 10 Girl)",
-    "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Girls Captain (Class 10 Girl) · Vishwamithra House",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -2251,14 +2251,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9198",
     "fullName": "Balla Raga Sri",
     "className": "9",
-    "section": "Class 9 \u00b7 Sri Ramanujan",
+    "section": "Class 9 · Sri Ramanujan",
     "houseCode": "CENTRAL",
     "positionId": "LITERARY_SECRETARY",
-    "positionName": "Literary Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Cultivating abundant literary talent and creative expression \u00b7 Literary Secretary",
+    "positionName": "Literary Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Cultivating abundant literary talent and creative expression · Literary Secretary",
     "symbolObj": {
       "name": "Pumpkin",
-      "icon": "\ud83c\udf83",
+      "icon": "🎃",
       "slug": "pumpkin",
       "image": "../assets/symbols/pumpkin.png",
       "imagePath": "../assets/symbols/pumpkin.png"
@@ -2272,14 +2272,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "8102",
     "fullName": "D. Samanvitha",
     "className": "9",
-    "section": "Class 9 \u00b7 APJ Abdul Kalam",
+    "section": "Class 9 · APJ Abdul Kalam",
     "houseCode": "CENTRAL",
     "positionId": "LITERARY_SECRETARY",
-    "positionName": "Literary Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Deep-rooted passion for reading, writing, and eloquence \u00b7 Literary Secretary",
+    "positionName": "Literary Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Deep-rooted passion for reading, writing, and eloquence · Literary Secretary",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -2293,14 +2293,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "8074",
     "fullName": "G.Harsha Vardhan Rao",
     "className": "9",
-    "section": "Class 9 \u00b7 Vikram Sarabhai",
+    "section": "Class 9 · Vikram Sarabhai",
     "houseCode": "CENTRAL",
     "positionId": "LITERARY_SECRETARY",
-    "positionName": "Literary Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Sharpening critical thought, debate, and school journalism \u00b7 Literary Secretary",
+    "positionName": "Literary Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Sharpening critical thought, debate, and school journalism · Literary Secretary",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -2314,14 +2314,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9192",
     "fullName": "Indu Priya",
     "className": "9",
-    "section": "Class 9 \u00b7 Homi J. Bhabha",
+    "section": "Class 9 · Homi J. Bhabha",
     "houseCode": "CENTRAL",
     "positionId": "LITERARY_SECRETARY",
-    "positionName": "Literary Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Driving eternal cycles of knowledge and debating excellence \u00b7 Literary Secretary",
+    "positionName": "Literary Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Driving eternal cycles of knowledge and debating excellence · Literary Secretary",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -2335,14 +2335,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9157",
     "fullName": "M.Srivaishnavi",
     "className": "9",
-    "section": "Class 9 \u00b7 Aryabhata",
+    "section": "Class 9 · Aryabhata",
     "houseCode": "CENTRAL",
     "positionId": "LITERARY_SECRETARY",
-    "positionName": "Literary Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Bold articulation and fearless debating championship \u00b7 Literary Secretary",
+    "positionName": "Literary Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Bold articulation and fearless debating championship · Literary Secretary",
     "symbolObj": {
       "name": "Royal Bengal Tiger",
-      "icon": "\ud83d\udc05",
+      "icon": "🐅",
       "slug": "royal_bengal_tiger",
       "image": "../assets/symbols/tiger.png",
       "imagePath": "../assets/symbols/tiger.png"
@@ -2356,14 +2356,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9052",
     "fullName": "N.Malala",
     "className": "9",
-    "section": "Class 9 \u00b7 Sir CV Raman",
+    "section": "Class 9 · Sir CV Raman",
     "houseCode": "CENTRAL",
     "positionId": "LITERARY_SECRETARY",
-    "positionName": "Literary Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Championing education, speech, and intellectual freedom \u00b7 Literary Secretary",
+    "positionName": "Literary Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Championing education, speech, and intellectual freedom · Literary Secretary",
     "symbolObj": {
       "name": "Dolphin",
-      "icon": "\ud83d\udc2c",
+      "icon": "🐬",
       "slug": "dolphin",
       "image": "../assets/symbols/dolphin.png",
       "imagePath": "../assets/symbols/dolphin.png"
@@ -2377,14 +2377,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9138",
     "fullName": "Y Bhagya Sri",
     "className": "9",
-    "section": "Class 9 \u00b7 Satish Dhawan",
+    "section": "Class 9 · Satish Dhawan",
     "houseCode": "CENTRAL",
     "positionId": "LITERARY_SECRETARY",
-    "positionName": "Literary Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Nurturing creative minds and poetic flair \u00b7 Literary Secretary",
+    "positionName": "Literary Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Nurturing creative minds and poetic flair · Literary Secretary",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -2394,18 +2394,39 @@ window.ALL_CONTESTING_CANDIDATES = [
     "isApproved": true
   },
   {
+    "id": "CAND_CENTRAL_LITERARY_SECRETARY_08",
+    "admissionNo": "9K7051",
+    "fullName": "L.Rushil",
+    "className": "9",
+    "section": "Class 9 · Kalpana Chawla",
+    "houseCode": "CENTRAL",
+    "positionId": "LITERARY_SECRETARY",
+    "positionName": "Literary Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Wisdom, eloquence, and inspiring student expression · Literary Secretary",
+    "symbolObj": {
+      "name": "Elephant",
+      "icon": "🐘",
+      "slug": "elephant",
+      "image": "../assets/symbols/elephant.png",
+      "imagePath": "../assets/symbols/elephant.png"
+    },
+    "photoUrl": "../assets/candidates/cabinet_l_rushil.jpg",
+    "photoPath": "../assets/candidates/cabinet_l_rushil.jpg",
+    "isApproved": true
+  },
+  {
     "id": "CAND_CENTRAL_PRESIDENT_08",
     "admissionNo": "7083",
     "fullName": "M.Rithvik",
     "className": "10",
-    "section": "Class 10 \u00b7 Homi J. Bhabha",
+    "section": "Class 10 · Homi J. Bhabha",
     "houseCode": "CENTRAL",
     "positionId": "PRESIDENT",
-    "positionName": "School President (Class 10 \u00b7 Central Cabinet)",
-    "tagline": "Sweet taste of leadership and student prosperity \u00b7 School President",
+    "positionName": "School President (Class 10 · Central Cabinet)",
+    "tagline": "Sweet taste of leadership and student prosperity · School President",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -2419,14 +2440,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "7222",
     "fullName": "M.Vaishnavi",
     "className": "10",
-    "section": "Class 10 \u00b7 Sri Ramanujan",
+    "section": "Class 10 · Sri Ramanujan",
     "houseCode": "CENTRAL",
     "positionId": "PRESIDENT",
-    "positionName": "School President (Class 10 \u00b7 Central Cabinet)",
-    "tagline": "Rooted in resilience, branching towards student success \u00b7 School President",
+    "positionName": "School President (Class 10 · Central Cabinet)",
+    "tagline": "Rooted in resilience, branching towards student success · School President",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -2440,14 +2461,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "10055",
     "fullName": "S.Harini Reddy",
     "className": "10",
-    "section": "Class 10 \u00b7 Vikram Sarabhai",
+    "section": "Class 10 · Vikram Sarabhai",
     "houseCode": "CENTRAL",
     "positionId": "PRESIDENT",
-    "positionName": "School President (Class 10 \u00b7 Central Cabinet)",
-    "tagline": "Precision, teamwork, and goal-driven governance \u00b7 School President",
+    "positionName": "School President (Class 10 · Central Cabinet)",
+    "tagline": "Precision, teamwork, and goal-driven governance · School President",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -2461,14 +2482,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "10189",
     "fullName": "V.Janaki Koushik",
     "className": "10",
-    "section": "Class 10 \u00b7 APJ Abdul Kalam",
+    "section": "Class 10 · APJ Abdul Kalam",
     "houseCode": "CENTRAL",
     "positionId": "PRESIDENT",
-    "positionName": "School President (Class 10 \u00b7 Central Cabinet)",
-    "tagline": "Proudly uplifting the voice and dignity of every scholar \u00b7 School President",
+    "positionName": "School President (Class 10 · Central Cabinet)",
+    "tagline": "Proudly uplifting the voice and dignity of every scholar · School President",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -2482,14 +2503,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "10091",
     "fullName": "Y.Srinith",
     "className": "10",
-    "section": "Class 10 \u00b7 Aryabhata",
+    "section": "Class 10 · Aryabhata",
     "houseCode": "CENTRAL",
     "positionId": "PRESIDENT",
-    "positionName": "School President (Class 10 \u00b7 Central Cabinet)",
-    "tagline": "Turning the wheel of discipline, culture, and progress \u00b7 School President",
+    "positionName": "School President (Class 10 · Central Cabinet)",
+    "tagline": "Turning the wheel of discipline, culture, and progress · School President",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -2503,14 +2524,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "7071",
     "fullName": "G.Ashwath",
     "className": "9",
-    "section": "Class 9 \u00b7 Sri Ramanujan",
+    "section": "Class 9 · Sri Ramanujan",
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
-    "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Vibrant school spirit, fine arts, and inclusive community \u00b7 Social & Cultural Secretary",
+    "positionName": "Social & Cultural Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Vibrant school spirit, fine arts, and inclusive community · Social & Cultural Secretary",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -2524,14 +2545,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "7198",
     "fullName": "K.Akshara",
     "className": "9",
-    "section": "Class 9 \u00b7 Aryabhata",
+    "section": "Class 9 · Aryabhata",
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
-    "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Preserving cultural heritage and modern artistic flair \u00b7 Social & Cultural Secretary",
+    "positionName": "Social & Cultural Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Preserving cultural heritage and modern artistic flair · Social & Cultural Secretary",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -2545,14 +2566,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "8096",
     "fullName": "K.Rasagna",
     "className": "9",
-    "section": "Class 9 \u00b7 Homi J. Bhabha",
+    "section": "Class 9 · Homi J. Bhabha",
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
-    "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Fostering creative festivities and student bonding \u00b7 Social & Cultural Secretary",
+    "positionName": "Social & Cultural Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Fostering creative festivities and student bonding · Social & Cultural Secretary",
     "symbolObj": {
       "name": "Pumpkin",
-      "icon": "\ud83c\udf83",
+      "icon": "🎃",
       "slug": "pumpkin",
       "image": "../assets/symbols/pumpkin.png",
       "imagePath": "../assets/symbols/pumpkin.png"
@@ -2566,14 +2587,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9190",
     "fullName": "P.Divija",
     "className": "9",
-    "section": "Class 9 \u00b7 Vikram Sarabhai",
+    "section": "Class 9 · Vikram Sarabhai",
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
-    "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Coordinating stage, arts, and dynamic cultural fests \u00b7 Social & Cultural Secretary",
+    "positionName": "Social & Cultural Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Coordinating stage, arts, and dynamic cultural fests · Social & Cultural Secretary",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -2587,14 +2608,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9104",
     "fullName": "P.Meghana",
     "className": "9",
-    "section": "Class 9 \u00b7 Sir CV Raman",
+    "section": "Class 9 · Sir CV Raman",
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
-    "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Branching out to all student houses with festive spirit \u00b7 Social & Cultural Secretary",
+    "positionName": "Social & Cultural Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Branching out to all student houses with festive spirit · Social & Cultural Secretary",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -2608,14 +2629,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9189",
     "fullName": "V.Chaithra",
     "className": "9",
-    "section": "Class 9 \u00b7 Satish Dhawan",
+    "section": "Class 9 · Satish Dhawan",
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
-    "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Passionate leadership for cultural grandeur and arts \u00b7 Social & Cultural Secretary",
+    "positionName": "Social & Cultural Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Passionate leadership for cultural grandeur and arts · Social & Cultural Secretary",
     "symbolObj": {
       "name": "Royal Bengal Tiger",
-      "icon": "\ud83d\udc05",
+      "icon": "🐅",
       "slug": "royal_bengal_tiger",
       "image": "../assets/symbols/tiger.png",
       "imagePath": "../assets/symbols/tiger.png"
@@ -2629,14 +2650,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9170",
     "fullName": "V.Himavardhan",
     "className": "9",
-    "section": "Class 9 \u00b7 Sir CV Raman",
+    "section": "Class 9 · Sir CV Raman",
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
-    "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Enriching celebrations and cultural harmony \u00b7 Social & Cultural Secretary",
+    "positionName": "Social & Cultural Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Enriching celebrations and cultural harmony · Social & Cultural Secretary",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -2650,14 +2671,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9195",
     "fullName": "Nithya Sree.Y",
     "className": "9",
-    "section": "Class 9 \u00b7 APJ Abdul Kalam",
+    "section": "Class 9 · APJ Abdul Kalam",
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
-    "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Joyful events, empathetic community outreach, and unity \u00b7 Social & Cultural Secretary",
+    "positionName": "Social & Cultural Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Joyful events, empathetic community outreach, and unity · Social & Cultural Secretary",
     "symbolObj": {
       "name": "Dolphin",
-      "icon": "\ud83d\udc2c",
+      "icon": "🐬",
       "slug": "dolphin",
       "image": "../assets/symbols/dolphin.png",
       "imagePath": "../assets/symbols/dolphin.png"
@@ -2671,14 +2692,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9069",
     "fullName": "Ch.Bala Thrusha Datta",
     "className": "9",
-    "section": "Class 9 \u00b7 APJ Abdul Kalam",
+    "section": "Class 9 · APJ Abdul Kalam",
     "houseCode": "CENTRAL",
     "positionId": "SPORTS_SECRETARY",
-    "positionName": "Sports Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Stout determination and heavyweight athletic support \u00b7 Sports Secretary",
+    "positionName": "Sports Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Stout determination and heavyweight athletic support · Sports Secretary",
     "symbolObj": {
       "name": "Pumpkin",
-      "icon": "\ud83c\udf83",
+      "icon": "🎃",
       "slug": "pumpkin",
       "image": "../assets/symbols/pumpkin.png",
       "imagePath": "../assets/symbols/pumpkin.png"
@@ -2692,14 +2713,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9172",
     "fullName": "Ch.Kowshik",
     "className": "9",
-    "section": "Class 9 \u00b7 Sri Ramanujan",
+    "section": "Class 9 · Sri Ramanujan",
     "houseCode": "CENTRAL",
     "positionId": "SPORTS_SECRETARY",
-    "positionName": "Sports Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Driving athletic prowess and sporting glory \u00b7 Sports Secretary",
+    "positionName": "Sports Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Driving athletic prowess and sporting glory · Sports Secretary",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -2713,14 +2734,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "8008",
     "fullName": "K.Krithika",
     "className": "9",
-    "section": "Class 9 \u00b7 Homi J. Bhabha",
+    "section": "Class 9 · Homi J. Bhabha",
     "houseCode": "CENTRAL",
     "positionId": "SPORTS_SECRETARY",
-    "positionName": "Sports Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Continuous cycle of athletic excellence and fair play \u00b7 Sports Secretary",
+    "positionName": "Sports Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Continuous cycle of athletic excellence and fair play · Sports Secretary",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -2734,14 +2755,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9227",
     "fullName": "R.Srikshith",
     "className": "9",
-    "section": "Class 9 \u00b7 Vikram Sarabhai",
+    "section": "Class 9 · Vikram Sarabhai",
     "houseCode": "CENTRAL",
     "positionId": "SPORTS_SECRETARY",
-    "positionName": "Sports Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Enduring strength and grounded athletic dedication \u00b7 Sports Secretary",
+    "positionName": "Sports Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Enduring strength and grounded athletic dedication · Sports Secretary",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -2755,14 +2776,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9178",
     "fullName": "S.Rithvik Reddy",
     "className": "9",
-    "section": "Class 9 \u00b7 Aryabhata",
+    "section": "Class 9 · Aryabhata",
     "houseCode": "CENTRAL",
     "positionId": "SPORTS_SECRETARY",
-    "positionName": "Sports Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Nutritious discipline, high endurance, peak fitness \u00b7 Sports Secretary",
+    "positionName": "Sports Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Nutritious discipline, high endurance, peak fitness · Sports Secretary",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -2776,14 +2797,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9200",
     "fullName": "S.Sahasra",
     "className": "9",
-    "section": "Class 9 \u00b7 Satish Dhawan",
+    "section": "Class 9 · Satish Dhawan",
     "houseCode": "CENTRAL",
     "positionId": "SPORTS_SECRETARY",
-    "positionName": "Sports Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Grace, flexibility, and soaring sports achievements \u00b7 Sports Secretary",
+    "positionName": "Sports Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Grace, flexibility, and soaring sports achievements · Sports Secretary",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -2797,14 +2818,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9062",
     "fullName": "Shubhi Patel",
     "className": "9",
-    "section": "Class 9 \u00b7 Sir CV Raman",
+    "section": "Class 9 · Sir CV Raman",
     "houseCode": "CENTRAL",
     "positionId": "SPORTS_SECRETARY",
-    "positionName": "Sports Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Fierce competitiveness and track-field dominance \u00b7 Sports Secretary",
+    "positionName": "Sports Secretary (Class 9 · Central Cabinet)",
+    "tagline": "Fierce competitiveness and track-field dominance · Sports Secretary",
     "symbolObj": {
       "name": "Royal Bengal Tiger",
-      "icon": "\ud83d\udc05",
+      "icon": "🐅",
       "slug": "royal_bengal_tiger",
       "image": "../assets/symbols/tiger.png",
       "imagePath": "../assets/symbols/tiger.png"
@@ -2818,14 +2839,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9901",
     "fullName": "N.Enriqe Iglesias",
     "className": "9",
-    "section": "Class 9 \u00b7 Vikram Sarabhai",
+    "section": "Class 9 · Vikram Sarabhai",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
-    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Vibrant leadership and sweet rewards for all scholars \u00b7 School Cabinet",
+    "positionName": "School Vice President (Class 9 · Central Cabinet)",
+    "tagline": "Vibrant leadership and sweet rewards for all scholars · School Cabinet",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
@@ -2839,14 +2860,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9167",
     "fullName": "G.Badrinath",
     "className": "9",
-    "section": "Class 9 \u00b7 APJ Abdul Kalam",
+    "section": "Class 9 · APJ Abdul Kalam",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
-    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Deeply grounded in student values, sheltering aspirations \u00b7 School Cabinet",
+    "positionName": "School Vice President (Class 9 · Central Cabinet)",
+    "tagline": "Deeply grounded in student values, sheltering aspirations · School Cabinet",
     "symbolObj": {
       "name": "Banyan Tree",
-      "icon": "\ud83c\udf33",
+      "icon": "🌳",
       "slug": "banyan_tree",
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
@@ -2860,14 +2881,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9037",
     "fullName": "J.Sampath Kumar",
     "className": "9",
-    "section": "Class 9 \u00b7 Sri Ramanujan",
+    "section": "Class 9 · Sri Ramanujan",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
-    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Strength, memory, and unwavering dedication to every pupil \u00b7 School Cabinet",
+    "positionName": "School Vice President (Class 9 · Central Cabinet)",
+    "tagline": "Strength, memory, and unwavering dedication to every pupil · School Cabinet",
     "symbolObj": {
       "name": "Elephant",
-      "icon": "\ud83d\udc18",
+      "icon": "🐘",
       "slug": "elephant",
       "image": "../assets/symbols/elephant.png",
       "imagePath": "../assets/symbols/elephant.png"
@@ -2881,14 +2902,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9093",
     "fullName": "K.Ambika",
     "className": "9",
-    "section": "Class 9 \u00b7 Aryabhata",
+    "section": "Class 9 · Aryabhata",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
-    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Nourishing campus spirit and unity from the grassroots \u00b7 School Cabinet",
+    "positionName": "School Vice President (Class 9 · Central Cabinet)",
+    "tagline": "Nourishing campus spirit and unity from the grassroots · School Cabinet",
     "symbolObj": {
       "name": "Pumpkin",
-      "icon": "\ud83c\udf83",
+      "icon": "🎃",
       "slug": "pumpkin",
       "image": "../assets/symbols/pumpkin.png",
       "imagePath": "../assets/symbols/pumpkin.png"
@@ -2902,14 +2923,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9183",
     "fullName": "M.Vivekananda Rao",
     "className": "9",
-    "section": "Class 9 \u00b7 Sir CV Raman",
+    "section": "Class 9 · Sir CV Raman",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
-    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Agile representation and athletic determination in action \u00b7 School Cabinet",
+    "positionName": "School Vice President (Class 9 · Central Cabinet)",
+    "tagline": "Agile representation and athletic determination in action · School Cabinet",
     "symbolObj": {
       "name": "Hockey Stick",
-      "icon": "\ud83c\udfd1",
+      "icon": "🏑",
       "slug": "hockey_stick",
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
@@ -2923,14 +2944,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9088",
     "fullName": "G. Srunith Goud",
     "className": "9",
-    "section": "Class 9 \u00b7 Homi J. Bhabha",
+    "section": "Class 9 · Homi J. Bhabha",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
-    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Turning the wheel of discipline, culture, and progress \u00b7 School Cabinet",
+    "positionName": "School Vice President (Class 9 · Central Cabinet)",
+    "tagline": "Turning the wheel of discipline, culture, and progress · School Cabinet",
     "symbolObj": {
       "name": "Konark Wheel",
-      "icon": "\u2638\ufe0f",
+      "icon": "☸️",
       "slug": "konark_wheel",
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
@@ -2944,14 +2965,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9V4182",
     "fullName": "M.Anvitha Sharma",
     "className": "9",
-    "section": "Class 9 \u00b7 Satish Dhawan",
+    "section": "Class 9 · Satish Dhawan",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
-    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Intelligent, harmonious, and agile representation \u00b7 School Cabinet",
+    "positionName": "School Vice President (Class 9 · Central Cabinet)",
+    "tagline": "Intelligent, harmonious, and agile representation · School Cabinet",
     "symbolObj": {
       "name": "Dolphin",
-      "icon": "\ud83d\udc2c",
+      "icon": "🐬",
       "slug": "dolphin",
       "image": "../assets/symbols/dolphin.png",
       "imagePath": "../assets/symbols/dolphin.png"
@@ -2960,19 +2981,19 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/central_manvithasharma.jpg",
     "isApproved": true
   },
-{
+  {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_35",
     "admissionNo": "9V1966",
     "fullName": "K.Hadvitha",
     "className": "9",
-    "section": "Class 9 \u00b7 Vikram Sarabhai",
+    "section": "Class 9 · Vikram Sarabhai",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
-    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Continuous flow of pure service, heritage, and values \u00b7 School Cabinet",
+    "positionName": "School Vice President (Class 9 · Central Cabinet)",
+    "tagline": "Continuous flow of pure service, heritage, and values · School Cabinet",
     "symbolObj": {
       "name": "Ganga River",
-      "icon": "\ud83c\udf0a",
+      "icon": "🌊",
       "slug": "ganga_river",
       "image": "../assets/symbols/ganga_river.png",
       "imagePath": "../assets/symbols/ganga_river.png"
@@ -2981,19 +3002,19 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/central_khadvitha.jpg",
     "isApproved": true
   },
-{
+  {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_36",
     "admissionNo": "9V4045",
     "fullName": "K.Ishwarya",
     "className": "9",
-    "section": "Class 9 \u00b7 Homi J. Bhabha",
+    "section": "Class 9 · Homi J. Bhabha",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
-    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Empowering resources, student welfare, and school prosperity \u00b7 School Cabinet",
+    "positionName": "School Vice President (Class 9 · Central Cabinet)",
+    "tagline": "Empowering resources, student welfare, and school prosperity · School Cabinet",
     "symbolObj": {
       "name": "Indian Currency",
-      "icon": "\u20b9",
+      "icon": "₹",
       "slug": "indian_currency",
       "image": "../assets/symbols/indian_currency.png",
       "imagePath": "../assets/symbols/indian_currency.png"
@@ -3002,19 +3023,19 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/central_kishwarya.jpg",
     "isApproved": true
   },
-{
+  {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_37",
     "admissionNo": "9V7995",
     "fullName": "G.Aadhya",
     "className": "9",
-    "section": "Class 9 \u00b7 Aryabhata",
+    "section": "Class 9 · Aryabhata",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
-    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Graceful representation, artistic values, and pride \u00b7 School Cabinet",
+    "positionName": "School Vice President (Class 9 · Central Cabinet)",
+    "tagline": "Graceful representation, artistic values, and pride · School Cabinet",
     "symbolObj": {
       "name": "Peacock",
-      "icon": "\ud83e\udd9a",
+      "icon": "🦚",
       "slug": "peacock",
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
@@ -3023,19 +3044,19 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/central_gaadhya.jpg",
     "isApproved": true
   },
-{
+  {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_38",
     "admissionNo": "9V1576",
     "fullName": "V.Ananya Reddy",
     "className": "9",
-    "section": "Class 9 \u00b7 Sri Ramanujan",
+    "section": "Class 9 · Sri Ramanujan",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
-    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Courageous leadership and fierce protection of student rights \u00b7 School Cabinet",
+    "positionName": "School Vice President (Class 9 · Central Cabinet)",
+    "tagline": "Courageous leadership and fierce protection of student rights · School Cabinet",
     "symbolObj": {
       "name": "Royal Bengal Tiger",
-      "icon": "\ud83d\udc05",
+      "icon": "🐅",
       "slug": "royal_bengal_tiger",
       "image": "../assets/symbols/tiger.png",
       "imagePath": "../assets/symbols/tiger.png"
@@ -3053,10 +3074,10 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "VISHWAMITHRA",
     "positionId": "CAPTAIN_BOY",
     "positionName": "Boys Captain (Class 10 Boy)",
-    "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Vishwamithra House",
+    "tagline": "Contesting for Boys Captain (Class 10 Boy) · Vishwamithra House",
     "symbolObj": {
       "name": "Mango",
-      "icon": "\ud83e\udd6d",
+      "icon": "🥭",
       "slug": "mango",
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"

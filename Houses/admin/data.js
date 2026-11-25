@@ -15682,7 +15682,28 @@ window.ADMIN_DATA = {
     "photoUrl": "../assets/candidates/cabinet_y_bhavya_sri.jpg",
     "photoPath": "../assets/candidates/cabinet_y_bhavya_sri.jpg",
     "isApproved": true
+  },,
+{
+  "id": "CAND_CENTRAL_LITERARY_SECRETARY_08",
+  "admissionNo": "9K7051",
+  "fullName": "L.Rushil",
+  "className": "9",
+  "section": "Class 9 · Kalpana Chawla",
+  "houseCode": "CENTRAL",
+  "positionId": "LITERARY_SECRETARY",
+  "positionName": "Literary Secretary (Class 9 · Central Cabinet)",
+  "tagline": "Wisdom, eloquence, and inspiring student expression · Literary Secretary",
+  "symbolObj": {
+    "name": "Elephant",
+    "icon": "🐘",
+    "slug": "elephant",
+    "image": "../assets/symbols/elephant.png",
+    "imagePath": "../assets/symbols/elephant.png"
   },
+  "photoUrl": "../assets/candidates/cabinet_l_rushil.jpg",
+  "photoPath": "../assets/candidates/cabinet_l_rushil.jpg",
+  "isApproved": true
+}
   {
     "id": "CAND_CENTRAL_PRESIDENT_08",
     "admissionNo": "7083",
