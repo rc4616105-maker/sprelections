@@ -73,22 +73,23 @@ Each of the 6 houses has its own isolated polling station enforcing voter consti
 
 ---
 
-### 2.3 School Cabinet Executive Booths (`/Houses/central/`)
-On the main landing portal (`/Houses/index.html`), the School Cabinet voting station is split into two dedicated executive portals:
-1. **School Cabin (For Cabinet Contestors):** Dedicated station for the 39 candidates contesting for School Cabinet executive roles (`/Houses/central/index.html?voterGroup=contestants`).
-2. **School Cabin (For House Winners):** Dedicated station for the 24 elected House Captains & Vice Captains (`/Houses/central/index.html?voterGroup=captains`).
+### 2.3 School Cabinet Executive Booth (`/Houses/central/`)
+On the main landing portal (`/Houses/index.html`), the School Cabinet voting station is configured as:
+- **School Cabin (For House Winners):** Dedicated voting station for the 24 elected House Captains & Vice Captains (`/Houses/central/index.html`).
 
-**Positions Voted (5 Executive Roles):**
+**Voting Eligibility & Rules:**
+- **Who Votes for School Cabinet:** Only the **24 elected House Captains & Vice Captains** (and Teachers in their universal booth) vote for the School Cabinet (President, Vice President, Secretaries).
+- **Rule for School Cabinet Contestants:** Candidates contesting for School Cabinet executive roles (President, Vice President, etc.) **cannot vote for School Cabinet roles**. They are fully eligible to vote in their registered student house for House Captains & Vice Captains.
+- **Positions Voted (5 Executive Roles):**
   1. **School President** (Class 10)
   2. **School Vice President** (Class 9)
   3. **Sports Secretary** (Class 9)
   4. **Literary Secretary** (Class 9)
   5. **Social & Cultural Secretary** (Class 9)
 - **Special Voter Verification Flow:**
-  - **Step 1 (Voter ID Entry):** Accepts either the candidate's nomination admission number (e.g., `7083`, `10055`, `9K7051`) or their official student voter ID (e.g., `1C6305`, `1C3135`).
-  - **Step 2 (House Identity Display):** **Prominently displays the student's Registered House and Constituency** (e.g., *"🏛️ Registered House: Vasistha House (Mahabaleshwar Constituency)"*) so voters clearly see their house affiliation before casting executive votes.
+  - **Step 1 (Voter ID Entry):** Elected House Captains scan their card or enter Voter ID.
+  - **Step 2 (House Identity Display):** Displays the Captain's **Registered House and Constituency** (e.g., *"🏛️ Registered House: Vasistha House (Mahabaleshwar Constituency)"*).
   - **Next Button:** Dedicated action button labeled **"Next: Vote into School Cabinet →"** leads directly into the 5-role ballot.
-  - **Cross-Booth Voting Rights:** School Cabinet contestants are fully permitted to vote in their designated house booth for House Captains, as well as in the School Cabinet booth.
 
 ---
 

@@ -767,7 +767,9 @@
           return { isWinner: true, roleTitle: "Elected House Captain (Demo)", houseName: "All Houses" };
         }
 
-                // Check 0: Official School Cabinet Contestants Registry
+                // Check 0: School Cabinet Contestants Check
+        // Rule: Candidates contesting for School Cabinet (President, Vice President, etc.)
+        // CANNOT vote for School Cabinet; they can ONLY vote in their own House!
         const vName = voter && voter.fullName ? voter.fullName.trim().toLowerCase() : "";
         const regEntry = SCHOOL_CABINET_REGISTRY.find((entry) => {
           const cAdm = String(entry.candidateAdm || "").trim().toUpperCase();
@@ -782,14 +784,10 @@
 
         if (regEntry) {
           return {
-            isWinner: true,
-            isCabinetContestant: true,
-            roleTitle: `Cabinet Contestant · ${regEntry.roleTitle}`,
-            houseCode: regEntry.houseCode,
+            isWinner: false,
+            isCabinetContestantBlocked: true,
+            roleTitle: regEntry.roleTitle,
             houseTitle: regEntry.houseTitle,
-            houseName: regEntry.houseTitle,
-            constituency: regEntry.constituency,
-            classSec: regEntry.classSec,
           };
         }
 
@@ -866,13 +864,21 @@
       if (requestedHouseCode === "CENTRAL") {
         if (!isTeacher) {
           const winnerCheck = await isElectedHouseCaptainOrWinner(cleanId, localMatch);
+          if (winnerCheck.isCabinetContestantBlocked) {
+            return {
+              ok: false,
+              code: "CONTESTANT_CANNOT_VOTE_CABINET",
+              title: "Vote in Your House Booth",
+              message: `Voter ID ${cleanId} (${localMatch.fullName}) is contesting for ${winnerCheck.roleTitle}. School Cabinet contestants cannot vote for School Cabinet executive roles. Please vote in your registered house booth (${winnerCheck.houseTitle}).`,
+            };
+          }
           if (!winnerCheck.isWinner) {
             const registeredName = housesMeta[localMatch.houseCode]?.name || localMatch.houseCode || "House";
             return {
               ok: false,
               code: "ELECTORAL_COLLEGE_RESTRICTED",
-              title: "House Captains Only",
-              message: `Voter ID ${cleanId} belongs to ${localMatch.fullName} (${registeredName} House). School Cabinet voting is authorized for Teachers, the 24 elected House Captains, and School Cabinet Contestants.`,
+              title: "Elected House Captains Only",
+              message: `Voter ID ${cleanId} belongs to ${localMatch.fullName} (${registeredName} House). School Cabinet voting is authorized for the 24 elected House Captains once house results are declared.`,
             };
           }
                     isElectedCaptain = true;
