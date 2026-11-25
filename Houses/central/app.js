@@ -1172,6 +1172,21 @@
 
     try {
       const urlParams = new URLSearchParams(window.location.search);
+      const voterGroup = urlParams.get("voterGroup");
+      const step1Badge = document.querySelector("#step-1 .badge-house");
+      const step1Title = document.querySelector("#step-1 .panel-title");
+      if (step1Badge && step1Title) {
+        if (voterGroup === "contestants") {
+          step1Badge.textContent = "🏛️ School Cabinet Voting · For Cabinet Contestors";
+          step1Title.textContent = "Cabinet Contestor Voter Verification";
+          document.title = "School Cabinet (For Cabinet Contestors) — School Election 2026";
+        } else if (voterGroup === "captains") {
+          step1Badge.textContent = "👑 School Cabinet Voting · For House Winners (Elected Captains)";
+          step1Title.textContent = "House Winners Verification";
+          document.title = "School Cabinet (For House Winners) — School Election 2026";
+        }
+      }
+
       const qAdm = urlParams.get("admissionNo") || urlParams.get("voterId");
       if (qAdm && qAdm.trim()) {
         window.history.replaceState({}, document.title, window.location.pathname);

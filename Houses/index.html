@@ -313,15 +313,15 @@
     .executive-booths-row {
       grid-column: 1 / -1;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-      gap: 1.25rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.15rem;
       margin-bottom: 0.25rem;
     }
 
     .executive-booths-row .cabinet-card {
       grid-column: auto;
       margin: 0;
-      padding: 1.5rem 1.75rem;
+      padding: 1.35rem 1.45rem;
     }
 
     .cabinet-content {
@@ -637,7 +637,7 @@
     </header>
 
     <section class="house-grid" aria-label="Official Polling Booths">
-      <!-- 🎓 Top Executive Booths: Teachers + School Cabin (Captains) -->
+      <!-- 🎓 Top Executive Booths: Teachers + School Cabin (Contestants) + School Cabin (House Winners) -->
       <div class="executive-booths-row">
         <!-- 1. Teacher Universal All-in-One Master Polling Booth -->
         <a href="./teachers/index.html" class="house-card cabinet-card" style="--card-accent:#059669; --card-ink:#047857; background: linear-gradient(135deg, var(--bg-card) 0%, #ecfdf5 100%); border: 2px solid #6ee7b7; box-shadow: 0 10px 28px -6px rgba(5, 150, 105, 0.15);">
@@ -646,30 +646,47 @@
               <span class="cabinet-badge" style="background:#059669; color:#fff; font-weight:800;">✨ ALL-IN-ONE TEACHER BALLOT</span>
               <span class="cabinet-scope">🎓 FACULTY VOTING</span>
             </div>
-            <h2 class="house-name" style="color:#047857; font-size:1.55rem;">Teacher Universal Polling Booth</h2>
+            <h2 class="house-name" style="color:#047857; font-size:1.5rem;">Teacher Universal Polling Booth</h2>
             <p class="house-roles-summary">
               <strong>School Cabinet (5 Roles) + All 6 Student Houses (24 Roles)</strong> &bull; Scan your Teacher Card once to vote for all 29 positions.
             </p>
           </div>
-          <span class="open-link" style="color:#fff; background:#059669; border-radius:12px; padding:0.85rem 1.4rem; font-weight:800; box-shadow:0 4px 14px rgba(5, 150, 105, 0.3);">
+          <span class="open-link" style="color:#fff; background:#059669; border-radius:12px; padding:0.85rem 1.3rem; font-weight:800; box-shadow:0 4px 14px rgba(5, 150, 105, 0.3);">
             <span>Open All-in-One Teacher Booth &rarr;</span>
           </span>
         </a>
 
-        <!-- 2. 🏛️ School Cabinet Polling Booth (For House Captains & Cabinet Contestants) -->
-        <a href="./central/index.html" class="house-card cabinet-card" style="--card-accent:#2563eb; --card-ink:#1d4ed8; background: linear-gradient(135deg, var(--bg-card) 0%, #eff6ff 100%); border: 2px solid #93c5fd; box-shadow: 0 10px 28px -6px rgba(37, 99, 235, 0.15);">
+        <!-- 2. 🏛️ School Cabinet Polling Booth (For Cabinet Contestors) -->
+        <a href="./central/index.html?voterGroup=contestants" class="house-card cabinet-card" style="--card-accent:#2563eb; --card-ink:#1d4ed8; background: linear-gradient(135deg, var(--bg-card) 0%, #eff6ff 100%); border: 2px solid #93c5fd; box-shadow: 0 10px 28px -6px rgba(37, 99, 235, 0.15);">
           <div class="cabinet-content">
             <div class="cabinet-pill-row">
-              <span class="cabinet-badge" style="background:#2563eb; color:#fff; font-weight:800;">🏛️ FOR HOUSE CAPTAINS</span>
-              <span class="cabinet-scope" style="color:#1d4ed8; font-weight:700;">⭐ SCHOOL CABIN ELECTORAL COLLEGE</span>
+              <span class="cabinet-badge" style="background:#2563eb; color:#fff; font-weight:800;">🏛️ FOR CABINET CONTESTORS</span>
+              <span class="cabinet-scope" style="color:#1d4ed8; font-weight:700;">⭐ EXECUTIVE ROLES</span>
             </div>
-            <h2 class="house-name" style="color:#1d4ed8; font-size:1.55rem;">School Cabin (School Cabinet)</h2>
+            <h2 class="house-name" style="color:#1d4ed8; font-size:1.5rem;">School Cabin (For Cabinet Contestors)</h2>
             <p class="house-roles-summary">
-              <strong>School President, Vice President &amp; Secretaries (5 Roles)</strong> &bull; Elected House Captains &amp; Cabinet Contestants vote here once house results are declared.
+              <strong>School President, Vice President &amp; Secretaries (5 Roles)</strong> &bull; Candidates contesting for School Cabinet vote here.
             </p>
           </div>
-          <span class="open-link" style="color:#fff; background:#2563eb; border-radius:12px; padding:0.85rem 1.4rem; font-weight:800; box-shadow:0 4px 14px rgba(37, 99, 235, 0.3);">
-            <span>Open School Cabin Booth &rarr;</span>
+          <span class="open-link" style="color:#fff; background:#2563eb; border-radius:12px; padding:0.85rem 1.3rem; font-weight:800; box-shadow:0 4px 14px rgba(37, 99, 235, 0.3);">
+            <span>Open Cabinet Contestors Booth &rarr;</span>
+          </span>
+        </a>
+
+        <!-- 3. 👑 School Cabinet Polling Booth (For House Winners) -->
+        <a href="./central/index.html?voterGroup=captains" class="house-card cabinet-card" style="--card-accent:#7c3aed; --card-ink:#6d28d9; background: linear-gradient(135deg, var(--bg-card) 0%, #f5f3ff 100%); border: 2px solid #c4b5fd; box-shadow: 0 10px 28px -6px rgba(124, 58, 237, 0.15);">
+          <div class="cabinet-content">
+            <div class="cabinet-pill-row">
+              <span class="cabinet-badge" style="background:#7c3aed; color:#fff; font-weight:800;">👑 FOR HOUSE WINNERS</span>
+              <span class="cabinet-scope" style="color:#6d28d9; font-weight:700;">⭐ 24 ELECTED HOUSE CAPTAINS</span>
+            </div>
+            <h2 class="house-name" style="color:#6d28d9; font-size:1.5rem;">School Cabin (For House Winners)</h2>
+            <p class="house-roles-summary">
+              <strong>School President, Vice President &amp; Secretaries (5 Roles)</strong> &bull; The 24 elected House Captains &amp; Vice Captains vote here for School Cabin.
+            </p>
+          </div>
+          <span class="open-link" style="color:#fff; background:#7c3aed; border-radius:12px; padding:0.85rem 1.3rem; font-weight:800; box-shadow:0 4px 14px rgba(124, 58, 237, 0.3);">
+            <span>Open House Winners Booth &rarr;</span>
           </span>
         </a>
       </div>

@@ -73,9 +73,12 @@ Each of the 6 houses has its own isolated polling station enforcing voter consti
 
 ---
 
-### 2.3 School Cabinet Executive Booth (`/Houses/central/`)
-- **Audience:** School Cabinet Contestants & the 24 Elected House Leaders (Electoral College).
-- **Positions Voted (5 Executive Roles):**
+### 2.3 School Cabinet Executive Booths (`/Houses/central/`)
+On the main landing portal (`/Houses/index.html`), the School Cabinet voting station is split into two dedicated executive portals:
+1. **School Cabin (For Cabinet Contestors):** Dedicated station for the 39 candidates contesting for School Cabinet executive roles (`/Houses/central/index.html?voterGroup=contestants`).
+2. **School Cabin (For House Winners):** Dedicated station for the 24 elected House Captains & Vice Captains (`/Houses/central/index.html?voterGroup=captains`).
+
+**Positions Voted (5 Executive Roles):**
   1. **School President** (Class 10)
   2. **School Vice President** (Class 9)
   3. **Sports Secretary** (Class 9)
