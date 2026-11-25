@@ -15,19 +15,15 @@
 
 <body>
 
-  <!-- Admin Pause Lock Overlay: Unlocks automatically when House Polling is Paused & Tallied -->
+  <!-- Admin Pause Lock Overlay: Unlocks automatically when House Polling is Paused -->
   <div id="result-pause-lock-overlay" hidden style="position:fixed; inset:0; z-index:9999; background:rgba(250,246,238,0.96); backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center; padding:1.5rem;">
-    <div style="max-width:520px; width:100%; background:#fffdf9; border:2px solid #e5dccb; border-radius:22px; padding:2.25rem 2rem; text-align:center; box-shadow:0 24px 50px -12px rgba(45,36,20,0.18);">
-      <div style="width:68px; height:68px; margin:0 auto 1rem; border-radius:50%; background:rgba(217,119,6,0.12); border:2px solid rgba(217,119,6,0.3); display:grid; place-items:center; font-size:2rem;">🔒</div>
-      <span style="display:inline-block; background:#fef3c7; color:#92400e; border:1px solid #fcd34d; padding:0.28rem 0.85rem; border-radius:9999px; font-size:0.78rem; font-weight:800; letter-spacing:0.04em; text-transform:uppercase;">Result Declaration Locked</span>
-      <h2 style="margin:0.85rem 0 0.5rem; font-size:1.6rem; font-weight:800; color:#141413;">House Polling In Progress</h2>
-      <p style="margin:0 0 1.4rem; font-size:0.98rem; line-height:1.55; color:#4a4741;">
-        The House Result Declaration Wheel will automatically unlock once the Admin clicks <strong>&ldquo;Pause House Polling &amp; Tally&rdquo;</strong> in the Admin Dashboard.
+    <div style="max-width:440px; width:100%; background:#fffdf9; border:2px solid #e5dccb; border-radius:22px; padding:2.25rem 2rem; text-align:center; box-shadow:0 24px 50px -12px rgba(45,36,20,0.18);">
+      <div style="width:64px; height:64px; margin:0 auto 1rem; border-radius:50%; background:rgba(217,119,6,0.12); border:2px solid rgba(217,119,6,0.3); display:grid; place-items:center; font-size:1.9rem;">🔒</div>
+      <h2 style="margin:0 0 0.5rem; font-size:1.45rem; font-weight:800; color:#141413;">Polling Still Not Paused</h2>
+      <p style="margin:0 0 1.4rem; font-size:0.95rem; line-height:1.5; color:#4a4741;">
+        Result Declaration is locked until polling is paused from the Admin Panel.
       </p>
-      <div style="display:flex; gap:0.75rem; justify-content:center; flex-wrap:wrap;">
-        <a href="../Houses/admin/index.html" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.7rem 1.25rem; border-radius:10px; background:#059669; color:#ffffff; font-weight:700; text-decoration:none;">Open Admin Dashboard &rarr;</a>
-        <a href="../Houses/index.html" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.7rem 1.25rem; border-radius:10px; background:#f3ece0; color:#141413; border:1px solid #e5dccb; font-weight:700; text-decoration:none;">&larr; Houses Portal</a>
-      </div>
+      <a href="../Houses/admin/index.html" style="display:inline-flex; align-items:center; gap:0.45rem; padding:0.72rem 1.35rem; border-radius:10px; background:#059669; color:#ffffff; font-weight:700; text-decoration:none;">&larr; Back to Admin Panel</a>
     </div>
   </div>
 
