@@ -702,7 +702,9 @@
     // Render Candidates List (2-3 candidates for current role, strictly zero scroll)
     if (el.evmCandidateList) {
       el.evmCandidateList.innerHTML = "";
-      const roleCands = candidates.filter((c) => c.houseCode === currentHouse.code && c.positionId === currentRole.id && c.isApproved);
+      const roleCands = candidates
+        .filter((c) => c.houseCode === currentHouse.code && c.positionId === currentRole.id && c.isApproved)
+        .sort((a, b) => String(a.fullName || "").localeCompare(String(b.fullName || "")));
 
       if (alreadyVoted) {
         const votedMsg = document.createElement("div");
