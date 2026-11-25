@@ -2249,13 +2249,13 @@ window.ALL_CONTESTING_CANDIDATES = [
   {
     "id": "CAND_CENTRAL_LITERARY_SECRETARY_01",
     "admissionNo": "9198",
-    "fullName": "B.Ragasri",
+    "fullName": "Balla Raga Sri",
     "className": "9",
-    "section": "Class 9 \u00b7 Vikram Sarabhai",
+    "section": "Class 9 \u00b7 Sri Ramanujan",
     "houseCode": "CENTRAL",
     "positionId": "LITERARY_SECRETARY",
     "positionName": "Literary Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Intellectual vitality and articulate expression \u00b7 Literary Secretary",
+    "tagline": "Cultivating abundant literary talent and creative expression \u00b7 Literary Secretary",
     "symbolObj": {
       "name": "Pumpkin",
       "icon": "\ud83c\udf83",
@@ -2267,16 +2267,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_b_ragasri.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_b_ragasri.jpg",
+    "photoPath": "../assets/candidates/cabinet_b_ragasri.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_LITERARY_SECRETARY_02",
     "admissionNo": "8102",
-    "fullName": "D.Samanvitha",
+    "fullName": "D. Samanvitha",
     "className": "9",
-    "section": "Class 9 \u00b7 Hedgewar",
+    "section": "Class 9 \u00b7 APJ Abdul Kalam",
     "houseCode": "CENTRAL",
     "positionId": "LITERARY_SECRETARY",
     "positionName": "Literary Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Celebrating literature, debate, and creativity \u00b7 Literary Secretary",
+    "tagline": "Deep-rooted passion for reading, writing, and eloquence \u00b7 Literary Secretary",
     "symbolObj": {
       "name": "Banyan Tree",
       "icon": "\ud83c\udf33",
@@ -2288,16 +2292,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_d_samanvitha.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_d_samanvitha.jpg",
+    "photoPath": "../assets/candidates/cabinet_d_samanvitha.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_LITERARY_SECRETARY_03",
     "admissionNo": "8074",
-    "fullName": "G.Harsh Vardhan Rao",
+    "fullName": "G.Harsha Vardhan Rao",
     "className": "9",
-    "section": "Class 9 \u00b7 Dayananda Saraswathi",
+    "section": "Class 9 \u00b7 Vikram Sarabhai",
     "houseCode": "CENTRAL",
     "positionId": "LITERARY_SECRETARY",
     "positionName": "Literary Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Fostering eloquence and student voices \u00b7 Literary Secretary",
+    "tagline": "Sharpening critical thought, debate, and school journalism \u00b7 Literary Secretary",
     "symbolObj": {
       "name": "Hockey Stick",
       "icon": "\ud83c\udfd1",
@@ -2309,23 +2317,31 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_g_harsh_vardhan_rao.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_g_harsh_vardhan_rao.jpg",
+    "photoPath": "../assets/candidates/cabinet_g_harsh_vardhan_rao.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_LITERARY_SECRETARY_04",
     "admissionNo": "9192",
-    "fullName": "P.Indu Priya",
+    "fullName": "Indu Priya",
     "className": "9",
-    "section": "Class 9 \u00b7 Vikram Sarabhai",
+    "section": "Class 9 \u00b7 Homi J. Bhabha",
     "houseCode": "CENTRAL",
     "positionId": "LITERARY_SECRETARY",
     "positionName": "Literary Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Promoting literary clubs, reading, and arts \u00b7 Literary Secretary",
+    "tagline": "Driving eternal cycles of knowledge and debating excellence \u00b7 Literary Secretary",
     "symbolObj": {
-      "name": "Ashoka Chakra",
+      "name": "Konark Wheel",
       "icon": "\u2638\ufe0f",
-      "slug": "ashoka_chakra",
+      "slug": "konark_wheel",
       "image": "../assets/symbols/ashoka_chakra.png",
       "imagePath": "../assets/symbols/ashoka_chakra.png"
     },
+    "photoUrl": "../assets/candidates/cabinet_indu_priya.jpg",
+    "photoPath": "../assets/candidates/cabinet_indu_priya.jpg",
+    "isApproved": true
+  },
     "photoUrl": "../assets/candidates/cabinet_indu_priya.jpg",
     "photoPath": "../assets/candidates/cabinet_indu_priya.jpg",
     "isApproved": true
@@ -2335,18 +2351,22 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9157",
     "fullName": "M.Srivaishnavi",
     "className": "9",
-    "section": "Class 9 \u00b7 Satish Dhawan",
+    "section": "Class 9 \u00b7 Aryabhata",
     "houseCode": "CENTRAL",
     "positionId": "LITERARY_SECRETARY",
     "positionName": "Literary Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Empowering youth expression and literary heritage \u00b7 Literary Secretary",
+    "tagline": "Bold articulation and fearless debating championship \u00b7 Literary Secretary",
     "symbolObj": {
       "name": "Royal Bengal Tiger",
       "icon": "\ud83d\udc05",
       "slug": "royal_bengal_tiger",
-      "image": "../assets/symbols/royal_bengal_tiger.png",
-      "imagePath": "../assets/symbols/royal_bengal_tiger.png"
+      "image": "../assets/symbols/tiger.png",
+      "imagePath": "../assets/symbols/tiger.png"
     },
+    "photoUrl": "../assets/candidates/cabinet_m_srivaishnavi.jpg",
+    "photoPath": "../assets/candidates/cabinet_m_srivaishnavi.jpg",
+    "isApproved": true
+  },
     "photoUrl": "../assets/candidates/cabinet_m_srivaishnavi.jpg",
     "photoPath": "../assets/candidates/cabinet_m_srivaishnavi.jpg",
     "isApproved": true
@@ -2356,11 +2376,11 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9052",
     "fullName": "N.Malala",
     "className": "9",
-    "section": "Class 9 \u00b7 Aryabhatta",
+    "section": "Class 9 \u00b7 Sir CV Raman",
     "houseCode": "CENTRAL",
     "positionId": "LITERARY_SECRETARY",
     "positionName": "Literary Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Inspiring writers, orators, and thinkers \u00b7 Literary Secretary",
+    "tagline": "Championing education, speech, and intellectual freedom \u00b7 Literary Secretary",
     "symbolObj": {
       "name": "Dolphin",
       "icon": "\ud83d\udc2c",
@@ -2372,10 +2392,14 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_n_malala.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_n_malala.jpg",
+    "photoPath": "../assets/candidates/cabinet_n_malala.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_LITERARY_SECRETARY_07",
     "admissionNo": "9138",
-    "fullName": "Y.Bhagya Sri",
+    "fullName": "Y Bhagya Sri",
     "className": "9",
     "section": "Class 9 \u00b7 Satish Dhawan",
     "houseCode": "CENTRAL",
@@ -2393,16 +2417,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_y_bhavya_sri.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_y_bhavya_sri.jpg",
+    "photoPath": "../assets/candidates/cabinet_y_bhavya_sri.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_PRESIDENT_08",
     "admissionNo": "7083",
     "fullName": "M.Rithvik",
     "className": "10",
-    "section": "Class 10 \u00b7 Bhagath Singh",
+    "section": "Class 10 \u00b7 Homi J. Bhabha",
     "houseCode": "CENTRAL",
     "positionId": "PRESIDENT",
     "positionName": "School President (Class 10 \u00b7 Central Cabinet)",
-    "tagline": "Visionary leadership, institutional excellence \u00b7 School Cabinet",
+    "tagline": "Sweet taste of leadership and student prosperity \u00b7 School President",
     "symbolObj": {
       "name": "Mango",
       "icon": "\ud83e\udd6d",
@@ -2414,16 +2442,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_m_rithvik.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_m_rithvik.jpg",
+    "photoPath": "../assets/candidates/cabinet_m_rithvik.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_PRESIDENT_09",
     "admissionNo": "7222",
     "fullName": "M.Vaishnavi",
     "className": "10",
-    "section": "Class 10 \u00b7 Subhash Chandra Bose",
+    "section": "Class 10 \u00b7 Sri Ramanujan",
     "houseCode": "CENTRAL",
     "positionId": "PRESIDENT",
     "positionName": "School President (Class 10 \u00b7 Central Cabinet)",
-    "tagline": "Integrity, innovation, and unity across all houses \u00b7 School Cabinet",
+    "tagline": "Rooted in resilience, branching towards student success \u00b7 School President",
     "symbolObj": {
       "name": "Banyan Tree",
       "icon": "\ud83c\udf33",
@@ -2435,16 +2467,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_m_vaishnavi.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_m_vaishnavi.jpg",
+    "photoPath": "../assets/candidates/cabinet_m_vaishnavi.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_PRESIDENT_10",
     "admissionNo": "10055",
     "fullName": "S.Harini Reddy",
     "className": "10",
-    "section": "Class 10 \u00b7 Chatrapathi Shivaji",
+    "section": "Class 10 \u00b7 Vikram Sarabhai",
     "houseCode": "CENTRAL",
     "positionId": "PRESIDENT",
     "positionName": "School President (Class 10 \u00b7 Central Cabinet)",
-    "tagline": "Dedicated service and empowering student voices \u00b7 School Cabinet",
+    "tagline": "Precision, teamwork, and goal-driven governance \u00b7 School President",
     "symbolObj": {
       "name": "Hockey Stick",
       "icon": "\ud83c\udfd1",
@@ -2456,16 +2492,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_s_harini_reddy.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_s_harini_reddy.jpg",
+    "photoPath": "../assets/candidates/cabinet_s_harini_reddy.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_PRESIDENT_11",
     "admissionNo": "10189",
     "fullName": "V.Janaki Koushik",
     "className": "10",
-    "section": "Class 10 \u00b7 Maha Raana Pratap",
+    "section": "Class 10 \u00b7 APJ Abdul Kalam",
     "houseCode": "CENTRAL",
     "positionId": "PRESIDENT",
     "positionName": "School President (Class 10 \u00b7 Central Cabinet)",
-    "tagline": "Excellence in action, inspiring every student \u00b7 School Cabinet",
+    "tagline": "Proudly uplifting the voice and dignity of every scholar \u00b7 School President",
     "symbolObj": {
       "name": "Peacock",
       "icon": "\ud83e\udd9a",
@@ -2477,23 +2517,31 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_v_janaki_koushik.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_v_janaki_koushik.jpg",
+    "photoPath": "../assets/candidates/cabinet_v_janaki_koushik.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_PRESIDENT_12",
     "admissionNo": "10091",
     "fullName": "Y.Srinith",
     "className": "10",
-    "section": "Class 10 \u00b7 Chatrapathi Shivaji",
+    "section": "Class 10 \u00b7 Aryabhata",
     "houseCode": "CENTRAL",
     "positionId": "PRESIDENT",
     "positionName": "School President (Class 10 \u00b7 Central Cabinet)",
-    "tagline": "Steadfast commitment and progressive governance \u00b7 School Cabinet",
+    "tagline": "Turning the wheel of discipline, culture, and progress \u00b7 School President",
     "symbolObj": {
-      "name": "Ashoka Chakra",
+      "name": "Konark Wheel",
       "icon": "\u2638\ufe0f",
-      "slug": "ashoka_chakra",
+      "slug": "konark_wheel",
       "image": "../assets/symbols/ashoka_chakra.png",
       "imagePath": "../assets/symbols/ashoka_chakra.png"
     },
+    "photoUrl": "../assets/candidates/cabinet_y_srinith.jpg",
+    "photoPath": "../assets/candidates/cabinet_y_srinith.jpg",
+    "isApproved": true
+  },
     "photoUrl": "../assets/candidates/cabinet_y_srinith.jpg",
     "photoPath": "../assets/candidates/cabinet_y_srinith.jpg",
     "isApproved": true
@@ -2503,11 +2551,11 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "7071",
     "fullName": "G.Ashwath",
     "className": "9",
-    "section": "Class 9 \u00b7 Bhagath Singh",
+    "section": "Class 9 \u00b7 Sri Ramanujan",
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
     "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Vibrant cultural celebrations and unity \u00b7 Social & Cultural Sec",
+    "tagline": "Vibrant school spirit, fine arts, and inclusive community \u00b7 Social & Cultural Secretary",
     "symbolObj": {
       "name": "Peacock",
       "icon": "\ud83e\udd9a",
@@ -2519,23 +2567,31 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_g_ashwath.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_g_ashwath.jpg",
+    "photoPath": "../assets/candidates/cabinet_g_ashwath.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_SOCIAL_CULTURAL_SECRETARY_14",
     "admissionNo": "7198",
     "fullName": "K.Akshara",
     "className": "9",
-    "section": "Class 9 \u00b7 Subhash Chandra Bose",
+    "section": "Class 9 \u00b7 Aryabhata",
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
     "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Championing arts, heritage, and inclusive festivals \u00b7 Social & Cultural Sec",
+    "tagline": "Preserving cultural heritage and modern artistic flair \u00b7 Social & Cultural Secretary",
     "symbolObj": {
-      "name": "Ashoka Chakra",
+      "name": "Konark Wheel",
       "icon": "\u2638\ufe0f",
-      "slug": "ashoka_chakra",
+      "slug": "konark_wheel",
       "image": "../assets/symbols/ashoka_chakra.png",
       "imagePath": "../assets/symbols/ashoka_chakra.png"
     },
+    "photoUrl": "../assets/candidates/cabinet_k_akshara.jpg",
+    "photoPath": "../assets/candidates/cabinet_k_akshara.jpg",
+    "isApproved": true
+  },
     "photoUrl": "../assets/candidates/cabinet_k_akshara.jpg",
     "photoPath": "../assets/candidates/cabinet_k_akshara.jpg",
     "isApproved": true
@@ -2545,11 +2601,11 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "8096",
     "fullName": "K.Rasagna",
     "className": "9",
-    "section": "Class 9 \u00b7 Hedgewar",
+    "section": "Class 9 \u00b7 Homi J. Bhabha",
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
     "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Creative harmony and dynamic school events \u00b7 Social & Cultural Sec",
+    "tagline": "Fostering creative festivities and student bonding \u00b7 Social & Cultural Secretary",
     "symbolObj": {
       "name": "Pumpkin",
       "icon": "\ud83c\udf83",
@@ -2557,6 +2613,10 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/pumpkin.png",
       "imagePath": "../assets/symbols/pumpkin.png"
     },
+    "photoUrl": "../assets/candidates/cabinet_k_rasagna.jpg",
+    "photoPath": "../assets/candidates/cabinet_k_rasagna.jpg",
+    "isApproved": true
+  },
     "photoUrl": "../assets/candidates/cabinet_k_rasagna.jpg",
     "photoPath": "../assets/candidates/cabinet_k_rasagna.jpg",
     "isApproved": true
@@ -2570,7 +2630,7 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
     "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Igniting artistic expression and stage talent \u00b7 Social & Cultural Sec",
+    "tagline": "Coordinating stage, arts, and dynamic cultural fests \u00b7 Social & Cultural Secretary",
     "symbolObj": {
       "name": "Hockey Stick",
       "icon": "\ud83c\udfd1",
@@ -2582,16 +2642,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_p_divija.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_p_divija.jpg",
+    "photoPath": "../assets/candidates/cabinet_p_divija.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_SOCIAL_CULTURAL_SECRETARY_17",
     "admissionNo": "9104",
-    "fullName": "P.Meghna",
+    "fullName": "P.Meghana",
     "className": "9",
-    "section": "Class 9 \u00b7 Kalpana Chawla",
+    "section": "Class 9 \u00b7 Sir CV Raman",
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
     "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Celebrating diversity and social impact \u00b7 Social & Cultural Sec",
+    "tagline": "Branching out to all student houses with festive spirit \u00b7 Social & Cultural Secretary",
     "symbolObj": {
       "name": "Banyan Tree",
       "icon": "\ud83c\udf33",
@@ -2603,23 +2667,31 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_p_meghna.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_p_meghna.jpg",
+    "photoPath": "../assets/candidates/cabinet_p_meghna.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_SOCIAL_CULTURAL_SECRETARY_18",
     "admissionNo": "9189",
     "fullName": "V.Chaithra",
     "className": "9",
-    "section": "Class 9 \u00b7 Vikram Sarabhai",
+    "section": "Class 9 \u00b7 Satish Dhawan",
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
     "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Fostering passion for stage, music, and art \u00b7 Social & Cultural Sec",
+    "tagline": "Passionate leadership for cultural grandeur and arts \u00b7 Social & Cultural Secretary",
     "symbolObj": {
       "name": "Royal Bengal Tiger",
       "icon": "\ud83d\udc05",
       "slug": "royal_bengal_tiger",
-      "image": "../assets/symbols/royal_bengal_tiger.png",
-      "imagePath": "../assets/symbols/royal_bengal_tiger.png"
+      "image": "../assets/symbols/tiger.png",
+      "imagePath": "../assets/symbols/tiger.png"
     },
+    "photoUrl": "../assets/candidates/cabinet_v_chaithra.jpg",
+    "photoPath": "../assets/candidates/cabinet_v_chaithra.jpg",
+    "isApproved": true
+  },
     "photoUrl": "../assets/candidates/cabinet_v_chaithra.jpg",
     "photoPath": "../assets/candidates/cabinet_v_chaithra.jpg",
     "isApproved": true
@@ -2629,11 +2701,11 @@ window.ALL_CONTESTING_CANDIDATES = [
     "admissionNo": "9170",
     "fullName": "V.Himavardhan",
     "className": "9",
-    "section": "Class 9 \u00b7 Satish Dhawan",
+    "section": "Class 9 \u00b7 Sir CV Raman",
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
     "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Building cultural camaraderie and school pride \u00b7 Social & Cultural Sec",
+    "tagline": "Enriching celebrations and cultural harmony \u00b7 Social & Cultural Secretary",
     "symbolObj": {
       "name": "Mango",
       "icon": "\ud83e\udd6d",
@@ -2645,16 +2717,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_v_himavardhan.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_v_himavardhan.jpg",
+    "photoPath": "../assets/candidates/cabinet_v_himavardhan.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_SOCIAL_CULTURAL_SECRETARY_20",
     "admissionNo": "9195",
-    "fullName": "Y.Nithya Sri",
+    "fullName": "Nithya Sree.Y",
     "className": "9",
-    "section": "Class 9 \u00b7 Vikram Sarabhai",
+    "section": "Class 9 \u00b7 APJ Abdul Kalam",
     "houseCode": "CENTRAL",
     "positionId": "SOCIAL_CULTURAL_SECRETARY",
     "positionName": "Social & Cultural Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Enriching school life through arts and outreach \u00b7 Social & Cultural Sec",
+    "tagline": "Joyful events, empathetic community outreach, and unity \u00b7 Social & Cultural Secretary",
     "symbolObj": {
       "name": "Dolphin",
       "icon": "\ud83d\udc2c",
@@ -2666,16 +2742,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_y_nithya_sri.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_y_nithya_sri.jpg",
+    "photoPath": "../assets/candidates/cabinet_y_nithya_sri.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_SPORTS_SECRETARY_21",
     "admissionNo": "9069",
-    "fullName": "Ch.Bala Thrushna Datta",
+    "fullName": "Ch.Bala Thrusha Datta",
     "className": "9",
-    "section": "Class 9 \u00b7 Aryabhatta",
+    "section": "Class 9 \u00b7 APJ Abdul Kalam",
     "houseCode": "CENTRAL",
     "positionId": "SPORTS_SECRETARY",
     "positionName": "Sports Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Promoting athleticism, team spirit, and sportsmanship \u00b7 Sports Secretary",
+    "tagline": "Stout determination and heavyweight athletic support \u00b7 Sports Secretary",
     "symbolObj": {
       "name": "Pumpkin",
       "icon": "\ud83c\udf83",
@@ -2687,16 +2767,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_ch_bala_thrushna_datta.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_ch_bala_thrushna_datta.jpg",
+    "photoPath": "../assets/candidates/cabinet_ch_bala_thrushna_datta.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_SPORTS_SECRETARY_22",
     "admissionNo": "9172",
     "fullName": "Ch.Kowshik",
     "className": "9",
-    "section": "Class 9 \u00b7 Satish Dhawan",
+    "section": "Class 9 \u00b7 Sri Ramanujan",
     "houseCode": "CENTRAL",
     "positionId": "SPORTS_SECRETARY",
     "positionName": "Sports Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Fueling fitness, tournaments, and victory \u00b7 Sports Secretary",
+    "tagline": "Driving athletic prowess and sporting glory \u00b7 Sports Secretary",
     "symbolObj": {
       "name": "Hockey Stick",
       "icon": "\ud83c\udfd1",
@@ -2708,23 +2792,31 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_ch_kowshik.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_ch_kowshik.jpg",
+    "photoPath": "../assets/candidates/cabinet_ch_kowshik.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_SPORTS_SECRETARY_23",
     "admissionNo": "8008",
     "fullName": "K.Krithika",
     "className": "9",
-    "section": "Class 9 \u00b7 Chanakya",
+    "section": "Class 9 \u00b7 Homi J. Bhabha",
     "houseCode": "CENTRAL",
     "positionId": "SPORTS_SECRETARY",
     "positionName": "Sports Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Encouraging champions on every field \u00b7 Sports Secretary",
+    "tagline": "Continuous cycle of athletic excellence and fair play \u00b7 Sports Secretary",
     "symbolObj": {
-      "name": "Ashoka Chakra",
+      "name": "Konark Wheel",
       "icon": "\u2638\ufe0f",
-      "slug": "ashoka_chakra",
+      "slug": "konark_wheel",
       "image": "../assets/symbols/ashoka_chakra.png",
       "imagePath": "../assets/symbols/ashoka_chakra.png"
     },
+    "photoUrl": "../assets/candidates/cabinet_k_krithika.jpg",
+    "photoPath": "../assets/candidates/cabinet_k_krithika.jpg",
+    "isApproved": true
+  },
     "photoUrl": "../assets/candidates/cabinet_k_krithika.jpg",
     "photoPath": "../assets/candidates/cabinet_k_krithika.jpg",
     "isApproved": true
@@ -2738,7 +2830,7 @@ window.ALL_CONTESTING_CANDIDATES = [
     "houseCode": "CENTRAL",
     "positionId": "SPORTS_SECRETARY",
     "positionName": "Sports Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Power, endurance, and sporting excellence \u00b7 Sports Secretary",
+    "tagline": "Enduring strength and grounded athletic dedication \u00b7 Sports Secretary",
     "symbolObj": {
       "name": "Banyan Tree",
       "icon": "\ud83c\udf33",
@@ -2750,16 +2842,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_r_srikshith.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_r_srikshith.jpg",
+    "photoPath": "../assets/candidates/cabinet_r_srikshith.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_SPORTS_SECRETARY_25",
     "admissionNo": "9178",
     "fullName": "S.Rithvik Reddy",
     "className": "9",
-    "section": "Class 9 \u00b7 Satish Dhawan",
+    "section": "Class 9 \u00b7 Aryabhata",
     "houseCode": "CENTRAL",
     "positionId": "SPORTS_SECRETARY",
     "positionName": "Sports Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Inspiring healthy competition and discipline \u00b7 Sports Secretary",
+    "tagline": "Nutritious discipline, high endurance, peak fitness \u00b7 Sports Secretary",
     "symbolObj": {
       "name": "Mango",
       "icon": "\ud83e\udd6d",
@@ -2771,16 +2867,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_s_rithvik_reddy.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_s_rithvik_reddy.jpg",
+    "photoPath": "../assets/candidates/cabinet_s_rithvik_reddy.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_SPORTS_SECRETARY_26",
     "admissionNo": "9200",
-    "fullName": "S.Sahasra Reddy",
+    "fullName": "S.Sahasra",
     "className": "9",
-    "section": "Class 9 \u00b7 Vikram Sarabhai",
+    "section": "Class 9 \u00b7 Satish Dhawan",
     "houseCode": "CENTRAL",
     "positionId": "SPORTS_SECRETARY",
     "positionName": "Sports Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Empowering athletes across all age groups \u00b7 Sports Secretary",
+    "tagline": "Grace, flexibility, and soaring sports achievements \u00b7 Sports Secretary",
     "symbolObj": {
       "name": "Peacock",
       "icon": "\ud83e\udd9a",
@@ -2792,23 +2892,31 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_s_sahasra_reddy.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_s_sahasra_reddy.jpg",
+    "photoPath": "../assets/candidates/cabinet_s_sahasra_reddy.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_SPORTS_SECRETARY_27",
     "admissionNo": "9062",
-    "fullName": "S.Shubhi Patel",
+    "fullName": "Shubhi Patel",
     "className": "9",
-    "section": "Class 9 \u00b7 Aryabhatta",
+    "section": "Class 9 \u00b7 Sir CV Raman",
     "houseCode": "CENTRAL",
     "positionId": "SPORTS_SECRETARY",
     "positionName": "Sports Secretary (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Excellence in athletics and fierce determination \u00b7 Sports Secretary",
+    "tagline": "Fierce competitiveness and track-field dominance \u00b7 Sports Secretary",
     "symbolObj": {
       "name": "Royal Bengal Tiger",
       "icon": "\ud83d\udc05",
       "slug": "royal_bengal_tiger",
-      "image": "../assets/symbols/royal_bengal_tiger.png",
-      "imagePath": "../assets/symbols/royal_bengal_tiger.png"
+      "image": "../assets/symbols/tiger.png",
+      "imagePath": "../assets/symbols/tiger.png"
     },
+    "photoUrl": "../assets/candidates/cabinet_shubhi_patel.jpg",
+    "photoPath": "../assets/candidates/cabinet_shubhi_patel.jpg",
+    "isApproved": true
+  },
     "photoUrl": "../assets/candidates/cabinet_shubhi_patel.jpg",
     "photoPath": "../assets/candidates/cabinet_shubhi_patel.jpg",
     "isApproved": true
@@ -2816,13 +2924,13 @@ window.ALL_CONTESTING_CANDIDATES = [
   {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_28",
     "admissionNo": "9901",
-    "fullName": "Enrique Iglesias",
+    "fullName": "N.Enriqe Iglesias",
     "className": "9",
-    "section": "Class 9 \u00b7 Central Cabinet",
+    "section": "Class 9 \u00b7 Vikram Sarabhai",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
     "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Dynamic representation and supportive governance \u00b7 School Cabinet",
+    "tagline": "Vibrant leadership and sweet rewards for all scholars \u00b7 School Cabinet",
     "symbolObj": {
       "name": "Mango",
       "icon": "\ud83e\udd6d",
@@ -2834,16 +2942,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_enrique_iglesias.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_enrique_iglesias.jpg",
+    "photoPath": "../assets/candidates/cabinet_enrique_iglesias.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_29",
     "admissionNo": "9167",
     "fullName": "G.Badrinath",
     "className": "9",
-    "section": "Class 9 \u00b7 Satish Dhawan",
+    "section": "Class 9 \u00b7 APJ Abdul Kalam",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
     "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Committed to student welfare and school unity \u00b7 School Cabinet",
+    "tagline": "Deeply grounded in student values, sheltering aspirations \u00b7 School Cabinet",
     "symbolObj": {
       "name": "Banyan Tree",
       "icon": "\ud83c\udf33",
@@ -2855,16 +2967,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_g_badrinath.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_g_badrinath.jpg",
+    "photoPath": "../assets/candidates/cabinet_g_badrinath.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_30",
     "admissionNo": "9037",
     "fullName": "J.Sampath Kumar",
     "className": "9",
-    "section": "Class 9 \u00b7 APJ Abdul Kalam",
+    "section": "Class 9 \u00b7 Sri Ramanujan",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
     "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Strength, humility, and steadfast support \u00b7 School Cabinet",
+    "tagline": "Strength, memory, and unwavering dedication to every pupil \u00b7 School Cabinet",
     "symbolObj": {
       "name": "Elephant",
       "icon": "\ud83d\udc18",
@@ -2876,16 +2992,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_j_sampath_kumar.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_j_sampath_kumar.jpg",
+    "photoPath": "../assets/candidates/cabinet_j_sampath_kumar.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_31",
     "admissionNo": "9093",
     "fullName": "K.Ambika",
     "className": "9",
-    "section": "Class 9 \u00b7 Kalpana Chawla",
+    "section": "Class 9 \u00b7 Aryabhata",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
     "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Proactive service and uplifting student voices \u00b7 School Cabinet",
+    "tagline": "Nourishing campus spirit and unity from the grassroots \u00b7 School Cabinet",
     "symbolObj": {
       "name": "Pumpkin",
       "icon": "\ud83c\udf83",
@@ -2897,16 +3017,20 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_k_ambika.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_k_ambika.jpg",
+    "photoPath": "../assets/candidates/cabinet_k_ambika.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_32",
     "admissionNo": "9183",
     "fullName": "M.Vivekananda Rao",
     "className": "9",
-    "section": "Class 9 \u00b7 Satish Dhawan",
+    "section": "Class 9 \u00b7 Sir CV Raman",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
     "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Dedicated collaboration for institutional success \u00b7 School Cabinet",
+    "tagline": "Agile representation and athletic determination in action \u00b7 School Cabinet",
     "symbolObj": {
       "name": "Hockey Stick",
       "icon": "\ud83c\udfd1",
@@ -2918,20 +3042,24 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_m_vivekananda_rao.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_m_vivekananda_rao.jpg",
+    "photoPath": "../assets/candidates/cabinet_m_vivekananda_rao.jpg",
+    "isApproved": true
+  },
   {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_33",
     "admissionNo": "9088",
-    "fullName": "G.Srunith Goud",
+    "fullName": "G. Srunith Goud",
     "className": "9",
-    "section": "Class 9 \u00b7 Aryabhatta",
+    "section": "Class 9 \u00b7 Homi J. Bhabha",
     "houseCode": "CENTRAL",
     "positionId": "VICE_PRESIDENT",
     "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-    "tagline": "Principled guidance and positive leadership \u00b7 School Cabinet",
+    "tagline": "Turning the wheel of discipline, culture, and progress \u00b7 School Cabinet",
     "symbolObj": {
-      "name": "Ashoka Chakra",
+      "name": "Konark Wheel",
       "icon": "\u2638\ufe0f",
-      "slug": "ashoka_chakra",
+      "slug": "konark_wheel",
       "image": "../assets/symbols/ashoka_chakra.png",
       "imagePath": "../assets/symbols/ashoka_chakra.png"
     },
@@ -2939,128 +3067,135 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_srunith_goud.jpg",
     "isApproved": true
   },
+    "photoUrl": "../assets/candidates/cabinet_srunith_goud.jpg",
+    "photoPath": "../assets/candidates/cabinet_srunith_goud.jpg",
+    "isApproved": true
+  },
   {
-  "id": "CAND_CENTRAL_VICE_PRESIDENT_34",
-  "admissionNo": "9V4182",
-  "fullName": "M.Anvitha Sharma",
-  "className": "9",
-  "section": "Class 9 \u00b7 Vikram Sarabhai",
-  "houseCode": "CENTRAL",
-  "positionId": "VICE_PRESIDENT",
-  "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-  "tagline": "Dedicated service and inclusive student leadership \u00b7 School Cabinet",
-  "symbolObj": {
-    "name": "Dolphin",
-    "icon": "\ud83d\udc2c",
-    "slug": "dolphin",
-    "image": "../assets/symbols/dolphin.png",
-    "imagePath": "../assets/symbols/dolphin.png"
+    "id": "CAND_CENTRAL_VICE_PRESIDENT_34",
+    "admissionNo": "9V4182",
+    "fullName": "M.Anvitha Sharma",
+    "className": "9",
+    "section": "Class 9 \u00b7 Satish Dhawan",
+    "houseCode": "CENTRAL",
+    "positionId": "VICE_PRESIDENT",
+    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+    "tagline": "Intelligent, harmonious, and agile representation \u00b7 School Cabinet",
+    "symbolObj": {
+      "name": "Dolphin",
+      "icon": "\ud83d\udc2c",
+      "slug": "dolphin",
+      "image": "../assets/symbols/dolphin.png",
+      "imagePath": "../assets/symbols/dolphin.png"
+    },
+    "photoUrl": "../assets/candidates/central_manvithasharma.jpg",
+    "photoPath": "../assets/candidates/central_manvithasharma.jpg",
+    "isApproved": true
   },
   "photoUrl": "../assets/candidates/central_manvithasharma.jpg",
   "photoPath": "../assets/candidates/central_manvithasharma.jpg",
   "isApproved": true
 },
 {
-  "id": "CAND_CENTRAL_VICE_PRESIDENT_35",
-  "admissionNo": "9V1966",
-  "fullName": "K.Hadvitha",
-  "className": "9",
-  "section": "Class 9 \u00b7 Vikram Sarabhai",
-  "houseCode": "CENTRAL",
-  "positionId": "VICE_PRESIDENT",
-  "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-  "tagline": "Empowering students with integrity and vision \u00b7 School Cabinet",
-  "symbolObj": {
-    "name": "Ganga River",
-    "icon": "\ud83c\udf0a",
-    "slug": "ganga_river",
-    "image": "../assets/symbols/ganga_river.png",
-    "imagePath": "../assets/symbols/ganga_river.png"
+    "id": "CAND_CENTRAL_VICE_PRESIDENT_35",
+    "admissionNo": "9V1966",
+    "fullName": "K.Hadvitha",
+    "className": "9",
+    "section": "Class 9 \u00b7 Vikram Sarabhai",
+    "houseCode": "CENTRAL",
+    "positionId": "VICE_PRESIDENT",
+    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+    "tagline": "Continuous flow of pure service, heritage, and values \u00b7 School Cabinet",
+    "symbolObj": {
+      "name": "Ganga River",
+      "icon": "\ud83c\udf0a",
+      "slug": "ganga_river",
+      "image": "../assets/symbols/ganga_river.png",
+      "imagePath": "../assets/symbols/ganga_river.png"
+    },
+    "photoUrl": "../assets/candidates/central_khadvitha.jpg",
+    "photoPath": "../assets/candidates/central_khadvitha.jpg",
+    "isApproved": true
   },
   "photoUrl": "../assets/candidates/central_khadvitha.jpg",
   "photoPath": "../assets/candidates/central_khadvitha.jpg",
   "isApproved": true
 },
 {
-  "id": "CAND_CENTRAL_VICE_PRESIDENT_36",
-  "admissionNo": "9V4045",
-  "fullName": "K.Ishwarya",
-  "className": "9",
-  "section": "Class 9 \u00b7 Vikram Sarabhai",
-  "houseCode": "CENTRAL",
-  "positionId": "VICE_PRESIDENT",
-  "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-  "tagline": "Inspiring action, fostering teamwork and progress \u00b7 School Cabinet",
-  "symbolObj": {
-    "name": "Indian Currency",
-    "icon": "\u20b9",
-    "slug": "indian_currency",
-    "image": "../assets/symbols/indian_currency.png",
-    "imagePath": "../assets/symbols/indian_currency.png"
+    "id": "CAND_CENTRAL_VICE_PRESIDENT_36",
+    "admissionNo": "9V4045",
+    "fullName": "K.Ishwarya",
+    "className": "9",
+    "section": "Class 9 \u00b7 Homi J. Bhabha",
+    "houseCode": "CENTRAL",
+    "positionId": "VICE_PRESIDENT",
+    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+    "tagline": "Empowering resources, student welfare, and school prosperity \u00b7 School Cabinet",
+    "symbolObj": {
+      "name": "Indian Currency",
+      "icon": "\u20b9",
+      "slug": "indian_currency",
+      "image": "../assets/symbols/indian_currency.png",
+      "imagePath": "../assets/symbols/indian_currency.png"
+    },
+    "photoUrl": "../assets/candidates/central_kishwarya.jpg",
+    "photoPath": "../assets/candidates/central_kishwarya.jpg",
+    "isApproved": true
   },
   "photoUrl": "../assets/candidates/central_kishwarya.jpg",
   "photoPath": "../assets/candidates/central_kishwarya.jpg",
   "isApproved": true
 },
 {
-  "id": "CAND_CENTRAL_VICE_PRESIDENT_37",
-  "admissionNo": "9V7995",
-  "fullName": "G.Aadhya",
-  "className": "9",
-  "section": "Class 9 \u00b7 Vikram Sarabhai",
-  "houseCode": "CENTRAL",
-  "positionId": "VICE_PRESIDENT",
-  "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-  "tagline": "Grace, unity, and excellence in student leadership \u00b7 School Cabinet",
-  "symbolObj": {
-    "name": "Peacock",
-    "icon": "\ud83e\udd9a",
-    "slug": "peacock",
-    "image": "../assets/symbols/peacock.png",
-    "imagePath": "../assets/symbols/peacock.png"
+    "id": "CAND_CENTRAL_VICE_PRESIDENT_37",
+    "admissionNo": "9V7995",
+    "fullName": "G.Aadhya",
+    "className": "9",
+    "section": "Class 9 \u00b7 Aryabhata",
+    "houseCode": "CENTRAL",
+    "positionId": "VICE_PRESIDENT",
+    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+    "tagline": "Graceful representation, artistic values, and pride \u00b7 School Cabinet",
+    "symbolObj": {
+      "name": "Peacock",
+      "icon": "\ud83e\udd9a",
+      "slug": "peacock",
+      "image": "../assets/symbols/peacock.png",
+      "imagePath": "../assets/symbols/peacock.png"
+    },
+    "photoUrl": "../assets/candidates/central_gaadhya.jpg",
+    "photoPath": "../assets/candidates/central_gaadhya.jpg",
+    "isApproved": true
   },
   "photoUrl": "../assets/candidates/central_gaadhya.jpg",
   "photoPath": "../assets/candidates/central_gaadhya.jpg",
   "isApproved": true
 },
 {
-  "id": "CAND_CENTRAL_VICE_PRESIDENT_38",
-  "admissionNo": "9V1576",
-  "fullName": "V.Ananya Reddy",
-  "className": "9",
-  "section": "Class 9 \u00b7 Vikram Sarabhai",
-  "houseCode": "CENTRAL",
-  "positionId": "VICE_PRESIDENT",
-  "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-  "tagline": "Strength, determination, and visionary governance \u00b7 School Cabinet",
-  "symbolObj": {
-    "name": "Royal Bengal Tiger",
-    "icon": "\ud83d\udc05",
-    "slug": "royal_bengal_tiger",
-    "image": "../assets/symbols/tiger.png",
-    "imagePath": "../assets/symbols/tiger.png"
+    "id": "CAND_CENTRAL_VICE_PRESIDENT_38",
+    "admissionNo": "9V1576",
+    "fullName": "V.Ananya Reddy",
+    "className": "9",
+    "section": "Class 9 \u00b7 Sri Ramanujan",
+    "houseCode": "CENTRAL",
+    "positionId": "VICE_PRESIDENT",
+    "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
+    "tagline": "Courageous leadership and fierce protection of student rights \u00b7 School Cabinet",
+    "symbolObj": {
+      "name": "Royal Bengal Tiger",
+      "icon": "\ud83d\udc05",
+      "slug": "royal_bengal_tiger",
+      "image": "../assets/symbols/tiger.png",
+      "imagePath": "../assets/symbols/tiger.png"
+    },
+    "photoUrl": "../assets/candidates/central_vananyareddy.jpg",
+    "photoPath": "../assets/candidates/central_vananyareddy.jpg",
+    "isApproved": true
   },
   "photoUrl": "../assets/candidates/central_vananyareddy.jpg",
   "photoPath": "../assets/candidates/central_vananyareddy.jpg",
   "isApproved": true
 },
-  {
-  "id": "CAND_CENTRAL_VICE_PRESIDENT_39",
-  "admissionNo": "9S8038",
-  "fullName": "Y.Bhagya Sri",
-  "className": "9",
-  "section": "Class 9 \u00b7 Satish Dhawan",
-  "houseCode": "CENTRAL",
-  "positionId": "VICE_PRESIDENT",
-  "positionName": "School Vice President (Class 9 \u00b7 Central Cabinet)",
-  "tagline": "Graceful leadership, articulation, and student dedication \u00b7 School Cabinet",
-  "symbolObj": {
-    "name": "Peacock",
-    "icon": "\ud83e\udd9a",
-    "slug": "peacock",
-    "image": "../assets/symbols/peacock.png",
-    "imagePath": "../assets/symbols/peacock.png"
-  },
   "photoUrl": "../assets/candidates/central_ybhagyasri.jpg",
   "photoPath": "../assets/candidates/central_ybhagyasri.jpg",
   "isApproved": true
