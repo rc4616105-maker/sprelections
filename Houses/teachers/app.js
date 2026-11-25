@@ -445,6 +445,17 @@
         <span class="tab-badge">${isComplete ? "✓ " : ""}${filledCount}/${roles.length}</span>
       `;
       chip.addEventListener("click", () => {
+        const curHouse = houses[state.currentHouseIdx];
+        const curRoles = curHouse?.positions || [];
+        const curRole = curRoles[state.currentPostIdx];
+        if (curRole) {
+          const curKey = `${curHouse.code}_${curRole.id}`;
+          const curChosen = Boolean(state.selectedByRole[curKey] || state.votedRolesMap[curKey]);
+          if (hIdx > state.currentHouseIdx && !curChosen) {
+            alert(`Please select a candidate for ${curRole.title} before switching houses.`);
+            return;
+          }
+        }
         state.currentHouseIdx = hIdx;
         state.currentPostIdx = 0;
         state.isReviewActive = false;
@@ -480,9 +491,20 @@
       }
       pill.innerHTML = `
         <span class="post-step-num" style="${isActive ? `background:${hAccent}; color:${hOnAccent};` : ''}">${isSelected ? "✓" : (pIdx + 1)}</span>
-        <span>${role.shortTitle || role.title}</span>
+        <span>${(role.shortTitle || role.title).replace(/\s*Sec\b/i, "")}</span>
       `;
       pill.addEventListener("click", () => {
+        const curHouse = houses[state.currentHouseIdx];
+        const curRoles = curHouse?.positions || [];
+        const curRole = curRoles[state.currentPostIdx];
+        if (curRole) {
+          const curKey = `${curHouse.code}_${curRole.id}`;
+          const curChosen = Boolean(state.selectedByRole[curKey] || state.votedRolesMap[curKey]);
+          if (pIdx > state.currentPostIdx && !curChosen) {
+            alert(`Please select a candidate for ${curRole.title} before moving forward.`);
+            return;
+          }
+        }
         state.currentPostIdx = pIdx;
         state.isReviewActive = false;
         renderEvmView();
@@ -607,7 +629,6 @@
               <div class="evm-cand-info">
                 <h3 class="evm-cand-name">${cand.fullName}</h3>
                 <span class="evm-cand-sub">${subText}</span>
-                ${cand.tagline ? `<span class="evm-cand-tagline">&ldquo;${cand.tagline}&rdquo;</span>` : ""}
               </div>
               <div class="evm-right-cluster">
                 <span class="evm-led-lamp"></span>
@@ -674,16 +695,22 @@
       const isLastPostInHouse = state.currentPostIdx >= roles.length - 1;
       const isLastHouse = state.currentHouseIdx >= houses.length - 1;
 
+      const curKey = `${currentHouse.code}_${currentRole.id}`;
+      const hasChosenCur = Boolean(state.selectedByRole[curKey] || state.votedRolesMap[curKey]);
+      el.evmNextBtn.disabled = !hasChosenCur;
+      el.evmNextBtn.style.opacity = hasChosenCur ? "1" : "0.45";
+      el.evmNextBtn.style.cursor = hasChosenCur ? "pointer" : "not-allowed";
+
       const hAccent = currentHouse.accent || "#059669";
       const hHover = currentHouse.accentHover || currentHouse.hover || hAccent;
       const hOnAccent = currentHouse.onAccent || "#ffffff";
       el.evmNextBtn.style.background = hAccent;
       el.evmNextBtn.style.color = hOnAccent;
-      el.evmNextBtn.style.boxShadow = `0 4px 0 ${hHover}`;
+      el.evmNextBtn.style.boxShadow = hasChosenCur ? `0 4px 0 ${hHover}` : "none";
 
       if (!isLastPostInHouse) {
         const nextRole = roles[state.currentPostIdx + 1];
-        el.evmNextBtn.innerHTML = `Next: ${nextRole.shortTitle || nextRole.title} &rarr;`;
+        el.evmNextBtn.innerHTML = `Next: ${(nextRole.shortTitle || nextRole.title).replace(/\s*Sec\b/i, "")} &rarr;`;
       } else if (!isLastHouse) {
         const nextHouse = houses[state.currentHouseIdx + 1];
         el.evmNextBtn.innerHTML = `Next House: ${nextHouse.shortName || nextHouse.name} &rarr;`;
@@ -1030,6 +1057,15 @@
     el.evmNextBtn?.addEventListener("click", () => {
       const currentHouse = houses[state.currentHouseIdx];
       const roles = currentHouse?.positions || [];
+      const currentRole = roles[state.currentPostIdx];
+      if (currentRole) {
+        const curKey = `${currentHouse.code}_${currentRole.id}`;
+        const hasChosenCur = Boolean(state.selectedByRole[curKey] || state.votedRolesMap[curKey]);
+        if (!hasChosenCur) {
+          alert(`Please select a candidate for ${currentRole.title} before proceeding to the next post.`);
+          return;
+        }
+      }
       if (state.currentPostIdx < roles.length - 1) {
         state.currentPostIdx++;
         renderEvmView();

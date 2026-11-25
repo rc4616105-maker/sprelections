@@ -2376,11 +2376,11 @@ window.HOUSE_DATA = {
       "positionName": "Girls Vice Captain (Class 9 Girl)",
       "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Vasistha House",
       "symbolObj": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "slug": "ashoka_chakra",
-        "image": "../assets/symbols/ashoka_chakra.png",
-        "imagePath": "../assets/symbols/ashoka_chakra.png"
+        "slug": "konark_wheel",
+        "image": "../assets/symbols/konark_wheel.png",
+        "imagePath": "../assets/symbols/konark_wheel.png"
       },
       "photoUrl": "../assets/candidates/vasistha_bsnigdathareddy.jpg",
       "photoPath": "../assets/candidates/vasistha_bsnigdathareddy.jpg",
@@ -2397,11 +2397,11 @@ window.HOUSE_DATA = {
       "positionName": "Boys Captain (Class 10 Boy)",
       "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Vasistha House",
       "symbolObj": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "slug": "ashoka_chakra",
-        "image": "../assets/symbols/ashoka_chakra.png",
-        "imagePath": "../assets/symbols/ashoka_chakra.png"
+        "slug": "konark_wheel",
+        "image": "../assets/symbols/konark_wheel.png",
+        "imagePath": "../assets/symbols/konark_wheel.png"
       },
       "photoUrl": "../assets/candidates/vasistha_chkarthikeya.jpg",
       "photoPath": "../assets/candidates/vasistha_chkarthikeya.jpg",
@@ -2523,11 +2523,11 @@ window.HOUSE_DATA = {
       "positionName": "Boys Vice Captain (Class 9 Boy)",
       "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Vasistha House",
       "symbolObj": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "slug": "ashoka_chakra",
-        "image": "../assets/symbols/ashoka_chakra.png",
-        "imagePath": "../assets/symbols/ashoka_chakra.png"
+        "slug": "konark_wheel",
+        "image": "../assets/symbols/konark_wheel.png",
+        "imagePath": "../assets/symbols/konark_wheel.png"
       },
       "photoUrl": "../assets/candidates/vasistha_mvaibhav.jpg",
       "photoPath": "../assets/candidates/vasistha_mvaibhav.jpg",
@@ -2544,11 +2544,11 @@ window.HOUSE_DATA = {
       "positionName": "Girls Captain (Class 10 Girl)",
       "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Vasistha House",
       "symbolObj": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "slug": "ashoka_chakra",
-        "image": "../assets/symbols/ashoka_chakra.png",
-        "imagePath": "../assets/symbols/ashoka_chakra.png"
+        "slug": "konark_wheel",
+        "image": "../assets/symbols/konark_wheel.png",
+        "imagePath": "../assets/symbols/konark_wheel.png"
       },
       "photoUrl": "../assets/candidates/vasistha_nsriteja.jpg",
       "photoPath": "../assets/candidates/vasistha_nsriteja.jpg",
@@ -15799,11 +15799,11 @@ window.HOUSE_DATA = {
       "positionName": "Girls Vice Captain (Class 9 Girl)",
       "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Vasistha House",
       "symbolObj": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "slug": "ashoka_chakra",
-        "image": "../assets/symbols/ashoka_chakra.png",
-        "imagePath": "../assets/symbols/ashoka_chakra.png"
+        "slug": "konark_wheel",
+        "image": "../assets/symbols/konark_wheel.png",
+        "imagePath": "../assets/symbols/konark_wheel.png"
       },
       "photoUrl": "../assets/candidates/vasistha_bsnigdathareddy.jpg",
       "photoPath": "../assets/candidates/vasistha_bsnigdathareddy.jpg",
@@ -15820,11 +15820,11 @@ window.HOUSE_DATA = {
       "positionName": "Boys Captain (Class 10 Boy)",
       "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Vasistha House",
       "symbolObj": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "slug": "ashoka_chakra",
-        "image": "../assets/symbols/ashoka_chakra.png",
-        "imagePath": "../assets/symbols/ashoka_chakra.png"
+        "slug": "konark_wheel",
+        "image": "../assets/symbols/konark_wheel.png",
+        "imagePath": "../assets/symbols/konark_wheel.png"
       },
       "photoUrl": "../assets/candidates/vasistha_chkarthikeya.jpg",
       "photoPath": "../assets/candidates/vasistha_chkarthikeya.jpg",
@@ -15946,11 +15946,11 @@ window.HOUSE_DATA = {
       "positionName": "Boys Vice Captain (Class 9 Boy)",
       "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Vasistha House",
       "symbolObj": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "slug": "ashoka_chakra",
-        "image": "../assets/symbols/ashoka_chakra.png",
-        "imagePath": "../assets/symbols/ashoka_chakra.png"
+        "slug": "konark_wheel",
+        "image": "../assets/symbols/konark_wheel.png",
+        "imagePath": "../assets/symbols/konark_wheel.png"
       },
       "photoUrl": "../assets/candidates/vasistha_mvaibhav.jpg",
       "photoPath": "../assets/candidates/vasistha_mvaibhav.jpg",
@@ -15967,11 +15967,11 @@ window.HOUSE_DATA = {
       "positionName": "Girls Captain (Class 10 Girl)",
       "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Vasistha House",
       "symbolObj": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "slug": "ashoka_chakra",
-        "image": "../assets/symbols/ashoka_chakra.png",
-        "imagePath": "../assets/symbols/ashoka_chakra.png"
+        "slug": "konark_wheel",
+        "image": "../assets/symbols/konark_wheel.png",
+        "imagePath": "../assets/symbols/konark_wheel.png"
       },
       "photoUrl": "../assets/candidates/vasistha_nsriteja.jpg",
       "photoPath": "../assets/candidates/vasistha_nsriteja.jpg",

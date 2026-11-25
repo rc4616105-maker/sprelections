@@ -462,13 +462,11 @@
             <h4 class="candidate-name"></h4>
             <p class="candidate-meta"></p>
           </div>
-          <p class="candidate-tagline"></p>
         `;
         card.querySelector(".candidate-name").textContent = cand.fullName;
         card.querySelector(".candidate-meta").textContent = String(cand.admissionNo || "").startsWith("DEMO-")
           ? `${cand.section} · ${pos.subtitle || pos.title}`
           : `ID ${cand.admissionNo} · Class ${cand.className}-${cand.section} · ${pos.title}`;
-        card.querySelector(".candidate-tagline").textContent = cand.tagline;
 
         if (votedBallot) {
           card.disabled = true;

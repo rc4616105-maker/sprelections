@@ -22,13 +22,13 @@ const DEFAULT_HOUSES = [
         "photo": "assets/candidates/bheeshma_niroop.jpg",
         "quote": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Bheeshma House",
         "symbol": {
-          "name": "Ashoka Chakra",
+          "name": "Konark Wheel",
           "icon": "\u2638\ufe0f",
-          "imagePath": "assets/symbols/ashoka_chakra.png"
+          "imagePath": "assets/symbols/konark_wheel.png"
         },
-        "symbolName": "Ashoka Chakra",
+        "symbolName": "Konark Wheel",
         "symbolIcon": "\u2638\ufe0f",
-        "symbolImagePath": "assets/symbols/ashoka_chakra.png"
+        "symbolImagePath": "assets/symbols/konark_wheel.png"
       },
       "girls_captain": {
         "postTitle": "Girls Captain",
@@ -38,13 +38,13 @@ const DEFAULT_HOUSES = [
         "photo": "assets/candidates/bheeshma_vashwitha.jpg",
         "quote": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Bheeshma House",
         "symbol": {
-          "name": "Ashoka Chakra",
+          "name": "Konark Wheel",
           "icon": "\u2638\ufe0f",
-          "imagePath": "assets/symbols/ashoka_chakra.png"
+          "imagePath": "assets/symbols/konark_wheel.png"
         },
-        "symbolName": "Ashoka Chakra",
+        "symbolName": "Konark Wheel",
         "symbolIcon": "\u2638\ufe0f",
-        "symbolImagePath": "assets/symbols/ashoka_chakra.png"
+        "symbolImagePath": "assets/symbols/konark_wheel.png"
       },
       "boys_vc": {
         "postTitle": "Boys Vice-Captain",
@@ -97,13 +97,13 @@ const DEFAULT_HOUSES = [
         "photo": "assets/candidates/gurudrona_jshivasaikrishna.jpg",
         "quote": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Gurudrona House",
         "symbol": {
-          "name": "Ashoka Chakra",
+          "name": "Konark Wheel",
           "icon": "\u2638\ufe0f",
-          "imagePath": "assets/symbols/ashoka_chakra.png"
+          "imagePath": "assets/symbols/konark_wheel.png"
         },
-        "symbolName": "Ashoka Chakra",
+        "symbolName": "Konark Wheel",
         "symbolIcon": "\u2638\ufe0f",
-        "symbolImagePath": "assets/symbols/ashoka_chakra.png"
+        "symbolImagePath": "assets/symbols/konark_wheel.png"
       },
       "girls_captain": {
         "postTitle": "Girls Captain",
@@ -129,13 +129,13 @@ const DEFAULT_HOUSES = [
         "photo": "assets/candidates/gurudrona_ynitishpritam.jpg",
         "quote": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Gurudrona House",
         "symbol": {
-          "name": "Ashoka Chakra",
+          "name": "Konark Wheel",
           "icon": "\u2638\ufe0f",
-          "imagePath": "assets/symbols/ashoka_chakra.png"
+          "imagePath": "assets/symbols/konark_wheel.png"
         },
-        "symbolName": "Ashoka Chakra",
+        "symbolName": "Konark Wheel",
         "symbolIcon": "\u2638\ufe0f",
-        "symbolImagePath": "assets/symbols/ashoka_chakra.png"
+        "symbolImagePath": "assets/symbols/konark_wheel.png"
       },
       "girls_vc": {
         "postTitle": "Girls Vice-Captain",
@@ -188,13 +188,13 @@ const DEFAULT_HOUSES = [
         "photo": "assets/candidates/hanuman_snigdha.jpg",
         "quote": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Hanuman House",
         "symbol": {
-          "name": "Ashoka Chakra",
+          "name": "Konark Wheel",
           "icon": "\u2638\ufe0f",
-          "imagePath": "assets/symbols/ashoka_chakra.png"
+          "imagePath": "assets/symbols/konark_wheel.png"
         },
-        "symbolName": "Ashoka Chakra",
+        "symbolName": "Konark Wheel",
         "symbolIcon": "\u2638\ufe0f",
-        "symbolImagePath": "assets/symbols/ashoka_chakra.png"
+        "symbolImagePath": "assets/symbols/konark_wheel.png"
       },
       "boys_vc": {
         "postTitle": "Boys Vice-Captain",
@@ -354,13 +354,13 @@ const DEFAULT_HOUSES = [
         "photo": "assets/candidates/vasistha_mvaibhav.jpg",
         "quote": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Vasistha House",
         "symbol": {
-          "name": "Ashoka Chakra",
+          "name": "Konark Wheel",
           "icon": "\u2638\ufe0f",
-          "imagePath": "assets/symbols/ashoka_chakra.png"
+          "imagePath": "assets/symbols/konark_wheel.png"
         },
-        "symbolName": "Ashoka Chakra",
+        "symbolName": "Konark Wheel",
         "symbolIcon": "\u2638\ufe0f",
-        "symbolImagePath": "assets/symbols/ashoka_chakra.png"
+        "symbolImagePath": "assets/symbols/konark_wheel.png"
       },
       "girls_vc": {
         "postTitle": "Girls Vice-Captain",
@@ -476,13 +476,13 @@ const DEFAULT_CABINET_POSTS = [
       "photo": "assets/candidates/cabinet_y_srinith.jpg",
       "quote": "Steadfast commitment and progressive governance \u00b7 School Cabinet",
       "symbol": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "imagePath": "assets/symbols/ashoka_chakra.png"
+        "imagePath": "assets/symbols/konark_wheel.png"
       },
-      "symbolName": "Ashoka Chakra",
+      "symbolName": "Konark Wheel",
       "symbolIcon": "\u2638\ufe0f",
-      "symbolImagePath": "assets/symbols/ashoka_chakra.png"
+      "symbolImagePath": "assets/symbols/konark_wheel.png"
     }
   },
   {
@@ -503,13 +503,13 @@ const DEFAULT_CABINET_POSTS = [
       "photo": "assets/candidates/cabinet_srunith_goud.jpg",
       "quote": "Principled guidance and positive leadership \u00b7 School Cabinet",
       "symbol": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "imagePath": "assets/symbols/ashoka_chakra.png"
+        "imagePath": "assets/symbols/konark_wheel.png"
       },
-      "symbolName": "Ashoka Chakra",
+      "symbolName": "Konark Wheel",
       "symbolIcon": "\u2638\ufe0f",
-      "symbolImagePath": "assets/symbols/ashoka_chakra.png"
+      "symbolImagePath": "assets/symbols/konark_wheel.png"
     }
   },
   {

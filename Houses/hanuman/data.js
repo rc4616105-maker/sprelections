@@ -2471,11 +2471,11 @@ window.HOUSE_DATA = {
       "positionName": "Boys Vice Captain (Class 9 Boy)",
       "tagline": "Contesting for Boys Vice Captain (Class 9 Boy) \u00b7 Hanuman House",
       "symbolObj": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "slug": "ashoka_chakra",
-        "image": "../assets/symbols/ashoka_chakra.png",
-        "imagePath": "../assets/symbols/ashoka_chakra.png"
+        "slug": "konark_wheel",
+        "image": "../assets/symbols/konark_wheel.png",
+        "imagePath": "../assets/symbols/konark_wheel.png"
       },
       "photoUrl": "../assets/candidates/hanuman_kkruthvik.jpg",
       "photoPath": "../assets/candidates/hanuman_kkruthvik.jpg",
@@ -2492,11 +2492,11 @@ window.HOUSE_DATA = {
       "positionName": "Boys Captain (Class 10 Boy)",
       "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Hanuman House",
       "symbolObj": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "slug": "ashoka_chakra",
-        "image": "../assets/symbols/ashoka_chakra.png",
-        "imagePath": "../assets/symbols/ashoka_chakra.png"
+        "slug": "konark_wheel",
+        "image": "../assets/symbols/konark_wheel.png",
+        "imagePath": "../assets/symbols/konark_wheel.png"
       },
       "photoUrl": "../assets/candidates/hanuman_ksamarjith.jpg",
       "photoPath": "../assets/candidates/hanuman_ksamarjith.jpg",
@@ -2702,11 +2702,11 @@ window.HOUSE_DATA = {
       "positionName": "Girls Captain (Class 10 Girl)",
       "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Hanuman House",
       "symbolObj": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "slug": "ashoka_chakra",
-        "image": "../assets/symbols/ashoka_chakra.png",
-        "imagePath": "../assets/symbols/ashoka_chakra.png"
+        "slug": "konark_wheel",
+        "image": "../assets/symbols/konark_wheel.png",
+        "imagePath": "../assets/symbols/konark_wheel.png"
       },
       "photoUrl": "../assets/candidates/hanuman_snigdha.jpg",
       "photoPath": "../assets/candidates/hanuman_snigdha.jpg",
@@ -2723,11 +2723,11 @@ window.HOUSE_DATA = {
       "positionName": "Girls Vice Captain (Class 9 Girl)",
       "tagline": "Contesting for Girls Vice Captain (Class 9 Girl) \u00b7 Hanuman House",
       "symbolObj": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "slug": "ashoka_chakra",
-        "image": "../assets/symbols/ashoka_chakra.png",
-        "imagePath": "../assets/symbols/ashoka_chakra.png"
+        "slug": "konark_wheel",
+        "image": "../assets/symbols/konark_wheel.png",
+        "imagePath": "../assets/symbols/konark_wheel.png"
       },
       "photoUrl": "../assets/candidates/hanuman_tpreeti.jpg",
       "photoPath": "../assets/candidates/hanuman_tpreeti.jpg",
@@ -16062,11 +16062,11 @@ window.HOUSE_DATA = {
       "positionName": "Boys Captain (Class 10 Boy)",
       "tagline": "Contesting for Boys Captain (Class 10 Boy) \u00b7 Hanuman House",
       "symbolObj": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "slug": "ashoka_chakra",
-        "image": "../assets/symbols/ashoka_chakra.png",
-        "imagePath": "../assets/symbols/ashoka_chakra.png"
+        "slug": "konark_wheel",
+        "image": "../assets/symbols/konark_wheel.png",
+        "imagePath": "../assets/symbols/konark_wheel.png"
       },
       "photoUrl": "../assets/candidates/hanuman_ksamarjith.jpg",
       "photoPath": "../assets/candidates/hanuman_ksamarjith.jpg",
@@ -16293,11 +16293,11 @@ window.HOUSE_DATA = {
       "positionName": "Girls Captain (Class 10 Girl)",
       "tagline": "Contesting for Girls Captain (Class 10 Girl) \u00b7 Hanuman House",
       "symbolObj": {
-        "name": "Ashoka Chakra",
+        "name": "Konark Wheel",
         "icon": "\u2638\ufe0f",
-        "slug": "ashoka_chakra",
-        "image": "../assets/symbols/ashoka_chakra.png",
-        "imagePath": "../assets/symbols/ashoka_chakra.png"
+        "slug": "konark_wheel",
+        "image": "../assets/symbols/konark_wheel.png",
+        "imagePath": "../assets/symbols/konark_wheel.png"
       },
       "photoUrl": "../assets/candidates/hanuman_snigdha.jpg",
       "photoPath": "../assets/candidates/hanuman_snigdha.jpg",

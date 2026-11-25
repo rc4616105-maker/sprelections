@@ -27,7 +27,7 @@ window.HOUSE_DATA = {
     "id": "LITERARY_SECRETARY",
     "code": "Vote_Literary_Sec",
     "title": "Literary Secretary",
-    "shortTitle": "Literary Sec",
+    "shortTitle": "Literary",
     "subtitle": "Class 9 \u00b7 Central Cabinet",
     "className": "9",
     "gender": "Any"
@@ -36,7 +36,7 @@ window.HOUSE_DATA = {
     "id": "SPORTS_SECRETARY",
     "code": "Vote_Sports_Sec",
     "title": "Sports Secretary",
-    "shortTitle": "Sports Sec",
+    "shortTitle": "Sports",
     "subtitle": "Class 9 \u00b7 Central Cabinet",
     "className": "9",
     "gender": "Any"
@@ -45,7 +45,7 @@ window.HOUSE_DATA = {
     "id": "SOCIAL_CULTURAL_SECRETARY",
     "code": "Vote_Social_Cultural_Sec",
     "title": "Social & Cultural Secretary",
-    "shortTitle": "Social & Cultural Sec",
+    "shortTitle": "Social & Cultural",
     "subtitle": "Class 9 \u00b7 Central Cabinet",
     "className": "9",
     "gender": "Any"
@@ -11865,8 +11865,8 @@ window.HOUSE_DATA = {
     "name": "Konark Wheel",
     "icon": "\u2638\ufe0f",
     "slug": "konark_wheel",
-    "image": "../assets/symbols/ashoka_chakra.png",
-    "imagePath": "../assets/symbols/ashoka_chakra.png"
+    "image": "../assets/symbols/konark_wheel.png",
+    "imagePath": "../assets/symbols/konark_wheel.png"
   },
   "photoUrl": "../assets/candidates/cabinet_y_srinith.jpg",
   "photoPath": "../assets/candidates/cabinet_y_srinith.jpg",
@@ -11886,8 +11886,8 @@ window.HOUSE_DATA = {
     "name": "Konark Wheel",
     "icon": "\u2638\ufe0f",
     "slug": "konark_wheel",
-    "image": "../assets/symbols/ashoka_chakra.png",
-    "imagePath": "../assets/symbols/ashoka_chakra.png"
+    "image": "../assets/symbols/konark_wheel.png",
+    "imagePath": "../assets/symbols/konark_wheel.png"
   },
   "photoUrl": "../assets/candidates/cabinet_srunith_goud.jpg",
   "photoPath": "../assets/candidates/cabinet_srunith_goud.jpg",
@@ -12222,8 +12222,8 @@ window.HOUSE_DATA = {
     "name": "Konark Wheel",
     "icon": "\u2638\ufe0f",
     "slug": "konark_wheel",
-    "image": "../assets/symbols/ashoka_chakra.png",
-    "imagePath": "../assets/symbols/ashoka_chakra.png"
+    "image": "../assets/symbols/konark_wheel.png",
+    "imagePath": "../assets/symbols/konark_wheel.png"
   },
   "photoUrl": "../assets/candidates/cabinet_k_krithika.jpg",
   "photoPath": "../assets/candidates/cabinet_k_krithika.jpg",
@@ -12264,8 +12264,8 @@ window.HOUSE_DATA = {
     "name": "Konark Wheel",
     "icon": "\u2638\ufe0f",
     "slug": "konark_wheel",
-    "image": "../assets/symbols/ashoka_chakra.png",
-    "imagePath": "../assets/symbols/ashoka_chakra.png"
+    "image": "../assets/symbols/konark_wheel.png",
+    "imagePath": "../assets/symbols/konark_wheel.png"
   },
   "photoUrl": "../assets/candidates/cabinet_indu_priya.jpg",
   "photoPath": "../assets/candidates/cabinet_indu_priya.jpg",
@@ -12495,8 +12495,8 @@ window.HOUSE_DATA = {
     "name": "Konark Wheel",
     "icon": "\u2638\ufe0f",
     "slug": "konark_wheel",
-    "image": "../assets/symbols/ashoka_chakra.png",
-    "imagePath": "../assets/symbols/ashoka_chakra.png"
+    "image": "../assets/symbols/konark_wheel.png",
+    "imagePath": "../assets/symbols/konark_wheel.png"
   },
   "photoUrl": "../assets/candidates/cabinet_k_akshara.jpg",
   "photoPath": "../assets/candidates/cabinet_k_akshara.jpg",
