@@ -1244,5 +1244,33 @@
     "section": "Faculty",
     "isStaff": true,
     "isActive": true
+  },
+  {
+    "sl": 89,
+    "admissionNo": "6089",
+    "fullName": "K. SWAMY",
+    "gender": "MALE",
+    "subject": "DIRECTOR",
+    "contact": "",
+    "houseCode": "ALL",
+    "houseName": "All Houses & Cabinet",
+    "className": "Staff",
+    "section": "Faculty",
+    "isStaff": true,
+    "isActive": true
+  },
+  {
+    "sl": 89,
+    "admissionNo": "SPRDIR001",
+    "fullName": "K. SWAMY",
+    "gender": "MALE",
+    "subject": "DIRECTOR",
+    "contact": "",
+    "houseCode": "ALL",
+    "houseName": "All Houses & Cabinet",
+    "className": "Staff",
+    "section": "Faculty",
+    "isStaff": true,
+    "isActive": true
   }
 ]

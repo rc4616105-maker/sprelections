@@ -1233,10 +1233,24 @@
     "section": "COMPUTER",
     "isStaff": true,
     "isActive": true
+  },
+  {
+    "sl": 89,
+    "admissionNo": "SPRDIR001",
+    "fullName": "K. SWAMY",
+    "gender": "MALE",
+    "subject": "DIRECTOR",
+    "contact": "",
+    "houseCode": "ALL",
+    "houseName": "All Houses & Cabinet",
+    "className": "Staff",
+    "section": "Faculty",
+    "isStaff": true,
+    "isActive": true
   }
 ];
 
-  window.TEACHERS_DATA = TEACHERS_ROSTER;
+window.TEACHERS_DATA = TEACHERS_ROSTER;
 
   // Auto-merge into ADMIN_DATA and allStudents if available
   if (window.ADMIN_DATA) {
