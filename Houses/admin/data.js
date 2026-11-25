@@ -15682,7 +15682,7 @@ window.ADMIN_DATA = {
     "photoUrl": "../assets/candidates/cabinet_y_bhavya_sri.jpg",
     "photoPath": "../assets/candidates/cabinet_y_bhavya_sri.jpg",
     "isApproved": true
-  },,
+  },
 {
   "id": "CAND_CENTRAL_LITERARY_SECRETARY_08",
   "admissionNo": "9K7051",
@@ -15703,7 +15703,7 @@ window.ADMIN_DATA = {
   "photoUrl": "../assets/candidates/cabinet_l_rushil.jpg",
   "photoPath": "../assets/candidates/cabinet_l_rushil.jpg",
   "isApproved": true
-}
+},
   {
     "id": "CAND_CENTRAL_PRESIDENT_08",
     "admissionNo": "7083",

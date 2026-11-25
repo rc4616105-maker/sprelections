@@ -202,11 +202,6 @@
 
       if (prevTotalVoted !== null && totalVoted !== prevTotalVoted) {
         triggerPulse([el.voted, el.remaining, el.boysVoted, el.girlsVoted], "is-bumping", 360);
-        const pill = document.getElementById("live-sync-pill");
-        if (pill) {
-          pill.classList.add("is-flash");
-          setTimeout(() => pill.classList.remove("is-flash"), 600);
-        }
       }
       prevTotalVoted = totalVoted;
 
@@ -310,18 +305,7 @@
     const SB_KEY = "sb_publishable_jcyjkISfyHxcKPwVUloYYQ_4BfL3pUZ";
 
     function setLiveStatus(state, meta) {
-      const pill = document.getElementById("live-sync-pill");
-      const title = document.getElementById("live-sync-title");
-      const metaEl = document.getElementById("live-sync-meta");
-      if (!pill) return;
-      if (state === "active") {
-        pill.classList.remove("is-warning");
-        if (title) title.textContent = "LIVE SYNC ACTIVE";
-      } else if (state === "warning") {
-        pill.classList.add("is-warning");
-        if (title) title.textContent = "SYNC RETRYING";
-      }
-      if (metaEl && meta) metaEl.textContent = meta;
+      // Live sync pill removed as per user request
     }
 
     async function fetchAcceptedBallotsFast() {
