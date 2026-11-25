@@ -226,15 +226,26 @@ class ScratchArenaManager {
 
   getPhotoMarkup(candidate, postKey) {
     if (!candidate) return `<div class="candidate-avatar-svg">${this.getAvatarSvg(postKey)}</div>`;
+    const normStr = (s) => String(s || "").toLowerCase().replace(/[\s\.\-_]+/g, "");
+    const cleanPhoto = (p) => String(p || "").trim().replace(/^\.\.\/assets\//, "assets/").replace(/^\.\/assets\//, "assets/");
     let photo = "";
     if (typeof window.findCandidateMeta === "function" && candidate.name) {
       const meta = window.findCandidateMeta(candidate.name, this.house?.id);
-      if (meta && meta.photoPath) {
-        photo = meta.photoPath.replace(/^\.\.\//, '');
+      if (meta && (meta.photoPath || meta.photoUrl)) {
+        photo = cleanPhoto(meta.photoPath || meta.photoUrl);
       }
     }
+    if (!photo && Array.isArray(window.ALL_CONTESTING_CANDIDATES) && candidate.name) {
+      const nTarget = normStr(candidate.name);
+      const hTarget = String(this.house?.id || "").toUpperCase();
+      const found = window.ALL_CONTESTING_CANDIDATES.find((c) => {
+        const matchName = normStr(c.fullName) === nTarget;
+        return matchName && (!hTarget || hTarget === "CENTRAL" || String(c.houseCode || "").toUpperCase() === hTarget);
+      }) || window.ALL_CONTESTING_CANDIDATES.find((c) => normStr(c.fullName) === nTarget);
+      if (found) photo = cleanPhoto(found.photoPath || found.photoUrl);
+    }
     if (!photo) {
-      photo = (typeof candidate.photo === "string") ? candidate.photo : "";
+      photo = cleanPhoto(typeof candidate.photo === "string" ? candidate.photo : (candidate.photoUrl || ""));
     }
     if (photo && photo.trim() !== "") {
       return `<img src="${photo}" alt="${candidate.name || 'Candidate'}" class="candidate-img" onerror="this.src=this.dataset.fallback" data-fallback="data:image/svg+xml;utf8,${encodeURIComponent(this.getAvatarSvg(postKey))}">`;
@@ -405,15 +416,26 @@ class SpotlightScratchCard {
     const cardInner = document.createElement("div");
     cardInner.className = "spotlight-candidate-card";
 
+    const normStr = (s) => String(s || "").toLowerCase().replace(/[\s\.\-_]+/g, "");
+    const cleanPhoto = (p) => String(p || "").trim().replace(/^\.\.\/assets\//, "assets/").replace(/^\.\/assets\//, "assets/");
     let photo = "";
-    if (typeof window.findCandidateMeta === "function" && this.candidate.name) {
+    if (typeof window.findCandidateMeta === "function" && this.candidate?.name) {
       const metaCand = window.findCandidateMeta(this.candidate.name, this.house?.id);
-      if (metaCand && metaCand.photoPath) {
-        photo = metaCand.photoPath.replace(/^\.\.\//, '');
+      if (metaCand && (metaCand.photoPath || metaCand.photoUrl)) {
+        photo = cleanPhoto(metaCand.photoPath || metaCand.photoUrl);
       }
     }
+    if (!photo && Array.isArray(window.ALL_CONTESTING_CANDIDATES) && this.candidate?.name) {
+      const nTarget = normStr(this.candidate.name);
+      const hTarget = String(this.house?.id || "").toUpperCase();
+      const found = window.ALL_CONTESTING_CANDIDATES.find((c) => {
+        const matchName = normStr(c.fullName) === nTarget;
+        return matchName && (!hTarget || hTarget === "CENTRAL" || String(c.houseCode || "").toUpperCase() === hTarget);
+      }) || window.ALL_CONTESTING_CANDIDATES.find((c) => normStr(c.fullName) === nTarget);
+      if (found) photo = cleanPhoto(found.photoPath || found.photoUrl);
+    }
     if (!photo) {
-      photo = (typeof this.candidate.photo === "string") ? this.candidate.photo : "";
+      photo = cleanPhoto(typeof this.candidate.photo === "string" ? this.candidate.photo : (this.candidate.photoUrl || ""));
     }
     let photoMarkup = "";
     if (photo && photo.trim() !== "") {

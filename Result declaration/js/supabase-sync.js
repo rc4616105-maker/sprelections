@@ -126,7 +126,14 @@
                 admissionNo: c.admission_no || c.admissionNo || "",
                 className: c.class_name,
                 section: c.section,
-                photoUrl: c.photo_url || "",
+                photoUrl: (() => {
+                  const raw = c.photo_url || "";
+                  if (raw) return raw.replace(/^\.\.\/assets\//, "assets/").replace(/^\.\/assets\//, "assets/");
+                  const all = Array.isArray(window.ALL_CONTESTING_CANDIDATES) ? window.ALL_CONTESTING_CANDIDATES : [];
+                  const norm = (s) => String(s || "").toLowerCase().replace(/[\s\.\-_]+/g, "");
+                  const found = all.find((x) => x.id === c.id || norm(x.fullName) === norm(c.full_name));
+                  return found ? String(found.photoPath || found.photoUrl || "").replace(/^\.\.\/assets\//, "assets/") : "";
+                })(),
                 tagline: c.tagline || "",
                 votes
               };

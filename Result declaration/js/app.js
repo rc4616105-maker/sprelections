@@ -852,6 +852,19 @@ class ElectionApp {
           parsed.forEach(h => {
             if (h.id === "vasishta") h.id = "vasistha";
             if (CANONICAL_NAMES[h.id]) h.name = CANONICAL_NAMES[h.id];
+            if (h.candidates) {
+              Object.values(h.candidates).forEach((c) => {
+                if (c && typeof c.photo === "string") {
+                  c.photo = c.photo.trim().replace(/^\.\.\/assets\//, "assets/").replace(/^\.\/assets\//, "assets/");
+                }
+                if (c && !c.photo && Array.isArray(window.ALL_CONTESTING_CANDIDATES) && c.name) {
+                  const norm = (s) => String(s || "").toLowerCase().replace(/[\s\.\-_]+/g, "");
+                  const found = window.ALL_CONTESTING_CANDIDATES.find((x) => norm(x.fullName) === norm(c.name) && String(x.houseCode || "").toUpperCase() === String(h.id || "").toUpperCase())
+                    || window.ALL_CONTESTING_CANDIDATES.find((x) => norm(x.fullName) === norm(c.name));
+                  if (found) c.photo = String(found.photoPath || found.photoUrl || "").replace(/^\.\.\/assets\//, "assets/");
+                }
+              });
+            }
           });
           return parsed;
         }
@@ -868,6 +881,41 @@ class ElectionApp {
   }
 }
 
+function syncResultPauseLock() {
+  const lockOverlay = document.getElementById("result-pause-lock-overlay");
+  if (!lockOverlay) return false;
+  let isClosed = false;
+  try {
+    isClosed = localStorage.getItem("ELECTION_HOUSE_POLLING_CLOSED") === "true";
+  } catch (_) {}
+  lockOverlay.hidden = isClosed;
+  lockOverlay.style.display = isClosed ? "none" : "flex";
+  return isClosed;
+}
+
 window.addEventListener("DOMContentLoaded", () => {
+  let wasClosed = syncResultPauseLock();
   window.app = new ElectionApp();
+
+  const onSync = () => {
+    const isClosedNow = syncResultPauseLock();
+    if (!wasClosed && isClosedNow) {
+      // Newly paused & tallied by Admin — reload to pull fresh 24 winners!
+      window.location.reload();
+    }
+    wasClosed = isClosedNow;
+  };
+
+  window.addEventListener("storage", (e) => {
+    if (!e.key || e.key === "ELECTION_HOUSE_POLLING_CLOSED" || e.key === "SCHOOL_ELECTION_2026_CUSTOM_DATA_V5") {
+      onSync();
+    }
+  });
+  if (typeof BroadcastChannel !== "undefined") {
+    try {
+      const bc = new BroadcastChannel("election_spr_2026_sync");
+      bc.onmessage = () => onSync();
+    } catch (_) {}
+  }
+  setInterval(onSync, 1000);
 });
