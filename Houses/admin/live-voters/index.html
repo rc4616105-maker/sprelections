@@ -835,10 +835,10 @@
     </div>
   </div>
 
-  <script defer src="../data.js?v=20261123_WIDE_LAYOUT_COMPACT"></script>
-  <script defer src="../teachers.js?v=20261123_WIDE_LAYOUT_COMPACT"></script>
-  <script defer src="../supabase-config.js?v=20261123_WIDE_LAYOUT_COMPACT"></script>
-  <script defer src="../../assets/all-candidates.js?v=20261123_WIDE_LAYOUT_COMPACT"></script>
+  <script src="../data.js?v=20261125_FEED_FIX"></script>
+  <script src="../teachers.js?v=20261125_FEED_FIX"></script>
+  <script src="../supabase-config.js?v=20261125_FEED_FIX"></script>
+  <script src="../../assets/all-candidates.js?v=20261125_FEED_FIX"></script>
   <script>
     (function () {
       const HOUSE_COLORS = {
@@ -1005,19 +1005,21 @@
 
       function processVoters(snap) {
         if (!snap) return [];
-        const studentsByAdm = new Map((snap.students || []).map((s) => [String(s.admissionNo).toUpperCase(), s]));
+        const allStudents = (snap.students && snap.students.length > 0) ? snap.students : (window.ADMIN_DATA?.students || []);
+        const studentsByAdm = new Map(allStudents.map((s) => [String(s.admissionNo || s.admission_no || "").trim().toUpperCase(), s]));
         const acceptedBallots = (snap.ballots || []).filter((b) => b.status === "accepted");
 
         // Group ballots by voter admission
         const voterGroups = new Map();
         acceptedBallots.forEach((b) => {
-          const adm = String(b.admissionNo).toUpperCase();
+          const adm = String(b.admissionNo || b.admission_no || "").trim().toUpperCase();
+          if (!adm) return;
           if (!voterGroups.has(adm)) {
             voterGroups.set(adm, {
               admissionNo: adm,
               ballots: [],
               latestCastAt: b.castAt || b.cast_at,
-              photoUrl: b.voterPhotoUrl || b.voter_photo_url || null,
+              photoUrl: b.photoDataUrl || b.photoUrl || b.voterPhotoUrl || b.voter_photo_url || null,
               houseCode: b.houseCode || b.house_code,
             });
           }
@@ -1026,8 +1028,9 @@
           const castTime = b.castAt || b.cast_at;
           if (castTime && (!group.latestCastAt || new Date(castTime) > new Date(group.latestCastAt))) {
             group.latestCastAt = castTime;
-            if (b.voterPhotoUrl || b.voter_photo_url) {
-              group.photoUrl = b.voterPhotoUrl || b.voter_photo_url;
+            const p = b.photoDataUrl || b.photoUrl || b.voterPhotoUrl || b.voter_photo_url;
+            if (p) {
+              group.photoUrl = p;
             }
           }
         });
@@ -1041,7 +1044,7 @@
 
           enrichedList.push({
             admissionNo: v.admissionNo,
-            fullName: stu.fullName || v.admissionNo,
+            fullName: stu.fullName || stu.full_name || v.admissionNo,
             gender: stu.gender || "Any",
             className: isStaff ? "Faculty" : (stu.className || "10"),
             section: isStaff ? (stu.subject || "Staff") : (stu.section || "A"),
@@ -1253,15 +1256,30 @@
       }
 
       async function boot() {
-        await window.AdminBackend.init();
-        await refresh();
-        window.AdminBackend.subscribeUpdates(async () => {
+        if (!window.AdminBackend) {
+          console.warn("Waiting for AdminBackend to load...");
+          setTimeout(boot, 100);
+          return;
+        }
+        try {
+          await window.AdminBackend.init();
           await refresh();
-        });
+          if (typeof window.AdminBackend.subscribeUpdates === "function") {
+            window.AdminBackend.subscribeUpdates(async () => {
+              await refresh();
+            });
+          }
+        } catch (err) {
+          console.warn("Live voters boot error:", err);
+        }
         setInterval(refresh, 2000);
       }
 
-      boot();
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", boot);
+      } else {
+        boot();
+      }
     })();
   </script>
 </body>
