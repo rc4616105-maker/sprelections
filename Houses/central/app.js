@@ -464,9 +464,7 @@
           </div>
         `;
         card.querySelector(".candidate-name").textContent = cand.fullName;
-        card.querySelector(".candidate-meta").textContent = String(cand.admissionNo || "").startsWith("DEMO-")
-          ? `${cand.section} · ${pos.subtitle || pos.title}`
-          : `ID ${cand.admissionNo} · Class ${cand.className}-${cand.section} · ${pos.title}`;
+        card.querySelector(".candidate-meta").textContent = cand.className ? `Class ${cand.className}` : "Class 10";
 
         if (votedBallot) {
           card.disabled = true;

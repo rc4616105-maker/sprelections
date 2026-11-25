@@ -602,10 +602,7 @@
             ? `<img src="${cand.photoPath || cand.photoUrl}" alt="${cand.fullName}" />`
             : `<span>${getInitials(cand.fullName)}</span>`;
 
-          let subText = String(cand.section || "").trim();
-          if (!/^class\s+/i.test(subText)) {
-            subText = cand.className ? `Class ${cand.className} · ${subText}` : subText;
-          }
+          let subText = cand.className ? `Class ${cand.className}` : "Class 10";
 
           const row = document.createElement("div");
           row.className = `evm-candidate-row${isSelected ? " is-selected" : ""}`;

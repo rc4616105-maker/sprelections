@@ -742,7 +742,7 @@
                     <span class="cand-id">${c.admissionNo || ""}</span>
                   </div>
                   <div class="cand-meta-row">
-                    <span class="cand-class">${c.section || (c.className ? `Class ${c.className}` : "")}</span>
+                    <span class="cand-class">${c.className ? `Class ${c.className}` : "Class 10"}</span>
                     <span class="cand-house-badge" style="background:${hInfo.bg}; color:${hInfo.color}; border:1px solid ${hInfo.color}50;">${hInfo.name}</span>
                   </div>
                   <div class="symbol-row">
