@@ -2267,10 +2267,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_b_ragasri.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_b_ragasri.jpg",
-    "photoPath": "../assets/candidates/cabinet_b_ragasri.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_LITERARY_SECRETARY_02",
     "admissionNo": "8102",
@@ -2288,10 +2284,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_d_samanvitha.jpg",
-    "photoPath": "../assets/candidates/cabinet_d_samanvitha.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_d_samanvitha.jpg",
     "photoPath": "../assets/candidates/cabinet_d_samanvitha.jpg",
     "isApproved": true
@@ -2317,10 +2309,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_g_harsh_vardhan_rao.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_g_harsh_vardhan_rao.jpg",
-    "photoPath": "../assets/candidates/cabinet_g_harsh_vardhan_rao.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_LITERARY_SECRETARY_04",
     "admissionNo": "9192",
@@ -2338,10 +2326,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_indu_priya.jpg",
-    "photoPath": "../assets/candidates/cabinet_indu_priya.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_indu_priya.jpg",
     "photoPath": "../assets/candidates/cabinet_indu_priya.jpg",
     "isApproved": true
@@ -2367,10 +2351,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_m_srivaishnavi.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_m_srivaishnavi.jpg",
-    "photoPath": "../assets/candidates/cabinet_m_srivaishnavi.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_LITERARY_SECRETARY_06",
     "admissionNo": "9052",
@@ -2388,10 +2368,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/dolphin.png",
       "imagePath": "../assets/symbols/dolphin.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_n_malala.jpg",
-    "photoPath": "../assets/candidates/cabinet_n_malala.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_n_malala.jpg",
     "photoPath": "../assets/candidates/cabinet_n_malala.jpg",
     "isApproved": true
@@ -2417,10 +2393,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_y_bhavya_sri.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_y_bhavya_sri.jpg",
-    "photoPath": "../assets/candidates/cabinet_y_bhavya_sri.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_PRESIDENT_08",
     "admissionNo": "7083",
@@ -2438,10 +2410,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_m_rithvik.jpg",
-    "photoPath": "../assets/candidates/cabinet_m_rithvik.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_m_rithvik.jpg",
     "photoPath": "../assets/candidates/cabinet_m_rithvik.jpg",
     "isApproved": true
@@ -2467,10 +2435,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_m_vaishnavi.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_m_vaishnavi.jpg",
-    "photoPath": "../assets/candidates/cabinet_m_vaishnavi.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_PRESIDENT_10",
     "admissionNo": "10055",
@@ -2488,10 +2452,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_s_harini_reddy.jpg",
-    "photoPath": "../assets/candidates/cabinet_s_harini_reddy.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_s_harini_reddy.jpg",
     "photoPath": "../assets/candidates/cabinet_s_harini_reddy.jpg",
     "isApproved": true
@@ -2517,10 +2477,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_v_janaki_koushik.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_v_janaki_koushik.jpg",
-    "photoPath": "../assets/candidates/cabinet_v_janaki_koushik.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_PRESIDENT_12",
     "admissionNo": "10091",
@@ -2538,10 +2494,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_y_srinith.jpg",
-    "photoPath": "../assets/candidates/cabinet_y_srinith.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_y_srinith.jpg",
     "photoPath": "../assets/candidates/cabinet_y_srinith.jpg",
     "isApproved": true
@@ -2567,10 +2519,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_g_ashwath.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_g_ashwath.jpg",
-    "photoPath": "../assets/candidates/cabinet_g_ashwath.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_SOCIAL_CULTURAL_SECRETARY_14",
     "admissionNo": "7198",
@@ -2588,10 +2536,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/konark_wheel.png",
       "imagePath": "../assets/symbols/konark_wheel.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_k_akshara.jpg",
-    "photoPath": "../assets/candidates/cabinet_k_akshara.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_k_akshara.jpg",
     "photoPath": "../assets/candidates/cabinet_k_akshara.jpg",
     "isApproved": true
@@ -2617,10 +2561,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_k_rasagna.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_k_rasagna.jpg",
-    "photoPath": "../assets/candidates/cabinet_k_rasagna.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_SOCIAL_CULTURAL_SECRETARY_16",
     "admissionNo": "9190",
@@ -2638,10 +2578,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_p_divija.jpg",
-    "photoPath": "../assets/candidates/cabinet_p_divija.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_p_divija.jpg",
     "photoPath": "../assets/candidates/cabinet_p_divija.jpg",
     "isApproved": true
@@ -2667,10 +2603,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_p_meghna.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_p_meghna.jpg",
-    "photoPath": "../assets/candidates/cabinet_p_meghna.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_SOCIAL_CULTURAL_SECRETARY_18",
     "admissionNo": "9189",
@@ -2688,10 +2620,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/tiger.png",
       "imagePath": "../assets/symbols/tiger.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_v_chaithra.jpg",
-    "photoPath": "../assets/candidates/cabinet_v_chaithra.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_v_chaithra.jpg",
     "photoPath": "../assets/candidates/cabinet_v_chaithra.jpg",
     "isApproved": true
@@ -2717,10 +2645,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_v_himavardhan.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_v_himavardhan.jpg",
-    "photoPath": "../assets/candidates/cabinet_v_himavardhan.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_SOCIAL_CULTURAL_SECRETARY_20",
     "admissionNo": "9195",
@@ -2738,10 +2662,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/dolphin.png",
       "imagePath": "../assets/symbols/dolphin.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_y_nithya_sri.jpg",
-    "photoPath": "../assets/candidates/cabinet_y_nithya_sri.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_y_nithya_sri.jpg",
     "photoPath": "../assets/candidates/cabinet_y_nithya_sri.jpg",
     "isApproved": true
@@ -2767,10 +2687,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_ch_bala_thrushna_datta.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_ch_bala_thrushna_datta.jpg",
-    "photoPath": "../assets/candidates/cabinet_ch_bala_thrushna_datta.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_SPORTS_SECRETARY_22",
     "admissionNo": "9172",
@@ -2788,10 +2704,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_ch_kowshik.jpg",
-    "photoPath": "../assets/candidates/cabinet_ch_kowshik.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_ch_kowshik.jpg",
     "photoPath": "../assets/candidates/cabinet_ch_kowshik.jpg",
     "isApproved": true
@@ -2817,10 +2729,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_k_krithika.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_k_krithika.jpg",
-    "photoPath": "../assets/candidates/cabinet_k_krithika.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_SPORTS_SECRETARY_24",
     "admissionNo": "9227",
@@ -2838,10 +2746,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/banyan_tree.png",
       "imagePath": "../assets/symbols/banyan_tree.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_r_srikshith.jpg",
-    "photoPath": "../assets/candidates/cabinet_r_srikshith.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_r_srikshith.jpg",
     "photoPath": "../assets/candidates/cabinet_r_srikshith.jpg",
     "isApproved": true
@@ -2867,10 +2771,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_s_rithvik_reddy.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_s_rithvik_reddy.jpg",
-    "photoPath": "../assets/candidates/cabinet_s_rithvik_reddy.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_SPORTS_SECRETARY_26",
     "admissionNo": "9200",
@@ -2888,10 +2788,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/peacock.png",
       "imagePath": "../assets/symbols/peacock.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_s_sahasra_reddy.jpg",
-    "photoPath": "../assets/candidates/cabinet_s_sahasra_reddy.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_s_sahasra_reddy.jpg",
     "photoPath": "../assets/candidates/cabinet_s_sahasra_reddy.jpg",
     "isApproved": true
@@ -2917,10 +2813,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_shubhi_patel.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_shubhi_patel.jpg",
-    "photoPath": "../assets/candidates/cabinet_shubhi_patel.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_28",
     "admissionNo": "9901",
@@ -2938,10 +2830,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/mango.png",
       "imagePath": "../assets/symbols/mango.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_enrique_iglesias.jpg",
-    "photoPath": "../assets/candidates/cabinet_enrique_iglesias.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_enrique_iglesias.jpg",
     "photoPath": "../assets/candidates/cabinet_enrique_iglesias.jpg",
     "isApproved": true
@@ -2967,10 +2855,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_g_badrinath.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_g_badrinath.jpg",
-    "photoPath": "../assets/candidates/cabinet_g_badrinath.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_30",
     "admissionNo": "9037",
@@ -2988,10 +2872,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/elephant.png",
       "imagePath": "../assets/symbols/elephant.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_j_sampath_kumar.jpg",
-    "photoPath": "../assets/candidates/cabinet_j_sampath_kumar.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_j_sampath_kumar.jpg",
     "photoPath": "../assets/candidates/cabinet_j_sampath_kumar.jpg",
     "isApproved": true
@@ -3017,10 +2897,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_k_ambika.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_k_ambika.jpg",
-    "photoPath": "../assets/candidates/cabinet_k_ambika.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_32",
     "admissionNo": "9183",
@@ -3038,10 +2914,6 @@ window.ALL_CONTESTING_CANDIDATES = [
       "image": "../assets/symbols/hockey_stick.png",
       "imagePath": "../assets/symbols/hockey_stick.png"
     },
-    "photoUrl": "../assets/candidates/cabinet_m_vivekananda_rao.jpg",
-    "photoPath": "../assets/candidates/cabinet_m_vivekananda_rao.jpg",
-    "isApproved": true
-  },
     "photoUrl": "../assets/candidates/cabinet_m_vivekananda_rao.jpg",
     "photoPath": "../assets/candidates/cabinet_m_vivekananda_rao.jpg",
     "isApproved": true
@@ -3067,10 +2939,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/cabinet_srunith_goud.jpg",
     "isApproved": true
   },
-    "photoUrl": "../assets/candidates/cabinet_srunith_goud.jpg",
-    "photoPath": "../assets/candidates/cabinet_srunith_goud.jpg",
-    "isApproved": true
-  },
   {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_34",
     "admissionNo": "9V4182",
@@ -3092,10 +2960,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/central_manvithasharma.jpg",
     "isApproved": true
   },
-  "photoUrl": "../assets/candidates/central_manvithasharma.jpg",
-  "photoPath": "../assets/candidates/central_manvithasharma.jpg",
-  "isApproved": true
-},
 {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_35",
     "admissionNo": "9V1966",
@@ -3117,10 +2981,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/central_khadvitha.jpg",
     "isApproved": true
   },
-  "photoUrl": "../assets/candidates/central_khadvitha.jpg",
-  "photoPath": "../assets/candidates/central_khadvitha.jpg",
-  "isApproved": true
-},
 {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_36",
     "admissionNo": "9V4045",
@@ -3142,10 +3002,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/central_kishwarya.jpg",
     "isApproved": true
   },
-  "photoUrl": "../assets/candidates/central_kishwarya.jpg",
-  "photoPath": "../assets/candidates/central_kishwarya.jpg",
-  "isApproved": true
-},
 {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_37",
     "admissionNo": "9V7995",
@@ -3167,10 +3023,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/central_gaadhya.jpg",
     "isApproved": true
   },
-  "photoUrl": "../assets/candidates/central_gaadhya.jpg",
-  "photoPath": "../assets/candidates/central_gaadhya.jpg",
-  "isApproved": true
-},
 {
     "id": "CAND_CENTRAL_VICE_PRESIDENT_38",
     "admissionNo": "9V1576",
@@ -3192,14 +3044,6 @@ window.ALL_CONTESTING_CANDIDATES = [
     "photoPath": "../assets/candidates/central_vananyareddy.jpg",
     "isApproved": true
   },
-  "photoUrl": "../assets/candidates/central_vananyareddy.jpg",
-  "photoPath": "../assets/candidates/central_vananyareddy.jpg",
-  "isApproved": true
-},
-  "photoUrl": "../assets/candidates/central_ybhagyasri.jpg",
-  "photoPath": "../assets/candidates/central_ybhagyasri.jpg",
-  "isApproved": true
-},
   {
     "id": "CAND_VISHWAMITHRA_CAPTAIN_BOY_JHARSHITH",
     "admissionNo": "10031",
