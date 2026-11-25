@@ -466,7 +466,7 @@
 
                       const sym = cand.symbolObj || { name: "Candidate Choice", icon: "⭐" };
             const symSlug = (sym.slug || sym.name || "star").toLowerCase().replace(/[\s-]+/g, "_");
-            const symImg = (sym.image || sym.imagePath || `../assets/symbols/${symSlug}.png`) + '?v=20261123N';
+            const symImg = (sym.image || sym.imagePath || `../assets/symbols/${symSlug}.png`) + '?v=20261125_STAR_FIX';
 
             row.innerHTML = `
               <div class="evm-cand-avatar">${photoHtml}</div>
@@ -561,7 +561,7 @@
 
                       const pickedSym = picked ? (picked.symbolObj || { name: "", icon: "⭐" }) : null;
             const pickedSymSlug = pickedSym ? (pickedSym.slug || pickedSym.name || "star").toLowerCase().replace(/[\s-]+/g, "_") : "";
-            const pickedSymImg = pickedSym && pickedSymSlug ? ((pickedSym.image || pickedSym.imagePath || `../assets/symbols/${pickedSymSlug}.png`) + "?v=20261123N") : "";
+            const pickedSymImg = pickedSym && pickedSymSlug ? ((pickedSym.image || pickedSym.imagePath || `../assets/symbols/${pickedSymSlug}.png`) + "?v=20261125_STAR_FIX") : "";
             const symReviewHtml = pickedSym && pickedSym.name
               ? `<div class="evm-review-cand-symbol" title="Symbol: ${pickedSym.name}"><div class="evm-symbol-box-sm"><img src="${pickedSymImg}" alt="${pickedSym.name}" class="evm-symbol-img-sm" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';" /><span class="evm-symbol-fallback-sm" style="display:none;">${pickedSym.icon || "⭐"}</span></div></div>`
               : "";

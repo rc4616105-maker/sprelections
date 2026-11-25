@@ -732,7 +732,7 @@
 
                       const sym = cand.symbolObj || { name: "Candidate Choice", icon: "⭐" };
             const symSlug = (sym.slug || sym.name || "star").toLowerCase().replace(/[\s-]+/g, "_");
-            const symImg = (sym.image || sym.imagePath || `../assets/symbols/${symSlug}.png`) + '?v=20261123N';
+            const symImg = (sym.image || sym.imagePath || `../assets/symbols/${symSlug}.png`) + '?v=20261125_STAR_FIX';
 
             row.innerHTML = `
               <div class="evm-cand-avatar" style="${!cand.photoPath && !cand.photoUrl ? `background:${houseSubtle}; border-color:${houseAccent}60; color:${houseText};` : ''}">${photoHtml}</div>

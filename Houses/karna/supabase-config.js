@@ -608,8 +608,10 @@
         );
       };
 
-      const localCands = (window.HOUSE_DATA?.houseCandidates || []).filter((c) => !isDummyCand(c));
+      const localCands = (window.HOUSE_DATA?.houseCandidates || window.HOUSE_DATA?.candidates || []).filter((c) => !isDummyCand(c));
       const localMap = new Map(localCands.map((c) => [c.id, c]));
+      const normName = (s) => String(s || "").toLowerCase().replace(/[\s\.\-_]+/g, "");
+      const localNameMap = new Map(localCands.map((c) => [normName(c.fullName), c]));
 
       if (this.mode === "supabase") {
         try {
@@ -633,7 +635,7 @@
             const validRows = rows.filter((c) => !isDummyCand(c));
             if (validRows.length > 0) {
               return validRows.map((c) => {
-                const loc = localMap.get(c.id) || {};
+                const loc = localMap.get(c.id) || localNameMap.get(normName(c.full_name)) || {};
                 return {
                   id: c.id,
                   admissionNo: c.admission_no || loc.admissionNo,
