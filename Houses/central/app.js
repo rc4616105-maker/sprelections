@@ -9,6 +9,9 @@
     votedRoles: {},
     cancelledRoleIds: [],
     selectedByRole: {},
+    currentPostIdx: 0,
+    isReviewActive: false,
+    allCandidates: [],
     mediaStream: null,
     resetInterval: null,
     resetTimeout: null,
@@ -63,10 +66,25 @@
     castActionBar: document.getElementById("cast-action-bar"),
     selectedProgressLabel: document.getElementById("selected-progress-label"),
     selectedCandidateName: document.getElementById("selected-candidate-name"),
-    castVoteBtn: document.getElementById("cast-vote-btn"),
+    castVoteBtn: document.getElementById("evm-final-cast-btn") || document.getElementById("cast-vote-btn"),
     step3Error: document.getElementById("step3-error"),
     step3ErrorMsg: document.getElementById("step3-error-msg"),
     backToStep2Btn: document.getElementById("back-to-step2-btn"),
+
+    postStepperBar: document.getElementById("post-stepper-bar"),
+    evmBallotView: document.getElementById("evm-ballot-view"),
+    evmHouseBadge: document.getElementById("evm-house-badge"),
+    evmPostTitle: document.getElementById("evm-post-title"),
+    evmPostSubtitle: document.getElementById("evm-post-subtitle"),
+    evmCandidateList: document.getElementById("evm-candidate-list"),
+    evmBackBtn: document.getElementById("evm-back-btn"),
+    evmSelectionStatus: document.getElementById("evm-selection-status"),
+    evmOverallCount: document.getElementById("evm-overall-count"),
+    evmNextBtn: document.getElementById("evm-next-btn"),
+    evmReviewView: document.getElementById("evm-review-view"),
+    evmReviewGrid: document.getElementById("evm-review-grid"),
+    evmReviewBackBtn: document.getElementById("evm-review-back-btn"),
+    evmFinalCastBtn: document.getElementById("evm-final-cast-btn"),
 
     faceGuardModal: document.getElementById("face-guard-modal"),
     faceGuardBadge: document.getElementById("face-guard-badge"),
@@ -352,155 +370,247 @@
   }
 
   function updateCastBar() {
-    const posList = getPositionsList();
-    const pendingIds = state.pendingRoleIds.length ? state.pendingRoleIds : posList.map((p) => p.id);
-    const pickedPairs = pendingIds
-      .filter((pid) => Boolean(state.selectedByRole[pid]))
-      .map((pid) => {
-        const pos = posList.find((p) => p.id === pid);
-        return `${pos?.shortTitle || pos?.title || pid}: ${state.selectedByRole[pid].fullName}`;
-      });
-    const pickedCount = pickedPairs.length;
-    const totalNeeded = pendingIds.length;
+    // Kept for backward compatibility
+  }
 
-    el.castActionBar.hidden = false;
-    if (el.selectedProgressLabel) {
-      el.selectedProgressLabel.textContent = `Selected Candidates (${pickedCount} / ${totalNeeded})`;
+  function renderPostStepper() {
+    if (!el.postStepperBar) return;
+    el.postStepperBar.innerHTML = "";
+    const posList = getPositionsList();
+
+    posList.forEach((pos, pIdx) => {
+      const isSelected = Boolean(state.selectedByRole[pos.id] || state.votedRoles[pos.id]);
+      const isActive = !state.isReviewActive && pIdx === state.currentPostIdx;
+
+      const pill = document.createElement("button");
+      pill.type = "button";
+      pill.className = `post-step-pill${isActive ? " is-active" : ""}${isSelected ? " is-done" : ""}`;
+      pill.setAttribute("role", "tab");
+      pill.setAttribute("aria-selected", isActive ? "true" : "false");
+      pill.innerHTML = `
+        <span class="post-step-num">${isSelected ? "✓" : (pIdx + 1)}</span>
+        <span>${(pos.shortTitle || pos.title).replace(/\s*Sec\b/i, "")}</span>
+      `;
+
+      pill.addEventListener("click", () => {
+        state.currentPostIdx = pIdx;
+        state.isReviewActive = false;
+        renderEvmView();
+      });
+
+      el.postStepperBar.appendChild(pill);
+    });
+  }
+
+  function renderEvmView() {
+    if (!el.evmBallotView || !el.evmReviewView) return;
+    const posList = getPositionsList();
+
+    if (state.isReviewActive) {
+      el.evmBallotView.hidden = true;
+      el.evmReviewView.hidden = false;
+      renderEvmReviewGrid();
+      return;
     }
-    el.selectedCandidateName.textContent =
-      pickedCount > 0 ? pickedPairs.join(" · ") : "Choose 1 candidate for each open role above";
-    el.castVoteBtn.disabled = pickedCount < totalNeeded || totalNeeded === 0;
+
+    el.evmBallotView.hidden = false;
+    el.evmReviewView.hidden = true;
+
+    renderPostStepper();
+
+    const currentRole = posList[state.currentPostIdx];
+    if (!currentRole) return;
+
+    const votedBallot = state.votedRoles[currentRole.id] || null;
+    const picked = state.selectedByRole[currentRole.id] || (votedBallot ? { candidate: { id: votedBallot.candidateId, fullName: votedBallot.candidateName } } : null);
+
+    // Update Header Strip
+    if (el.evmHouseBadge) {
+      el.evmHouseBadge.textContent = `School Cabinet · Post ${state.currentPostIdx + 1} of ${posList.length}`;
+    }
+    if (el.evmPostTitle) el.evmPostTitle.textContent = currentRole.title;
+    if (el.evmPostSubtitle) el.evmPostSubtitle.textContent = currentRole.subtitle || `Class ${currentRole.className} · Central Cabinet`;
+
+    // Render Candidates List for current role (separated by post, exactly like teachers)
+    if (el.evmCandidateList) {
+      el.evmCandidateList.innerHTML = "";
+      const roleCands = (state.allCandidates || []).filter((c) => (c.positionId || currentRole.id) === currentRole.id);
+
+      if (votedBallot) {
+        const votedMsg = document.createElement("div");
+        votedMsg.style.cssText = "background:#f0fdf4; border:1.5px solid #86efac; border-radius:14px; padding:1.25rem 1.5rem; color:#166534; font-weight:700; text-align:center; font-size:1.1rem; margin:auto;";
+        votedMsg.innerHTML = `✓ You have already voted for <strong>${votedBallot.candidateName}</strong> in this position.`;
+        el.evmCandidateList.appendChild(votedMsg);
+      } else if (roleCands.length === 0) {
+        const noCand = document.createElement("p");
+        noCand.style.cssText = "color:var(--text-muted); font-size:1rem; text-align:center; margin:auto;";
+        noCand.textContent = "No approved candidates registered for this role.";
+        el.evmCandidateList.appendChild(noCand);
+      } else {
+        roleCands.forEach((cand) => {
+          const isSelected = picked && (picked.candidate?.id === cand.id || picked.id === cand.id);
+
+          const photoHtml = cand.photoPath || cand.photoUrl
+            ? `<img src="${cand.photoPath || cand.photoUrl}" alt="${cand.fullName}" />`
+            : `<span>${getInitials(cand.fullName)}</span>`;
+
+          const subText = cand.className ? `Class ${cand.className}` : "Class 10";
+
+          const row = document.createElement("div");
+          row.className = `evm-candidate-row${isSelected ? " is-selected" : ""}`;
+          row.setAttribute("role", "radio");
+          row.setAttribute("aria-checked", isSelected ? "true" : "false");
+          row.dataset.candId = cand.id;
+
+          const sym = cand.symbolObj || { name: "Candidate Choice", icon: "⭐" };
+          const symSlug = (sym.slug || sym.name || "star").toLowerCase().replace(/[\s-]+/g, "_");
+          const symImg = (sym.image || sym.imagePath || `../assets/symbols/${symSlug}.png`) + '?v=20261123N';
+
+          row.innerHTML = `
+            <div class="evm-cand-avatar">${photoHtml}</div>
+            <div class="evm-cand-symbol" title="Election Symbol: ${sym.name}">
+              <div class="evm-symbol-box">
+                <img src="${symImg}" alt="${sym.name}" class="evm-symbol-img" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';" />
+                <span class="evm-symbol-fallback" style="display:none;">${sym.icon || "⭐"}</span>
+              </div>
+            </div>
+            <div class="evm-cand-info">
+              <h3 class="evm-cand-name">${cand.fullName}</h3>
+              <span class="evm-cand-sub">${subText}${cand.tagline ? ` &bull; ${cand.tagline}` : ""}</span>
+            </div>
+            <div class="evm-right-cluster">
+              <span class="evm-led-lamp"></span>
+              <button type="button" class="evm-vote-btn" tabindex="-1">
+                ${isSelected ? "VOTED ✓" : "VOTE"}
+              </button>
+            </div>
+          `;
+
+          row.addEventListener("click", () => {
+            state.selectedByRole[currentRole.id] = {
+              positionId: currentRole.id,
+              positionName: currentRole.title,
+              candidate: cand,
+              id: cand.id,
+              fullName: cand.fullName
+            };
+            if (el.step3Error) el.step3Error.hidden = true;
+            renderEvmView();
+          });
+
+          el.evmCandidateList.appendChild(row);
+        });
+      }
+    }
+
+    // Update Kiosk Navigation & Status Footer
+    const hasChosenCur = Boolean(state.selectedByRole[currentRole.id] || votedBallot);
+    const selectedCount = Object.keys(state.selectedByRole).length;
+
+    if (el.evmSelectionStatus) {
+      if (picked && (picked.candidate || picked.fullName)) {
+        el.evmSelectionStatus.textContent = `✓ Selected: ${picked.candidate?.fullName || picked.fullName}`;
+      } else {
+        el.evmSelectionStatus.textContent = "Select 1 candidate to proceed";
+      }
+    }
+
+    if (el.evmOverallCount) {
+      el.evmOverallCount.textContent = `${selectedCount} / ${posList.length} Selected`;
+    }
+
+    if (el.evmBackBtn) {
+      if (state.currentPostIdx > 0) {
+        el.evmBackBtn.innerHTML = "&larr; Previous Post";
+      } else {
+        el.evmBackBtn.innerHTML = "&larr; Back to Info";
+      }
+    }
+
+    if (el.evmNextBtn) {
+      const isLastPost = state.currentPostIdx >= posList.length - 1;
+      el.evmNextBtn.disabled = !hasChosenCur;
+      el.evmNextBtn.style.opacity = hasChosenCur ? "1" : "0.45";
+      el.evmNextBtn.style.cursor = hasChosenCur ? "pointer" : "not-allowed";
+
+      if (!isLastPost) {
+        const nextRole = posList[state.currentPostIdx + 1];
+        el.evmNextBtn.innerHTML = `Next: ${(nextRole.shortTitle || nextRole.title).replace(/\s*Sec\b/i, "")} &rarr;`;
+      } else {
+        el.evmNextBtn.innerHTML = `Review &amp; Cast Vote &rarr;`;
+      }
+    }
+  }
+
+  function renderEvmReviewGrid() {
+    if (!el.evmReviewGrid) return;
+    el.evmReviewGrid.innerHTML = "";
+    const posList = getPositionsList();
+
+    const selectedCount = Object.keys(state.selectedByRole).length;
+    const totalCount = posList.length;
+
+    if (el.evmFinalCastBtn) {
+      const canCast = selectedCount >= totalCount && totalCount > 0;
+      el.evmFinalCastBtn.disabled = !canCast;
+      el.evmFinalCastBtn.innerHTML = canCast
+        ? `<span>Confirm &amp; Cast School Cabinet Ballot (${selectedCount}/${totalCount}) &rarr;</span>`
+        : `<span>Select All Roles (${selectedCount}/${totalCount}) to Cast</span>`;
+    }
+
+    posList.forEach((pos, pIdx) => {
+      const picked = state.selectedByRole[pos.id] || (state.votedRoles[pos.id] ? { candidate: { fullName: state.votedRoles[pos.id].candidateName } } : null);
+
+      const card = document.createElement("div");
+      card.className = `evm-review-card${picked ? " is-filled" : ""}`;
+      card.style.cursor = "pointer";
+      card.title = "Click to change choice for this post";
+
+      const candObj = picked?.candidate || picked;
+      const photoHtml = candObj?.photoPath || candObj?.photoUrl
+        ? `<img src="${candObj.photoPath || candObj.photoUrl}" alt="${candObj.fullName}" />`
+        : `<span>${getInitials(candObj?.fullName || "?")}</span>`;
+
+      const sym = candObj?.symbolObj || { name: "", icon: "⭐" };
+      const symSlug = (sym.slug || sym.name || "star").toLowerCase().replace(/[\s-]+/g, "_");
+      const symImg = (sym.image || sym.imagePath || `../assets/symbols/${symSlug}.png`) + '?v=20261123N';
+
+      card.innerHTML = `
+        <div class="evm-review-avatar">${photoHtml}</div>
+        <div class="evm-review-info">
+          <p class="evm-review-role">${pos.title}</p>
+          <h4 class="evm-review-cand">${candObj ? candObj.fullName : '<span style="color:#dc2626;">Not Selected &bull; Click to Choose</span>'}</h4>
+          <span class="evm-review-sub">${pos.subtitle || "School Cabinet"}</span>
+        </div>
+        ${candObj ? `
+          <div class="evm-review-symbol" title="Symbol: ${sym.name}">
+            <img src="${symImg}" alt="${sym.name}" onerror="this.style.display='none';" />
+          </div>
+        ` : ""}
+      `;
+
+      card.addEventListener("click", () => {
+        state.currentPostIdx = pIdx;
+        state.isReviewActive = false;
+        renderEvmView();
+      });
+
+      el.evmReviewGrid.appendChild(card);
+    });
   }
 
   async function renderCandidatesStep() {
-    const candidates = await window.ElectionBackend.getHouseCandidates(houseConfig.code);
+    state.allCandidates = await window.ElectionBackend.getHouseCandidates(houseConfig.code);
     const posList = getPositionsList();
     if (!state.pendingRoleIds.length) {
       state.pendingRoleIds = posList.filter((p) => !state.votedRoles[p.id]).map((p) => p.id);
     }
     state.selectedByRole = {};
-    el.step3Error.hidden = true;
-    el.candidateGrid.innerHTML = "";
+    state.currentPostIdx = 0;
+    state.isReviewActive = false;
+    if (el.step3Error) el.step3Error.hidden = true;
 
-    if (el.step3Subtitle) {
-      if (state.pendingRoleIds.length < posList.length) {
-        el.step3Subtitle.textContent = `${state.pendingRoleIds.length} role${state.pendingRoleIds.length > 1 ? "s" : ""} open for ${houseConfig.name} House — previously accepted votes stay locked below.`;
-      } else {
-        el.step3Subtitle.textContent = `Choose 1 candidate for each of the ${posList.length} ${houseConfig.name} House roles below, then press Cast Vote.`;
-      }
-    }
-
-    if (!candidates.length) {
-      el.candidateGrid.innerHTML = `<p class="panel-subtitle">No approved candidates found for ${houseConfig.name} House.</p>`;
-      el.castActionBar.hidden = true;
-      return;
-    }
-
-    posList.forEach((pos) => {
-      const votedBallot = state.votedRoles[pos.id] || null;
-      const isCancelledRole = state.cancelledRoleIds.includes(pos.id);
-      const roleCands = candidates.filter((c) => (c.positionId || pos.id) === pos.id);
-
-      const section = document.createElement("section");
-      section.className = `role-section-card${votedBallot ? " is-locked" : ""}`;
-      section.dataset.positionId = pos.id;
-
-      const head = document.createElement("div");
-      head.className = "role-section-head";
-      const titleGroup = document.createElement("div");
-      titleGroup.className = "role-section-title-group";
-      const titleEl = document.createElement("h3");
-      titleEl.className = "role-section-title";
-      titleEl.textContent = pos.title;
-      const subEl = document.createElement("span");
-      subEl.className = "role-section-sub";
-      subEl.textContent = pos.subtitle || "";
-      titleGroup.append(titleEl, subEl);
-
-      const pillEl = document.createElement("span");
-      pillEl.className = "role-state-pill";
-      if (votedBallot) {
-        pillEl.classList.add("is-locked");
-        pillEl.textContent = `Recorded: ${votedBallot.candidateName}`;
-      } else if (isCancelledRole) {
-        pillEl.textContent = "Re-vote Open (Cancelled)";
-      } else {
-        pillEl.textContent = "Select 1 candidate";
-      }
-      head.append(titleGroup, pillEl);
-
-      const grid = document.createElement("div");
-      grid.className = "candidate-grid";
-      grid.setAttribute("role", "radiogroup");
-      grid.setAttribute("aria-label", `${pos.title} (${pos.subtitle || ""}) candidates`);
-
-      roleCands.forEach((cand) => {
-        const card = document.createElement("button");
-        card.type = "button";
-        card.className = "candidate-card";
-        card.dataset.candidateId = cand.id;
-        card.setAttribute("role", "radio");
-        card.setAttribute("aria-checked", "false");
-        const photoHtml = cand.photoPath || cand.photoUrl
-          ? `<img src="${cand.photoPath || cand.photoUrl}" alt="${cand.fullName}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" />`
-          : `<span>${getInitials(cand.fullName)}</span>`;
-        const sym = cand.symbolObj || { name: "Candidate Choice", icon: "⭐" };
-        const symSlug = (sym.slug || sym.name || "star").toLowerCase().replace(/[\s-]+/g, "_");
-        const symImg = (sym.image || sym.imagePath || `../assets/symbols/${symSlug}.png`) + '?v=20261123N';
-        card.innerHTML = `
-          <div class="candidate-card-top">
-            <div style="display:flex;align-items:center;gap:10px;">
-              <div class="candidate-avatar" aria-hidden="true" style="overflow:hidden;">${photoHtml}</div>
-              <div class="candidate-symbol-box" title="Symbol: ${sym.name}" style="width:52px;height:52px;border-radius:10px;background:#fff;border:1px solid #cbd5e1;display:grid;place-items:center;padding:4px;box-sizing:border-box;">
-                <img src="${symImg}" alt="${sym.name}" style="width:38px;height:38px;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';" />
-                <span style="display:none;font-size:1.5rem;">${sym.icon || "⭐"}</span>
-              </div>
-            </div>
-            <span class="select-indicator" aria-hidden="true"></span>
-          </div>
-          <div>
-            <h4 class="candidate-name"></h4>
-            <p class="candidate-meta"></p>
-          </div>
-        `;
-        card.querySelector(".candidate-name").textContent = cand.fullName;
-        card.querySelector(".candidate-meta").textContent = cand.className ? `Class ${cand.className}` : "Class 10";
-
-        if (votedBallot) {
-          card.disabled = true;
-          card.classList.add("is-locked");
-          if (cand.id === votedBallot.candidateId) {
-            card.classList.add("is-selected");
-            card.setAttribute("aria-checked", "true");
-            card.querySelector(".select-indicator").textContent = "✓";
-          }
-        } else {
-          card.addEventListener("click", () => {
-            Array.from(grid.children).forEach((c) => {
-              c.classList.remove("is-selected");
-              c.setAttribute("aria-checked", "false");
-              c.querySelector(".select-indicator").textContent = "";
-            });
-            card.classList.add("is-selected");
-            card.setAttribute("aria-checked", "true");
-            card.querySelector(".select-indicator").textContent = "✓";
-            state.selectedByRole[pos.id] = cand;
-            section.classList.add("is-complete");
-            pillEl.className = "role-state-pill is-picked";
-            pillEl.textContent = `Selected: ${cand.fullName}`;
-            el.step3Error.hidden = true;
-            updateCastBar();
-          });
-        }
-
-        grid.appendChild(card);
-      });
-
-      section.append(head, grid);
-      el.candidateGrid.appendChild(section);
-    });
-
-    updateCastBar();
+    renderEvmView();
   }
 
   function startAutoResetCountdown() {
@@ -1070,7 +1180,43 @@
     }
   }
 
-    el.castVoteBtn.addEventListener("click", async () => {
+  // EVM Navigation & Review Action Listeners
+  if (el.evmNextBtn) {
+    el.evmNextBtn.addEventListener("click", () => {
+      const posList = getPositionsList();
+      const currentRole = posList[state.currentPostIdx];
+      const hasChosenCur = Boolean(state.selectedByRole[currentRole.id] || state.votedRoles[currentRole.id]);
+      if (!hasChosenCur) return;
+
+      if (state.currentPostIdx < posList.length - 1) {
+        state.currentPostIdx++;
+        renderEvmView();
+      } else {
+        state.isReviewActive = true;
+        renderEvmView();
+      }
+    });
+  }
+
+  if (el.evmBackBtn) {
+    el.evmBackBtn.addEventListener("click", () => {
+      if (state.currentPostIdx > 0) {
+        state.currentPostIdx--;
+        renderEvmView();
+      } else {
+        goToStep(2);
+      }
+    });
+  }
+
+  if (el.evmReviewBackBtn) {
+    el.evmReviewBackBtn.addEventListener("click", () => {
+      state.isReviewActive = false;
+      renderEvmView();
+    });
+  }
+
+  async function triggerFaceGuardAndCast() {
     const posList = getPositionsList();
     const pendingIds = state.pendingRoleIds.length ? state.pendingRoleIds : posList.map((p) => p.id);
     const missingIds = pendingIds.filter((pid) => !state.selectedByRole[pid]);
@@ -1079,16 +1225,16 @@
         const missingNames = missingIds
           .map((pid) => posList.find((p) => p.id === pid)?.title || pid)
           .join(", ");
-        el.step3ErrorMsg.textContent = `Please select a candidate for: ${missingNames}.`;
-        el.step3Error.hidden = false;
-        alert("Cannot cast ballot: This post is empty!\n\nMissing vote for: " + missingNames + ".\n\nPlease select a candidate for all posts before submitting.");
+        if (el.step3ErrorMsg) el.step3ErrorMsg.textContent = `Please select a candidate for: ${missingNames}.`;
+        if (el.step3Error) el.step3Error.hidden = false;
+        alert("Cannot cast ballot: Missing vote for:\n\n" + missingNames + ".\n\nPlease select a candidate for all posts before submitting.");
       }
       return;
     }
 
     state.isSubmitting = false;
-    setLoading(el.castVoteBtn, false);
-    el.step3Error.hidden = true;
+    if (el.evmFinalCastBtn) setLoading(el.evmFinalCastBtn, false);
+    if (el.step3Error) el.step3Error.hidden = true;
 
     try {
       if (!state.mediaStream) {
@@ -1099,7 +1245,14 @@
     } catch (err) {
       openFaceGuardModal("Camera error: " + (err.message || "Unable to access webcam."));
     }
-  });
+  }
+
+  if (el.evmFinalCastBtn) {
+    el.evmFinalCastBtn.addEventListener("click", triggerFaceGuardAndCast);
+  }
+  if (el.castVoteBtn && el.castVoteBtn !== el.evmFinalCastBtn) {
+    el.castVoteBtn.addEventListener("click", triggerFaceGuardAndCast);
+  }
 
   el.resetNowBtn.addEventListener("click", resetBoothToStep1);
 

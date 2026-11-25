@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css?v=20261125_HOUSE_HIGHLIGHT_OK" />
+  <link rel="stylesheet" href="./evm-styles.css?v=20261125_EVM_POST_SEPARATE" />
 </head>
 <body>
   <a href="#booth-main" class="skip-link">Skip to voting form</a>
@@ -211,38 +212,84 @@
           </div>
         </div>
 
-        <!-- STEP 3: Candidate Selection & Cast Option -->
-        <div id="step-3" class="step-panel" hidden>
-          <div class="panel-header">
-            <span class="badge badge-house">5 Executive Roles · School Cabinet</span>
-            <h2 class="panel-title">Select Your Candidates</h2>
-            <p id="step3-subtitle" class="panel-subtitle">Choose 1 candidate for each open School Cabinet role below, then press <strong>Cast Vote</strong>.</p>
+        <!-- STEP 3: EVM Candidate Selection (Separated Post by Post) -->
+        <div id="step-3" class="step-panel evm-step-panel" hidden>
+          <!-- Post Stepper for the 5 Cabinet Roles -->
+          <div id="post-stepper-bar" class="post-stepper-bar" role="tablist" aria-label="Post Selection">
+            <!-- Dynamically populated 5 pills: President, Vice President, Literary, Sports, Social & Cultural -->
           </div>
 
-          <div id="candidate-grid" class="role-sections-stack" aria-label="School Cabinet role candidates"></div>
+          <!-- EVM Single-Post Ballot View -->
+          <div id="evm-ballot-view" class="evm-ballot-view">
+            <!-- EVM Header Strip -->
+            <div class="evm-unit-header">
+              <div class="evm-header-left">
+                <span id="evm-house-badge" class="badge"
+                  style="background:#eff6ff; color:#1d4ed8; font-weight:800; border:1px solid #bfdbfe; padding:0.25rem 0.65rem; border-radius:9999px; font-size:0.75rem;">
+                  School Cabinet · Post 1 of 5
+                </span>
+                <h2 id="evm-post-title" class="evm-post-title">School President</h2>
+                <span id="evm-post-subtitle" class="evm-post-subtitle">Class 10 · Central Cabinet</span>
+                <span class="evm-post-instruction">· Tap Candidate or Press Blue Vote Button</span>
+              </div>
+              <div class="evm-header-right">
+                <span class="evm-select-badge">SELECT 1 CANDIDATE</span>
+              </div>
+            </div>
 
-          <div id="step3-error" class="alert-box alert-error" role="alert" hidden>
+            <!-- EVM Candidate List (Zero-scroll, dynamically rendered) -->
+            <div id="evm-candidate-list" class="evm-candidate-list" role="radiogroup" aria-label="Candidate list">
+              <!-- Dynamically populated 3-5 candidates for the active post -->
+            </div>
+
+            <!-- EVM Kiosk Navigation & Status Footer -->
+            <div class="evm-kiosk-footer">
+              <button type="button" id="evm-back-btn" class="btn btn-secondary">
+                &larr; Back
+              </button>
+              <div class="evm-footer-status">
+                <span id="evm-selection-status" class="evm-status-text">Select 1 candidate to proceed</span>
+                <span id="evm-overall-count" class="evm-progress-pill">0 / 5 Selected</span>
+              </div>
+              <button type="button" id="evm-next-btn" class="btn evm-next-action-btn" disabled>
+                Next Post &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 3.5: EVM Review & Confirmation View -->
+          <div id="evm-review-view" class="evm-review-view" hidden>
+            <div class="panel-header" style="margin-bottom:0.75rem;">
+              <span class="badge"
+                style="background:#eff6ff; color:#1d4ed8; font-weight:800; border:1px solid #bfdbfe; padding:0.3rem 0.75rem; border-radius:9999px; font-size:0.8rem;">Review
+                &amp; Confirmation</span>
+              <h2 class="panel-title" style="margin:0.35rem 0 0.2rem; font-size:1.5rem;">Review Your School Cabinet Ballot
+              </h2>
+              <p class="panel-subtitle" style="font-size:0.88rem;">Review all 5 selections across School Cabinet executive positions before casting your vote.</p>
+            </div>
+
+            <div id="evm-review-grid" class="evm-review-grid">
+              <!-- Dynamically populated 5 summary cards -->
+            </div>
+
+            <div class="evm-review-footer">
+              <button type="button" id="evm-review-back-btn" class="btn btn-secondary">
+                &larr; Back: Edit Choices
+              </button>
+              <button type="button" id="evm-final-cast-btn" class="btn btn-primary btn-lg"
+                style="padding:0.75rem 2rem; font-size:1.05rem; background:#2563eb; border-color:#1d4ed8;">
+                <span class="btn-text">Confirm &amp; Cast Vote &rarr;</span>
+                <span class="spinner" aria-hidden="true" hidden></span>
+              </button>
+            </div>
+          </div>
+
+          <div id="step3-error" class="alert-box alert-error" role="alert" hidden style="margin-top:0.75rem;">
             <div class="alert-icon" aria-hidden="true">!</div>
             <div class="alert-body">
               <p class="alert-title">Unable to Record Vote</p>
               <p id="step3-error-msg" class="alert-message"></p>
             </div>
-          </div>
-
-          <!-- Appears while selecting candidates; enables once all open roles are chosen -->
-          <div id="cast-action-bar" class="cast-action-bar" hidden>
-            <div class="selected-readout">
-              <span id="selected-progress-label" class="selected-label">Selected Candidates (0 / 5)</span>
-              <strong id="selected-candidate-name" class="selected-name">Select 1 candidate for each role above</strong>
-            </div>
-            <button type="button" id="cast-vote-btn" class="btn btn-primary btn-lg" disabled>
-              <span class="btn-text">Cast Vote</span>
-              <span class="spinner" aria-hidden="true" hidden></span>
-            </button>
-          </div>
-
-          <div class="step-footer-actions">
-            <button type="button" id="back-to-step2-btn" class="btn btn-secondary">Back</button>
           </div>
         </div>
 
@@ -313,10 +360,10 @@
     </div>
   </div>
 
-<script src="../assets/booth-session.js?v=20261125_HOUSE_HIGHLIGHT_OK"></script>
-  <script defer src="./pico.js?v=20261125_HOUSE_HIGHLIGHT_OK"></script>
-  <script defer src="./data.js?v=20261125_HOUSE_HIGHLIGHT_OK"></script>
-  <script defer src="./supabase-config.js?v=20261125_HOUSE_HIGHLIGHT_OK"></script>
-  <script defer src="./app.js?v=20261125_HOUSE_HIGHLIGHT_OK"></script>
+<script src="../assets/booth-session.js?v=20261125_EVM_POST_SEPARATE_OK"></script>
+  <script defer src="./pico.js?v=20261125_EVM_POST_SEPARATE_OK"></script>
+  <script defer src="./data.js?v=20261125_EVM_POST_SEPARATE_OK"></script>
+  <script defer src="./supabase-config.js?v=20261125_EVM_POST_SEPARATE_OK"></script>
+  <script defer src="./app.js?v=20261125_EVM_POST_SEPARATE_OK"></script>
 </body>
 </html>
