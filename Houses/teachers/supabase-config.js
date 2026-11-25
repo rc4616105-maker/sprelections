@@ -290,11 +290,12 @@
             if (Array.isArray(ballots)) {
               ballots.forEach((b) => {
                 if (b.status === "accepted") {
-                  const rk = `${b.house_code}_${b.position_id}`;
+                  const posClean = String(b.position_id || "").replace(new RegExp(`^${b.house_code}_`, "i"), "");
+                  const rk = `${b.house_code}_${posClean}`;
                   votedRolesMap[rk] = {
                     id: b.id,
                     houseCode: b.house_code,
-                    positionId: b.position_id,
+                    positionId: posClean,
                     candidateId: b.candidate_id,
                     candidateName: b.candidate_name,
                     castAt: b.cast_at,
@@ -360,21 +361,26 @@
           }
 
           // 2. Build ballot records for each selected position with guaranteed unique IDs across houses
-          const ballotDocs = selections.map((sel) => ({
-            id: `BLT-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${cleanAdm}-${sel.houseCode}-${sel.positionId}`,
-            election_id: ELECTION_ID,
-            admission_no: cleanAdm,
-            house_code: sel.houseCode,
-            position_id: sel.positionId,
-            position_name: sel.positionName,
-            candidate_id: sel.candidate.id,
-            candidate_name: sel.candidate.fullName,
-            photo_path: photoRelPath,
-            photo_field: "photo_path",
-            status: "accepted",
-            booth_name: finalBooth,
-            cast_at: nowIso,
-          }));
+          const ballotDocs = selections.map((sel) => {
+            const rolePosId = (sel.houseCode === "CENTRAL" || String(sel.positionId).toUpperCase().startsWith(String(sel.houseCode).toUpperCase() + "_"))
+              ? sel.positionId
+              : `${sel.houseCode}_${sel.positionId}`;
+            return {
+              id: `BLT-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${cleanAdm}-${sel.houseCode}-${sel.positionId}`,
+              election_id: ELECTION_ID,
+              admission_no: cleanAdm,
+              house_code: sel.houseCode,
+              position_id: rolePosId,
+              position_name: sel.positionName,
+              candidate_id: sel.candidate.id,
+              candidate_name: sel.candidate.fullName,
+              photo_path: photoRelPath,
+              photo_field: "photo_path",
+              status: "accepted",
+              booth_name: finalBooth,
+              cast_at: nowIso,
+            };
+          });
 
           // Batch insert ballots with fallback if table schema differs (e.g. booth_name column)
           try {

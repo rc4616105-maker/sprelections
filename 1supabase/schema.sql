@@ -147,8 +147,9 @@ create index if not exists ballots_house_pos_status_idx on public.ballots (house
 create index if not exists ballots_admission_no_idx on public.ballots (admission_no);
 
 drop index if exists public.ballots_one_accepted_per_voter_idx;
-create unique index if not exists ballots_one_accepted_per_voter_role_idx
-  on public.ballots (admission_no, position_id)
+drop index if exists public.ballots_one_accepted_per_voter_role_idx;
+create unique index if not exists ballots_one_accepted_per_voter_house_role_idx
+  on public.ballots (admission_no, house_code, position_id)
   where status = 'accepted';
 
 -- 4. Clean overview view compatible with security_invoker (PostgreSQL 15+), mirroring all 4 Vote columns
