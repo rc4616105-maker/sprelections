@@ -821,10 +821,24 @@
       });
 
       if (this.mode === "supabase") {
-        let stu = DEMO_ACCOUNTS[student.admissionNo]
-          ? { ...DEMO_ACCOUNTS[student.admissionNo] }
-          : (allStudents.find((s) => s.admissionNo === student.admissionNo) || null);
-        if (!stu || !stu.isActive) {
+        const stuAdm = String(student?.admissionNo || "").trim();
+        let stu = DEMO_ACCOUNTS[stuAdm]
+          ? { ...DEMO_ACCOUNTS[stuAdm] }
+          : ((Array.isArray(allStudents) ? allStudents.find((s) => String(s.admissionNo).toUpperCase() === stuAdm.toUpperCase()) : null) || null);
+        if (!stu && stuAdm) {
+          try {
+            const rawCustom = localStorage.getItem("spr_admin_custom_students");
+            if (rawCustom) {
+              const customList = JSON.parse(rawCustom);
+              const found = customList.find((s) => String(s.admissionNo).toUpperCase() === stuAdm.toUpperCase());
+              if (found) stu = { ...found };
+            }
+          } catch (_) {}
+        }
+        if (!stu && student && stuAdm) {
+          stu = { ...student, isActive: student.isActive !== false };
+        }
+        if (!stu || stu.isActive === false) {
           throw new Error("Voter not found or marked inactive.");
         }
 
