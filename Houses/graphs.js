@@ -167,8 +167,8 @@
     function updateGraphInPlace(snap) {
       const sixHouseCodes = new Set(sixHouses.map((h) => h.code));
       const allStudents = (snap && snap.students && snap.students.length > 0) ? snap.students : (window.ADMIN_DATA?.students || []);
-      const allAcceptedBallots = (snap && snap.ballots ? snap.ballots : []).filter((b) => b.status === "accepted");
-      const allAcceptedVotersSet = new Set(allAcceptedBallots.map((b) => String(b.admissionNo).toUpperCase()));
+      const allAcceptedBallots = (snap && snap.ballots ? snap.ballots : []).filter((b) => b.status === "accepted" || !b.status);
+      const allAcceptedVotersSet = new Set(allAcceptedBallots.map((b) => String(b.admissionNo || b.admission_no || "").trim().toUpperCase()));
 
       // Active students strictly belonging to the 6 houses
       const activeStudents = allStudents.filter(
@@ -177,12 +177,12 @@
 
       // 1. Boys Turnout (across all 6 houses)
       const boysEligible = activeStudents.filter((s) => isBoyStudent(s)).length;
-      const boysVoted = activeStudents.filter((s) => isBoyStudent(s) && allAcceptedVotersSet.has(String(s.admissionNo).toUpperCase())).length;
+      const boysVoted = activeStudents.filter((s) => isBoyStudent(s) && allAcceptedVotersSet.has(String(s.admissionNo).trim().toUpperCase())).length;
       const boysPct = boysEligible ? Math.round((boysVoted / boysEligible) * 100) : 0;
 
       // 2. Girls Turnout (across all 6 houses)
       const girlsEligible = activeStudents.filter((s) => isGirlStudent(s)).length;
-      const girlsVoted = activeStudents.filter((s) => isGirlStudent(s) && allAcceptedVotersSet.has(String(s.admissionNo).toUpperCase())).length;
+      const girlsVoted = activeStudents.filter((s) => isGirlStudent(s) && allAcceptedVotersSet.has(String(s.admissionNo).trim().toUpperCase())).length;
       const girlsPct = girlsEligible ? Math.round((girlsVoted / girlsEligible) * 100) : 0;
 
       // 3. Overall House Total
@@ -202,6 +202,11 @@
 
       if (prevTotalVoted !== null && totalVoted !== prevTotalVoted) {
         triggerPulse([el.voted, el.remaining, el.boysVoted, el.girlsVoted], "is-bumping", 360);
+        const pill = document.getElementById("live-sync-pill");
+        if (pill) {
+          pill.classList.add("is-flash");
+          setTimeout(() => pill.classList.remove("is-flash"), 600);
+        }
       }
       prevTotalVoted = totalVoted;
 
@@ -301,17 +306,68 @@
       }
     }
 
+    const SB_URL = "https://rziptxcknaeuorekxwrl.supabase.co";
+    const SB_KEY = "sb_publishable_jcyjkISfyHxcKPwVUloYYQ_4BfL3pUZ";
+
+    function setLiveStatus(state, meta) {
+      const pill = document.getElementById("live-sync-pill");
+      const title = document.getElementById("live-sync-title");
+      const metaEl = document.getElementById("live-sync-meta");
+      if (!pill) return;
+      if (state === "active") {
+        pill.classList.remove("is-warning");
+        if (title) title.textContent = "LIVE SYNC ACTIVE";
+      } else if (state === "warning") {
+        pill.classList.add("is-warning");
+        if (title) title.textContent = "SYNC RETRYING";
+      }
+      if (metaEl && meta) metaEl.textContent = meta;
+    }
+
+    async function fetchAcceptedBallotsFast() {
+      // Ultra-lightweight endpoint fetch (only returns accepted ballots, ~200ms)
+      const res = await fetch(`${SB_URL}/rest/v1/ballots?select=admission_no,status&status=eq.accepted`, {
+        cache: "no-store",
+        headers: {
+          apikey: SB_KEY,
+          Authorization: `Bearer ${SB_KEY}`,
+        },
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    }
+
     let isRefreshing = false;
+    let lastVoteCount = -1;
+
     async function refreshInPlace() {
       if (isRefreshing) return;
       isRefreshing = true;
       try {
-        if (window.AdminBackend && typeof window.AdminBackend.getSnapshot === "function") {
-          const snap = await window.AdminBackend.getSnapshot();
-          updateGraphInPlace(snap);
+        let ballots = null;
+        try {
+          ballots = await fetchAcceptedBallotsFast();
+        } catch (netErr) {
+          // Fallback to AdminBackend or local storage if direct call fails
+          if (window.AdminBackend && typeof window.AdminBackend.getSnapshot === "function") {
+            const snap = await window.AdminBackend.getSnapshot();
+            if (snap && snap.ballots) ballots = snap.ballots;
+          }
+        }
+
+        if (Array.isArray(ballots)) {
+          updateGraphInPlace({
+            students: window.ADMIN_DATA?.students || [],
+            ballots: ballots,
+          });
+
+          const uniqueVoters = new Set(ballots.map((b) => String(b.admission_no || b.admissionNo || "").trim().toUpperCase())).size;
+          setLiveStatus("active", `${uniqueVoters} Cast · Live`);
+          lastVoteCount = uniqueVoters;
         }
       } catch (err) {
         console.warn("Unable to load graphs snapshot:", err);
+        setLiveStatus("warning", "Reconnecting...");
       } finally {
         isRefreshing = false;
       }
@@ -337,16 +393,35 @@
         ballots: initialBallots,
       });
 
-      // Supabase / Backend live sync
+      // 1. Initial fast sync immediately
+      await refreshInPlace();
+
+      // 2. BroadcastChannel for 0ms instantaneous updates when voting on same machine
+      if (typeof BroadcastChannel !== "undefined") {
+        try {
+          const syncChan = new BroadcastChannel("election_spr_2026_sync");
+          syncChan.addEventListener("message", () => {
+            refreshInPlace();
+          });
+        } catch (_) {}
+      }
+
+      // 3. Storage event listener for cross-tab cache sync
+      window.addEventListener("storage", (e) => {
+        if (e.key && (e.key.includes("ballot") || e.key.includes("snapshot") || e.key.includes("sb_cfg"))) {
+          refreshInPlace();
+        }
+      });
+
+      // 4. AdminBackend update subscription fallback
       if (window.AdminBackend) {
         try {
           if (typeof window.AdminBackend.init === "function") {
-            await window.AdminBackend.init();
+            window.AdminBackend.init().catch(() => {});
           }
-          await refreshInPlace();
           if (typeof window.AdminBackend.subscribeUpdates === "function") {
-            window.AdminBackend.subscribeUpdates(async () => {
-              await refreshInPlace();
+            window.AdminBackend.subscribeUpdates(() => {
+              refreshInPlace();
             });
           }
         } catch (e) {
@@ -354,7 +429,8 @@
         }
       }
 
-      setInterval(refreshInPlace, 2000);
+      // 5. High-frequency 1.5s live polling across all remote booths/laptops via Cloudflare
+      setInterval(refreshInPlace, 1500);
     }
 
     // Helper to test or preview live green +1 vote animation on demand
