@@ -903,13 +903,13 @@
 
             // House Boys
             const bEligible = hStudents.filter((s) => isBoyStudent(s)).length;
-            const bVoted = hStudents.filter((s) => isBoyStudent(s) && acceptedVotersSet.has(String(s.admissionNo).toUpperCase())).length;
+            const bVoted = hStudents.filter((s) => isBoyStudent(s) && allAcceptedVotersSet.has(String(s.admissionNo).toUpperCase())).length;
             const bRatio = bEligible ? bVoted / bEligible : 0;
             const bPct = Math.round(bRatio * 100);
 
             // House Girls
             const gEligible = hStudents.filter((s) => isGirlStudent(s)).length;
-            const gVoted = hStudents.filter((s) => isGirlStudent(s) && acceptedVotersSet.has(String(s.admissionNo).toUpperCase())).length;
+            const gVoted = hStudents.filter((s) => isGirlStudent(s) && allAcceptedVotersSet.has(String(s.admissionNo).toUpperCase())).length;
             const gRatio = gEligible ? gVoted / gEligible : 0;
             const gPct = Math.round(gRatio * 100);
 
