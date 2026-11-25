@@ -624,7 +624,7 @@
                   <img src="${symImg}" alt="${sym.name}" class="evm-symbol-img" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';" />
                   <span class="evm-symbol-fallback" style="display:none;">${sym.icon || "⭐"}</span>
                 </div>
-                <span class="evm-symbol-caption">${sym.name}</span>
+                
               </div>
               <div class="evm-cand-info">
                 <h3 class="evm-cand-name">${cand.fullName}</h3>

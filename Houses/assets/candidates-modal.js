@@ -618,9 +618,8 @@
             <div class="cand-card-middle">
               <div class="cand-symbol-info">
                 <div class="cand-symbol-box">
-                  ${symImg ? `<img src="${symImg}" class="cand-symbol-img" alt="${sym.name || 'Symbol'}" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='inline';" /><span style="display:none; font-size:1.15rem;">${sym.icon || '🗳️'}</span>` : `<span style="font-size:1.15rem;">${sym.icon || '🗳️'}</span>`}
+                  ${symImg ? `<img src="${symImg}" class="cand-symbol-img" alt="Symbol" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='inline';" /><span style="display:none; font-size:1.15rem;">${sym.icon || '🗳️'}</span>` : `<span style="font-size:1.15rem;">${sym.icon || '🗳️'}</span>`}
                 </div>
-                <span class="cand-symbol-label">${sym.name || "Symbol"}</span>
               </div>
               <span class="cand-house-tag" style="background: ${meta.bg}; color: ${meta.border}; border: 1px solid ${meta.border};">
                 ${meta.badge}
@@ -748,8 +747,7 @@
                   </div>
                   <div class="symbol-row">
                     <div class="symbol-pill">
-                      ${symImg ? `<img src="${symImg}" alt="${sym.name || 'Symbol'}" class="symbol-img" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='inline';" /><span class="symbol-icon" style="display:none;">${sym.icon || '🗳️'}</span>` : `<span class="symbol-icon">${sym.icon || '🗳️'}</span>`}
-                      <span class="symbol-name">Symbol: <strong>${sym.name || "Official Symbol"}</strong></span>
+                      ${symImg ? `<img src="${symImg}" alt="Symbol" class="symbol-img" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='inline';" /><span class="symbol-icon" style="display:none;">${sym.icon || '🗳️'}</span>` : `<span class="symbol-icon">${sym.icon || '🗳️'}</span>`}
                     </div>
                   </div>
                   <p class="cand-motto">&ldquo;${c.tagline || 'Dedicated to student leadership and school duty.'}&rdquo;</p>

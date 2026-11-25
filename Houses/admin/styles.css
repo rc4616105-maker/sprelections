@@ -2354,3 +2354,12 @@ tr[hidden],
   background: #f0fdf4;
   box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
 }
+
+
+/* Hide symbol text captions everywhere */
+.evm-symbol-caption,
+.evm-symbol-caption-sm,
+.cand-symbol-label,
+.symbol-name {
+  display: none !important;
+}

@@ -478,7 +478,7 @@
                   <img src="${symImg}" alt="${sym.name}" class="evm-symbol-img" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';" />
                   <span class="evm-symbol-fallback" style="display:none;">${sym.icon || "⭐"}</span>
                 </div>
-                <span class="evm-symbol-caption">${sym.name}</span>
+                
               </div>
               <div class="evm-cand-info">
                 <h3 class="evm-cand-name">${cand.fullName}</h3>
@@ -566,7 +566,7 @@
             const pickedSymSlug = pickedSym ? (pickedSym.slug || pickedSym.name || "star").toLowerCase().replace(/[\s-]+/g, "_") : "";
             const pickedSymImg = pickedSym && pickedSymSlug ? ((pickedSym.image || pickedSym.imagePath || `../assets/symbols/${pickedSymSlug}.png`) + "?v=20261123N") : "";
             const symReviewHtml = pickedSym && pickedSym.name
-              ? `<div class="evm-review-cand-symbol" title="Symbol: ${pickedSym.name}"><div class="evm-symbol-box-sm"><img src="${pickedSymImg}" alt="${pickedSym.name}" class="evm-symbol-img-sm" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';" /><span class="evm-symbol-fallback-sm" style="display:none;">${pickedSym.icon || "⭐"}</span></div><span class="evm-symbol-caption-sm">${pickedSym.name}</span></div>`
+              ? `<div class="evm-review-cand-symbol" title="Symbol: ${pickedSym.name}"><div class="evm-symbol-box-sm"><img src="${pickedSymImg}" alt="${pickedSym.name}" class="evm-symbol-img-sm" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';" /><span class="evm-symbol-fallback-sm" style="display:none;">${pickedSym.icon || "⭐"}</span></div></div>`
               : "";
 
             card.innerHTML = `
