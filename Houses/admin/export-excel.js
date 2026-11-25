@@ -302,30 +302,48 @@
     let currentRow = 0;
 
     groups.forEach((g) => {
-      // 1. House Section Header Row (Merged A:C)
-      sheetData.push([`${g.icon} ${g.name.toUpperCase()}`, "", ""]);
-      merges.push({ s: { r: currentRow, c: 0 }, e: { r: currentRow, c: 2 } });
+      // 1. House Section Header Row (Merged A:D)
+      sheetData.push([`${g.icon} ${g.name.toUpperCase()}`, "", "", ""]);
+      merges.push({ s: { r: currentRow, c: 0 }, e: { r: currentRow, c: 3 } });
       currentRow += 1;
 
       g.posts.forEach((p) => {
-        // 2. Post Title & Level Heading Row (Merged A:C)
+        // 2. Post Title & Level Heading Row (Merged A:D)
         const postLabel = p.subtitle ? `📌 ${p.title} (${p.subtitle})` : `📌 ${p.title}`;
-        sheetData.push([postLabel, "", ""]);
-        merges.push({ s: { r: currentRow, c: 0 }, e: { r: currentRow, c: 2 } });
+        sheetData.push([postLabel, "", "", ""]);
+        merges.push({ s: { r: currentRow, c: 0 }, e: { r: currentRow, c: 3 } });
         currentRow += 1;
 
         // 3. Table Column Headers
-        sheetData.push(["Candidate Name", "Class & Sec", "No. of Votes"]);
+        sheetData.push(["Candidate Name", "Class & Sec", "No. of Votes", "Winner & Majority"]);
         currentRow += 1;
+
+        // Compute top & second votes for Winner & Majority column
+        const topVotes = p.candidates[0] ? p.candidates[0].votes : 0;
+        const secondVotes = p.candidates[1] ? p.candidates[1].votes : 0;
+        const topCount = p.candidates.filter((c) => c.votes === topVotes).length;
 
         // 4. Candidates sorted according to number of votes
         p.candidates.forEach((c) => {
-          sheetData.push([c.fullName, c.classSec, c.votes]);
+          let resultText = "—";
+          if (p.totalVotes === 0 || topVotes === 0) {
+            resultText = "Pending Votes";
+          } else if (c.votes === topVotes) {
+            if (topCount > 1) {
+              resultText = `Tied (${topVotes} votes)`;
+            } else {
+              const majority = p.candidates.length > 1 ? (topVotes - secondVotes) : topVotes;
+              resultText = `🏆 WINNER (Majority: ${majority} vote${majority === 1 ? "" : "s"})`;
+            }
+          } else {
+            resultText = "Runner-up";
+          }
+          sheetData.push([c.fullName, c.classSec, c.votes, resultText]);
           currentRow += 1;
         });
 
         // 5. Blank row spacer between posts
-        sheetData.push(["", "", ""]);
+        sheetData.push(["", "", "", ""]);
         currentRow += 1;
       });
     });
@@ -341,6 +359,7 @@
         { wch: 34 }, // Candidate Name
         { wch: 24 }, // Class & Sec
         { wch: 16 }, // No. of Votes
+        { wch: 34 }, // Winner & Majority
       ];
       ws["!merges"] = merges;
 
