@@ -476,7 +476,7 @@
             </div>
             <div class="evm-cand-info">
               <h3 class="evm-cand-name">${cand.fullName}</h3>
-              <span class="evm-cand-sub">${subText}${cand.tagline ? ` &bull; ${cand.tagline}` : ""}</span>
+              <span class="evm-cand-sub">${subText}</span>
             </div>
             <div class="evm-right-cluster">
               <span class="evm-led-lamp"></span>

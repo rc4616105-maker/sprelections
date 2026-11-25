@@ -299,10 +299,15 @@
 
 .post-step-pill.is-active {
   background: #ffffff;
-  border-color: var(--accent-teacher);
-  color: var(--accent-teacher);
+  border-color: #059669;
+  color: #047857;
   font-weight: 800;
-  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.15);
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.18);
+}
+
+.post-step-pill.is-active .post-step-num {
+  background: #059669;
+  color: #ffffff;
 }
 
 .post-step-pill.is-done {
@@ -380,7 +385,13 @@
   color: var(--text-muted);
 }
 
+.evm-header-right {
+  flex-shrink: 0;
+}
+
 .evm-select-badge {
+  display: inline-block;
+  white-space: nowrap;
   font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 800;
@@ -388,7 +399,7 @@
   text-transform: uppercase;
   background: var(--bg-card);
   color: var(--text-secondary);
-  padding: 0.25rem 0.65rem;
+  padding: 0.3rem 0.75rem;
   border-radius: 9999px;
   border: 1px solid var(--border-default);
 }
@@ -1116,4 +1127,48 @@
   display: flex;
   flex-direction: column;
   min-height: 480px;
+}
+
+/* Central Booth Compact Row & Active Next Button Overrides */
+.evm-candidate-list {
+  gap: 0.55rem !important;
+  margin: 0.65rem 0 !important;
+}
+
+.evm-candidate-row {
+  padding: 0.55rem 1.25rem !important;
+  min-height: 76px !important;
+  border-radius: 14px !important;
+}
+
+.evm-cand-avatar {
+  width: 68px !important;
+  height: 68px !important;
+  min-width: 68px !important;
+  border-radius: 12px !important;
+  margin-right: 1rem !important;
+}
+
+.evm-cand-symbol {
+  width: 68px !important;
+  height: 68px !important;
+  margin-right: 1rem !important;
+}
+
+.evm-cand-symbol .evm-symbol-box {
+  width: 64px !important;
+  height: 64px !important;
+}
+
+.evm-next-action-btn {
+  background: #059669 !important;
+  color: #ffffff !important;
+  border-color: #047857 !important;
+  font-weight: 800 !important;
+}
+
+.evm-next-action-btn:disabled {
+  background: #cbd5e1 !important;
+  color: #475569 !important;
+  border-color: #94a3b8 !important;
 }
