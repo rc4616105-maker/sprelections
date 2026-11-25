@@ -81,8 +81,12 @@
     cameraVideo: document.getElementById("camera-video"),
     cameraCanvas: document.getElementById("camera-canvas"),
     faceGuardModal: document.getElementById("face-guard-modal"),
+    faceGuardBadge: document.getElementById("face-guard-badge"),
+    faceGuardTitle: document.getElementById("face-guard-title"),
+    faceGuardDesc: document.getElementById("face-guard-desc"),
     faceLiveVideo: document.getElementById("face-live-video"),
-    cameraGuideRing: document.getElementById("camera-guide-ring"),
+    faceOvalGuide: document.getElementById("face-oval-guide"),
+    faceLiveStatusPill: document.getElementById("face-live-status-pill"),
     faceStatusLabel: document.getElementById("face-status-label"),
     faceGuardCancelBtn: document.getElementById("face-guard-cancel-btn"),
     faceGuardConfirmBtn: document.getElementById("face-guard-confirm-btn"),
@@ -275,98 +279,183 @@
     return generateBoothSnapshot("Teacher Automatic Capture");
   }
 
-  function startFaceDetectionLoop() {
-    state.consecutiveFaces = 0;
-    if (el.cameraGuideRing) el.cameraGuideRing.classList.remove("is-ready");
-    if (el.faceStatusLabel) {
-      el.faceStatusLabel.textContent = "Position face inside oval guide...";
-      el.faceStatusLabel.style.background = "#fef3c7";
-      el.faceStatusLabel.style.color = "#92400e";
-    }
-    if (el.faceGuardConfirmBtn) el.faceGuardConfirmBtn.disabled = true;
+  let steadyFaceCount = 0;
+  let lastVerifiedPhoto = "";
+  let faceCheckInterval = null;
+  let noCamFallbackTimer = null;
 
-    if (state.mediaStream && el.faceLiveVideo) {
+  function analyzeCameraFrame(ctx, w, h) {
+    const imgData = ctx.getImageData(0, 0, w, h);
+    const d = imgData.data;
+    let sum = 0, sumSq = 0;
+    const n = d.length / 4;
+    for (let i = 0; i < d.length; i += 4) {
+      const g = (d[i] * 299 + d[i + 1] * 587 + d[i + 2] * 114) / 1000;
+      sum += g;
+      sumSq += g * g;
+    }
+    const mean = sum / n;
+    const variance = (sumSq / n) - (mean * mean);
+    const stdDev = Math.sqrt(Math.max(0, variance));
+
+    // Complete dark / finger taped over lens:
+    if (mean < 14) {
+      return { ok: false, obstructed: true, reason: "Camera is completely covered or too dark. Please remove your hand from the lens." };
+    }
+    // Palm / hand pressed flat against the lens:
+    if (stdDev < 8.5) {
+      return { ok: false, obstructed: true, reason: "Camera is blocked by hand or object. Please uncover the lens." };
+    }
+    return { ok: true, obstructed: false, mean, stdDev, imgData };
+  }
+
+  async function detectHumanFace(videoEl, canvasEl) {
+    if (!videoEl || videoEl.readyState < 2 || videoEl.videoWidth === 0) {
+      return { ok: false, reason: "Webcam is warming up... please look at the screen.", obstructed: false };
+    }
+    const w = 320, h = 240;
+    canvasEl.width = w;
+    canvasEl.height = h;
+    const ctx = canvasEl.getContext("2d");
+    ctx.drawImage(videoEl, 0, 0, w, h);
+
+    const frameAnalysis = analyzeCameraFrame(ctx, w, h);
+    if (!frameAnalysis.ok) {
+      return { ok: false, reason: frameAnalysis.reason, obstructed: true };
+    }
+
+    // Layer 1: Native Chrome / Android Hardware FaceDetector
+    if (window.FaceDetector) {
+      try {
+        const fd = new window.FaceDetector({ fastMode: true, maxDetectedFaces: 2 });
+        const nativeFaces = await fd.detect(canvasEl);
+        if (nativeFaces && nativeFaces.length > 0) {
+          return {
+            ok: true,
+            faceCount: nativeFaces.length,
+            photoDataUrl: canvasEl.toDataURL("image/jpeg", 0.78),
+          };
+        }
+      } catch (_) { }
+    }
+
+    // Layer 2: Pico.js Face Cascade
+    const classifier = await loadPicoFaceClassifier();
+    if (classifier && typeof pico !== "undefined") {
+      const rgba = frameAnalysis.imgData.data;
+      const gray = new Uint8Array(w * h);
+      for (let r = 0; r < h; ++r) {
+        for (let c = 0; c < w; ++c) {
+          gray[r * w + c] = (2 * rgba[r * 4 * w + 4 * c] + 7 * rgba[r * 4 * w + 4 * c + 1] + 1 * rgba[r * 4 * w + 4 * c + 2]) / 10;
+        }
+      }
+      const image = { pixels: gray, nrows: h, ncols: w, ldim: w };
+      const params = {
+        shiftfactor: 0.1,
+        minsize: 36,
+        maxsize: 210,
+        scalefactor: 1.1,
+      };
+      let dets = pico.run_cascade(image, classifier, params);
+      dets = pico.cluster_detections(dets, 0.2);
+      const validFaces = dets.filter((d) => d[3] > 36.0);
+      if (validFaces.length > 0) {
+        return {
+          ok: true,
+          faceCount: validFaces.length,
+          photoDataUrl: canvasEl.toDataURL("image/jpeg", 0.78),
+        };
+      }
+    }
+
+    return {
+      ok: false,
+      reason: "Face not detected. Please look directly at the camera.",
+      obstructed: false,
+    };
+  }
+
+  function updateFaceGuardUI(message, isObstructed, isVerified) {
+    if (el.faceStatusLabel) el.faceStatusLabel.textContent = message;
+    if (el.faceLiveStatusPill) {
+      el.faceLiveStatusPill.classList.toggle("is-obstructed", Boolean(isObstructed));
+      el.faceLiveStatusPill.classList.toggle("is-verified", Boolean(isVerified));
+    }
+    if (el.faceOvalGuide) {
+      el.faceOvalGuide.classList.toggle("is-obstructed", Boolean(isObstructed));
+      el.faceOvalGuide.classList.toggle("is-verified", Boolean(isVerified));
+    }
+    if (el.faceGuardBadge) {
+      if (isVerified) {
+        el.faceGuardBadge.className = "badge badge-success";
+        el.faceGuardBadge.textContent = "Face Verified";
+      } else if (isObstructed) {
+        el.faceGuardBadge.className = "badge badge-danger";
+        el.faceGuardBadge.textContent = "Camera Obstructed / Hand Detected";
+      } else {
+        el.faceGuardBadge.className = "badge badge-warning";
+        el.faceGuardBadge.textContent = "Face Verification Required";
+      }
+    }
+  }
+
+  function openFaceGuardModal(initialReason, isObstructed) {
+    if (!el.faceGuardModal) return;
+    el.faceGuardModal.hidden = false;
+    updateFaceGuardUI(initialReason || "Please look directly at the camera.", isObstructed, false);
+
+    if (el.faceLiveVideo && state.mediaStream) {
       el.faceLiveVideo.srcObject = state.mediaStream;
       el.faceLiveVideo.play().catch(() => {});
     }
 
-    const checkFrame = async () => {
-      if (!el.faceGuardModal || el.faceGuardModal.hidden) return;
+    steadyFaceCount = 0;
+    lastVerifiedPhoto = "";
+    if (el.faceGuardConfirmBtn) el.faceGuardConfirmBtn.disabled = true;
 
-      const video = el.faceLiveVideo;
-      if (video && video.readyState >= 2 && video.videoWidth > 0) {
-        const w = 320, h = 240;
-        const canvas = el.cameraCanvas;
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(video, 0, 0, w, h);
-
-        const imgData = ctx.getImageData(0, 0, w, h);
-        const d = imgData.data;
-        let sum = 0, sumSq = 0;
-        const n = d.length / 4;
-        for (let i = 0; i < d.length; i += 4) {
-          const g = (d[i] * 299 + d[i + 1] * 587 + d[i + 2] * 114) / 1000;
-          sum += g;
-          sumSq += g * g;
+    if (noCamFallbackTimer) clearTimeout(noCamFallbackTimer);
+    if (!state.mediaStream) {
+      updateFaceGuardUI("Webcam unavailable — faculty snapshot will be recorded.", false, false);
+      noCamFallbackTimer = setTimeout(() => {
+        if (el.faceGuardConfirmBtn && !state.isSubmitting) {
+          el.faceGuardConfirmBtn.disabled = false;
+          updateFaceGuardUI("Press Confirm to cast vote with station record.", false, true);
         }
-        const mean = sum / n;
-        const stdDev = Math.sqrt(Math.max(0, (sumSq / n) - (mean * mean)));
+      }, 1500);
+    }
 
-        if (mean > 15 && stdDev > 9.0) {
-          const classifier = await loadPicoFaceClassifier();
-          if (classifier && typeof pico !== "undefined") {
-            const gray = new Uint8Array(w * h);
-            for (let r = 0; r < h; ++r) {
-              for (let c = 0; c < w; ++c) {
-                gray[r * w + c] = (2 * d[r * 4 * w + 4 * c] + 7 * d[r * 4 * w + 4 * c + 1] + 1 * d[r * 4 * w + 4 * c + 2]) / 10;
-              }
-            }
-            const dets = pico.run_cascade({ pixels: gray, nrows: h, ncols: w, ldim: w }, classifier, {
-              shiftfactor: 0.1,
-              minsize: 36,
-              maxsize: 210,
-              scalefactor: 1.1,
-            });
-            const clustered = pico.cluster_detections(dets, 0.2);
-            const valid = clustered.filter((pt) => pt[3] > 36.0);
-
-            if (valid.length > 0) {
-              state.consecutiveFaces++;
-            } else {
-              state.consecutiveFaces = Math.max(0, state.consecutiveFaces - 1);
-            }
-          } else {
-            // Hardware/Pico fallback
-            state.consecutiveFaces++;
-          }
-        } else {
-          state.consecutiveFaces = 0;
+    clearInterval(faceCheckInterval);
+    faceCheckInterval = setInterval(async () => {
+      if (state.isSubmitting) return;
+      if (!state.mediaStream) return;
+      const res = await detectHumanFace(el.faceLiveVideo || el.cameraVideo, el.cameraCanvas);
+      if (res.ok) {
+        steadyFaceCount++;
+        lastVerifiedPhoto = res.photoDataUrl;
+        updateFaceGuardUI("✓ Face Detected! Hold still...", false, true);
+        if (el.faceGuardConfirmBtn) el.faceGuardConfirmBtn.disabled = false;
+        if (steadyFaceCount >= 2 && !state.isSubmitting) {
+          clearInterval(faceCheckInterval);
+          if (noCamFallbackTimer) clearTimeout(noCamFallbackTimer);
+          await submitUniversalBallot(lastVerifiedPhoto);
         }
-
-        if (state.consecutiveFaces >= 2) {
-          if (el.cameraGuideRing) el.cameraGuideRing.classList.add("is-ready");
-          if (el.faceStatusLabel) {
-            el.faceStatusLabel.textContent = "✓ Face Verified! Ready to cast.";
-            el.faceStatusLabel.style.background = "#dcfce7";
-            el.faceStatusLabel.style.color = "#15803d";
-          }
-          if (el.faceGuardConfirmBtn) el.faceGuardConfirmBtn.disabled = false;
-        }
+      } else {
+        steadyFaceCount = 0;
+        updateFaceGuardUI(res.reason, res.obstructed, false);
+        if (el.faceGuardConfirmBtn) el.faceGuardConfirmBtn.disabled = true;
       }
-
-      state.faceDetectLoopId = setTimeout(checkFrame, 180);
-    };
-
-    checkFrame();
+    }, 200);
   }
 
-  function stopFaceDetectionLoop() {
-    if (state.faceDetectLoopId) {
-      clearTimeout(state.faceDetectLoopId);
-      state.faceDetectLoopId = null;
+  function closeFaceGuardModal() {
+    clearInterval(faceCheckInterval);
+    faceCheckInterval = null;
+    if (noCamFallbackTimer) {
+      clearTimeout(noCamFallbackTimer);
+      noCamFallbackTimer = null;
     }
+    if (el.faceGuardModal) el.faceGuardModal.hidden = true;
+    if (el.faceLiveVideo) el.faceLiveVideo.srcObject = null;
   }
 
   // --- Step 1 Authentication & Verification ---
@@ -765,7 +854,7 @@
   }
 
   // --- Submission & Finalization ---
-  async function submitUniversalBallot() {
+  async function submitUniversalBallot(verifiedPhoto) {
     if (state.isSubmitting) return;
 
     const { selected, total } = countTotalProgress();
@@ -784,6 +873,7 @@
     }
 
     state.isSubmitting = true;
+    closeFaceGuardModal();
 
     try {
       if (el.proceedCastBtn) {
@@ -806,8 +896,8 @@
         throw new Error("No candidate selections found.");
       }
 
-      // Automatically capture snapshot from running webcam in background
-      const photoUrl = captureWebcamFrame();
+      // Automatically capture snapshot from running webcam in background or use verified photo
+      const photoUrl = verifiedPhoto || captureWebcamFrame();
       const currentBooth = (typeof window.getRegisteredBooth === "function" && window.getRegisteredBooth()) || "Teacher Station";
 
       const res = await window.TeacherBackend.castUniversalBallot({
@@ -818,8 +908,7 @@
       });
 
       // Stop any lingering face loops if open
-      stopFaceDetectionLoop();
-      if (el.faceGuardModal) el.faceGuardModal.hidden = true;
+      closeFaceGuardModal();
 
       // Advance to Step 4 (Success)
       el.successSummary.textContent = `Thank you, ${res.teacherName}. All ${res.count} ballots across School Cabinet and student houses have been securely recorded.`;
@@ -1098,20 +1187,29 @@
     });
 
     el.evmFinalCastBtn?.addEventListener("click", () => {
-      submitUniversalBallot();
+      const { selected, total } = countTotalProgress();
+      if (selected < total) {
+        submitUniversalBallot();
+        return;
+      }
+      openFaceGuardModal("Please look at the camera to verify faculty identity.");
     });
 
-    // Automatically capture photo and cast ballot directly (no face modal interruption)
     el.proceedCastBtn?.addEventListener("click", () => {
-      submitUniversalBallot();
+      el.evmFinalCastBtn?.click();
     });
 
     el.faceGuardCancelBtn?.addEventListener("click", () => {
-      stopFaceDetectionLoop();
-      if (el.faceGuardModal) el.faceGuardModal.hidden = true;
+      closeFaceGuardModal();
+      state.isSubmitting = false;
     });
 
-    el.faceGuardConfirmBtn?.addEventListener("click", submitUniversalBallot);
+    el.faceGuardConfirmBtn?.addEventListener("click", async () => {
+      if (!state.isSubmitting) {
+        closeFaceGuardModal();
+        await submitUniversalBallot(lastVerifiedPhoto);
+      }
+    });
 
     el.resetNowBtn?.addEventListener("click", resetStation);
 

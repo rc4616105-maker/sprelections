@@ -300,31 +300,34 @@
       </section>
     </main>
 
-    <!-- Face Verification Guard Modal -->
-    <div id="face-guard-modal" class="face-guard-backdrop" hidden>
-      <div class="face-guard-card">
-        <span class="badge"
-          style="background:#ecfdf5; color:#047857; font-weight:800; padding:0.3rem 0.75rem; border-radius:9999px; font-size:0.8rem;">Edge
-          AI Biometrics</span>
-        <h3 style="font-family:var(--font-display); font-size:1.5rem; margin:0.4rem 0 0.25rem;">Face Verification</h3>
-        <p style="font-size:0.88rem; color:var(--text-secondary); margin:0 0 1rem;">Please look directly at the webcam
-          inside the oval guide to verify and record your vote.</p>
-
-        <div id="camera-guide-ring" class="camera-guide-ring">
-          <video id="face-live-video" class="camera-live-video" autoplay playsinline muted></video>
+    <!-- Face Verification Guard Modal (Anti-hand / Face Required to Cast Vote) -->
+    <div id="face-guard-modal" class="modal-overlay" hidden>
+      <div class="modal-card face-modal-card" role="dialog" aria-modal="true" aria-labelledby="face-guard-title">
+        <div class="face-modal-header">
+          <span class="badge badge-warning" id="face-guard-badge">Face Verification Required</span>
+          <h3 id="face-guard-title" class="modal-title">Please Look at the Camera</h3>
+          <p id="face-guard-desc" class="modal-desc">
+            A clear face is required to cast your vote. Please remove your hand or any obstruction from the camera lens.
+          </p>
         </div>
 
-        <div style="margin-bottom:1.25rem;">
-          <span id="face-status-label" class="badge"
-            style="background:#fef3c7; color:#92400e; font-weight:700; font-size:0.84rem; padding:0.4rem 0.95rem; border-radius:9999px;">
-            Detecting face...
-          </span>
+        <div class="face-live-view-wrap">
+          <video id="face-live-video" autoplay playsinline muted class="face-live-video"></video>
+          <div id="face-oval-guide" class="face-oval-guide">
+            <div class="face-scan-line"></div>
+          </div>
+          <div id="face-live-status-pill" class="face-status-pill is-waiting">
+            <span class="face-status-dot"></span>
+            <span id="face-status-label">Checking for Face...</span>
+          </div>
         </div>
 
-        <div style="display:flex; justify-content:center; gap:0.75rem;">
-          <button type="button" id="face-guard-cancel-btn" class="btn btn-secondary">Cancel</button>
-          <button type="button" id="face-guard-confirm-btn" class="btn btn-primary" disabled>Confirm &amp; Cast
-            Vote</button>
+        <div class="modal-actions face-modal-actions">
+          <button type="button" id="face-guard-cancel-btn" class="btn btn-secondary">Back to Ballot</button>
+          <button type="button" id="face-guard-confirm-btn" class="btn btn-primary" disabled>
+            <span class="btn-text">Face Verified · Cast Vote</span>
+            <span class="spinner" aria-hidden="true" hidden></span>
+          </button>
         </div>
       </div>
     </div>
@@ -345,7 +348,7 @@
   <script src="./data.js?v=20261125_TEACHER_FIXED_ALL"></script>
   <script src="./pico.js?v=20261125_TEACHER_FIXED_ALL"></script>
   <script src="./supabase-config.js?v=20261125_TEACHER_FIXED_ALL"></script>
-  <script src="./app.js?v=20261125_CLASS_ONLY"></script>
+  <script src="./app.js?v=20261125_TEACHER_FACE_GUARD_V1"></script>
 </body>
 
 </html>
