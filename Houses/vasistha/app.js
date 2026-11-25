@@ -438,7 +438,11 @@
 
       const currentPos = posList[state.evmPostIndex];
       const votedBallot = state.votedRoles[currentPos.id] || null;
-      const roleCands = state.cachedCandidates.filter((c) => (c.positionId || currentPos.id) === currentPos.id);
+      const roleCands = state.cachedCandidates.filter((c) => {
+        if (c.id === "CAND_VASISTHA_CAPTAIN_BOY_NSRITEJA") return false;
+        if (c.fullName && c.fullName.toLowerCase().includes("sriteja") && currentPos.id === "CAPTAIN_BOY") return false;
+        return (c.positionId || currentPos.id) === currentPos.id;
+      });
 
       if (el.evmPostBadge) el.evmPostBadge.textContent = `POST ${state.evmPostIndex + 1} OF ${posList.length}`;
       if (el.evmPostTitle) el.evmPostTitle.textContent = currentPos.title;

@@ -591,7 +591,12 @@
 
       const isDummyCand = (c) => {
         if (!c) return false;
+        const id = String(c.id || "").trim();
         const name = String(c.full_name || c.fullName || "").trim();
+        const pos = String(c.position_id || c.positionId || "").trim();
+        if (id === "CAND_VASISTHA_CAPTAIN_BOY_NSRITEJA" || (name.toLowerCase().includes("sriteja") && pos === "CAPTAIN_BOY")) {
+          return true;
+        }
         const sec = String(c.section || "").trim();
         const tag = String(c.tagline || "").trim();
         const adm = String(c.admission_no || c.admissionNo || "").trim();
