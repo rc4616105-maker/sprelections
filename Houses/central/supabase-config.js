@@ -776,6 +776,41 @@
         const normStr = (s) => String(s || "").toLowerCase().replace(/[\s\.\-_]+/g, "");
         const vNameNorm = voter && voter.fullName ? normStr(voter.fullName) : "";
 
+        // Explicit Electoral College Overrides:
+        // - Vasistha: Allow G. Greeshma (1J7268) instead of N. Sriteja (1C9533)
+        // - Hanuman: Allow K. Samarjith Reddy (1J9554)
+        if (
+          idNorm === "1C9533" ||
+          idNorm === "CAND-10-NSRI" ||
+          vNameNorm === "nsriteja"
+        ) {
+          return { isWinner: false };
+        }
+        if (
+          idNorm === "1J7268" ||
+          idNorm === "CAND-10-GGRE" ||
+          vNameNorm === "ggreeshma"
+        ) {
+          return {
+            isWinner: true,
+            houseCode: "VASISTHA",
+            roleTitle: "Girls Captain (Class 10 Girl)",
+            houseName: "Vasistha House",
+          };
+        }
+        if (
+          idNorm === "1J9554" ||
+          idNorm === "CAND-10-KSAM" ||
+          vNameNorm === "ksamarjithreddy"
+        ) {
+          return {
+            isWinner: true,
+            houseCode: "HANUMAN",
+            roleTitle: "Boys Captain (Class 10 Boy)",
+            houseName: "Hanuman House",
+          };
+        }
+
         // Check 0: School Cabinet Contestants Check
         // Rule: Candidates contesting for School Cabinet (President, Vice President, etc.)
         // CANNOT vote for School Cabinet; they can ONLY vote in their own House!
