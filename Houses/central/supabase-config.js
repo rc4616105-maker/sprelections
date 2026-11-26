@@ -777,8 +777,18 @@
         const vNameNorm = voter && voter.fullName ? normStr(voter.fullName) : "";
 
         // Check 0: School Cabinet Contestants Check
-        // Rule: Candidates contesting for School Cabinet (President, Vice President, etc.)
-        // CANNOT vote for School Cabinet; they can ONLY vote in their own House!
+        // Rule: Candidates contesting for a School Cabinet post (President, Vice President, etc.)
+        // can vote ONLY for the specific post they are contesting in (not for other Cabinet posts).
+        const roleTitleToPosId = (rt) => {
+          const t = String(rt || "").toLowerCase();
+          if (t.includes("vice president")) return "VICE_PRESIDENT";
+          if (t.includes("president")) return "PRESIDENT";
+          if (t.includes("literary")) return "LITERARY_SECRETARY";
+          if (t.includes("sports")) return "SPORTS_SECRETARY";
+          if (t.includes("social") || t.includes("cultural")) return "SOCIAL_CULTURAL_SECRETARY";
+          return "";
+        };
+
         const regEntry = SCHOOL_CABINET_REGISTRY.find((entry) => {
           const cAdm = String(entry.candidateAdm || "").trim().toUpperCase();
           const vId = String(entry.voterId || "").trim().toUpperCase();
@@ -791,12 +801,19 @@
         });
 
         if (regEntry) {
-          return {
-            isWinner: false,
-            isCabinetContestantBlocked: true,
-            roleTitle: regEntry.roleTitle,
-            houseTitle: regEntry.houseTitle,
-          };
+          const ownPosId = roleTitleToPosId(regEntry.roleTitle);
+          if (ownPosId) {
+            return {
+              isWinner: true,
+              isCabinetContestant: true,
+              allowedPositionIds: [ownPosId],
+              roleTitle: `${regEntry.roleTitle} (Contestant — Own Post Only)`,
+              houseTitle: regEntry.houseTitle || "School Cabinet",
+              houseCode: regEntry.houseCode || voter?.houseCode || "CENTRAL",
+              constituency: regEntry.constituency || "",
+              classSec: regEntry.classSec || "",
+            };
+          }
         }
 
         // Exact 24 Authorized Electoral College Members (6 Houses x 4 Posts)
@@ -852,29 +869,25 @@
         return { isWinner: false };
       };
 
-      // School Cabinet Polling Booth Restriction: 24 ELECTED HOUSE CAPTAINS & VICE CAPTAINS + TEACHERS ONLY
+      // School Cabinet Polling Booth Restriction: 24 ELECTED HOUSE CAPTAINS & VICE CAPTAINS + CABINET CONTESTANTS (OWN POST ONLY) + TEACHERS
       let isElectedCaptain = false;
+      let allowedPositionIds = null;
       if (requestedHouseCode === "CENTRAL") {
         if (!isTeacher) {
           const winnerCheck = await isElectedHouseCaptainOrWinner(cleanId, localMatch);
-          if (winnerCheck.isCabinetContestantBlocked) {
-            return {
-              ok: false,
-              code: "CONTESTANT_CANNOT_VOTE_CABINET",
-              title: "Vote in Your House Booth",
-              message: `Voter ID ${cleanId} (${localMatch.fullName}) is contesting for ${winnerCheck.roleTitle}. School Cabinet contestants cannot vote for School Cabinet executive roles. Please vote in your registered house booth (${winnerCheck.houseTitle}).`,
-            };
-          }
           if (!winnerCheck.isWinner) {
             const registeredName = housesMeta[localMatch.houseCode]?.name || localMatch.houseCode || "House";
             return {
               ok: false,
               code: "ELECTORAL_COLLEGE_RESTRICTED",
               title: "Elected House Captains Only",
-              message: `Voter ID ${cleanId} belongs to ${localMatch.fullName} (${registeredName} House). School Cabinet voting is authorized for the 24 elected House Captains once house results are declared.`,
+              message: `Voter ID ${cleanId} belongs to ${localMatch.fullName} (${registeredName} House). School Cabinet voting is authorized for the 24 elected House Captains & Vice Captains (and Cabinet contestants for their own post only).`,
             };
           }
-                    isElectedCaptain = true;
+          isElectedCaptain = true;
+          allowedPositionIds = Array.isArray(winnerCheck.allowedPositionIds) && winnerCheck.allowedPositionIds.length
+            ? winnerCheck.allowedPositionIds
+            : null;
           localMatch.isElectedWinner = true;
           localMatch.isCabinetContestant = Boolean(winnerCheck.isCabinetContestant);
           localMatch.winnerRoleTitle = winnerCheck.roleTitle;
@@ -982,7 +995,11 @@
           }
         });
 
-        const pendingRoleIds = positions.filter((p) => !votedRoles[p.id]).map((p) => p.id);
+        const eligiblePositions = Array.isArray(allowedPositionIds) && allowedPositionIds.length
+          ? positions.filter((p) => allowedPositionIds.includes(p.id))
+          : positions;
+
+        const pendingRoleIds = eligiblePositions.filter((p) => !votedRoles[p.id]).map((p) => p.id);
         if (pendingRoleIds.length === 0) {
           const boothDisplayName = housesMeta[requestedHouseCode]?.name || houseConfig.name || requestedHouseCode;
           return {
@@ -991,13 +1008,15 @@
             title: "All Votes Already Casted",
             message: isTeacher
               ? `Teacher ID ${cleanId} (${localMatch.fullName}) has already cast all votes for ${boothDisplayName}. You are eligible to vote in other House booths and School Cabinet.`
-              : `Voter ID ${cleanId} (${localMatch.fullName}) has already voted for all ${positions.length} roles.`,
+              : `Voter ID ${cleanId} (${localMatch.fullName}) has already voted for all ${eligiblePositions.length} eligible role(s).`,
           };
         }
 
         const isPartial = Object.keys(votedRoles).length > 0;
         const isCancelled = cancelledRoleIds.length > 0;
-        let verificationNote = "Not Voted";
+        let verificationNote = localMatch.isCabinetContestant
+          ? `Cabinet Contestant — Eligible for ${eligiblePositions.map((p) => p.title).join(", ")} only`
+          : "Not Voted";
         if (isCancelled && isPartial) {
           verificationNote = `Re-vote open for ${cancelledRoleIds.length} cancelled role(s); ${Object.keys(votedRoles).length} locked`;
         } else if (isCancelled) {
