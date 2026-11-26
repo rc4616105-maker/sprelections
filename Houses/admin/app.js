@@ -1036,9 +1036,34 @@
       });
     });
 
-    localStorage.setItem("ELECTED_HOUSE_WINNERS_2026", JSON.stringify(twentyFourWinners));
-    localStorage.setItem("SCHOOL_ELECTION_2026_CUSTOM_DATA_V5", JSON.stringify(customTemplateHouses));
-    localStorage.setItem("ELECTION_HOUSE_POLLING_CLOSED", "true");
+    const safeSetLocal = (key, valueStr) => {
+      try {
+        localStorage.setItem(key, valueStr);
+      } catch (err) {
+        // Free space by clearing heavy snapshot/ballot caches and retry
+        [
+          "spr_admin_snapshot_cache",
+          "election_ballots_data",
+          "spr_offline_ballots",
+          "election_spr_2026_store_v1",
+          "election_spr_2026_store_v2",
+          "election_spr_2026_store_v3",
+          "election_spr_2026_store_v4",
+          "election_spr_2026_store_v5",
+        ].forEach((k) => {
+          try { localStorage.removeItem(k); } catch (_) {}
+        });
+        try {
+          localStorage.setItem(key, valueStr);
+        } catch (err2) {
+          console.warn(`Could not save ${key} to localStorage:`, err2);
+        }
+      }
+    };
+
+    safeSetLocal("ELECTION_HOUSE_POLLING_CLOSED", "true");
+    safeSetLocal("ELECTED_HOUSE_WINNERS_2026", JSON.stringify(twentyFourWinners));
+    safeSetLocal("SCHOOL_ELECTION_2026_CUSTOM_DATA_V5", JSON.stringify(customTemplateHouses));
 
     if (typeof BroadcastChannel !== "undefined") {
       try {
