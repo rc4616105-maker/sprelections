@@ -6,6 +6,7 @@
 (function () {
   const SB_CFG_KEY = "election_spr_2026_sb_cfg_v1";
   const DEFAULT_SB_URL = "https://rziptxcknaeuorekxwrl.supabase.co";
+  const DEFAULT_SB_KEY = "sb_publishable_jcyjkISfyHxcKPwVUloYYQ_4BfL3pUZ";
 
   const ROLE_MAP = [
     { key: "boys_captain", positionId: "CAPTAIN_BOY", code: "Vote_10_Boy", title: "Boys Captain", gradeDefault: "Grade 10" },
@@ -32,7 +33,7 @@
         };
       }
     } catch (_) {}
-    return null;
+    return { url: DEFAULT_SB_URL, key: DEFAULT_SB_KEY };
   }
 
   async function sbFetch(url, key, endpoint) {
@@ -43,11 +44,26 @@
     if (String(key).startsWith("eyJ") || String(key).startsWith("sb_secret_")) {
       headers.Authorization = `Bearer ${key}`;
     }
-    const res = await fetch(`${url}/rest/v1/${endpoint}`, { headers, cache: "no-store" });
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    const all = [];
+    let offset = 0;
+    const pageSize = 1000;
+    const sep = endpoint.includes("?") ? "&" : "?";
+    const pagedBase = `${url}/rest/v1/${endpoint}${endpoint.includes("order=") ? "" : `${sep}order=id.asc`}`;
+    while (true) {
+      const res = await fetch(pagedBase, {
+        headers: { ...headers, Range: `${offset}-${offset + pageSize - 1}` },
+        cache: "no-store"
+      });
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      }
+      const rows = await res.json();
+      if (!Array.isArray(rows)) return rows;
+      all.push(...rows);
+      if (rows.length < pageSize) break;
+      offset += pageSize;
     }
-    return res.json();
+    return all;
   }
 
   function cleanGradeLabel(className, section) {
@@ -116,10 +132,14 @@
             );
 
             // Tally votes for each candidate in this role
+            const normName = (s) => String(s || "").toLowerCase().replace(/[\s\.\-_]+/g, "");
             const candsWithVotes = roleCands.map((c) => {
-              const votes = houseBallots.filter(
-                (b) => b.candidate_id === c.id || b.candidate_name === c.full_name
-              ).length;
+              const cNorm = normName(c.full_name);
+              const votes = houseBallots.filter((b) => {
+                const posMatch = !b.position_id || b.position_id === roleDef.positionId || b.position_id === roleDef.code;
+                if (!posMatch) return false;
+                return b.candidate_id === c.id || (cNorm && normName(b.candidate_name) === cNorm);
+              }).length;
               return {
                 id: c.id,
                 fullName: c.full_name,
@@ -225,10 +245,14 @@
           const roleCands = centralCandidates.filter(
             (c) => c.position_id === cp.id || c.position_id === cp.code
           );
+          const normName = (s) => String(s || "").toLowerCase().replace(/[\s\.\-_]+/g, "");
           const candsWithVotes = roleCands.map((c) => {
-            const votes = centralBallots.filter(
-              (b) => b.candidate_id === c.id || b.candidate_name === c.full_name
-            ).length;
+            const cNorm = normName(c.full_name);
+            const votes = centralBallots.filter((b) => {
+              const posMatch = !b.position_id || b.position_id === cp.id || b.position_id === cp.code;
+              if (!posMatch) return false;
+              return b.candidate_id === c.id || (cNorm && normName(b.candidate_name) === cNorm);
+            }).length;
             return {
               id: c.id,
               fullName: c.full_name,
