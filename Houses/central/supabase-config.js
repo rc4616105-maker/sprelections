@@ -776,41 +776,6 @@
         const normStr = (s) => String(s || "").toLowerCase().replace(/[\s\.\-_]+/g, "");
         const vNameNorm = voter && voter.fullName ? normStr(voter.fullName) : "";
 
-        // Explicit Electoral College Overrides:
-        // - Vasistha: Allow G. Greeshma (1J7268) instead of N. Sriteja (1C9533)
-        // - Hanuman: Allow K. Samarjith Reddy (1J9554)
-        if (
-          idNorm === "1C9533" ||
-          idNorm === "CAND-10-NSRI" ||
-          vNameNorm === "nsriteja"
-        ) {
-          return { isWinner: false };
-        }
-        if (
-          idNorm === "1J7268" ||
-          idNorm === "CAND-10-GGRE" ||
-          vNameNorm === "ggreeshma"
-        ) {
-          return {
-            isWinner: true,
-            houseCode: "VASISTHA",
-            roleTitle: "Girls Captain (Class 10 Girl)",
-            houseName: "Vasistha House",
-          };
-        }
-        if (
-          idNorm === "1J9554" ||
-          idNorm === "CAND-10-KSAM" ||
-          vNameNorm === "ksamarjithreddy"
-        ) {
-          return {
-            isWinner: true,
-            houseCode: "HANUMAN",
-            roleTitle: "Boys Captain (Class 10 Boy)",
-            houseName: "Hanuman House",
-          };
-        }
-
         // Check 0: School Cabinet Contestants Check
         // Rule: Candidates contesting for School Cabinet (President, Vice President, etc.)
         // CANNOT vote for School Cabinet; they can ONLY vote in their own House!
@@ -834,107 +799,55 @@
           };
         }
 
-        // Check 1: Live Supabase tally across house candidates & accepted ballots (authoritative!)
-        if (this.mode === "supabase") {
-          try {
-            const [allHouseCands, allHouseBallots] = await Promise.all([
-              sbFetchAll("candidates?house_code=neq.CENTRAL&is_approved=eq.true&select=id,admission_no,full_name,house_code,position_id,position_name"),
-              sbFetchAll("ballots?status=eq.accepted&house_code=neq.CENTRAL&select=house_code,position_id,candidate_id,candidate_name"),
-            ]);
+        // Exact 24 Authorized Electoral College Members (6 Houses x 4 Posts)
+        const AUTHORIZED_CABINET_ELECTORS = [
+          // Bheeshma House
+          { adm: "1J4660", candAdm: "CAND-10-MHAN", names: ["mhanshith", "hanshith"], houseCode: "BHEESHMA", houseName: "Bheeshma House", roleTitle: "Boys Captain" },
+          { adm: "1C8097", candAdm: "CAND-10-ANIK", names: ["anikshitha", "nikshitha"], houseCode: "BHEESHMA", houseName: "Bheeshma House", roleTitle: "Girls Captain" },
+          { adm: "9V2811", candAdm: "CAND-9-MHIT", names: ["mhitharth", "hitharth", "hitharth sourya"], houseCode: "BHEESHMA", houseName: "Bheeshma House", roleTitle: "Boys Vice Captain" },
+          { adm: "9K5435", candAdm: "CAND-9-PANA", names: ["pananya"], houseCode: "BHEESHMA", houseName: "Bheeshma House", roleTitle: "Girls Vice Captain" },
+          // Gurudrona House
+          { adm: "1C7345", candAdm: "CAND-10-JSHI", names: ["jshivasaikrishna", "shivasaikrishna"], houseCode: "GURUDRONA", houseName: "Gurudrona House", roleTitle: "Boys Captain" },
+          { adm: "1C3740", candAdm: "CAND-10-CHAN", names: ["chananya"], houseCode: "GURUDRONA", houseName: "Gurudrona House", roleTitle: "Girls Captain" },
+          { adm: "9V7145", candAdm: "CAND-9-PMAN", names: ["pmanivardhan", "manivardhan"], houseCode: "GURUDRONA", houseName: "Gurudrona House", roleTitle: "Boys Vice Captain" },
+          { adm: "9K8886", candAdm: "CAND-9-MHAM", names: ["nhamshini", "mhamsini", "hamshinnim"], houseCode: "GURUDRONA", houseName: "Gurudrona House", roleTitle: "Girls Vice Captain" },
+          // Hanuman House
+          { adm: "1J9554", candAdm: "CAND-10-KSAM", names: ["ksamarjithreddy", "samarjith"], houseCode: "HANUMAN", houseName: "Hanuman House", roleTitle: "Boys Captain" },
+          { adm: "1M1423", candAdm: "CAND-10-ARIS", names: ["arishitha", "rishithaa"], houseCode: "HANUMAN", houseName: "Hanuman House", roleTitle: "Girls Captain" },
+          { adm: "9S6870", candAdm: "CAND-9-CHRU", names: ["chruthvik", "chruthwik"], houseCode: "HANUMAN", houseName: "Hanuman House", roleTitle: "Boys Vice Captain" },
+          { adm: "9A8858", candAdm: "CAND-9-PAIS", names: ["paishwarya", "paishwariya"], houseCode: "HANUMAN", houseName: "Hanuman House", roleTitle: "Girls Vice Captain" },
+          // Karna House
+          { adm: "1A8784", candAdm: "CAND-10-KVAR", names: ["kvarshith"], houseCode: "KARNA", houseName: "Karna House", roleTitle: "Boys Captain" },
+          { adm: "1J7975", candAdm: "CAND-10-BPRA", names: ["bpragnapriya"], houseCode: "KARNA", houseName: "Karna House", roleTitle: "Girls Captain" },
+          { adm: "9S1539", candAdm: "CAND-9-MAAR", names: ["maarush"], houseCode: "KARNA", houseName: "Karna House", roleTitle: "Boys Vice Captain" },
+          { adm: "9S8578", candAdm: "CAND-9-KVEE", names: ["kveeksha"], houseCode: "KARNA", houseName: "Karna House", roleTitle: "Girls Vice Captain" },
+          // Vasistha House
+          { adm: "1C3267", candAdm: "CAND-10-CHKA", names: ["chkarthikeya", "karthikeya"], houseCode: "VASISTHA", houseName: "Vasistha House", roleTitle: "Boys Captain" },
+          { adm: "1J7268", candAdm: "CAND-10-GGRE", names: ["ggreeshma", "greeshma"], houseCode: "VASISTHA", houseName: "Vasistha House", roleTitle: "Girls Captain" },
+          { adm: "9K1243", candAdm: "CAND-9-CHRU", names: ["chruthwish", "chruthvish", "rishith"], houseCode: "VASISTHA", houseName: "Vasistha House", roleTitle: "Boys Vice Captain" },
+          { adm: "9K9165", candAdm: "CAND-9-AANW", names: ["aanwitha", "anwitha"], houseCode: "VASISTHA", houseName: "Vasistha House", roleTitle: "Girls Vice Captain" },
+          // Vishwamithra House
+          { adm: "1C2714", candAdm: "CAND-10-BNAN", names: ["bnandan", "nandan", "nandana"], houseCode: "VISHWAMITHRA", houseName: "Vishwamithra House", roleTitle: "Boys Captain" },
+          { adm: "1J2436", candAdm: "CAND-10-GSHA", names: ["gsharanyaraj", "sharanyaraj"], houseCode: "VISHWAMITHRA", houseName: "Vishwamithra House", roleTitle: "Girls Captain" },
+          { adm: "9K3140", candAdm: "CAND-9-NMAH", names: ["nmaharshi", "mmaharshi"], houseCode: "VISHWAMITHRA", houseName: "Vishwamithra House", roleTitle: "Boys Vice Captain" },
+          { adm: "9K9400", candAdm: "CAND-9-JMOK", names: ["jmokshareddy"], houseCode: "VISHWAMITHRA", houseName: "Vishwamithra House", roleTitle: "Girls Vice Captain" },
+        ];
 
-            if (Array.isArray(allHouseCands) && allHouseCands.length > 0 && Array.isArray(allHouseBallots) && allHouseBallots.length > 0) {
-              const tallyMap = new Map();
-              for (const b of allHouseBallots) {
-                const hc = String(b.house_code || "").toUpperCase();
-                const pid = String(b.position_id || "").toUpperCase();
-                const cid = String(b.candidate_id || "");
-                const cname = normStr(b.candidate_name);
-                const keyCid = `${hc}|${pid}|ID:${cid}`;
-                const keyName = `${hc}|${pid}|NM:${cname}`;
-                tallyMap.set(keyCid, (tallyMap.get(keyCid) || 0) + 1);
-                if (cname) tallyMap.set(keyName, (tallyMap.get(keyName) || 0) + 1);
-              }
+        const voterAdmNorm = String(voter?.admissionNo || "").trim().toUpperCase();
+        const match = AUTHORIZED_CABINET_ELECTORS.find((e) => {
+          if (idNorm === e.adm || idNorm === e.candAdm || (voterAdmNorm && voterAdmNorm === e.adm)) return true;
+          if (vNameNorm && e.names.some((n) => normStr(n) === vNameNorm)) return true;
+          return false;
+        });
 
-              const houseCodes = ["BHEESHMA", "GURUDRONA", "HANUMAN", "KARNA", "VASISTHA", "VISHWAMITHRA"];
-              const postIds = ["CAPTAIN_BOY", "CAPTAIN_GIRL", "VICE_CAPTAIN_BOY", "VICE_CAPTAIN_GIRL"];
-              const liveWinners = [];
-
-              for (const hc of houseCodes) {
-                for (const pid of postIds) {
-                  const postCands = allHouseCands.filter(
-                    (c) => String(c.house_code || "").toUpperCase() === hc && String(c.position_id || "").toUpperCase() === pid
-                  );
-                  if (postCands.length === 0) continue;
-
-                  const scored = postCands.map((c) => {
-                    const votesById = tallyMap.get(`${hc}|${pid}|ID:${c.id}`) || 0;
-                    const votesByName = tallyMap.get(`${hc}|${pid}|NM:${normStr(c.full_name)}`) || 0;
-                    return { cand: c, votes: Math.max(votesById, votesByName) };
-                  });
-                  scored.sort((a, b) => b.votes - a.votes);
-                  const topVotes = scored[0]?.votes || 0;
-                  if (topVotes > 0) {
-                    for (const item of scored) {
-                      if (item.votes === topVotes) {
-                        liveWinners.push(item.cand);
-                      }
-                    }
-                  }
-                }
-              }
-
-              const winMatch = liveWinners.find((w) => {
-                const wAdm = String(w.admission_no || "").trim().toUpperCase();
-                const wNameNorm = normStr(w.full_name);
-                return (
-                  (wAdm && (wAdm === idNorm || (voter && wAdm === String(voter.admissionNo || "").toUpperCase()))) ||
-                  (wNameNorm && vNameNorm && (wNameNorm === vNameNorm || vNameNorm.includes(wNameNorm) || wNameNorm.includes(vNameNorm)))
-                );
-              });
-
-              if (winMatch) {
-                const hc = String(winMatch.house_code || "").toUpperCase();
-                const hMeta = (housesMeta && housesMeta[hc]) || {};
-                return {
-                  isWinner: true,
-                  houseCode: hc,
-                  roleTitle: winMatch.position_name || winMatch.position_id || "Elected House Captain",
-                  houseName: hMeta.name ? `${hMeta.name} House` : `${hc} House`,
-                };
-              }
-
-              // Authoritative live Supabase tally ran and this voter is NOT an elected House Winner
-              return { isWinner: false };
-            }
-          } catch (err) {
-            console.warn("Live Supabase winner verification failed, falling back to declared localStorage list:", err);
-          }
+        if (match) {
+          return {
+            isWinner: true,
+            houseCode: match.houseCode,
+            roleTitle: match.roleTitle,
+            houseName: match.houseName,
+          };
         }
-
-        // Check 2 (Offline / Fallback): Declared winners list saved by the Result Declaration Wheel or Admin Pause
-        try {
-          const raw = localStorage.getItem("ELECTED_HOUSE_WINNERS_2026") || localStorage.getItem("SCHOOL_ELECTION_2026_CUSTOM_DATA_V5");
-          if (raw) {
-            const parsed = JSON.parse(raw);
-            if (Array.isArray(parsed)) {
-              const match = parsed.find((w) => {
-                const wAdm = String(w.admissionNo || "").trim().toUpperCase();
-                const wNameNorm = normStr(w.fullName || w.name);
-                return (
-                  (wAdm && (wAdm === idNorm || (voter && wAdm === String(voter.admissionNo || "").toUpperCase()))) ||
-                  (wNameNorm && vNameNorm && (wNameNorm === vNameNorm || vNameNorm.includes(wNameNorm) || wNameNorm.includes(vNameNorm)))
-                );
-              });
-              if (match) {
-                return {
-                  isWinner: true,
-                  roleTitle: match.postTitle || match.role || "Elected House Leader",
-                  houseName: match.houseName || match.house || "House Council",
-                };
-              }
-            }
-          }
-        } catch (_) {}
 
         return { isWinner: false };
       };
