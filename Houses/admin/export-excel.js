@@ -151,10 +151,10 @@
             if (!matchCand) return false;
             if (post.isCentral) {
               return (
-                b.houseCode === "CENTRAL" ||
-                b.positionId === post.id ||
-                b.positionId === post.code ||
-                (b.positionName && b.positionName.includes(post.title))
+                b.houseCode === "CENTRAL" &&
+                (b.positionId === post.id ||
+                  b.positionId === post.code ||
+                  (b.positionName && b.positionName.includes(post.title)))
               );
             }
             return (
@@ -176,6 +176,9 @@
         candsWithVotes.sort((a, b) => b.votes - a.votes || a.fullName.localeCompare(b.fullName));
 
         const totalVotes = candsWithVotes.reduce((sum, c) => sum + c.votes, 0);
+        candsWithVotes.forEach((c) => {
+          c.pct = totalVotes > 0 ? Number(((c.votes / totalVotes) * 100).toFixed(1)) : 0;
+        });
 
         return {
           title: post.title,
@@ -193,6 +196,69 @@
         posts: postsWithVotes,
       };
     });
+  }
+
+  function computeTurnoutRows(snap) {
+    const students = (snap.students || window.ADMIN_DATA?.students || []).filter((s) => s.isActive !== false);
+    const acceptedBallots = (snap.ballots || []).filter((b) => b.status === "accepted");
+
+    const groups = [
+      { code: "BHEESHMA", label: "Bheeshma House" },
+      { code: "GURUDRONA", label: "Gurudrona House" },
+      { code: "HANUMAN", label: "Hanuman House" },
+      { code: "KARNA", label: "Karna House" },
+      { code: "VASISTHA", label: "Vasistha House" },
+      { code: "VISHWAMITHRA", label: "Vishwamithra House" },
+      { code: "ALL", label: "Teachers / Staff (School Cabinet)" },
+    ];
+
+    let grandEligible = 0;
+    let grandVoted = 0;
+    let grandBallots = 0;
+
+    const rows = groups.map((grp) => {
+      const grpVoters = students.filter((s) => (s.houseCode || "").toUpperCase() === grp.code);
+      const grpAdmSet = new Set(grpVoters.map((s) => String(s.admissionNo || "").toUpperCase()));
+      const grpBallots = acceptedBallots.filter((b) => {
+        if (grp.code === "ALL") {
+          return (b.houseCode || "").toUpperCase() === "CENTRAL" && grpAdmSet.has(String(b.admissionNo || "").toUpperCase());
+        }
+        return (b.houseCode || "").toUpperCase() === grp.code;
+      });
+      const votedSet = new Set(grpBallots.map((b) => String(b.admissionNo || "").toUpperCase()));
+      const eligible = grpVoters.length;
+      const voted = votedSet.size;
+      const pending = Math.max(0, eligible - voted);
+      const pct = eligible > 0 ? `${((voted / eligible) * 100).toFixed(1)}%` : "0.0%";
+
+      grandEligible += eligible;
+      grandVoted += voted;
+      grandBallots += grpBallots.length;
+
+      return {
+        label: grp.label,
+        eligible,
+        voted,
+        pending,
+        pct,
+        ballots: grpBallots.length,
+      };
+    });
+
+    const grandPending = Math.max(0, grandEligible - grandVoted);
+    const grandPct = grandEligible > 0 ? `${((grandVoted / grandEligible) * 100).toFixed(1)}%` : "0.0%";
+
+    return {
+      rows,
+      total: {
+        label: "GRAND TOTAL",
+        eligible: grandEligible,
+        voted: grandVoted,
+        pending: grandPending,
+        pct: grandPct,
+        ballots: grandBallots,
+      },
+    };
   }
 
   function showExportToast(fileName) {
@@ -290,41 +356,93 @@
     }
 
     const groups = computeElectionHierarchy(snap);
+    const turnout = computeTurnoutRows(snap);
+    const generatedAt = new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
 
-    // Build hierarchical sheet data:
-    // House Header (Row)
-    //   Post Header (Row)
-    //     Column Headers: Candidate Name | Class & Sec | No. of Votes
-    //     Candidate Rows...
-    //   (blank spacer row)
-    const sheetData = [];
-    const merges = [];
-    let currentRow = 0;
+    // Sheet 1: Winners Summary (29 Posts)
+    const winnersSheetData = [
+      ["SPR SCHOOL ELECTIONS 2026 — OFFICIAL WINNERS SUMMARY", "", "", "", "", "", "", "", "", ""],
+      [`Generated: ${generatedAt} | Eligible Voters: ${turnout.total.eligible} | Voted: ${turnout.total.voted} (${turnout.total.pct}) | Total Ballots: ${turnout.total.ballots}`, "", "", "", "", "", "", "", "", ""],
+      ["", "", "", "", "", "", "", "", "", ""],
+      ["Category / House", "Post", "Winner Name", "Class & Sec", "Winner Votes", "Runner-Up", "Runner-Up Votes", "Majority", "Total Post Votes", "Status"],
+    ];
+    const winnersMerges = [
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 9 } },
+      { s: { r: 1, c: 0 }, e: { r: 1, c: 9 } },
+    ];
 
     groups.forEach((g) => {
-      // 1. House Section Header Row (Merged A:D)
-      sheetData.push([`${g.icon} ${g.name.toUpperCase()}`, "", "", ""]);
-      merges.push({ s: { r: currentRow, c: 0 }, e: { r: currentRow, c: 3 } });
+      g.posts.forEach((p) => {
+        const topVotes = p.candidates[0] ? p.candidates[0].votes : 0;
+        const topWinners = p.candidates.filter((c) => c.votes === topVotes && topVotes > 0);
+        const runnerUp = p.candidates.find((c) => c.votes < topVotes);
+
+        if (p.totalVotes === 0 || topVotes === 0) {
+          winnersSheetData.push([g.name, p.title, "Pending", "—", 0, "—", 0, 0, p.totalVotes, "Pending Votes"]);
+        } else if (topWinners.length > 1) {
+          winnersSheetData.push([
+            g.name,
+            p.title,
+            topWinners.map((w) => w.fullName).join(" / "),
+            topWinners.map((w) => w.classSec).join(" / "),
+            topVotes,
+            runnerUp ? runnerUp.fullName : "—",
+            runnerUp ? runnerUp.votes : 0,
+            0,
+            p.totalVotes,
+            `TIED (${topWinners.length}-way @ ${topVotes} votes)`,
+          ]);
+        } else {
+          const win = topWinners[0];
+          const ruVotes = runnerUp ? runnerUp.votes : 0;
+          const majority = runnerUp ? (topVotes - ruVotes) : topVotes;
+          winnersSheetData.push([
+            g.name,
+            p.title,
+            win.fullName,
+            win.classSec,
+            topVotes,
+            runnerUp ? runnerUp.fullName : "—",
+            ruVotes,
+            majority,
+            p.totalVotes,
+            "WINNER",
+          ]);
+        }
+      });
+    });
+
+    // Sheet 2: Detailed Results (Hierarchical breakdown by House & Post)
+    const sheetData = [
+      ["SPR SCHOOL ELECTIONS 2026 — DETAILED VOTE TALLY", "", "", "", "", ""],
+      [`Generated: ${generatedAt}`, "", "", "", "", ""],
+      ["", "", "", "", "", ""],
+    ];
+    const merges = [
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } },
+      { s: { r: 1, c: 0 }, e: { r: 1, c: 5 } },
+    ];
+    let currentRow = 3;
+
+    groups.forEach((g) => {
+      sheetData.push([`${g.icon} ${g.name.toUpperCase()}`, "", "", "", "", ""]);
+      merges.push({ s: { r: currentRow, c: 0 }, e: { r: currentRow, c: 5 } });
       currentRow += 1;
 
       g.posts.forEach((p) => {
-        // 2. Post Title & Level Heading Row (Merged A:D)
         const postLabel = p.subtitle ? `📌 ${p.title} (${p.subtitle})` : `📌 ${p.title}`;
-        sheetData.push([postLabel, "", "", ""]);
-        merges.push({ s: { r: currentRow, c: 0 }, e: { r: currentRow, c: 3 } });
+        sheetData.push([postLabel, "", "", "", "", ""]);
+        merges.push({ s: { r: currentRow, c: 0 }, e: { r: currentRow, c: 5 } });
         currentRow += 1;
 
-        // 3. Table Column Headers
-        sheetData.push(["Candidate Name", "Class & Sec", "No. of Votes", "Winner & Majority"]);
+        sheetData.push(["Rank", "Candidate Name", "Class & Sec", "No. of Votes", "Vote %", "Winner & Majority"]);
         currentRow += 1;
 
-        // Compute top & second votes for Winner & Majority column
         const topVotes = p.candidates[0] ? p.candidates[0].votes : 0;
         const secondVotes = p.candidates[1] ? p.candidates[1].votes : 0;
         const topCount = p.candidates.filter((c) => c.votes === topVotes).length;
 
-        // 4. Candidates sorted according to number of votes
-        p.candidates.forEach((c) => {
+        p.candidates.forEach((c, idx) => {
           let resultText = "—";
           if (p.totalVotes === 0 || topVotes === 0) {
             resultText = "Pending Votes";
@@ -338,15 +456,31 @@
           } else {
             resultText = "Runner-up";
           }
-          sheetData.push([c.fullName, c.classSec, c.votes, resultText]);
+          sheetData.push([idx + 1, c.fullName, c.classSec, c.votes, `${c.pct}%`, resultText]);
           currentRow += 1;
         });
 
-        // 5. Blank row spacer between posts
-        sheetData.push(["", "", "", ""]);
+        sheetData.push(["", "Total Post Votes", "", p.totalVotes, p.totalVotes > 0 ? "100.0%" : "0.0%", ""]);
+        currentRow += 1;
+
+        sheetData.push(["", "", "", "", "", ""]);
         currentRow += 1;
       });
     });
+
+    // Sheet 3: Turnout Summary
+    const turnoutSheetData = [
+      ["SPR SCHOOL ELECTIONS 2026 — VOTER TURNOUT SUMMARY", "", "", "", "", ""],
+      [`Generated: ${generatedAt}`, "", "", "", "", ""],
+      ["", "", "", "", "", ""],
+      ["House / Group", "Eligible Voters", "Voted", "Pending", "Turnout %", "Accepted Ballots"],
+      ...turnout.rows.map((r) => [r.label, r.eligible, r.voted, r.pending, r.pct, r.ballots]),
+      [turnout.total.label, turnout.total.eligible, turnout.total.voted, turnout.total.pending, turnout.total.pct, turnout.total.ballots],
+    ];
+    const turnoutMerges = [
+      { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } },
+      { s: { r: 1, c: 0 }, e: { r: 1, c: 5 } },
+    ];
 
     const fileName = "School_Election_Results_2026_Official.xlsx";
 
@@ -354,16 +488,46 @@
     if (window.XLSX && typeof window.XLSX.utils?.book_new === "function") {
       const wb = window.XLSX.utils.book_new();
 
+      const wsWinners = window.XLSX.utils.aoa_to_sheet(winnersSheetData);
+      wsWinners["!cols"] = [
+        { wch: 20 },
+        { wch: 26 },
+        { wch: 26 },
+        { wch: 18 },
+        { wch: 14 },
+        { wch: 26 },
+        { wch: 16 },
+        { wch: 12 },
+        { wch: 16 },
+        { wch: 24 },
+      ];
+      wsWinners["!merges"] = winnersMerges;
+      window.XLSX.utils.book_append_sheet(wb, wsWinners, "Winners Summary");
+
       const ws = window.XLSX.utils.aoa_to_sheet(sheetData);
       ws["!cols"] = [
-        { wch: 34 }, // Candidate Name
-        { wch: 24 }, // Class & Sec
-        { wch: 16 }, // No. of Votes
-        { wch: 34 }, // Winner & Majority
+        { wch: 8 },
+        { wch: 32 },
+        { wch: 22 },
+        { wch: 14 },
+        { wch: 12 },
+        { wch: 34 },
       ];
       ws["!merges"] = merges;
+      window.XLSX.utils.book_append_sheet(wb, ws, "Detailed Results");
 
-      window.XLSX.utils.book_append_sheet(wb, ws, "Election Results");
+      const wsTurnout = window.XLSX.utils.aoa_to_sheet(turnoutSheetData);
+      wsTurnout["!cols"] = [
+        { wch: 34 },
+        { wch: 16 },
+        { wch: 12 },
+        { wch: 12 },
+        { wch: 14 },
+        { wch: 18 },
+      ];
+      wsTurnout["!merges"] = turnoutMerges;
+      window.XLSX.utils.book_append_sheet(wb, wsTurnout, "Turnout Summary");
+
       window.XLSX.writeFile(wb, fileName);
     } else {
       // Fallback CSV with exact same layout

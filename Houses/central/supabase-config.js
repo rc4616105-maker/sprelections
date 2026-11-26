@@ -799,13 +799,89 @@
           };
         }
 
-        // Check 1: Declared winners list saved by the Result Declaration Wheel or Admin Pause
+        // Check 1: Live Supabase tally across house candidates & accepted ballots (authoritative!)
+        if (this.mode === "supabase") {
+          try {
+            const [allHouseCands, allHouseBallots] = await Promise.all([
+              sbFetchAll("candidates?house_code=neq.CENTRAL&is_approved=eq.true&select=id,admission_no,full_name,house_code,position_id,position_name"),
+              sbFetchAll("ballots?status=eq.accepted&house_code=neq.CENTRAL&select=house_code,position_id,candidate_id,candidate_name"),
+            ]);
+
+            if (Array.isArray(allHouseCands) && allHouseCands.length > 0 && Array.isArray(allHouseBallots) && allHouseBallots.length > 0) {
+              const tallyMap = new Map();
+              for (const b of allHouseBallots) {
+                const hc = String(b.house_code || "").toUpperCase();
+                const pid = String(b.position_id || "").toUpperCase();
+                const cid = String(b.candidate_id || "");
+                const cname = normStr(b.candidate_name);
+                const keyCid = `${hc}|${pid}|ID:${cid}`;
+                const keyName = `${hc}|${pid}|NM:${cname}`;
+                tallyMap.set(keyCid, (tallyMap.get(keyCid) || 0) + 1);
+                if (cname) tallyMap.set(keyName, (tallyMap.get(keyName) || 0) + 1);
+              }
+
+              const houseCodes = ["BHEESHMA", "GURUDRONA", "HANUMAN", "KARNA", "VASISTHA", "VISHWAMITHRA"];
+              const postIds = ["CAPTAIN_BOY", "CAPTAIN_GIRL", "VICE_CAPTAIN_BOY", "VICE_CAPTAIN_GIRL"];
+              const liveWinners = [];
+
+              for (const hc of houseCodes) {
+                for (const pid of postIds) {
+                  const postCands = allHouseCands.filter(
+                    (c) => String(c.house_code || "").toUpperCase() === hc && String(c.position_id || "").toUpperCase() === pid
+                  );
+                  if (postCands.length === 0) continue;
+
+                  const scored = postCands.map((c) => {
+                    const votesById = tallyMap.get(`${hc}|${pid}|ID:${c.id}`) || 0;
+                    const votesByName = tallyMap.get(`${hc}|${pid}|NM:${normStr(c.full_name)}`) || 0;
+                    return { cand: c, votes: Math.max(votesById, votesByName) };
+                  });
+                  scored.sort((a, b) => b.votes - a.votes);
+                  const topVotes = scored[0]?.votes || 0;
+                  if (topVotes > 0) {
+                    for (const item of scored) {
+                      if (item.votes === topVotes) {
+                        liveWinners.push(item.cand);
+                      }
+                    }
+                  }
+                }
+              }
+
+              const winMatch = liveWinners.find((w) => {
+                const wAdm = String(w.admission_no || "").trim().toUpperCase();
+                const wNameNorm = normStr(w.full_name);
+                return (
+                  (wAdm && (wAdm === idNorm || (voter && wAdm === String(voter.admissionNo || "").toUpperCase()))) ||
+                  (wNameNorm && vNameNorm && (wNameNorm === vNameNorm || vNameNorm.includes(wNameNorm) || wNameNorm.includes(vNameNorm)))
+                );
+              });
+
+              if (winMatch) {
+                const hc = String(winMatch.house_code || "").toUpperCase();
+                const hMeta = (housesMeta && housesMeta[hc]) || {};
+                return {
+                  isWinner: true,
+                  houseCode: hc,
+                  roleTitle: winMatch.position_name || winMatch.position_id || "Elected House Captain",
+                  houseName: hMeta.name ? `${hMeta.name} House` : `${hc} House`,
+                };
+              }
+
+              // Authoritative live Supabase tally ran and this voter is NOT an elected House Winner
+              return { isWinner: false };
+            }
+          } catch (err) {
+            console.warn("Live Supabase winner verification failed, falling back to declared localStorage list:", err);
+          }
+        }
+
+        // Check 2 (Offline / Fallback): Declared winners list saved by the Result Declaration Wheel or Admin Pause
         try {
           const raw = localStorage.getItem("ELECTED_HOUSE_WINNERS_2026") || localStorage.getItem("SCHOOL_ELECTION_2026_CUSTOM_DATA_V5");
           if (raw) {
             const parsed = JSON.parse(raw);
             if (Array.isArray(parsed)) {
-              // Direct winners list
               const match = parsed.find((w) => {
                 const wAdm = String(w.admissionNo || "").trim().toUpperCase();
                 const wNameNorm = normStr(w.fullName || w.name);
@@ -821,84 +897,9 @@
                   houseName: match.houseName || match.house || "House Council",
                 };
               }
-              // Houses structure
-              for (const h of parsed) {
-                for (const pk of ["boys_captain", "girls_captain", "boys_vc", "girls_vc"]) {
-                  const c = h.candidates?.[pk];
-                  if (c) {
-                    const cAdm = String(c.admissionNo || "").trim().toUpperCase();
-                    const cNameNorm = normStr(c.name || c.fullName);
-                    if (
-                      (cAdm && (cAdm === idNorm || (voter && cAdm === String(voter.admissionNo || "").toUpperCase()))) ||
-                      (cNameNorm && vNameNorm && (cNameNorm === vNameNorm || vNameNorm.includes(cNameNorm) || cNameNorm.includes(vNameNorm)))
-                    ) {
-                      return {
-                        isWinner: true,
-                        roleTitle: c.postTitle || "Elected House Captain",
-                        houseName: h.fullName || h.name || "House Council",
-                      };
-                    }
-                  }
-                }
-              }
             }
           }
         } catch (_) {}
-
-        // Check 2: Check against nominated candidates roster (e.g. A. Megha Sanjana / CAND-10-AMEG for Girls Captain)
-        try {
-          const allCands = (typeof window !== "undefined" && window.ADMIN_DATA && window.ADMIN_DATA.candidates)
-            ? window.ADMIN_DATA.candidates
-            : (typeof DEFAULT_HOUSES !== "undefined" ? [] : []);
-          
-          const candMatch = (allCands || []).find((c) => {
-            if (c.houseCode === "CENTRAL") return false;
-            const cAdm = String(c.admissionNo || "").trim().toUpperCase();
-            const cNameNorm = normStr(c.fullName || c.name);
-            return (
-              (cAdm && (cAdm === idNorm || (voter && cAdm === String(voter.admissionNo || "").toUpperCase()))) ||
-              (cNameNorm && vNameNorm && (cNameNorm === vNameNorm || vNameNorm.includes(cNameNorm) || cNameNorm.includes(vNameNorm)))
-            );
-          });
-
-          if (candMatch) {
-            const hMeta = (housesMeta && housesMeta[candMatch.houseCode]) || {};
-            return {
-              isWinner: true,
-              roleTitle: candMatch.positionName || candMatch.positionId || "House Captain",
-              houseName: hMeta.name ? `${hMeta.name} House` : `${candMatch.houseCode} House`,
-            };
-          }
-        } catch (_) {}
-
-        // Check 3: Live Supabase check across house candidates
-        try {
-          const candRows = await sbFetchAll(`candidates?admission_no=eq.${encodeURIComponent(admId)}&house_code=neq.CENTRAL&is_approved=eq.true`);
-          if (candRows && candRows.length > 0) {
-            const cand = candRows[0];
-            return {
-              isWinner: true,
-              roleTitle: cand.position_name || cand.position_id || "House Captain",
-              houseName: cand.house_name || cand.house_code || "House Council",
-            };
-          }
-        } catch (_) {}
-
-        // Check 4: Check DEFAULT_HOUSES candidates
-        if (typeof DEFAULT_HOUSES !== "undefined" && vNameNorm) {
-          for (const h of DEFAULT_HOUSES) {
-            for (const pk of ["boys_captain", "girls_captain", "boys_vc", "girls_vc"]) {
-              const c = h.candidates?.[pk];
-              if (c && normStr(c.name) === vNameNorm) {
-                return {
-                  isWinner: true,
-                  roleTitle: c.postTitle || "Elected House Captain",
-                  houseName: h.fullName || h.name || "House Council",
-                };
-              }
-            }
-          }
-        }
 
         return { isWinner: false };
       };
